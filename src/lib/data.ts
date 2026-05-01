@@ -19,6 +19,11 @@ export type Mod = {
   rounds: Round[];
   total_bugs: number;
   depth_signals: string[];
+  logo_local: string | null;
+  logo_source?: string | null;
+  mod_supported_versions: string[];
+  mod_supported_versions_source?: string;
+  mod_supported_versions_note?: string;
 };
 
 export type Bug = {
@@ -72,8 +77,6 @@ export const sortedMods = (): Mod[] => {
 };
 
 export const activeMods = (): Mod[] => {
-  // The 4 most-active right now: top by `total_bugs` for credited and recent regression
-  // → Hot Bath / Shower Core / Alex's Caves / Alex's Mobs (matches concept-v2 §3 hero sketch)
   const wanted = ["hotbath", "shower_core", "alex_caves", "alex_mobs"];
   return wanted
     .map((id) => mods.find((m) => m.id === id))
@@ -109,26 +112,102 @@ export const allBugCategories = (): string[] => {
   return Array.from(set).sort();
 };
 
-// emoji map per mod — concept-v2 §5 mod logo fallback
-export const MOD_EMOJI: Record<string, string> = {
-  hotbath: "🛁",
-  shower_core: "🚿",
-  alex_caves: "💎",
-  alex_mobs: "🐾",
-  pelagic_prehistory: "🐟",
-  instant_world_mirror: "🪞",
-  ok_orefinder: "⛏",
-  sakura: "🌸",
-  villager_tourism: "🧳",
-  radios: "📻",
-  leaning_tower: "🗼",
-  ping_system: "📡",
-  construction_wand: "🪄",
+// Monogram fallback letter (first char of name_en, uppercase) for mods
+// that have no raster logo. Used by ModCard.
+export const modMonogram = (m: Mod): string => {
+  const c = m.name_en.trim().charAt(0).toUpperCase();
+  return c || "?";
 };
 
-export const modEmoji = (m: Mod): string => MOD_EMOJI[m.id] ?? "🎮";
+// Semver-ish ordering for MC version strings like "1.20.1", "1.21.3", "1.16.5".
+const versionKey = (v: string): number[] => {
+  return v.split(".").map((n) => {
+    const num = parseInt(n, 10);
+    return Number.isFinite(num) ? num : 0;
+  });
+};
+const compareVersion = (a: string, b: string): number => {
+  const ak = versionKey(a), bk = versionKey(b);
+  for (let i = 0; i < Math.max(ak.length, bk.length); i++) {
+    const av = ak[i] ?? 0, bv = bk[i] ?? 0;
+    if (av !== bv) return av - bv;
+  }
+  return 0;
+};
+const minMaxVersion = (vs: string[]): { min: string; max: string } | null => {
+  if (vs.length === 0) return null;
+  const sorted = [...vs].sort(compareVersion);
+  return { min: sorted[0], max: sorted[sorted.length - 1] };
+};
 
-// in-game scene placeholder filename per mod (only the 4 large case files have a scene)
+// Per-mod qualifier text when tested goes beyond canonical supported max.
+const TESTED_QUALIFIER: Record<string, string> = {
+  alex_caves: "unofficial port",
+  alex_mobs: "community port",
+  sakura: "private build",
+  villager_tourism: "private build",
+  ping_system: "private build",
+  construction_wand: "KOTS fork",
+};
+
+// Render the version meta line for a mod card or case header.
+//
+// Rules:
+// - supported empty → "tested X / Y"
+// - tested_max > supported_max → "MC {min} → {max} (canonical) · tested X / Y ({qualifier})"
+// - else → "MC {min} → {max} · tested X / Y"
+export const modVersionMeta = (m: Mod): string => {
+  const tested = m.versions;
+  const supported = m.mod_supported_versions;
+  if (supported.length === 0) {
+    return `tested ${tested.join(" / ")}`;
+  }
+  const sRange = minMaxVersion(supported)!;
+  const tMax = minMaxVersion(tested)?.max;
+  const beyond = tMax !== undefined && compareVersion(tMax, sRange.max) > 0;
+
+  if (beyond) {
+    const q = TESTED_QUALIFIER[m.id] ?? "community port";
+    return `MC ${sRange.min} → ${sRange.max} (canonical) · tested ${tested.join(" / ")} (${q})`;
+  }
+  return `MC ${sRange.min} → ${sRange.max} · tested ${tested.join(" / ")}`;
+};
+
+// Same data, zh-styled separator.
+export const modVersionMetaZh = (m: Mod): string => {
+  const tested = m.versions;
+  const supported = m.mod_supported_versions;
+  if (supported.length === 0) {
+    return `测试 ${tested.join(" / ")}`;
+  }
+  const sRange = minMaxVersion(supported)!;
+  const tMax = minMaxVersion(tested)?.max;
+  const beyond = tMax !== undefined && compareVersion(tMax, sRange.max) > 0;
+  const QUAL_ZH: Record<string, string> = {
+    alex_caves: "非官方移植",
+    alex_mobs: "社区移植",
+    sakura: "私有构建",
+    villager_tourism: "私有构建",
+    ping_system: "私有构建",
+    construction_wand: "KOTS 分支",
+  };
+  if (beyond) {
+    const q = QUAL_ZH[m.id] ?? "社区移植";
+    return `MC ${sRange.min} → ${sRange.max} (官方) · 测试 ${tested.join(" / ")} (${q})`;
+  }
+  return `MC ${sRange.min} → ${sRange.max} · 测试 ${tested.join(" / ")}`;
+};
+
+// Aggregate min/max across ALL mods for the about + footer "version-agnostic" copy.
+export const allMcVersionRange = (): { min: string; max: string } | null => {
+  const all: string[] = [];
+  for (const m of mods) {
+    all.push(...m.mod_supported_versions);
+    all.push(...m.versions);
+  }
+  return minMaxVersion(all);
+};
+
 export const SCENE_MAP: Record<string, string> = {
   hotbath: "hot-bath-scene.png",
   shower_core: "shower-scene.png",
@@ -155,8 +234,6 @@ const ROLE_FROM_POSITION = (pos: string): TeamMember["role"] => {
   return "other";
 };
 
-// Use the publicly verified members panel from CurseForge for credited mods,
-// fall back to mcmod.cn for non-credited zh-side authors.
 export const teamForMod = (m: Mod): TeamMember[] => {
   const credit = profile.curseforge.tester_credits.find((c) => {
     const k = c.mod.toLowerCase().replace(/\s+/g, "");
@@ -186,15 +263,13 @@ export const teamForMod = (m: Mod): TeamMember[] => {
   return [];
 };
 
-// Featured bug picker — pick first non-noted bug per mod. Prefer crash if any.
 export const featuredBug = (m: Mod): Bug | null => {
-  const all = bugsForMod(m).filter((b) => b.status !== "noted-not-bug");
+  const all = bugsForMod(m.id).filter((b) => b.status !== "noted-not-bug");
   if (all.length === 0) return null;
   const crash = all.find((b) => b.categories.includes("crash"));
   return crash ?? all[0];
 };
 
-// helper: did this mod's later rounds contain regressions of `index`?
 export const isUnfixedAcrossRounds = (m: Mod): number => {
-  return bugsForMod(m).filter((b) => b.status === "unfixed").length;
+  return bugsForMod(m.id).filter((b) => b.status === "unfixed").length;
 };

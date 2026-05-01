@@ -8,7 +8,7 @@
   <rect x="0" y="0" width="1" height="31" fill="#f4ebd9"/>
   <rect x="87" y="0" width="1" height="31" fill="#1c1d2a"/>
   <rect x="31" y="1" width="1" height="29" fill="#1c1d2a"/>
-  <text x="16" y="18.5" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="9" font-weight="700" fill="#a6e3a1" text-anchor="middle" dominant-baseline="middle" letter-spacing="0">MC</text>
-  <text x="60" y="13.5" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="8" font-weight="700" fill="#1c1d2a" text-anchor="middle" dominant-baseline="middle">1.21.1</text>
-  <text x="60" y="23.5" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="8" font-weight="500" fill="#1c1d2a" text-anchor="middle" dominant-baseline="middle">tested ✓</text>
+  <text x="16" y="18.5" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="9" font-weight="700" fill="#a6e3a1" text-anchor="middle" dominant-baseline="middle" letter-spacing="0">5×</text>
+  <text x="60" y="13.5" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="8" font-weight="700" fill="#1c1d2a" text-anchor="middle" dominant-baseline="middle">regression</text>
+  <text x="60" y="23.5" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="8" font-weight="500" fill="#1c1d2a" text-anchor="middle" dominant-baseline="middle">rounds</text>
 </svg>

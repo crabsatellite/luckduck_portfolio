@@ -1,6 +1,7 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
-import { modEmoji, type Mod } from "~/lib/data";
+import { modVersionMeta, modVersionMetaZh, type Mod } from "~/lib/data";
+import ModLogo from "~/components/ModLogo.astro";
 
 interface Props {
   mod: Mod;
@@ -17,7 +18,7 @@ const {
 
 const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mod.name_zh;
 const showCn = cnName !== mod.name_en;
-const emoji = modEmoji(mod);
+const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
 ---
 
 <header class="tlh">
@@ -30,14 +31,13 @@ const emoji = modEmoji(mod);
     </div>
   </div>
   <div class="tlh__body">
-    <div class="tlh__icon" aria-hidden="true">{emoji}</div>
+    <div class="tlh__icon"><ModLogo mod={mod} size={88} /></div>
     <div class="tlh__title">
       <h1 class="tlh__name h-display">{mod.name_en}</h1>
       {showCn && <p class="tlh__cn" aria-hidden="true">{cnName}</p>}
-      <p class="tlh__meta mono tnum">
-        MC {mod.versions.join(" / ")}
-        <span class="tlh__sep" aria-hidden="true"> · </span>
-        <span class="tlh__bugcount">{totalBugs}</span>
+      <p class="tlh__meta mono tnum">{versionLine}</p>
+      <p class="tlh__bug">
+        <span class="tlh__bugcount mono tnum">{totalBugs}</span>
         {" "}{lang === "en" ? "bugs filed" : "条 bug"}
       </p>
     </div>
@@ -69,18 +69,7 @@ const emoji = modEmoji(mod);
   @media (max-width: 540px) {
     .tlh__body { grid-template-columns: 1fr; gap: 0.6rem; padding: 1rem; }
   }
-  .tlh__icon {
-    width: 88px;
-    height: 88px;
-    background: var(--bg-raised);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3.4rem;
-    line-height: 1;
-  }
+  .tlh__icon { line-height: 0; }
   .tlh__name {
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     margin: 0;
@@ -95,14 +84,21 @@ const emoji = modEmoji(mod);
   }
   .tlh__meta {
     margin: 0.5rem 0 0 0;
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.01em;
+    line-height: 1.45;
+  }
+  .tlh__bug {
+    margin: 0.3rem 0 0 0;
+    font-family: var(--font-sans);
     font-size: 0.85rem;
     color: var(--ink-mute);
-    letter-spacing: 0.02em;
   }
+  :lang(zh) .tlh__bug { font-family: var(--font-cjk); }
   .tlh__bugcount {
     font-weight: 700;
     color: var(--accent);
     font-size: 1.05rem;
   }
-  .tlh__sep { opacity: 0.5; }
 </style>

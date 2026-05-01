@@ -1,7 +1,8 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
 import type { Mod } from "~/lib/data";
-import { isCredited, hasRegression, hasNoIssues, modEmoji } from "~/lib/data";
+import { isCredited, hasRegression, hasNoIssues, modVersionMeta, modVersionMetaZh } from "~/lib/data";
+import ModLogo from "~/components/ModLogo.astro";
 
 interface Props {
   mod: Mod;
@@ -20,7 +21,7 @@ const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mo
 const showCn = cnName !== mod.name_en;
 
 const totalRounds = mod.rounds.length;
-const emoji = modEmoji(mod);
+const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
 ---
 
 <article
@@ -33,13 +34,11 @@ const emoji = modEmoji(mod);
     <span class="card__stripe" aria-hidden="true"></span>
     <div class="card__inner">
       <div class="card__head">
-        <div class="card__logo" aria-hidden="true">
-          <span class="card__emoji">{emoji}</span>
-        </div>
+        <ModLogo mod={mod} size={64} />
         <div class="card__title">
           <h3 class="card__name">{mod.name_en}</h3>
           {showCn && <p class="card__cn" aria-hidden="true">{cnName}</p>}
-          <p class="card__meta mono tnum">MC {mod.versions.join(" / ")}</p>
+          <p class="card__meta mono tnum">{versionLine}</p>
         </div>
         <div class="card__count">
           <span class="card__count-num mono tnum">{mod.total_bugs}</span>
@@ -128,20 +127,6 @@ const emoji = modEmoji(mod);
     gap: 1rem;
     align-items: flex-start;
   }
-  .card__logo {
-    width: 64px;
-    height: 64px;
-    background: var(--bg-raised);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .card__emoji {
-    font-size: 2.4rem;
-    line-height: 1;
-  }
   .card__title { min-width: 0; }
   .card__name {
     font-family: var(--font-sans);
@@ -159,10 +144,11 @@ const emoji = modEmoji(mod);
     margin: 0.18rem 0 0 0;
   }
   .card__meta {
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     color: var(--ink-mute);
-    margin: 0.3rem 0 0 0;
-    letter-spacing: 0.02em;
+    margin: 0.35rem 0 0 0;
+    letter-spacing: 0.01em;
+    line-height: 1.45;
   }
   .card__count {
     display: flex;

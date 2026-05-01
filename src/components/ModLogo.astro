@@ -1,0 +1,70 @@
+---
+// Renders a mod's logo: prefers raster (mod.logo_local) at the requested size,
+// falls back to a monogram letter on a warm-deep tile when no raster exists.
+import { modMonogram, type Mod } from "~/lib/data";
+
+interface Props {
+  mod: Mod;
+  size?: number;
+  pixelated?: boolean | "auto";
+}
+const { mod, size = 64, pixelated = "auto" } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const src = mod.logo_local ? `${base}${mod.logo_local}` : null;
+
+// Pixelated rendering: opt-in for small native rasters.
+// Known small natives per logo_fetch_log: ok_orefinder (128x128), radios
+// (1280x1280 paletted but reads pixelated), ping_system (20x20).
+const SMALL_NATIVE = new Set(["ok_orefinder", "ping_system", "radios"]);
+const isPixelated = pixelated === "auto" ? SMALL_NATIVE.has(mod.id) : Boolean(pixelated);
+
+const monogram = modMonogram(mod);
+---
+
+{src ? (
+  <span class="ml" data-pixelated={isPixelated} style={`--ml-size:${size}px`}>
+    <img src={src} alt={`${mod.name_en} logo`} width={size} height={size} loading="lazy" decoding="async" />
+  </span>
+) : (
+  <span class="ml ml--mono" style={`--ml-size:${size}px`} aria-label={`${mod.name_en} (no logo)`}>
+    <span class="ml__char">{monogram}</span>
+  </span>
+)}
+
+<style>
+  .ml {
+    width: var(--ml-size);
+    height: var(--ml-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-raised);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .ml img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .ml[data-pixelated="true"] img {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    object-fit: contain;
+    background: var(--bg-raised);
+  }
+  .ml--mono { background: var(--bg-raised); }
+  .ml__char {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: clamp(2rem, calc(var(--ml-size) * 0.55), 3.5rem);
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+</style>

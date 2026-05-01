@@ -2,7 +2,8 @@
 import { t, type Lang } from "~/i18n/strings";
 import MascotDuck from "~/components/MascotDuck.astro";
 import SteamDivider from "~/components/SteamDivider.astro";
-import { activeMods, isCredited, hasRegression, modEmoji, totalBugs, totalRounds } from "~/lib/data";
+import ModLogo from "~/components/ModLogo.astro";
+import { activeMods, isCredited, hasRegression, totalBugs, totalRounds, totalRegressionRounds } from "~/lib/data";
 
 interface Props {
   lang: Lang;
@@ -15,6 +16,7 @@ const langPrefix = lang === "en" ? `${base}/en` : base;
 const active = activeMods();
 const bugCount = totalBugs();
 const roundCount = totalRounds();
+const regressionCount = totalRegressionRounds();
 ---
 
 <section class="hero" aria-labelledby="hero-heading">
@@ -38,7 +40,9 @@ const roundCount = totalRounds();
             <span class="mono tnum hero__stats-num">{bugCount}</span>
             {lang === "en" ? " bugs · " : " 条 bug · "}
             <span class="mono tnum hero__stats-num">{roundCount}</span>
-            {lang === "en" ? " rounds → " : " 轮次 → "}
+            {lang === "en" ? " rounds · " : " 轮次 · "}
+            <span class="mono tnum hero__stats-num">{regressionCount}</span>
+            {lang === "en" ? " regression rounds → " : " 多轮回归 → "}
           </a>
         </p>
       </div>
@@ -54,14 +58,16 @@ const roundCount = totalRounds();
           const cnName = m.name_zh.includes("/") ? m.name_zh.split("/")[0].trim() : m.name_zh;
           return (
             <a href={`${langPrefix}/cases/${m.id}`} class="hero__active-card">
-              <span class="hero__active-emoji" aria-hidden="true">{modEmoji(m)}</span>
-              <span class="hero__active-name">{m.name_en}</span>
-              <span class="hero__active-cn" aria-hidden="true">{cnName}</span>
-              <span class="hero__active-meta mono tnum">
-                {m.total_bugs} {lang === "en" ? "bugs" : "条"}
-                {hasRegression(m) && <span class="hero__active-flag"> · {lang === "en" ? "reg" : "回归"}</span>}
-                {isCredited(m) && <span class="hero__active-flag hero__active-flag--ok"> · ✓</span>}
-              </span>
+              <ModLogo mod={m} size={48} />
+              <div class="hero__active-text">
+                <span class="hero__active-name">{m.name_en}</span>
+                <span class="hero__active-cn" aria-hidden="true">{cnName}</span>
+                <span class="hero__active-meta mono tnum">
+                  {m.total_bugs} {lang === "en" ? "bugs" : "条"}
+                  {hasRegression(m) && <span class="hero__active-flag"> · {lang === "en" ? "reg" : "回归"}</span>}
+                  {isCredited(m) && <span class="hero__active-flag hero__active-flag--ok"> · ✓</span>}
+                </span>
+              </div>
             </a>
           );
         })}
@@ -178,16 +184,17 @@ const roundCount = totalRounds();
     .hero__active-grid { grid-template-columns: 1fr; }
   }
   .hero__active-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    padding: 0.9rem 1rem;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0.8rem;
+    padding: 0.85rem 0.95rem;
     background: var(--bg-soft);
     border: 1px solid var(--rule);
     border-radius: var(--radius);
     text-decoration: none;
     color: var(--ink);
     transition: all 140ms ease;
+    align-items: center;
   }
   .hero__active-card:hover, .hero__active-card:focus-visible {
     border-color: var(--accent);
@@ -195,21 +202,29 @@ const roundCount = totalRounds();
     transform: translateY(-1px);
     box-shadow: var(--shadow-warm);
   }
-  .hero__active-emoji { font-size: 1.6rem; line-height: 1; }
+  .hero__active-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+    min-width: 0;
+  }
   .hero__active-name {
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--ink);
+    line-height: 1.2;
   }
   .hero__active-cn {
     font-family: var(--font-cjk);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--ink-mute);
+    line-height: 1.2;
   }
   .hero__active-meta {
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     color: var(--accent-deep);
+    line-height: 1.2;
   }
   .hero__active-flag { color: var(--ink-mute); }
   .hero__active-flag--ok { color: var(--ok); font-weight: 700; }

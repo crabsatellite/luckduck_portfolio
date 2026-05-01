@@ -28,7 +28,15 @@
     "depth_signals": [
       "multi-version",
       "shader-tested"
-    ]
+    ],
+    "logo_local": "/mods/alex_caves.png",
+    "logo_source": "CurseForge Wayback snapshot 2023-10 (cf_alexs-caves_full.html, og:image)",
+    "mod_supported_versions": [
+      "1.19.4",
+      "1.20.1"
+    ],
+    "mod_supported_versions_source": "CurseForge slug `alexs-caves` 2023 snapshot (canonical AlexThe666 release)",
+    "mod_supported_versions_note": "Canonical mod (by AlexThe666) supports 1.19.4 + 1.20.1. 1.21.1 only available via unofficial community ports `alexs-caves-(unofficial-port)` and `alexs-caves-refabricated` — not reflected here."
   },
   {
     "id": "alex_mobs",
@@ -60,7 +68,19 @@
       "multi-version",
       "mod-compat:carryon",
       "shader-tested"
-    ]
+    ],
+    "logo_local": "/mods/alex_mobs.jpeg",
+    "logo_source": "CurseForge cache (cf_alexs-mobs.html, og:image)",
+    "mod_supported_versions": [
+      "1.16.5",
+      "1.18.2",
+      "1.19",
+      "1.19.2",
+      "1.19.4",
+      "1.20.1"
+    ],
+    "mod_supported_versions_source": "Modrinth `alexs-mobs` (last sync of upstream)",
+    "mod_supported_versions_note": "Upstream Modrinth lists 1.16.5-1.20.1. User tested 1.21.1 (community port — Modrinth `alexs-mobs-pelts` not used here). Showing canonical upstream range only."
   },
   {
     "id": "instant_world_mirror",
@@ -91,7 +111,15 @@
     "depth_signals": [
       "multi-version",
       "cross-mod-with-alex-mods"
-    ]
+    ],
+    "logo_local": "/mods/instant_world_mirror.png",
+    "logo_source": "CurseForge cache (cf_instantworldmirror_full.html, og:image)",
+    "mod_supported_versions": [
+      "1.20.1",
+      "1.21.1"
+    ],
+    "mod_supported_versions_source": "CurseForge cached __next_f payload + mcmod.cn (cross-confirmed)",
+    "mod_supported_versions_note": "Mod is new (Jan 2026); only 1.20.1 + 1.21.1 supported."
   },
   {
     "id": "ok_orefinder",
@@ -111,7 +139,15 @@
       }
     ],
     "total_bugs": 3,
-    "depth_signals": []
+    "depth_signals": [],
+    "logo_local": "/mods/ok_orefinder.png",
+    "logo_source": "GitHub Okitmas/ok_orefinder-neoforge1.21.1 (src/main/resources/ok_orefinder.png, 128x128 PNG)",
+    "mod_supported_versions": [
+      "1.20.1",
+      "1.21.1"
+    ],
+    "mod_supported_versions_source": "GitHub Okitmas — separate repos `ok_orefinder-forge1.20.1` and `ok_orefinder-neoforge1.21.1`",
+    "mod_supported_versions_note": "Niche Chinese-community mod by Okitmas. Two distinct GitHub repos exist: Forge 1.20.1 and NeoForge 1.21.1 — confirms the user's tested 1.21.1 build. Items: iron_ore_finder, diamond_ore_finder, netherite_ore_finder."
   },
   {
     "id": "pelagic_prehistory",
@@ -141,7 +177,16 @@
     "total_bugs": 13,
     "depth_signals": [
       "multi-version"
-    ]
+    ],
+    "logo_local": "/mods/pelagic_prehistory.png",
+    "logo_source": "CurseForge cache (cf_pelagic-prehistory_full.html, og:image)",
+    "mod_supported_versions": [
+      "1.19.2",
+      "1.20.1",
+      "1.21.1"
+    ],
+    "mod_supported_versions_source": "CurseForge __next_f payload (Wayback snapshot 2026-04-06)",
+    "mod_supported_versions_note": "Owner: SameOldModding. CrabMods listed as Contributor on this mod. Fresh 2026 snapshot revealed 1.19.2/1.20.1/1.21.1 — not the older limited snapshot used in round 2."
   },
   {
     "id": "sakura",
@@ -161,7 +206,16 @@
       }
     ],
     "total_bugs": 12,
-    "depth_signals": []
+    "depth_signals": [],
+    "logo_local": "/mods/sakura.png",
+    "logo_source": "CurseForge Wayback (cf_sakura_full.html, snapshot 2025-10-09 og:image)",
+    "mod_supported_versions": [
+      "1.12.2",
+      "1.18.2",
+      "1.20.1"
+    ],
+    "mod_supported_versions_source": "Modrinth `sakura_mod` (Syameimaru_Zheng) — confirmed against CurseForge cached payload",
+    "mod_supported_versions_note": "Confirmed via Modrinth user `syameimaru_zheng` — `sakura_mod` slug. Latest public release is 2025-10-26 for 1.20.1; no 1.21.1 build exists publicly. User tested a private/dev 1.21.1 build. GitHub: 0999312/Sakura_mod."
   },
   {
     "id": "shower_core",
@@ -216,7 +270,15 @@
       "mod-compat:carryon",
       "cross-mod-with-alex-mods",
       "mod-compat:serene-seasons"
-    ]
+    ],
+    "logo_local": "/mods/shower_core.png",
+    "logo_source": "CurseForge Wayback snapshot (cf_showercore_full.html, og:image)",
+    "mod_supported_versions": [
+      "1.20.1",
+      "1.21.1"
+    ],
+    "mod_supported_versions_source": "CurseForge cached + mcmod.cn (cross-confirmed)",
+    "mod_supported_versions_note": "Same MC version coverage as IWM."
   },
   {
     "id": "hotbath",
@@ -268,7 +330,23 @@
       "mod-compat:toughasnails",
       "mod-compat:legendary-survival-overhaul",
       "cross-mod-with-alex-mods"
-    ]
+    ],
+    "logo_local": "/mods/hotbath.png",
+    "logo_source": "CurseForge cache (cf_hotbath_full.html, og:image)",
+    "mod_supported_versions": [
+      "1.14.4",
+      "1.16.5",
+      "1.18.2",
+      "1.19.2",
+      "1.19.4",
+      "1.20.1",
+      "1.20.6",
+      "1.21",
+      "1.21.1",
+      "1.21.3"
+    ],
+    "mod_supported_versions_source": "CurseForge cached __next_f payload + mcmod.cn (cross-confirmed)",
+    "mod_supported_versions_note": "Mod tested at 1.20.1 + 1.21.1 by LUCK666DUCK; mod itself supports MC 1.14.4 through 1.21.3."
   },
   {
     "id": "radios",
@@ -288,7 +366,14 @@
       }
     ],
     "total_bugs": 1,
-    "depth_signals": []
+    "depth_signals": [],
+    "logo_local": "/mods/radios.webp",
+    "logo_source": "Modrinth `radiocraft` (i9iitQG6) — Radiocraft (The Official Ham Radio mod, funded by ARRL)",
+    "mod_supported_versions": [
+      "1.21.1"
+    ],
+    "mod_supported_versions_source": "Modrinth `radiocraft` API",
+    "mod_supported_versions_note": "DISAMBIGUATED: previous round 2 match (Modrinth `radio` slug `Cw4c86zc`, 'voice gating' mod) was wrong. Correct match is Modrinth `radiocraft` — adds functioning ham radios with frequency bands (matches user's bug-report mention of \"Band 5 Radio\"). NeoForge, 1.21.1 only. Source: github.com/hammcmod/RadioCraft."
   },
   {
     "id": "leaning_tower",
@@ -308,7 +393,14 @@
       }
     ],
     "total_bugs": 1,
-    "depth_signals": []
+    "depth_signals": [],
+    "logo_local": null,
+    "logo_source": null,
+    "mod_supported_versions": [
+      "1.20.1"
+    ],
+    "mod_supported_versions_source": "GitHub sentwayfarer/leaningtower (Forge 1.20.1, version range [1.20,1.21))",
+    "mod_supported_versions_note": "Identified as `sentwayfarer/leaningtower` — \"Unturned-style tactical leaning\" with keybinds `key.leaningtower.lean_left`/`lean_right` matching the bug report. No public 1.21.1 build (user tested a private port). Repo has no logo PNG. Possible alternate: `gd656peek` on Modrinth (similar mod, different author, also 1.20.1)."
   },
   {
     "id": "villager_tourism",
@@ -328,7 +420,14 @@
       }
     ],
     "total_bugs": 2,
-    "depth_signals": []
+    "depth_signals": [],
+    "logo_local": "/mods/villager_tourism.webp",
+    "logo_source": "Modrinth `villager-tourism` (Create: Villager Tourism by JSJBDEV)",
+    "mod_supported_versions": [
+      "1.20.1"
+    ],
+    "mod_supported_versions_source": "Modrinth `villager-tourism` (JSJBDEV) — only release is 2026-01-31, 1.20.1",
+    "mod_supported_versions_note": "Full title: 'Create: Villager Tourism' by JSJBDEV. Only 1 public release (1.20.1, Jan 2026). User tested 1.21.1 — likely a private/dev build by the author."
   },
   {
     "id": "ping_system",
@@ -350,7 +449,14 @@
     "total_bugs": 0,
     "depth_signals": [
       "no-issues-found"
-    ]
+    ],
+    "logo_local": "/mods/ping_system.png",
+    "logo_source": "Modrinth `ping-system` (Ping System by sam-makes-stuff)",
+    "mod_supported_versions": [
+      "1.20.1"
+    ],
+    "mod_supported_versions_source": "Modrinth `ping-system` (sam-makes-stuff) — 2 releases, both 1.20.1",
+    "mod_supported_versions_note": "By sam-makes-stuff. Both Modrinth releases are 1.20.1. User tested 1.21.1 — likely a private/dev build. Source: github.com/sam-makes-stuff/ping_system."
   },
   {
     "id": "construction_wand",
@@ -372,6 +478,31 @@
     "total_bugs": 0,
     "depth_signals": [
       "no-issues-found"
-    ]
+    ],
+    "logo_local": "/mods/construction_wand.webp",
+    "logo_source": "Modrinth `construction-wand` (Construction Wand by Theta-Dev)",
+    "mod_supported_versions": [
+      "1.14.4",
+      "1.15.2",
+      "1.16.1",
+      "1.16.2",
+      "1.16.3",
+      "1.16.4",
+      "1.16.5",
+      "1.17.1",
+      "1.18",
+      "1.18.1",
+      "1.18.2",
+      "1.19",
+      "1.19.1",
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.2"
+    ],
+    "mod_supported_versions_source": "Modrinth `construction-wand` (Theta-Dev) — verified via /version endpoint (17 versions, last release 2023-10-22)",
+    "mod_supported_versions_note": "Theta-Dev's canonical mod stops at 1.20.2 (last release Oct 2023). User tested 1.21.1 — likely a community fork such as `GLDYM/ConstructionWand-KOTS` (which has a 1.21.1 branch and a separate CurseForge slug `construction-wand-kots`)."
   }
 ]

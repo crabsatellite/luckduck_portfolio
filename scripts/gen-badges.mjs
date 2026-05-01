@@ -62,13 +62,13 @@ function escape(s) {
 }
 
 const BADGES = {
-  "mc-1-20-1.svg": badge2panel({
+  "mc-range.svg": badge2panel({
     leftBg: "#1c1d2a", leftFg: "#f9c47a", leftText: "MC",
-    rightBg: "#f9c47a", rightFg: "#1c1d2a", rightLine1: "1.20.1", rightLine2: "tested ✓",
+    rightBg: "#f9c47a", rightFg: "#1c1d2a", rightLine1: "1.14 →", rightLine2: "1.21",
   }),
-  "mc-1-21-1.svg": badge2panel({
-    leftBg: "#1c1d2a", leftFg: "#a6e3a1", leftText: "MC",
-    rightBg: "#a6e3a1", rightFg: "#1c1d2a", rightLine1: "1.21.1", rightLine2: "tested ✓",
+  "regression-rounds.svg": badge2panel({
+    leftBg: "#1c1d2a", leftFg: "#a6e3a1", leftText: "5×",
+    rightBg: "#a6e3a1", rightFg: "#1c1d2a", rightLine1: "regression", rightLine2: "rounds",
   }),
   "hot-bath-1m-dl.svg": badge2panel({
     leftBg: "#e89c4d", leftFg: "#1c1d2a", leftText: "🛁", leftFontSize: 14,
