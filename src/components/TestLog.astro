@@ -1,0 +1,134 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+import type { Round } from "~/lib/data";
+
+interface Props {
+  rounds: Round[];
+  lang: Lang;
+}
+const { rounds, lang } = Astro.props;
+
+const labelOf = (r: Round): string => {
+  if (r.label === "regression") return t(lang, "case.regression_label");
+  return t(lang, "case.intake_label");
+};
+---
+
+<section class="testlog" aria-labelledby="testlog-heading">
+  <h2 id="testlog-heading" class="testlog__h h-section">
+    <span class="testlog__h-emoji" aria-hidden="true">📜</span>
+    {t(lang, "case.test_log_heading")}
+  </h2>
+  <ol class="testlog__list">
+    {rounds.map((r, idx) => (
+      <li class="testlog__item">
+        <div class="testlog__rail" aria-hidden="true">
+          <span class="testlog__drop">💧</span>
+          {idx < rounds.length - 1 && <span class="testlog__line"></span>}
+        </div>
+        <div class="testlog__body">
+          <div class="testlog__top">
+            <span class="testlog__version mono tnum">{r.version}</span>
+            <span class="testlog__label">{labelOf(r)}</span>
+            {r.date && <span class="testlog__date mono tnum">({r.date})</span>}
+          </div>
+          <p class="testlog__count">
+            <span class="mono tnum testlog__count-n">{r.bug_count}</span>
+            {" "}
+            {lang === "en" ? "entries" : "条"} {lang === "en" ? "found" : "记录"}
+          </p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .testlog { margin: 1.6rem 0; }
+  .testlog__h {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1rem 0;
+    color: var(--ink);
+  }
+  .testlog__h-emoji { font-size: 1.2rem; }
+  .testlog__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .testlog__item {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 1rem;
+    padding: 0.4rem 0;
+  }
+  .testlog__rail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.45rem;
+    line-height: 1;
+  }
+  .testlog__drop {
+    font-size: 1.15rem;
+    line-height: 1;
+    user-select: none;
+    filter: drop-shadow(0 0 4px color-mix(in oklch, var(--accent) 30%, transparent));
+  }
+  .testlog__line {
+    flex: 1;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent) 0%, var(--rule) 60%, var(--rule) 100%);
+    margin-top: 0.4rem;
+    border-radius: 2px;
+  }
+  .testlog__body {
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .testlog__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.3rem;
+  }
+  .testlog__version {
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 0.95rem;
+  }
+  .testlog__label {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--accent-deep);
+    background: color-mix(in oklch, var(--accent) 14%, var(--bg-soft));
+    border: 1px solid color-mix(in oklch, var(--accent) 30%, var(--rule));
+    border-radius: var(--radius-pill);
+    padding: 0.1rem 0.55rem;
+    letter-spacing: 0.02em;
+  }
+  :lang(zh) .testlog__label { font-family: var(--font-cjk); }
+  .testlog__date {
+    color: var(--ink-mute);
+    font-size: 0.78rem;
+  }
+  .testlog__count {
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    margin: 0;
+  }
+  :lang(zh) .testlog__count { font-family: var(--font-cjk); }
+  .testlog__count-n {
+    color: var(--accent-deep);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+</style>

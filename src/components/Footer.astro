@@ -1,83 +1,94 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
+import SteamDivider from "~/components/SteamDivider.astro";
+import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 ---
 
 <footer class="footer">
-  <div class="footer__inner container">
-    <hr class="hairline" />
+  <div class="container">
+    <SteamDivider variant="wide" />
     <div class="footer__cols">
       <div class="footer__col">
-        <p class="footer__handle">CASE-FILE / {t(lang, "footer.handle")}</p>
-        <p class="footer__cn" aria-hidden="true">{t(lang, "footer.cn_name")}</p>
-        <p class="footer__active">{t(lang, "footer.active")}</p>
+        <p class="footer__handle">🦆 {t(lang, "footer.handle")} / {t(lang, "footer.cn_name")}</p>
+        <p class="footer__tag">{t(lang, "footer.tagline")}</p>
+        <p class="footer__active mono tnum">{t(lang, "footer.active")}</p>
+      </div>
+      <div class="footer__col">
+        <RetroBadgeStrip />
       </div>
       <div class="footer__col">
         <ul class="footer__links">
           <li>
             <a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">
-              github.com/LUCK666DUCK <span aria-hidden="true">→</span>
+              github / LUCK666DUCK <span aria-hidden="true">↗</span>
             </a>
           </li>
           <li>
             <a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank">
-              curseforge / luck666duck <span aria-hidden="true">→</span>
+              curseforge / luck666duck <span aria-hidden="true">↗</span>
             </a>
           </li>
         </ul>
       </div>
-      <div class="footer__col footer__col--meta">
-        <p class="footer__copy">{t(lang, "footer.copy")}</p>
-        <p class="footer__version mono">v0.1.0</p>
-      </div>
     </div>
-    <hr class="hairline" />
+    <hr class="footer__rule" />
+    <div class="footer__meta">
+      <p class="footer__copy">{t(lang, "footer.copy")}</p>
+      <p class="footer__version mono">
+        {t(lang, "footer.archived")}
+        <span class="footer__sep" aria-hidden="true">·</span>
+        <a href={`${base}/v1/`} rel="nofollow">{t(lang, "footer.v1_link")}</a>
+      </p>
+    </div>
+    <SteamDivider variant="compact" />
   </div>
 </footer>
 
 <style>
-  .footer { margin-top: 6rem; }
-  .footer__inner { padding-top: 2rem; padding-bottom: 2rem; }
+  .footer { margin-top: 5rem; padding-bottom: 1.6rem; }
   .footer__cols {
     display: grid;
-    grid-template-columns: 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1.4fr 1fr;
     gap: 2rem;
     padding: 1.6rem 0;
+    align-items: start;
   }
-  @media (max-width: 760px) {
+  @media (max-width: 880px) {
     .footer__cols { grid-template-columns: 1fr; gap: 1.2rem; }
   }
   .footer__col p { margin: 0 0 0.4rem 0; }
   .footer__handle {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    font-size: 0.85rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ink);
   }
-  .footer__cn {
-    font-family: var(--font-cjk);
+  :lang(zh) .footer__handle { font-family: var(--font-cjk); }
+  .footer__tag {
+    font-family: var(--font-sans);
     color: var(--ink-mute);
     font-size: 0.85rem;
-    letter-spacing: 0.18em;
   }
+  :lang(zh) .footer__tag { font-family: var(--font-cjk); }
   .footer__active {
-    font-family: var(--font-mono);
-    color: var(--ink-mute);
     font-size: 0.78rem;
-    letter-spacing: 0.06em;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
   }
   .footer__links { list-style: none; padding: 0; margin: 0; }
-  .footer__links li { margin-bottom: 0.4rem; }
+  .footer__links li { margin-bottom: 0.5rem; }
   .footer__links a {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
     color: var(--ink);
     text-decoration: none;
-    letter-spacing: 0.02em;
     border-bottom: 1px solid var(--rule);
     padding-bottom: 1px;
   }
@@ -85,18 +96,34 @@ const { lang } = Astro.props;
     color: var(--accent);
     border-bottom-color: var(--accent);
   }
+  .footer__rule {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    margin: 1rem 0;
+  }
+  .footer__meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.4rem;
+    align-items: baseline;
+  }
   .footer__copy {
     font-family: var(--font-sans);
     font-size: 0.78rem;
     color: var(--ink-mute);
-    line-height: 1.6;
+    line-height: 1.55;
     max-width: 60ch;
+    margin: 0;
   }
   :lang(zh) .footer__copy { font-family: var(--font-cjk); line-height: 1.85; }
   .footer__version {
-    color: var(--ink-faint);
     font-size: 0.78rem;
-    margin-top: 0.6rem;
-    letter-spacing: 0.06em;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    margin: 0;
   }
+  .footer__version a { color: var(--accent); text-decoration: none; }
+  .footer__version a:hover { text-decoration: underline; }
+  .footer__sep { margin: 0 0.4rem; opacity: 0.4; }
 </style>

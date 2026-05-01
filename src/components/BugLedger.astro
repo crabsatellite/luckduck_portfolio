@@ -5,46 +5,68 @@ import type { Bug } from "~/lib/data";
 
 interface Props {
   bugs: Bug[];
+  featured: Bug | null;
   lang: Lang;
-  pageSize?: number;
 }
-const { bugs, lang, pageSize = 50 } = Astro.props;
+const { bugs, featured, lang } = Astro.props;
 const total = bugs.length;
-const paginate = total > pageSize;
-
-const pages: Bug[][] = [];
-if (paginate) {
-  for (let i = 0; i < total; i += pageSize) {
-    pages.push(bugs.slice(i, i + pageSize));
-  }
-} else {
-  pages.push(bugs);
-}
+const remaining = featured ? bugs.filter((b) => b.index !== featured.index || b.round_file !== featured.round_file) : bugs;
 ---
 
+{featured && (
+  <section class="featured" aria-labelledby="featured-heading">
+    <h2 id="featured-heading" class="featured__h h-section">
+      <span class="featured__h-emoji" aria-hidden="true">📋</span>
+      {t(lang, "case.featured_bug")}
+    </h2>
+    <article class:list={["featured__card", { "featured__card--crash": featured.categories.includes("crash") }]}>
+      <header class="featured__head">
+        <span class="mono tnum featured__id">#{String(featured.index).padStart(3, "0")}</span>
+        <span class="mono tnum featured__ver">{featured.version}</span>
+        <div class="featured__cats">
+          {featured.categories.map((c) => <span class="chip" data-cat={c}>{c}</span>)}
+        </div>
+        <div class="featured__status"><StatusPill status={featured.status} lang={lang} /></div>
+      </header>
+      <p class="featured__text" lang="zh-Hans">{featured.text_zh}</p>
+      {featured.round_date && (
+        <p class="featured__meta mono tnum">
+          {lang === "en" ? "found in round dated" : "于"} {featured.round_date}
+        </p>
+      )}
+    </article>
+  </section>
+)}
+
 <section class="ledger" aria-labelledby="ledger-heading">
-  <h2 id="ledger-heading" class="ledger__heading mono">
-    {t(lang, "case.bug_ledger")}
+  <h2 id="ledger-heading" class="ledger__h h-section">
+    <span class="ledger__h-emoji" aria-hidden="true">📋</span>
+    {t(lang, "case.full_ledger")}
     <span class="ledger__count mono tnum">{total}</span>
   </h2>
-
-  {pages.map((pageBugs, pageIdx) => (
-    <div
-      class:list={["ledger__page", { "ledger__page--hidden": paginate && pageIdx !== 0 }]}
-      data-page={pageIdx + 1}
-    >
+  <details class="ledger__details">
+    <summary class="ledger__summary">
+      <span class="ledger__summary-show">
+        {t(lang, "case.full_ledger_expand_prefix")}
+        <span class="mono tnum">{total}</span>
+        {" "}
+        {t(lang, "case.full_ledger_expand_suffix")}
+      </span>
+      <span class="ledger__summary-hide">{t(lang, "case.full_ledger_collapse")}</span>
+    </summary>
+    <div class="ledger__table-wrap">
       <table class="ledger__table">
         <thead>
           <tr>
-            <th class="mono col-id">{t(lang, "case.bug_id")}</th>
-            <th class="mono col-ver">{t(lang, "case.bug_version")}</th>
-            <th class="mono col-tags">{t(lang, "case.tags")}</th>
-            <th class="mono col-text">{t(lang, "case.bug_text")}</th>
-            <th class="mono col-status">{t(lang, "case.bug_status")}</th>
+            <th class="col-id">{t(lang, "case.bug_id")}</th>
+            <th class="col-ver">{t(lang, "case.bug_version")}</th>
+            <th class="col-tags">{t(lang, "case.tags")}</th>
+            <th class="col-text">{t(lang, "case.bug_text")}</th>
+            <th class="col-status">{t(lang, "case.bug_status")}</th>
           </tr>
         </thead>
         <tbody>
-          {pageBugs.map((b) => {
+          {remaining.map((b) => {
             const id = `#${String(b.index).padStart(3, "0")}`;
             const hasCrash = b.categories.includes("crash");
             return (
@@ -52,116 +74,138 @@ if (paginate) {
                 <td class="mono tnum col-id">{id}</td>
                 <td class="mono tnum col-ver">{b.version}</td>
                 <td class="col-tags">
-                  {b.categories.map((c) => (
-                    <span class="chip" data-cat={c}>{c}</span>
-                  ))}
+                  {b.categories.map((c) => <span class="chip" data-cat={c}>{c}</span>)}
                 </td>
                 <td class="col-text">
                   <span lang="zh-Hans">{b.text_zh}</span>
-                  {b.round_date && (
-                    <span class="ledger__date mono">· {b.round_date}</span>
-                  )}
                 </td>
-                <td class="col-status">
-                  <StatusPill status={b.status} lang={lang} />
-                </td>
+                <td class="col-status"><StatusPill status={b.status} lang={lang} /></td>
               </tr>
             );
           })}
         </tbody>
       </table>
     </div>
-  ))}
-
-  {paginate && (
-    <nav class="ledger__pagination" aria-label="bug ledger pages">
-      {pages.map((_, idx) => (
-        <button
-          type="button"
-          class:list={["ledger__pagebtn mono", { "ledger__pagebtn--active": idx === 0 }]}
-          data-target-page={idx + 1}
-        >
-          {String(idx + 1).padStart(2, "0")}
-        </button>
-      ))}
-    </nav>
-  )}
+  </details>
 </section>
 
-{paginate && (
-  <script is:inline>
-    (function () {
-      var sec = document.currentScript.previousElementSibling;
-      while (sec && !sec.classList.contains("ledger")) sec = sec.previousElementSibling;
-      if (!sec) return;
-      var pages = sec.querySelectorAll(".ledger__page");
-      var btns = sec.querySelectorAll(".ledger__pagebtn");
-      btns.forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          var target = btn.getAttribute("data-target-page");
-          pages.forEach(function (p) {
-            p.classList.toggle("ledger__page--hidden", p.getAttribute("data-page") !== target);
-          });
-          btns.forEach(function (b) {
-            b.classList.toggle("ledger__pagebtn--active", b === btn);
-          });
-          sec.scrollIntoView({ block: "start" });
-        });
-      });
-    })();
-  </script>
-)}
-
 <style>
-  .ledger { margin: 2.4rem 0; }
-  .ledger__heading {
-    font-size: 0.78rem;
-    letter-spacing: 0.18em;
-    color: var(--ink-faint);
-    text-transform: uppercase;
-    font-weight: 600;
-    margin: 0 0 1rem 0;
+  .featured { margin: 1.6rem 0 2.4rem 0; }
+  .featured__h, .ledger__h {
     display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1rem 0;
   }
+  .featured__h-emoji, .ledger__h-emoji { font-size: 1.15rem; }
   .ledger__count {
     color: var(--accent);
     font-weight: 700;
-    letter-spacing: 0;
+    margin-left: 0.4rem;
   }
-  .ledger__page--hidden { display: none; }
+
+  .featured__card {
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-left: 6px solid var(--accent);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem 1.4rem;
+  }
+  .featured__card--crash {
+    border-left-color: var(--alert);
+  }
+  .featured__head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.8rem;
+  }
+  .featured__id {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1rem;
+  }
+  .featured__ver {
+    color: var(--ink-mute);
+    font-size: 0.85rem;
+  }
+  .featured__cats { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .featured__status { margin-left: auto; }
+  .featured__text {
+    font-family: var(--font-cjk);
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--ink);
+    margin: 0;
+  }
+  .featured__meta {
+    color: var(--ink-mute);
+    font-size: 0.78rem;
+    margin: 0.6rem 0 0 0;
+  }
+
+  .ledger { margin: 1.6rem 0; }
+  .ledger__details {
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .ledger__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.2rem;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    list-style: none;
+    user-select: none;
+    transition: background 120ms ease;
+  }
+  :lang(zh) .ledger__summary { font-family: var(--font-cjk); }
+  .ledger__summary::-webkit-details-marker { display: none; }
+  .ledger__summary:hover { background: var(--bg-raised); color: var(--accent); }
+  .ledger__summary-hide { display: none; }
+  .ledger__details[open] .ledger__summary-show { display: none; }
+  .ledger__details[open] .ledger__summary-hide { display: inline; }
+
+  .ledger__table-wrap {
+    border-top: 1px solid var(--rule);
+    overflow-x: auto;
+  }
   .ledger__table {
     width: 100%;
     border-collapse: collapse;
-    border-top: 1px solid var(--rule);
     font-size: 0.85rem;
   }
   .ledger__table thead th {
     text-align: left;
+    font-family: var(--font-sans);
     font-size: 0.72rem;
-    color: var(--ink-faint);
-    letter-spacing: 0.14em;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    font-weight: 500;
-    padding: 0.6rem 0.8rem;
+    font-weight: 600;
+    padding: 0.7rem 0.9rem;
     border-bottom: 1px solid var(--rule);
-    background: var(--surface);
+    background: var(--bg-raised);
   }
+  :lang(zh) .ledger__table thead th { font-family: var(--font-cjk); letter-spacing: 0.1em; }
   .ledger__row {
     border-bottom: 1px solid var(--rule);
   }
-  .ledger__row:hover {
-    background: var(--surface-hi);
-  }
+  .ledger__row:hover { background: var(--bg-raised); }
   .ledger__row--crash {
-    background: color-mix(in oklch, var(--alert) 6%, transparent);
+    background: color-mix(in oklch, var(--alert) 5%, transparent);
   }
   .ledger__row--crash:hover {
-    background: color-mix(in oklch, var(--alert) 12%, transparent);
+    background: color-mix(in oklch, var(--alert) 10%, transparent);
   }
   .ledger__table td {
-    padding: 0.7rem 0.8rem;
+    padding: 0.7rem 0.9rem;
     vertical-align: top;
     line-height: 1.55;
   }
@@ -169,42 +213,16 @@ if (paginate) {
   .col-ver { width: 6rem; color: var(--ink-mute); }
   .col-tags { width: 14rem; }
   .col-text { color: var(--ink); }
-  :lang(zh) .col-text, .col-text [lang="zh-Hans"] {
+  .col-text [lang="zh-Hans"] {
     font-family: var(--font-cjk);
     line-height: 1.85;
   }
-  .ledger__date { color: var(--ink-faint); margin-left: 0.4rem; font-size: 0.78rem; }
   .col-status { width: 6.5rem; }
   @media (max-width: 760px) {
     .ledger__table thead { display: none; }
-    .ledger__row { display: grid; grid-template-columns: 1fr; padding: 0.6rem 0; gap: 0.3rem; }
+    .ledger__row { display: grid; grid-template-columns: 1fr; padding: 0.6rem 0.9rem; gap: 0.3rem; }
     .ledger__table td { padding: 0.2rem 0; }
     .col-id, .col-ver { display: inline-block; margin-right: 1rem; }
     .col-tags, .col-text, .col-status { width: auto; }
-  }
-
-  .ledger__pagination {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1.4rem;
-    flex-wrap: wrap;
-  }
-  .ledger__pagebtn {
-    padding: 0.35rem 0.7rem;
-    background: transparent;
-    border: 1px solid var(--rule);
-    color: var(--ink-mute);
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-  }
-  .ledger__pagebtn:hover, .ledger__pagebtn:focus-visible {
-    color: var(--accent);
-    border-color: var(--accent);
-  }
-  .ledger__pagebtn--active {
-    color: var(--bg);
-    background: var(--accent);
-    border-color: var(--accent);
   }
 </style>

@@ -1,5 +1,8 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
+import MascotDuck from "~/components/MascotDuck.astro";
+import SteamDivider from "~/components/SteamDivider.astro";
+import { activeMods, isCredited, hasRegression, modEmoji, totalBugs, totalRounds } from "~/lib/data";
 
 interface Props {
   lang: Lang;
@@ -8,72 +11,219 @@ const { lang } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 const langPrefix = lang === "en" ? `${base}/en` : base;
+
+const active = activeMods();
+const bugCount = totalBugs();
+const roundCount = totalRounds();
 ---
 
 <section class="hero" aria-labelledby="hero-heading">
+  <SteamDivider variant="wide" />
   <div class="container">
-    <p class="eyebrow"><strong>CASE-FILE</strong> / ACTIVE</p>
-    <h1 id="hero-heading" class="hero__name">
-      <span class="hero__latin">Tingfeng Yang</span>
-      <span class="hero__cn" aria-hidden="true">楊 庭 鳳</span>
-      <span class="hero__handle">LUCK666DUCK</span>
-    </h1>
-    <p class="hero__role">{t(lang, "hero.role")}</p>
-    <div class="hero__cta">
-      <a href={`${langPrefix}/cases`} class="btn btn--accent">
-        {t(lang, "hero.cta_cases")}<span aria-hidden="true">↓</span>
-      </a>
-      <a href="https://github.com/LUCK666DUCK" target="_blank" rel="noopener" class="btn">
-        {t(lang, "hero.cta_contact")}<span aria-hidden="true">→</span>
-      </a>
+    <div class="hero__top">
+      <div class="hero__mascot-wrap">
+        <MascotDuck size={120} alt="" blink={true} />
+      </div>
+      <div class="hero__copy">
+        <h1 id="hero-heading" class="hero__heading h-display">
+          <span class="hero__greet-en">{t(lang, "hero.greeting_en")}</span>
+          <span class="hero__greet-zh">{t(lang, "hero.greeting_zh")}</span>
+        </h1>
+        <p class="hero__role">{t(lang, "hero.role")}</p>
+        <p class="hero__stats">
+          <a href={`${langPrefix}/cases`} class="hero__stats-link">
+            {lang === "en" ? "tested " : "已测 "}
+            <span class="mono tnum hero__stats-num">13</span>
+            {lang === "en" ? " mods · filed " : " 个 mod · 提交 "}
+            <span class="mono tnum hero__stats-num">{bugCount}</span>
+            {lang === "en" ? " bugs · " : " 条 bug · "}
+            <span class="mono tnum hero__stats-num">{roundCount}</span>
+            {lang === "en" ? " rounds → " : " 轮次 → "}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="hero__active">
+      <p class="hero__active-label">
+        <span class="hero__active-dot" aria-hidden="true"></span>
+        {t(lang, "hero.active_label")}
+      </p>
+      <div class="hero__active-grid">
+        {active.map((m) => {
+          const cnName = m.name_zh.includes("/") ? m.name_zh.split("/")[0].trim() : m.name_zh;
+          return (
+            <a href={`${langPrefix}/cases/${m.id}`} class="hero__active-card">
+              <span class="hero__active-emoji" aria-hidden="true">{modEmoji(m)}</span>
+              <span class="hero__active-name">{m.name_en}</span>
+              <span class="hero__active-cn" aria-hidden="true">{cnName}</span>
+              <span class="hero__active-meta mono tnum">
+                {m.total_bugs} {lang === "en" ? "bugs" : "条"}
+                {hasRegression(m) && <span class="hero__active-flag"> · {lang === "en" ? "reg" : "回归"}</span>}
+                {isCredited(m) && <span class="hero__active-flag hero__active-flag--ok"> · ✓</span>}
+              </span>
+            </a>
+          );
+        })}
+      </div>
+      <p class="hero__see-all">
+        <a href={`${langPrefix}/cases`}>{t(lang, "hero.see_all")}</a>
+      </p>
     </div>
   </div>
+  <SteamDivider variant="wide" />
 </section>
 
 <style>
-  .hero { padding: 4rem 0 2.6rem 0; }
-  .hero__name {
-    margin: 1.4rem 0 1.4rem 0;
-    line-height: 1.05;
-    font-weight: 400;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  .hero { padding: 1rem 0 1.6rem 0; }
+  .hero__top {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 2rem;
+    align-items: start;
+    padding: 1.6rem 0 0.8rem 0;
   }
-  .hero__latin {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: clamp(2.6rem, 7vw, 5rem);
-    letter-spacing: -0.01em;
+  @media (max-width: 640px) {
+    .hero__top { grid-template-columns: 1fr; gap: 1.2rem; }
+    .hero__mascot-wrap { display: flex; justify-content: center; }
+  }
+  .hero__heading {
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    margin: 0 0 0.6rem 0;
+    line-height: 1.18;
+  }
+  .hero__greet-en {
+    display: block;
+    font-family: var(--font-sans);
     color: var(--ink);
   }
-  .hero__cn {
+  .hero__greet-zh {
+    display: block;
     font-family: var(--font-cjk);
     font-weight: 500;
-    font-size: clamp(1.6rem, 4vw, 2.6rem);
-    letter-spacing: 0.32em;
-    color: var(--ink);
-  }
-  .hero__handle {
-    font-family: var(--font-mono);
-    font-weight: 500;
-    font-size: clamp(1rem, 1.6vw, 1.15rem);
-    letter-spacing: 0.18em;
-    color: var(--accent);
-    margin-top: 0.4rem;
+    color: var(--ink-soft);
+    margin-top: 0.2rem;
+    font-size: 0.85em;
   }
   .hero__role {
     font-family: var(--font-sans);
-    font-size: clamp(0.95rem, 1.3vw, 1.1rem);
-    color: var(--ink-mute);
+    font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+    color: var(--ink-soft);
     max-width: 64ch;
-    line-height: 1.6;
-    margin: 1.2rem 0 2rem 0;
+    line-height: 1.65;
+    margin: 0 0 1rem 0;
   }
   :lang(zh) .hero__role { font-family: var(--font-cjk); line-height: 1.85; }
-  .hero__cta {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+  .hero__stats { margin: 0; }
+  .hero__stats-link {
+    display: inline-block;
+    color: var(--ink);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 0.55rem 1rem;
+    background: color-mix(in oklch, var(--accent) 16%, var(--bg));
+    border: 1px solid color-mix(in oklch, var(--accent) 30%, var(--rule));
+    border-radius: var(--radius);
+    transition: all 140ms ease;
   }
+  :lang(zh) .hero__stats-link { font-family: var(--font-cjk); }
+  .hero__stats-link:hover, .hero__stats-link:focus-visible {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .hero__stats-num {
+    font-weight: 700;
+    color: var(--accent-deep);
+  }
+  .hero__stats-link:hover .hero__stats-num,
+  .hero__stats-link:focus-visible .hero__stats-num {
+    color: var(--bg);
+  }
+
+  .hero__active {
+    margin-top: 1.4rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+  }
+  .hero__active-label {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  :lang(zh) .hero__active-label { font-family: var(--font-cjk); letter-spacing: 0.1em; }
+  .hero__active-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--ok);
+    border-radius: 50%;
+    box-shadow: 0 0 8px color-mix(in oklch, var(--ok) 40%, transparent);
+  }
+  .hero__active-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+  }
+  @media (max-width: 880px) {
+    .hero__active-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .hero__active-grid { grid-template-columns: 1fr; }
+  }
+  .hero__active-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.9rem 1rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--ink);
+    transition: all 140ms ease;
+  }
+  .hero__active-card:hover, .hero__active-card:focus-visible {
+    border-color: var(--accent);
+    background: var(--bg-raised);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-warm);
+  }
+  .hero__active-emoji { font-size: 1.6rem; line-height: 1; }
+  .hero__active-name {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .hero__active-cn {
+    font-family: var(--font-cjk);
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+  }
+  .hero__active-meta {
+    font-size: 0.78rem;
+    color: var(--accent-deep);
+  }
+  .hero__active-flag { color: var(--ink-mute); }
+  .hero__active-flag--ok { color: var(--ok); font-weight: 700; }
+  .hero__see-all {
+    margin: 0.8rem 0 0 0;
+    text-align: right;
+  }
+  .hero__see-all a {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  :lang(zh) .hero__see-all a { font-family: var(--font-cjk); }
+  .hero__see-all a:hover, .hero__see-all a:focus-visible { color: var(--accent); }
 </style>

@@ -7,21 +7,21 @@ interface Props {
 const { lang } = Astro.props;
 ---
 
-<section class="filters" aria-label="case file filters">
+<section class="filters" aria-label="tested-mod filters">
   <div class="filters__row">
     <div class="filters__group">
-      <span class="filters__label mono">{t(lang, "cases.filter_version")}</span>
-      <button type="button" class="filters__chip mono filters__chip--active" data-version="all">
+      <span class="filters__label">{t(lang, "cases.filter_version")}</span>
+      <button type="button" class="filters__chip filters__chip--active" data-version="all">
         {t(lang, "cases.all")}
       </button>
       <button type="button" class="filters__chip mono" data-version="1.20.1">1.20.1</button>
       <button type="button" class="filters__chip mono" data-version="1.21.1">1.21.1</button>
     </div>
     <div class="filters__group">
-      <label class="filters__toggle mono">
+      <label class="filters__toggle">
         <input type="checkbox" id="filter-credited" /> {t(lang, "cases.filter_credited")}
       </label>
-      <label class="filters__toggle mono">
+      <label class="filters__toggle">
         <input type="checkbox" id="filter-regression" /> {t(lang, "cases.filter_regression")}
       </label>
     </div>
@@ -67,7 +67,7 @@ const { lang } = Astro.props;
 </script>
 
 <style>
-  .filters { padding: 1.2rem 0 1.6rem 0; }
+  .filters { padding: 1rem 0 1.4rem 0; }
   .filters__row {
     display: flex;
     flex-wrap: wrap;
@@ -80,25 +80,31 @@ const { lang } = Astro.props;
   .filters__group {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     flex-wrap: wrap;
   }
   .filters__label {
-    font-size: 0.72rem;
-    color: var(--ink-faint);
-    letter-spacing: 0.14em;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     margin-right: 0.4rem;
   }
+  :lang(zh) .filters__label { font-family: var(--font-cjk); letter-spacing: 0.1em; }
   .filters__chip {
-    padding: 0.3rem 0.7rem;
-    background: transparent;
+    padding: 0.32rem 0.85rem;
+    background: var(--bg-soft);
     border: 1px solid var(--rule);
-    color: var(--ink-mute);
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
     cursor: pointer;
+    border-radius: var(--radius-pill);
+    transition: all 120ms ease;
   }
+  :lang(zh) .filters__chip { font-family: var(--font-cjk); }
+  .filters__chip.mono { font-family: var(--font-mono); font-size: 0.8rem; }
   .filters__chip:hover, .filters__chip:focus-visible {
     color: var(--accent);
     border-color: var(--accent);
@@ -112,11 +118,12 @@ const { lang } = Astro.props;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.78rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.04em;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
     cursor: pointer;
     user-select: none;
   }
+  :lang(zh) .filters__toggle { font-family: var(--font-cjk); }
   .filters__toggle input { accent-color: var(--accent); }
 </style>

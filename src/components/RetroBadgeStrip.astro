@@ -1,0 +1,26 @@
+---
+import RetroBadge from "~/components/RetroBadge.astro";
+---
+
+<div class="badge-strip" role="group" aria-label="achievement badges">
+  <RetroBadge src="mc-1-20-1.svg" alt="MC 1.20.1 ✓" />
+  <RetroBadge src="mc-1-21-1.svg" alt="MC 1.21.1 ✓" />
+  <RetroBadge src="hot-bath-1m-dl.svg" alt="Hot Bath 1M+ DL" />
+  <RetroBadge src="verified-tester.svg" alt="verified tester" />
+  <RetroBadge src="bilingual-zh-en.svg" alt="bilingual zh / en" />
+  <RetroBadge src="powered-by-duck.svg" alt="powered by duck" />
+</div>
+
+<style>
+  .badge-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0.6rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    width: fit-content;
+    max-width: 100%;
+  }
+</style>

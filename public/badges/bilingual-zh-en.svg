@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="31" viewBox="0 0 88 31" shape-rendering="crispEdges" image-rendering="pixelated">
+  <rect x="0" y="0" width="88" height="31" fill="#1c1d2a"/>
+  <rect x="1" y="1" width="31" height="29" fill="#b8d8e6"/>
+  <rect x="32" y="1" width="55" height="29" fill="#1c1d2a"/>
+  <rect x="0" y="0" width="88" height="1" fill="#f4ebd9"/>
+  <rect x="0" y="30" width="88" height="1" fill="#1c1d2a"/>
+  <rect x="0" y="0" width="1" height="31" fill="#f4ebd9"/>
+  <rect x="87" y="0" width="1" height="31" fill="#1c1d2a"/>
+  <rect x="31" y="1" width="1" height="29" fill="#1c1d2a"/>
+  <text x="16" y="18.166666666666668" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="8" font-weight="700" fill="#1c1d2a" text-anchor="middle" dominant-baseline="middle" letter-spacing="0">中/EN</text>
+  <text x="60" y="13.5" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="8" font-weight="700" fill="#b8d8e6" text-anchor="middle" dominant-baseline="middle">bilingual</text>
+  <text x="60" y="23.5" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="8" font-weight="500" fill="#b8d8e6" text-anchor="middle" dominant-baseline="middle">zh / en</text>
+</svg>

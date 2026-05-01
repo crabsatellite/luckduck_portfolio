@@ -1,11 +1,13 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
-import CaseFileHeader from "~/components/CaseFileHeader.astro";
-import RegressionThread from "~/components/RegressionThread.astro";
+import TestLogHeader from "~/components/TestLogHeader.astro";
+import TestLog from "~/components/TestLog.astro";
 import BugLedger from "~/components/BugLedger.astro";
+import MembersPanel from "~/components/MembersPanel.astro";
+import SteamDivider from "~/components/SteamDivider.astro";
 import {
   mods, bugsForMod, isCredited, hasRegression, hasNoIssues,
-  caseNumber, getMcmodEntry,
+  logNumber, getMcmodEntry, teamForMod, featuredBug, sceneForMod,
 } from "~/lib/data";
 import { t } from "~/i18n/strings";
 
@@ -19,20 +21,22 @@ const bugs = bugsForMod(mod.id);
 const credited = isCredited(mod);
 const regress = hasRegression(mod);
 const noIssues = hasNoIssues(mod);
-const caseNo = caseNumber(mod);
+const logNo = logNumber(mod);
 const mcmod = getMcmodEntry(mod);
+const team = teamForMod(mod);
+const featured = featuredBug(mod);
+const scene = sceneForMod(mod);
 
-const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mod.name_zh;
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const sceneUrl = scene ? `${base}/scenes/${scene}` : null;
 ---
 
 <BaseLayout title={mod.name_en} lang={lang}>
   <article class="case">
     <div class="container">
-      <CaseFileHeader
-        caseNo={caseNo}
-        modNameLatin={mod.name_en}
-        modNameCn={cnName}
-        versions={mod.versions}
+      <TestLogHeader
+        mod={mod}
+        logNo={logNo}
         totalBugs={mod.total_bugs}
         hasRegression={regress}
         isCredited={credited}
@@ -40,30 +44,41 @@ const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mo
         lang={lang}
       />
 
+      {team.length > 0 && <MembersPanel team={team} lang={lang} />}
+
+      {sceneUrl && (
+        <figure class="case__scene">
+          <img src={sceneUrl} alt={`${mod.name_en} ${t(lang, "case.scene_label")}`} loading="lazy" width="1280" height="400" />
+          <figcaption class="case__scene-cap">
+            <span class="case__scene-label">{t(lang, "case.scene_label")}</span>
+            <span class="case__scene-note">— {t(lang, "case.scene_placeholder")}</span>
+          </figcaption>
+        </figure>
+      )}
+
+      <SteamDivider variant="compact" />
+
       <div class="case__layout">
         <div class="case__main">
-          {mod.rounds.length > 1 && (
-            <RegressionThread rounds={mod.rounds} lang={lang} />
-          )}
+          {mod.rounds.length > 1 && <TestLog rounds={mod.rounds} lang={lang} />}
 
           {noIssues ? (
             <section class="case__pass">
-              <h2 class="case__pass-title mono">{t(lang, "case.no_issues")}</h2>
-              <p class="case__pass-detail">
-                {t(lang, "case.no_issues_detail")}
-              </p>
-              <p class="case__pass-meta mono">
+              <h2 class="case__pass-title h-section">
+                <span aria-hidden="true">✅</span>
+                {t(lang, "case.no_issues")}
+              </h2>
+              <p class="case__pass-detail">{t(lang, "case.no_issues_detail")}</p>
+              <p class="case__pass-meta mono tnum">
                 {mod.versions.join(" / ")} · 1 round
               </p>
             </section>
           ) : (
-            <BugLedger bugs={bugs} lang={lang} />
+            <BugLedger bugs={bugs} featured={featured} lang={lang} />
           )}
 
-          <section class="case__legend" aria-labelledby="legend-heading-en">
-            <h2 id="legend-heading-en" class="case__legend-heading mono">
-              {t(lang, "case.legend_title")}
-            </h2>
+          <section class="case__legend" aria-labelledby="legend-heading">
+            <h2 id="legend-heading" class="case__legend-h">{t(lang, "case.legend_title")}</h2>
             <ul class="case__legend-list">
               <li><span class="pill" data-status="open">open</span> {t(lang, "case.legend_open")}</li>
               <li><span class="pill" data-status="unfixed">unfixed</span> {t(lang, "case.legend_unfixed")}</li>
@@ -76,55 +91,38 @@ const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mo
 
         <aside class="case__side">
           <div class="case__panel">
-            <h3 class="case__panel-h mono">{t(lang, "case.depth_signals")}</h3>
+            <h3 class="case__panel-h">{t(lang, "case.depth_signals")}</h3>
             {mod.depth_signals.length > 0 ? (
               <ul class="case__signals">
-                {mod.depth_signals.map((s) => (
-                  <li><span class="chip">{s}</span></li>
-                ))}
+                {mod.depth_signals.map((s) => <li><span class="chip">{s}</span></li>)}
               </ul>
             ) : (
-              <p class="case__panel-empty mono">{t(lang, "case.no_depth")}</p>
+              <p class="case__panel-empty">{t(lang, "case.no_depth")}</p>
             )}
           </div>
 
           {mcmod && (
             <div class="case__panel">
-              <h3 class="case__panel-h mono">mcmod.cn</h3>
+              <h3 class="case__panel-h">mcmod.cn</h3>
               <dl class="case__dl">
-                {mcmod.loader && (
-                  <>
-                    <dt class="mono">loader</dt>
-                    <dd class="mono">{mcmod.loader}</dd>
-                  </>
-                )}
-                {mcmod.status && (
-                  <>
-                    <dt class="mono">status</dt>
-                    <dd>{mcmod.status}</dd>
-                  </>
-                )}
-                {mcmod.environment && (
-                  <>
-                    <dt class="mono">env</dt>
-                    <dd>{mcmod.environment}</dd>
-                  </>
-                )}
+                {mcmod.loader && (<><dt>loader</dt><dd class="mono">{mcmod.loader}</dd></>)}
+                {mcmod.status && (<><dt>status</dt><dd>{mcmod.status}</dd></>)}
+                {mcmod.environment && (<><dt>env</dt><dd>{mcmod.environment}</dd></>)}
               </dl>
             </div>
           )}
 
           <div class="case__panel">
-            <h3 class="case__panel-h mono">{t(lang, "case.links")}</h3>
+            <h3 class="case__panel-h">{t(lang, "case.links")}</h3>
             <ul class="case__links">
               {mod.mcmod_url ? (
                 <li>
                   <a href={mod.mcmod_url} rel="noopener" target="_blank">
-                    {t(lang, "case.mcmod_link")} <span aria-hidden="true">→</span>
+                    {t(lang, "case.mcmod_link")} <span aria-hidden="true">↗</span>
                   </a>
                 </li>
               ) : (
-                <li class="case__links-empty mono">{t(lang, "case.no_mcmod")}</li>
+                <li class="case__links-empty">{t(lang, "case.no_mcmod")}</li>
               )}
             </ul>
           </div>
@@ -135,7 +133,7 @@ const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mo
 </BaseLayout>
 
 <style>
-  .case { padding: 2rem 0 4rem 0; }
+  .case { padding: 2rem 0 3rem 0; }
   .case__layout {
     display: grid;
     grid-template-columns: 9fr 3fr;
@@ -146,37 +144,38 @@ const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mo
     .case__layout { grid-template-columns: 1fr; }
   }
   .case__main { min-width: 0; }
-  .case__side { display: flex; flex-direction: column; gap: 1.4rem; }
+  .case__side { display: flex; flex-direction: column; gap: 1.2rem; }
   .case__panel {
     border: 1px solid var(--rule);
-    padding: 1rem 1.1rem;
-    background: var(--surface);
+    background: var(--bg-soft);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.2rem;
   }
   .case__panel-h {
-    font-size: 0.72rem;
-    color: var(--ink-faint);
-    letter-spacing: 0.14em;
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     margin: 0 0 0.7rem 0;
     font-weight: 600;
   }
   .case__panel-empty {
-    color: var(--ink-faint);
+    color: var(--ink-mute);
     font-size: 0.85rem;
     margin: 0;
   }
   .case__signals { list-style: none; padding: 0; margin: 0; }
-  .case__signals li { display: inline-block; margin: 0.12rem 0.18rem 0.12rem 0; }
+  .case__signals li { display: inline-block; margin: 0.16rem 0.2rem 0.16rem 0; }
   .case__dl {
     display: grid;
     grid-template-columns: 5rem 1fr;
     gap: 0.4rem 0.8rem;
     margin: 0;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
   }
   .case__dl dt {
-    color: var(--ink-faint);
-    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
     font-size: 0.72rem;
     text-transform: uppercase;
   }
@@ -184,8 +183,7 @@ const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mo
   .case__links { list-style: none; margin: 0; padding: 0; }
   .case__links li { margin-bottom: 0.4rem; }
   .case__links a {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     color: var(--ink);
     text-decoration: none;
     border-bottom: 1px solid var(--rule);
@@ -196,40 +194,71 @@ const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mo
     border-bottom-color: var(--accent);
   }
   .case__links-empty {
-    color: var(--ink-faint);
+    color: var(--ink-mute);
     font-size: 0.82rem;
   }
+
+  .case__scene {
+    margin: 1rem 0 0 0;
+    border: 1px solid var(--rule);
+    background: var(--bg-soft);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .case__scene img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1280 / 400;
+    object-fit: cover;
+  }
+  .case__scene-cap {
+    padding: 0.5rem 1rem;
+    background: var(--bg-raised);
+    color: var(--ink-mute);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    border-top: 1px solid var(--rule);
+  }
+  .case__scene-label {
+    color: var(--accent-deep);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .case__scene-note { margin-left: 0.4em; }
+
   .case__pass {
     border: 1px solid var(--rule);
-    border-left: 4px solid var(--ok);
-    padding: 1.6rem 1.4rem;
-    margin: 2rem 0;
-    background: var(--surface);
+    border-left: 6px solid var(--ok);
+    border-radius: var(--radius-lg);
+    background: var(--bg-soft);
+    padding: 1.4rem 1.6rem;
+    margin: 1.6rem 0;
   }
   .case__pass-title {
-    font-size: 1.2rem;
     color: var(--ok);
-    margin: 0 0 0.5rem 0;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    margin: 0 0 0.4rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   .case__pass-detail {
     color: var(--ink);
-    margin: 0 0 0.5rem 0;
-    line-height: 1.65;
+    margin: 0 0 0.4rem 0;
   }
   .case__pass-meta {
     color: var(--ink-mute);
     font-size: 0.85rem;
-    letter-spacing: 0.04em;
   }
-  .case__legend { margin: 2rem 0; }
-  .case__legend-heading {
-    font-size: 0.72rem;
-    color: var(--ink-faint);
-    letter-spacing: 0.14em;
+
+  .case__legend { margin: 1.6rem 0; }
+  .case__legend-h {
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    margin: 0 0 0.8rem 0;
+    margin: 0 0 0.7rem 0;
     font-weight: 600;
   }
   .case__legend-list {
@@ -239,8 +268,8 @@ const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mo
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    color: var(--ink-mute);
-    font-size: 0.82rem;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
   }
   .case__legend-list li {
     display: flex;

@@ -1,0 +1,101 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+import type { TeamMember } from "~/lib/data";
+
+interface Props {
+  team: TeamMember[];
+  lang: Lang;
+}
+const { team, lang } = Astro.props;
+
+const roleLabel = (m: TeamMember): string => {
+  const map = {
+    owner: "case.team_role_owner",
+    dev: "case.team_role_dev",
+    art: "case.team_role_art",
+    design: "case.team_role_design",
+    tester: "case.team_role_tester",
+    other: "case.team_role_other",
+  } as const;
+  return t(lang, map[m.role]);
+};
+---
+
+{team.length > 0 && (
+  <section class="members" aria-labelledby="team-heading">
+    <h2 id="team-heading" class="members__h">{t(lang, "case.team_panel")}</h2>
+    <ul class="members__list">
+      {team.map((m) => (
+        <li class:list={["members__item", { "members__item--luck": m.isLuck }]}>
+          <span class="members__avatar" aria-hidden="true">{m.emoji}</span>
+          <span class="members__name">{m.name}</span>
+          <span class="members__role">{roleLabel(m)}{m.role === "tester" && m.isLuck && " ✓"}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .members {
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+  }
+  .members__h {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 0.7rem 0;
+  }
+  :lang(zh) .members__h { font-family: var(--font-cjk); letter-spacing: 0.1em; }
+  .members__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+  }
+  .members__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+    border-radius: var(--radius-pill);
+    font-size: 0.85rem;
+  }
+  .members__item--luck {
+    border-color: var(--accent);
+    background: color-mix(in oklch, var(--accent) 14%, var(--bg));
+    color: var(--ink);
+  }
+  .members__avatar {
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+  .members__name {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    color: var(--ink);
+  }
+  :lang(zh) .members__name { font-family: var(--font-cjk); }
+  .members__role {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.03em;
+  }
+  :lang(zh) .members__role { font-family: var(--font-cjk); }
+  .members__item--luck .members__role {
+    color: var(--accent-deep);
+    font-weight: 600;
+  }
+</style>

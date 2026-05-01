@@ -23,8 +23,8 @@ const htmlLang = lang === "en" ? "en" : "zh-Hans-CN";
 
 const fallbackDescription =
   lang === "en"
-    ? "Tingfeng Yang (LUCK666DUCK) — Minecraft mod QA tester. Multi-round regression, multi-locale verification, cross-mod compatibility forensics."
-    : "楊庭鳳 (LUCK666DUCK) — Minecraft mod QA tester。多轮回归、多语言验证、跨 mod 兼容性取证。";
+    ? "Hi, I'm Tingfeng (LUCK666DUCK) — Minecraft mod tester. 13 mods tested, 433 bugs filed, on 1.20.1 / 1.21.1, bilingual zh / en."
+    : "嗨, 我是楊庭鳳 (LUCK666DUCK), 做 Minecraft mod 测试。已测 13 个 mod、提交 433 条 bug, 跑 1.20.1 / 1.21.1, 简体 / 繁中 / 日文 / English。";
 
 const ogPath = `${base}/og.png`;
 ---
@@ -50,8 +50,8 @@ const ogPath = `${base}/og.png`;
     <meta property="og:image" content={new URL(ogPath, Astro.site).toString()} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="theme-color" content="#0e0f12" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1c1d2a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fdf6e3" media="(prefers-color-scheme: light)" />
   </head>
   <body>
     <a href="#main" class="skip-link">{t(lang, "nav.skip")}</a>

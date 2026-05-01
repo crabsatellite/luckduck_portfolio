@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Hero from "~/components/Hero.astro";
-import StatStrip from "~/components/StatStrip.astro";
 import ModCard from "~/components/ModCard.astro";
 import { sortedMods } from "~/lib/data";
 import { t } from "~/i18n/strings";
@@ -12,15 +11,13 @@ const list = sortedMods();
 
 <BaseLayout title="LUCK666DUCK" lang={lang}>
   <Hero lang={lang} />
-  <StatStrip lang={lang} />
 
-  <section class="cases-section" aria-labelledby="cases-heading">
+  <section class="cases-section" id="all-mods" aria-labelledby="cases-heading">
     <div class="container">
       <header class="cases-section__head">
-        <p class="eyebrow"><strong>{t(lang, "cases.title")}</strong> / {list.length}</p>
-        <p class="cases-section__sub mono">{t(lang, "cases.subtitle")}</p>
+        <h2 id="cases-heading" class="cases-section__h h-section">{t(lang, "cases.title")}</h2>
+        <p class="cases-section__sub">{t(lang, "cases.subtitle")}</p>
       </header>
-      <hr class="hairline" />
       <div class="cases-grid">
         {list.map((m) => <ModCard mod={m} lang={lang} />)}
       </div>
@@ -29,14 +26,19 @@ const list = sortedMods();
 </BaseLayout>
 
 <style>
-  .cases-section { padding: 1.4rem 0 2.4rem 0; }
-  .cases-section__head { padding: 1rem 0 0.8rem 0; }
-  .cases-section__sub {
-    color: var(--ink-mute);
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
-    margin: 0.3rem 0 0 0;
+  .cases-section { padding: 1.4rem 0 3rem 0; }
+  .cases-section__head { padding: 1rem 0; }
+  .cases-section__h {
+    font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+    margin: 0 0 0.5rem 0;
   }
+  .cases-section__sub {
+    font-family: var(--font-sans);
+    color: var(--ink-mute);
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  :lang(zh) .cases-section__sub { font-family: var(--font-cjk); }
   .cases-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));

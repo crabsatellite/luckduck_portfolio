@@ -1,5 +1,6 @@
 ---
 import { t, pathForLang, type Lang } from "~/i18n/strings";
+import MascotDuck from "~/components/MascotDuck.astro";
 
 interface Props {
   lang: Lang;
@@ -23,8 +24,8 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
 <header class="nav">
   <div class="nav__inner container">
     <a href={`${langPrefix}/`} class="nav__logo" aria-label="LUCK666DUCK home">
-      <span class="nav__logo-name">LUCK666DUCK</span>
-      <span class="nav__logo-cn" aria-hidden="true">楊 庭 鳳</span>
+      <span class="nav__mascot"><MascotDuck size={32} alt="" blink={true} /></span>
+      <span class="nav__name">LUCK666DUCK</span>
     </a>
     <nav aria-label="Primary" class="nav__primary">
       <ul class="nav__list">
@@ -32,12 +33,8 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
           const itemPath = item.href.replace(/\/$/, "") || "/";
           const stripped = itemPath.replace(base, "") || "/";
           const cur = path.replace(base, "") || "/";
-          const langStripped = lang === "en"
-            ? (stripped.replace(/^\/en/, "") || "/")
-            : stripped;
-          const curLangStripped = lang === "en"
-            ? (cur.replace(/^\/en/, "") || "/")
-            : cur;
+          const langStripped = lang === "en" ? (stripped.replace(/^\/en/, "") || "/") : stripped;
+          const curLangStripped = lang === "en" ? (cur.replace(/^\/en/, "") || "/") : cur;
           const active =
             (langStripped === "/" && curLangStripped === "/") ||
             (langStripped !== "/" && curLangStripped.startsWith(langStripped));
@@ -81,47 +78,44 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
     justify-content: space-between;
     padding-top: 0.85rem;
     padding-bottom: 0.85rem;
-    gap: 1.2rem;
+    gap: 1rem;
   }
   .nav__logo {
     display: inline-flex;
-    align-items: baseline;
-    gap: 0.7rem;
-    font-family: var(--font-mono);
-    font-weight: 700;
+    align-items: center;
+    gap: 0.65rem;
     text-decoration: none;
     color: var(--ink);
-    letter-spacing: 0.02em;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    letter-spacing: -0.005em;
     line-height: 1;
   }
-  .nav__logo-name { font-size: 0.95rem; }
-  .nav__logo-cn {
-    font-family: var(--font-cjk);
-    font-weight: 500;
-    color: var(--ink-mute);
-    font-size: 0.85rem;
-    letter-spacing: 0.18em;
+  .nav__name {
+    font-size: 1rem;
   }
+  .nav__mascot { display: inline-block; line-height: 0; }
   .nav__primary { display: block; }
   .nav__list {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 1.4rem;
+    gap: 1.2rem;
     align-items: center;
   }
   .nav__link {
     display: inline-block;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
     font-weight: 500;
-    letter-spacing: 0.04em;
     color: var(--ink);
     text-decoration: none;
     padding: 0.3rem 0;
-    border-bottom: 1px solid transparent;
+    border-bottom: 2px solid transparent;
+    transition: color 120ms, border-color 120ms;
   }
+  :lang(zh) .nav__link { font-family: var(--font-cjk); }
   .nav__link:hover, .nav__link:focus-visible {
     color: var(--accent);
     border-bottom-color: var(--accent);
@@ -131,20 +125,22 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
     border-bottom-color: var(--accent);
   }
   .nav__link--lang {
-    color: var(--ink-mute);
+    color: var(--ink-soft);
     border: 1px solid var(--rule);
-    padding: 0.2rem 0.5rem;
-    min-width: 2.2rem;
+    border-radius: var(--radius-pill);
+    padding: 0.2rem 0.7rem;
+    min-width: 2.4rem;
     text-align: center;
-    text-transform: uppercase;
+    font-size: 0.85rem;
   }
   .nav__link--lang:hover, .nav__link--lang:focus-visible {
-    color: var(--accent);
+    color: var(--bg);
+    background: var(--accent);
     border-color: var(--accent);
   }
   @media (max-width: 540px) {
-    .nav__logo-cn { display: none; }
+    .nav__name { font-size: 0.9rem; }
     .nav__list { gap: 0.85rem; }
-    .nav__link { font-size: 0.8rem; }
+    .nav__link { font-size: 0.88rem; }
   }
 </style>

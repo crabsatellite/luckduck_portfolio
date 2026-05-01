@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
+import MascotDuck from "~/components/MascotDuck.astro";
+import SteamDivider from "~/components/SteamDivider.astro";
 import { t } from "~/i18n/strings";
 
 const lang = "zh" as const;
@@ -8,69 +10,52 @@ const lang = "zh" as const;
 <BaseLayout title={t(lang, "about.title")} lang={lang}>
   <article class="about">
     <div class="container">
-      <header>
-        <p class="eyebrow"><strong>{t(lang, "about.title")}</strong> / TESTER</p>
-        <h1 class="about__name">
-          <span class="about__latin mono">Tingfeng Yang</span>
-          <span class="about__cn">楊 庭 鳳</span>
-          <span class="about__handle mono">LUCK666DUCK</span>
-        </h1>
-        <p class="about__role mono">{t(lang, "about.role")}</p>
+      <header class="about__head">
+        <MascotDuck size={96} alt="" blink={true} />
+        <div>
+          <h1 class="about__greet h-display">{t(lang, "about.greeting")}</h1>
+          <p class="about__role">{t(lang, "about.role")}</p>
+        </div>
       </header>
-      <hr class="hairline" />
+      <SteamDivider variant="compact" />
       <div class="about__body">
         <p>{t(lang, "about.zh_para1")}</p>
         <p>{t(lang, "about.zh_para2")}</p>
         <p>{t(lang, "about.zh_para3")}</p>
+        <p>{t(lang, "about.zh_para4")}</p>
       </div>
     </div>
   </article>
 </BaseLayout>
 
 <style>
-  .about { padding: 3rem 0 4rem 0; }
-  .about__name {
-    margin: 1rem 0 1rem 0;
-    line-height: 1.05;
-    font-weight: 400;
+  .about { padding: 2.4rem 0 3rem 0; }
+  .about__head {
     display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+    align-items: center;
+    gap: 1.4rem;
+    padding: 1rem 0 1.4rem 0;
+    flex-wrap: wrap;
   }
-  .about__latin {
-    font-weight: 700;
-    font-size: clamp(2rem, 4.5vw, 3rem);
-    color: var(--ink);
-  }
-  .about__cn {
-    font-family: var(--font-cjk);
-    font-weight: 500;
-    font-size: clamp(1.3rem, 3vw, 2rem);
-    letter-spacing: 0.32em;
-    color: var(--ink);
-  }
-  .about__handle {
-    font-size: 0.95rem;
-    letter-spacing: 0.18em;
-    color: var(--accent);
-    margin-top: 0.3rem;
+  .about__greet {
+    font-size: clamp(1.6rem, 3.6vw, 2.2rem);
+    margin: 0 0 0.4rem 0;
   }
   .about__role {
+    font-family: var(--font-sans);
     color: var(--ink-mute);
-    font-size: 0.9rem;
-    letter-spacing: 0.04em;
-    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    margin: 0;
+    letter-spacing: 0.02em;
   }
+  :lang(zh) .about__role { font-family: var(--font-cjk); }
   .about__body {
     max-width: 64ch;
     padding: 1.4rem 0;
     color: var(--ink);
-    line-height: 1.85;
-    font-family: var(--font-cjk);
   }
   .about__body p {
     margin: 0 0 1.2rem 0;
     font-size: 1rem;
   }
-  :lang(en) .about__body { font-family: var(--font-sans); line-height: 1.65; }
 </style>

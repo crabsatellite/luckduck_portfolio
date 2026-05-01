@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="31" viewBox="0 0 88 31" shape-rendering="crispEdges" image-rendering="pixelated">
+  <rect x="0" y="0" width="88" height="31" fill="#1c1d2a"/>
+  <rect x="1" y="1" width="25" height="29" fill="#1c1d2a"/>
+  <rect x="26" y="1" width="61" height="29" fill="#f9c47a"/>
+  <rect x="0" y="0" width="88" height="1" fill="#f4ebd9"/>
+  <rect x="0" y="30" width="88" height="1" fill="#1c1d2a"/>
+  <rect x="0" y="0" width="1" height="31" fill="#f4ebd9"/>
+  <rect x="87" y="0" width="1" height="31" fill="#1c1d2a"/>
+  <rect x="25" y="1" width="1" height="29" fill="#1c1d2a"/>
+  <text x="13" y="20.833333333333332" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#f9c47a" text-anchor="middle" dominant-baseline="middle" letter-spacing="0">🦆</text>
+  <text x="57" y="13.5" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="8" font-weight="700" fill="#1c1d2a" text-anchor="middle" dominant-baseline="middle">powered</text>
+  <text x="57" y="23.5" font-family="ui-monospace,Consolas,Menlo,monospace" font-size="8" font-weight="500" fill="#1c1d2a" text-anchor="middle" dominant-baseline="middle">by duck</text>
+</svg>

@@ -1,0 +1,41 @@
+---
+interface Props {
+  variant?: "wide" | "compact";
+}
+const { variant = "wide" } = Astro.props;
+const repeats = variant === "wide" ? 14 : 6;
+const segments = Array.from({ length: repeats });
+---
+
+<div class:list={["steam-divider", `steam-divider--${variant}`]} aria-hidden="true">
+  {segments.map((_, i) => (
+    <span class="steam-divider__seg">
+      <span class="steam-divider__wave">～</span>
+      {i % 2 === 0 && <span class="steam-divider__drop">💧</span>}
+    </span>
+  ))}
+</div>
+
+<style>
+  .steam-divider {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0;
+    color: var(--steam);
+    font-family: var(--font-pixel);
+    font-size: 1.4rem;
+    user-select: none;
+    line-height: 1;
+  }
+  .steam-divider--compact { font-size: 1.05rem; padding: 0.3rem 0; gap: 0.3rem; }
+  .steam-divider__seg {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .steam-divider__wave { color: var(--steam); }
+  .steam-divider__drop { font-size: 0.85em; color: var(--accent); filter: saturate(1.1); }
+</style>

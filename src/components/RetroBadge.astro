@@ -1,0 +1,46 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  href?: string;
+}
+const { src, alt, href } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const fullSrc = src.startsWith("/") || src.startsWith("http")
+  ? src
+  : `${base}/badges/${src}`;
+
+const Tag = href ? "a" : "span";
+---
+
+<Tag
+  class="retro-badge"
+  href={href}
+  rel={href && href.startsWith("http") ? "noopener" : undefined}
+  target={href && href.startsWith("http") ? "_blank" : undefined}
+>
+  <img src={fullSrc} alt={alt} width="88" height="31" loading="lazy" />
+</Tag>
+
+<style>
+  .retro-badge {
+    display: inline-block;
+    line-height: 0;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    text-decoration: none;
+    transition: transform 120ms ease;
+  }
+  .retro-badge:hover, .retro-badge:focus-visible {
+    transform: translateY(-1px);
+  }
+  .retro-badge img {
+    display: block;
+    width: 88px;
+    height: 31px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+</style>
