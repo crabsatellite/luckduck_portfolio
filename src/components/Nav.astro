@@ -1,0 +1,150 @@
+---
+import { t, pathForLang, type Lang } from "~/i18n/strings";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const langPrefix = lang === "en" ? `${base}/en` : base;
+
+const items = [
+  { href: `${langPrefix}/`, key: "nav.home" as const, match: "/" },
+  { href: `${langPrefix}/cases`, key: "nav.cases" as const, match: "/cases" },
+  { href: `${langPrefix}/about`, key: "nav.about" as const, match: "/about" },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const otherLang: Lang = lang === "en" ? "zh" : "en";
+const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
+---
+
+<header class="nav">
+  <div class="nav__inner container">
+    <a href={`${langPrefix}/`} class="nav__logo" aria-label="LUCK666DUCK home">
+      <span class="nav__logo-name">LUCK666DUCK</span>
+      <span class="nav__logo-cn" aria-hidden="true">楊 庭 鳳</span>
+    </a>
+    <nav aria-label="Primary" class="nav__primary">
+      <ul class="nav__list">
+        {items.map((item) => {
+          const itemPath = item.href.replace(/\/$/, "") || "/";
+          const stripped = itemPath.replace(base, "") || "/";
+          const cur = path.replace(base, "") || "/";
+          const langStripped = lang === "en"
+            ? (stripped.replace(/^\/en/, "") || "/")
+            : stripped;
+          const curLangStripped = lang === "en"
+            ? (cur.replace(/^\/en/, "") || "/")
+            : cur;
+          const active =
+            (langStripped === "/" && curLangStripped === "/") ||
+            (langStripped !== "/" && curLangStripped.startsWith(langStripped));
+          return (
+            <li>
+              <a
+                href={item.href}
+                class:list={["nav__link", { "nav__link--active": active }]}
+                aria-current={active ? "page" : undefined}
+              >
+                {t(lang, item.key)}
+              </a>
+            </li>
+          );
+        })}
+        <li class="nav__lang">
+          <a
+            href={otherLangHref}
+            class="nav__link nav__link--lang"
+            aria-label={t(lang, "nav.lang_aria")}
+          >
+            {t(lang, "nav.lang")}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+    gap: 1.2rem;
+  }
+  .nav__logo {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .nav__logo-name { font-size: 0.95rem; }
+  .nav__logo-cn {
+    font-family: var(--font-cjk);
+    font-weight: 500;
+    color: var(--ink-mute);
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+  }
+  .nav__primary { display: block; }
+  .nav__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.4rem;
+    align-items: center;
+  }
+  .nav__link {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid transparent;
+  }
+  .nav__link:hover, .nav__link:focus-visible {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .nav__link--active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .nav__link--lang {
+    color: var(--ink-mute);
+    border: 1px solid var(--rule);
+    padding: 0.2rem 0.5rem;
+    min-width: 2.2rem;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .nav__link--lang:hover, .nav__link--lang:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  @media (max-width: 540px) {
+    .nav__logo-cn { display: none; }
+    .nav__list { gap: 0.85rem; }
+    .nav__link { font-size: 0.8rem; }
+  }
+</style>

@@ -1,0 +1,122 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section class="filters" aria-label="case file filters">
+  <div class="filters__row">
+    <div class="filters__group">
+      <span class="filters__label mono">{t(lang, "cases.filter_version")}</span>
+      <button type="button" class="filters__chip mono filters__chip--active" data-version="all">
+        {t(lang, "cases.all")}
+      </button>
+      <button type="button" class="filters__chip mono" data-version="1.20.1">1.20.1</button>
+      <button type="button" class="filters__chip mono" data-version="1.21.1">1.21.1</button>
+    </div>
+    <div class="filters__group">
+      <label class="filters__toggle mono">
+        <input type="checkbox" id="filter-credited" /> {t(lang, "cases.filter_credited")}
+      </label>
+      <label class="filters__toggle mono">
+        <input type="checkbox" id="filter-regression" /> {t(lang, "cases.filter_regression")}
+      </label>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    var versionBtns = document.querySelectorAll(".filters__chip[data-version]");
+    var creditedTgl = document.getElementById("filter-credited");
+    var regressionTgl = document.getElementById("filter-regression");
+    var cards = document.querySelectorAll(".cases-grid .card");
+    var current = { version: "all", credited: false, regression: false };
+
+    function apply() {
+      cards.forEach(function (card) {
+        var versions = (card.getAttribute("data-mc-versions") || "").split(",");
+        var credited = card.getAttribute("data-credited") === "1";
+        var regression = card.getAttribute("data-regression") === "1";
+        var matchVer = current.version === "all" || versions.indexOf(current.version) !== -1;
+        var matchCred = !current.credited || credited;
+        var matchReg = !current.regression || regression;
+        var visible = matchVer && matchCred && matchReg;
+        card.style.display = visible ? "" : "none";
+      });
+    }
+
+    versionBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        versionBtns.forEach(function (b) { b.classList.remove("filters__chip--active"); });
+        btn.classList.add("filters__chip--active");
+        current.version = btn.getAttribute("data-version");
+        apply();
+      });
+    });
+    if (creditedTgl) creditedTgl.addEventListener("change", function () {
+      current.credited = creditedTgl.checked; apply();
+    });
+    if (regressionTgl) regressionTgl.addEventListener("change", function () {
+      current.regression = regressionTgl.checked; apply();
+    });
+  })();
+</script>
+
+<style>
+  .filters { padding: 1.2rem 0 1.6rem 0; }
+  .filters__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    align-items: center;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.9rem 0;
+  }
+  .filters__group {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .filters__label {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-right: 0.4rem;
+  }
+  .filters__chip {
+    padding: 0.3rem 0.7rem;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-mute);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+  .filters__chip:hover, .filters__chip:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .filters__chip--active {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .filters__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    user-select: none;
+  }
+  .filters__toggle input { accent-color: var(--accent); }
+</style>

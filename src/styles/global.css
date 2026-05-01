@@ -1,0 +1,210 @@
+/* fonts: self-hosted variable axis (weight only) for JBM + Inter, static for Noto Sans SC */
+@import "@fontsource-variable/jetbrains-mono/wght.css";
+@import "@fontsource-variable/inter/wght.css";
+@import "@fontsource/noto-sans-sc/400.css";
+@import "@fontsource/noto-sans-sc/500.css";
+@import "@fontsource/noto-sans-sc/700.css";
+
+:root {
+  --bg: #0e0f12;
+  --surface: #15171c;
+  --surface-hi: #1d2027;
+  --ink: #e6e7ea;
+  --ink-mute: #8d909a;
+  --ink-faint: #565963;
+  --accent: #ffb454;
+  --alert: #ff5757;
+  --ok: #7adda1;
+  --rule: #232730;
+
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular",
+    "Menlo", "Consolas", monospace;
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+  --font-cjk: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+
+  --content-max: 1600px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+
+  --line-latin: 1.65;
+  --line-cjk: 1.85;
+
+  --rule-width: 1px;
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f3f1ec;
+    --surface: #e8e6e0;
+    --surface-hi: #ddd9d0;
+    --ink: #131418;
+    --ink-mute: #5a5d68;
+    --ink-faint: #9499a4;
+    --rule: #cfccc4;
+    color-scheme: light;
+  }
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); color: var(--ink); }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-feature-settings: "tnum" 1, "ss01" 1;
+  line-height: var(--line-latin);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:lang(zh), :lang(zh-Hans), :lang(zh-Hans-CN) {
+  font-family: var(--font-cjk);
+  line-height: var(--line-cjk);
+}
+
+main { display: block; }
+
+a {
+  color: var(--ink);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+a:hover, a:focus-visible { color: var(--accent); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--accent);
+  color: var(--bg);
+  padding: 0.6rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 100;
+  letter-spacing: 0.04em;
+}
+.skip-link:focus { left: 1rem; top: 1rem; }
+
+.container {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.mono { font-family: var(--font-mono); font-feature-settings: "tnum" 1; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.eyebrow strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hairline { border: 0; border-top: var(--rule-width) solid var(--rule); margin: 0; }
+
+/* status pill primitive */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.18rem 0.55rem;
+  border: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  background: transparent;
+  border-radius: 0;
+  white-space: nowrap;
+}
+
+.pill[data-status="open"] { color: var(--ink-mute); }
+.pill[data-status="unfixed"] { color: var(--accent); border-color: rgba(255,180,84,0.4); }
+.pill[data-status="fixed"] { color: var(--ok); border-color: rgba(122,221,161,0.4); }
+.pill[data-status="noted-not-bug"] { color: var(--ink-faint); }
+
+/* category chip */
+.chip {
+  display: inline-block;
+  padding: 0.12rem 0.45rem;
+  border: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+  margin: 0.12rem 0.18rem 0.12rem 0;
+  white-space: nowrap;
+}
+
+.chip[data-cat="crash"],
+.chip[data-cat="crash-class"] {
+  color: var(--alert);
+  border-color: rgba(255,87,87,0.45);
+}
+
+/* badge for verified-tester */
+.badge-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--bg);
+  background: var(--accent);
+  text-transform: uppercase;
+}
+
+/* button-like links */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.65rem 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  text-decoration: none;
+  background: transparent;
+  text-transform: lowercase;
+}
+.btn:hover, .btn:focus-visible {
+  color: var(--bg);
+  background: var(--ink);
+}
+.btn--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn--accent:hover, .btn--accent:focus-visible {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* utility for forced reduced-motion default */
+@media (prefers-reduced-motion: no-preference) {
+  /* no animations are introduced anywhere; this block deliberately empty */
+}

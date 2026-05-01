@@ -1,0 +1,115 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+
+interface Props {
+  caseNo: string;
+  modNameLatin: string;
+  modNameCn?: string | null;
+  versions: string[];
+  totalBugs: number;
+  hasRegression: boolean;
+  isCredited: boolean;
+  hasNoIssues: boolean;
+  lang: Lang;
+}
+const {
+  caseNo, modNameLatin, modNameCn, versions, totalBugs,
+  hasRegression, isCredited, hasNoIssues, lang,
+} = Astro.props;
+---
+
+<header class="cfh">
+  <div class="cfh__top">
+    <p class="eyebrow"><strong>CASE</strong> / CS-{caseNo}</p>
+    <div class="cfh__pills">
+      {isCredited && (
+        <span class="badge-verified" title={t(lang, "credited.label")}>
+          {t(lang, "credited.badge")} <span aria-hidden="true">✓</span>
+        </span>
+      )}
+      {hasRegression && (
+        <span class="pill" data-status="unfixed">{t(lang, "regression.label")}</span>
+      )}
+      {hasNoIssues && (
+        <span class="pill" data-status="fixed">{t(lang, "noissues.label")}</span>
+      )}
+    </div>
+  </div>
+  <hr class="hairline" />
+  <div class="cfh__body">
+    <div class="cfh__title">
+      <h1 class="cfh__name">{modNameLatin}</h1>
+      {modNameCn && modNameCn !== modNameLatin && (
+        <p class="cfh__cn" aria-hidden="true">{modNameCn}</p>
+      )}
+    </div>
+    <div class="cfh__meta">
+      <div class="cfh__field">
+        <span class="cfh__field-label mono">{t(lang, "case.versions")}</span>
+        <span class="cfh__field-value mono tnum">{versions.join(" / ")}</span>
+      </div>
+      <div class="cfh__field">
+        <span class="cfh__field-label mono">total bugs</span>
+        <span class="cfh__field-value mono tnum cfh__field-value--accent">{totalBugs}</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .cfh { padding: 1.2rem 0 1.6rem 0; }
+  .cfh__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.8rem;
+  }
+  .cfh__pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .cfh__body {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 2rem;
+    padding-top: 1.4rem;
+  }
+  @media (max-width: 760px) {
+    .cfh__body { grid-template-columns: 1fr; gap: 1rem; }
+  }
+  .cfh__name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .cfh__cn {
+    font-family: var(--font-cjk);
+    font-weight: 500;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: var(--ink-mute);
+    letter-spacing: 0.18em;
+    margin: 0.5rem 0 0 0;
+  }
+  .cfh__meta { display: flex; flex-direction: column; gap: 0.6rem; }
+  .cfh__field {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--rule);
+    padding: 0.5rem 0;
+    gap: 1rem;
+  }
+  .cfh__field-label {
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .cfh__field-value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .cfh__field-value--accent { color: var(--accent); font-weight: 700; }
+</style>

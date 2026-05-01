@@ -1,0 +1,543 @@
+{
+  "person": {
+    "real_name": "Tingfeng Yang",
+    "handle": "LUCK666DUCK"
+  },
+  "github": {
+    "url": "https://github.com/LUCK666DUCK",
+    "user_id": 255657248,
+    "bio": null,
+    "avatar_url": "https://avatars.githubusercontent.com/u/255657248?v=4",
+    "location": null,
+    "social_links": [],
+    "public_repo_count": 0,
+    "followers": 0,
+    "following": 1,
+    "repos": [],
+    "notes": "Inactive/new account: 0 public repos, 0 stars, 0 packages, no bio. Avatar URL is reused as the CurseForge profile avatar — confirms identity link between GitHub and CurseForge accounts."
+  },
+  "curseforge": {
+    "profile_url": "https://www.curseforge.com/members/luck666duck",
+    "user_id": 136751338,
+    "tagline": "Gaming alchemy!",
+    "tier": "Author",
+    "member_since_relative": "2 months ago (snapshot 2026-04-06; ~Feb 2026)",
+    "last_active": "2026-01-31",
+    "followers": 0,
+    "displayed_project_count": 2,
+    "tester_credits": [
+      {
+        "mod": "Hot Bath",
+        "mod_url": "https://www.curseforge.com/minecraft/mc-mods/hotbath",
+        "role": "Tester",
+        "credit_text": "LUCK666DUCK is listed as \"Tester\" in the Members section on the CurseForge mod page (Next.js __next_f.push payload).",
+        "verbatim_member_entry": {
+          "id": 136751338,
+          "name": "LUCK666DUCK",
+          "role": "Tester",
+          "avatarAssets": {
+            "asset50x50": "https://avatars.githubusercontent.com/u/255657248?v=4",
+            "asset150x150": "https://avatars.githubusercontent.com/u/255657248?v=4"
+          }
+        },
+        "all_team_members_on_mod": [
+          {
+            "name": "CrabMods",
+            "role": "Owner",
+            "id": 104662927
+          },
+          {
+            "name": "DoraWolf",
+            "role": "Artist",
+            "id": 112169692
+          },
+          {
+            "name": "LUCK666DUCK",
+            "role": "Tester",
+            "id": 136751338
+          }
+        ],
+        "owner": "CrabMods",
+        "downloads_at_snapshot": 1012798
+      },
+      {
+        "mod": "InstantWorldMirror",
+        "mod_url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
+        "role": "Tester",
+        "credit_text": "LUCK666DUCK is listed as \"Tester\" in the Members section on the CurseForge mod page (Next.js __next_f.push payload).",
+        "verbatim_member_entry": {
+          "id": 136751338,
+          "name": "LUCK666DUCK",
+          "role": "Tester",
+          "avatarAssets": {
+            "asset50x50": "https://avatars.githubusercontent.com/u/255657248?v=4",
+            "asset150x150": "https://avatars.githubusercontent.com/u/255657248?v=4"
+          }
+        },
+        "all_team_members_on_mod": [
+          {
+            "name": "CrabMods",
+            "role": "Owner",
+            "id": 104662927
+          },
+          {
+            "name": "DoraWolf",
+            "role": "Artist",
+            "id": 112169692
+          },
+          {
+            "name": "LUCK666DUCK",
+            "role": "Tester",
+            "id": 136751338
+          }
+        ],
+        "owner": "CrabMods",
+        "downloads_at_snapshot": 878
+      }
+    ],
+    "no_credit_found_on": [
+      {
+        "mod": "Tanuki Decor",
+        "url": "https://www.curseforge.com/minecraft/mc-mods/tanukidecor",
+        "luck666duck_in_html": false,
+        "snapshot_note": "older Wayback snapshot — Cloudflare-protected for live fetch"
+      },
+      {
+        "mod": "pelagic-prehistory",
+        "url": "https://www.curseforge.com/minecraft/mc-mods/pelagic-prehistory",
+        "luck666duck_in_html": false,
+        "snapshot_note": "older Wayback snapshot — Cloudflare-protected for live fetch"
+      },
+      {
+        "mod": "Extra Golems",
+        "url": "https://www.curseforge.com/minecraft/mc-mods/extra-golems",
+        "luck666duck_in_html": false,
+        "snapshot_note": "older Wayback snapshot — Cloudflare-protected for live fetch"
+      },
+      {
+        "mod": "Nomadic Tents",
+        "url": "https://www.curseforge.com/minecraft/mc-mods/nomadic-tents",
+        "luck666duck_in_html": false,
+        "snapshot_note": "older Wayback snapshot — Cloudflare-protected for live fetch"
+      }
+    ]
+  },
+  "mcmod_cn": {
+    "user_listed": false,
+    "user_listed_note": "LUCK666DUCK is not credited on any mcmod.cn page that we could fetch. The Chinese-side QA tester credit on Shower Core is held by HotBathRed (mcmod author id 33402), a different user.",
+    "crabmods_team_author_url": "https://www.mcmod.cn/author/33273.html",
+    "crabmods_listed_mods": [
+      {
+        "url": "https://www.mcmod.cn/class/23766.html",
+        "class_id": "23766",
+        "title": "洗浴核心 (Shower Core)"
+      },
+      {
+        "url": "https://www.mcmod.cn/class/16955.html",
+        "class_id": "16955",
+        "title": "树叶腐烂抑制器 (Leaf Decay Stopper)"
+      },
+      {
+        "url": "https://www.mcmod.cn/class/16495.html",
+        "class_id": "16495",
+        "title": "热水澡 (Hot Bath)"
+      },
+      {
+        "url": "https://www.mcmod.cn/class/13280.html",
+        "class_id": "13280",
+        "title": "Tanuki Decor"
+      }
+    ],
+    "mods": [
+      {
+        "slug": "hotbath",
+        "name_zh": "热水澡",
+        "name_en": "Hot Bath",
+        "url": "https://www.mcmod.cn/class/16495.html",
+        "loader": "Forge",
+        "platform": "JAVA版 (JAVA Edition)",
+        "environment": "客户端需装, 服务端需装",
+        "status": "活跃",
+        "source": "开源",
+        "tags": [
+          "热水澡",
+          "热水",
+          "装饰",
+          "蒸汽",
+          "美化"
+        ],
+        "mc_versions_by_loader": {
+          "Forge": [
+            "1.21.3",
+            "1.21.1",
+            "1.21",
+            "1.20.6",
+            "1.20.1",
+            "1.19.4",
+            "1.19.2",
+            "1.18.2",
+            "1.16.5",
+            "1.14.4"
+          ]
+        },
+        "authors": [
+          {
+            "tooltip": "CrabMods",
+            "name": "CrabMods",
+            "position": "所有者",
+            "author_id": "33273"
+          },
+          {
+            "tooltip": "ModderAlex - Alex Li",
+            "name": "ModderAlex",
+            "position": "程序",
+            "author_id": "33400"
+          },
+          {
+            "tooltip": "DoraWolf",
+            "name": "DoraWolf",
+            "position": "美术",
+            "author_id": "33401"
+          },
+          {
+            "tooltip": "HotBathRed",
+            "name": "HotBathRed",
+            "position": "策划",
+            "author_id": "33402"
+          },
+          {
+            "tooltip": "冰淇淋好吃~☆",
+            "name": "冰淇淋好吃~☆",
+            "position": "吉祥物",
+            "author_id": "33403"
+          }
+        ],
+        "description_zh": "HotBath Mod 为 Minecraft 玩家带来了全新的沉浸式沐浴体验。 你现在可以通过不同类型的热水浴桶，享受多种独特的状态增益，让你的 Minecraft 生活更加放松与有趣！ 无论是快速恢复生命值，还是获得额外的状态效果，HotBath Mod 都能满足你的需求。"
+      },
+      {
+        "slug": "showercore",
+        "name_zh": "洗浴核心",
+        "name_en": "Shower Core",
+        "url": "https://www.mcmod.cn/class/23766.html",
+        "loader": "Forge , NeoForge",
+        "platform": "JAVA版 (JAVA Edition)",
+        "environment": "客户端需装, 服务端需装",
+        "status": "活跃",
+        "source": null,
+        "tags": [
+          "热水澡",
+          "热水",
+          "装饰",
+          "蒸汽",
+          "美化",
+          "浴缸",
+          "花洒",
+          "淋浴",
+          "潮涌核心",
+          "小黄鸭"
+        ],
+        "mc_versions_by_loader": {
+          "NeoForge": [
+            "1.21.1",
+            "1.20.1"
+          ]
+        },
+        "authors": [
+          {
+            "tooltip": "CrabMods",
+            "name": "CrabMods",
+            "position": "所有者",
+            "author_id": "33273"
+          },
+          {
+            "tooltip": "ModderAlex - Alex Li",
+            "name": "ModderAlex",
+            "position": "程序",
+            "author_id": "33400"
+          },
+          {
+            "tooltip": "DoraWolf",
+            "name": "DoraWolf",
+            "position": "美术",
+            "author_id": "33401"
+          },
+          {
+            "tooltip": "HotBathRed",
+            "name": "HotBathRed",
+            "position": "QA 测试",
+            "author_id": "33402"
+          }
+        ],
+        "description_zh": null
+      },
+      {
+        "slug": "instantworldmirror",
+        "name_zh": "瞬时世界之镜",
+        "name_en": "Instant World Mirror",
+        "url": "https://www.mcmod.cn/class/24605.html",
+        "loader": "Forge , NeoForge",
+        "platform": "JAVA版 (JAVA Edition)",
+        "environment": "客户端需装, 服务端需装",
+        "status": "活跃",
+        "source": "开源",
+        "tags": [
+          "自定义维度",
+          "维度",
+          "镜像世界",
+          "镜像",
+          "测试",
+          "复制"
+        ],
+        "mc_versions_by_loader": {
+          "NeoForge": [
+            "1.21.1",
+            "1.20.1"
+          ]
+        },
+        "authors": [
+          {
+            "tooltip": "CrabMods",
+            "name": "CrabMods",
+            "position": "所有者",
+            "author_id": "33273"
+          },
+          {
+            "tooltip": "ModderAlex - Alex Li",
+            "name": "ModderAlex",
+            "position": "程序/策划",
+            "author_id": "33400"
+          },
+          {
+            "tooltip": "DoraWolf",
+            "name": "DoraWolf",
+            "position": "美术/策划",
+            "author_id": "33401"
+          },
+          {
+            "tooltip": "HotBathRed",
+            "name": "HotBathRed",
+            "position": "吉祥物",
+            "author_id": "33402"
+          }
+        ],
+        "description_zh": "Instant World Mirror 为 MC 玩家提供了一个即时可用的沙盒试验场。 使用 次元镜像镜 ，你可以在任意位置创建周围区域的镜像副本，在其中自由探索、测试和实验，而不必担心对原世界造成任何影响。"
+      },
+      {
+        "slug": "tanukidecor",
+        "name_zh": "Tanuki Decor",
+        "name_en": null,
+        "url": "https://www.mcmod.cn/class/13280.html",
+        "loader": "Forge",
+        "platform": "JAVA版 (JAVA Edition)",
+        "environment": "客户端需装, 服务端需装",
+        "status": "活跃",
+        "source": "开源",
+        "tags": [
+          "装饰",
+          "家具"
+        ],
+        "mc_versions_by_loader": {
+          "Forge": [
+            "1.20.1",
+            "1.19.2",
+            "1.18.2"
+          ]
+        },
+        "authors": [
+          {
+            "tooltip": "skyjay1 - Sky James",
+            "name": "skyjay1",
+            "position": "所有者",
+            "author_id": "22911"
+          },
+          {
+            "tooltip": "Skart2000 - Skart2007 / skart2000",
+            "name": "Skart2000",
+            "position": "美术",
+            "author_id": "29153"
+          },
+          {
+            "tooltip": "TOBCS123",
+            "name": "TOBCS123",
+            "position": "贡献者",
+            "author_id": "31297"
+          }
+        ],
+        "description_zh": "此 Mod 添加了 170 种以上的装饰家具 （包括钟、座椅、床、储物 / 光源方块等各种装饰物）： 所有家具皆可在本 Mod 新增的 DIY Workbench 内指定想要合成的道具并消耗相应数量的 圆石、原木、铁锭、黏土球 来制作（相关配方可在配置文件内启用 / 禁用）； 钟（30+ 变种）： 具有精致的纹理 &amp; 独特的音效，大部分钟会在中午、午夜或黎明到来后报时。最棒的是，时钟能准确显示当前世界内时间； 座椅（20+ 变种）： 从凳子、椅子，再到沙发；部分座椅可同时承载两名玩家； 床（10+ 变种）： 厌倦了你的红色小床吗？厌倦了村庄的“共享床位”吗？来试试包括双人床 &amp; 篷床在内的新床吧； 储物方块（30+ 变种）： 告别不美观木桶 / 箱子来使用床头柜 / 占地 2*2 格的衣橱，这类方块最大储量多与原版的 大型箱子 一致； 照明方块（10+ 变种）： 当你可以选用灯、壁炉甚至霓虹灯来装饰新家时，谁还会使用火把？ 其它装饰物（60+ 变种）： 包括各种大小的桌子、花瓶等其他物品；有些方块除装饰性外还兼具额外的功能 （例如可以展示物品的 Display Case） ； 家具套装： 一些家具的纹理 / 风格自成一套风格，用 12 种不同风格的家具组彰显你的品味； 配置相关： 通过标签 “tanukidecor:diy_blacklist” 可禁用指定的方块 / 合成配方，更多选项详见配置文件。"
+      },
+      {
+        "slug": "leafdecaystopper",
+        "name_zh": "树叶腐烂抑制器",
+        "name_en": "Leaf Decay Stopper",
+        "url": "https://www.mcmod.cn/class/16955.html",
+        "loader": "Forge",
+        "platform": "JAVA版 (JAVA Edition)",
+        "environment": "客户端需装, 服务端需装",
+        "status": "活跃",
+        "source": "开源",
+        "tags": [
+          "树叶",
+          "树叶腐烂",
+          "decay",
+          "树叶不腐烂",
+          "建筑工具"
+        ],
+        "mc_versions_by_loader": {
+          "Forge": [
+            "1.20.1"
+          ]
+        },
+        "authors": [
+          {
+            "tooltip": "CrabMods",
+            "name": "CrabMods",
+            "position": "所有者",
+            "author_id": "33273"
+          }
+        ],
+        "description_zh": null
+      }
+    ]
+  },
+  "source_list_reconciliation": {
+    "mods_user_claims_tested": [
+      "Extra Golems",
+      "Nomadic Tents",
+      "Alex's Mobs",
+      "Alex's Caves",
+      "Tanuki Decor",
+      "Pelagic Prehistory",
+      "Instant World Mirror",
+      "Hot Bath",
+      "Shower Core"
+    ],
+    "publicly_verified_tester_credit": [
+      "Hot Bath",
+      "Instant World Mirror"
+    ],
+    "publicly_verified_no_credit": [
+      "Tanuki Decor",
+      "Pelagic Prehistory",
+      "Extra Golems",
+      "Nomadic Tents"
+    ],
+    "could_not_verify": [
+      "Alex's Mobs (no LUCK666DUCK in 2024 snapshot)",
+      "Alex's Caves (Cloudflare-blocked)",
+      "Shower Core (no Wayback CF snapshot)"
+    ],
+    "interpretation": "Public CurseForge member panels list LUCK666DUCK as Tester on exactly the 2 newer CrabMods mods (Hot Bath, Instant World Mirror), matching the user's own CurseForge profile project count. The other tested mods in the source list may reflect private/Discord-only tester relationships not surfaced on the public mod pages."
+  },
+  "fetch_log": [
+    {
+      "url": "https://github.com/LUCK666DUCK",
+      "status": "ok",
+      "notes": "Public profile fetched. Account has 0 public repos, 0 followers, 1 following, no bio, no location, no social links. Avatar id 255657248. Created sometime around late 2025/early 2026 based on user ID range. Visible identity = CurseForge avatar match."
+    },
+    {
+      "url": "https://www.curseforge.com/members/luck666duck",
+      "status": "ok",
+      "notes": "Fetched via Wayback (snapshot 2026-04-06). Tagline 'Gaming alchemy!'. Member since '2 months ago' relative to snapshot (~Feb 2026). Last active 2026-01-31. Followers: 0. Tier label: 'Author'. 2 Projects displayed: InstantWorldMirror, Hot Bath."
+    },
+    {
+      "url": "https://www.curseforge.com/minecraft/mc-mods/hotbath",
+      "status": "ok",
+      "notes": "Wayback snapshot 2026-02-01. LUCK666DUCK listed in Members panel as 'Tester' (id=136751338). Avatar URL = same GitHub avatar (255657248). CONFIRMED tester credit."
+    },
+    {
+      "url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
+      "status": "ok",
+      "notes": "Wayback snapshot 2026-04-06. LUCK666DUCK listed as 'Tester' (id=136751338). CONFIRMED second tester credit."
+    },
+    {
+      "url": "https://www.curseforge.com/minecraft/mc-mods/tanukidecor",
+      "status": "ok",
+      "notes": "Wayback snapshot 2024-05-15 — older HTML layout, no member panel data extractable, but raw HTML contains zero LUCK666DUCK references. Tester credit not present in this snapshot."
+    },
+    {
+      "url": "https://www.curseforge.com/minecraft/mc-mods/pelagic-prehistory",
+      "status": "partial",
+      "notes": "Wayback snapshot 2025-09-06. Older layout, raw HTML has zero LUCK666DUCK references."
+    },
+    {
+      "url": "https://www.curseforge.com/minecraft/mc-mods/extra-golems",
+      "status": "partial",
+      "notes": "Wayback snapshot 2024-02-25. Older layout, no LUCK666DUCK references."
+    },
+    {
+      "url": "https://www.curseforge.com/minecraft/mc-mods/nomadic-tents",
+      "status": "partial",
+      "notes": "Wayback snapshot 2024-01-19. No LUCK666DUCK references."
+    },
+    {
+      "url": "https://www.curseforge.com/minecraft/mc-mods/shower-core",
+      "status": "blocked",
+      "notes": "No Wayback snapshot found for this CurseForge URL. Live CF blocked by Cloudflare. mcmod.cn data captured as proxy."
+    },
+    {
+      "url": "https://www.curseforge.com/minecraft/mc-mods/alexs-mobs",
+      "status": "ok",
+      "notes": "Wayback snapshot 2024-12-26. No LUCK666DUCK references — Alex's Mobs page shows tester role for various other contributors but not the user."
+    },
+    {
+      "url": "https://www.curseforge.com/minecraft/mc-mods/alexs-caves",
+      "status": "blocked",
+      "notes": "Wayback snapshot returned a Cloudflare 'Just a moment' challenge page; no member data accessible."
+    },
+    {
+      "url": "https://www.mcmod.cn/class/16495.html",
+      "status": "ok",
+      "notes": "Hot Bath. Live mcmod.cn returns CC challenge; fetched via Wayback (2025-02-25). Five team members listed, none of them LUCK666DUCK. Chinese tester role 'HotBathRed' on related Shower Core page is a different user (mcmod author id 33402, not LUCK666DUCK)."
+    },
+    {
+      "url": "https://www.mcmod.cn/class/23766.html",
+      "status": "ok",
+      "notes": "Shower Core. Wayback (2026-01-17). 4 team members, no LUCK666DUCK. Description block was empty in the snapshot."
+    },
+    {
+      "url": "https://www.mcmod.cn/class/24605.html",
+      "status": "ok",
+      "notes": "Instant World Mirror. Wayback. 4 team members, no LUCK666DUCK."
+    },
+    {
+      "url": "https://www.mcmod.cn/author/33273.html",
+      "status": "ok",
+      "notes": "CrabMods author page. Lists 4 mods authored: Shower Core (23766), Leaf Decay Stopper (16955), Hot Bath (16495), Tanuki Decor (13280). Note: Pelagic Prehistory is in user's source file but is NOT under CrabMods author 33273 — likely different author."
+    },
+    {
+      "url": "https://www.mcmod.cn/class/13280.html",
+      "status": "ok",
+      "notes": "Tanuki Decor. Wayback 2024. Owner is skyjay1, not CrabMods (CrabMods involvement is via Chinese-side maintenance)."
+    },
+    {
+      "url": "https://www.mcmod.cn/class/16955.html",
+      "status": "ok",
+      "notes": "Leaf Decay Stopper. Wayback. Owned by CrabMods. No description in the snapshot."
+    },
+    {
+      "url": "https://search.mcmod.cn/s?key=Pelagic+Prehistory",
+      "status": "blocked",
+      "notes": "CC challenge in live + no Wayback snapshots. Cannot resolve mcmod.cn class ID for Pelagic Prehistory programmatically."
+    },
+    {
+      "url": "https://search.mcmod.cn/s?key=Alex%27s+Mobs",
+      "status": "blocked",
+      "notes": "CC challenge in live + no Wayback snapshots."
+    },
+    {
+      "url": "https://search.mcmod.cn/s?key=Alex%27s+Caves",
+      "status": "blocked",
+      "notes": "CC challenge in live + no Wayback snapshots."
+    },
+    {
+      "url": "https://search.mcmod.cn/s?key=Extra+Golems",
+      "status": "blocked",
+      "notes": "CC challenge in live + no Wayback snapshots."
+    },
+    {
+      "url": "https://search.mcmod.cn/s?key=Nomadic+Tents",
+      "status": "blocked",
+      "notes": "CC challenge in live + no Wayback snapshots."
+    }
+  ]
+}

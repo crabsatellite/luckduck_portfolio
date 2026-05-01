@@ -1,0 +1,253 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import CaseFileHeader from "~/components/CaseFileHeader.astro";
+import RegressionThread from "~/components/RegressionThread.astro";
+import BugLedger from "~/components/BugLedger.astro";
+import {
+  mods, bugsForMod, isCredited, hasRegression, hasNoIssues,
+  caseNumber, getMcmodEntry,
+} from "~/lib/data";
+import { t } from "~/i18n/strings";
+
+export async function getStaticPaths() {
+  return mods.map((m) => ({ params: { slug: m.id }, props: { mod: m } }));
+}
+
+const lang = "zh" as const;
+const { mod } = Astro.props;
+const bugs = bugsForMod(mod.id);
+const credited = isCredited(mod);
+const regress = hasRegression(mod);
+const noIssues = hasNoIssues(mod);
+const caseNo = caseNumber(mod);
+const mcmod = getMcmodEntry(mod);
+
+const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mod.name_zh;
+---
+
+<BaseLayout title={mod.name_en} lang={lang}>
+  <article class="case">
+    <div class="container">
+      <CaseFileHeader
+        caseNo={caseNo}
+        modNameLatin={mod.name_en}
+        modNameCn={cnName}
+        versions={mod.versions}
+        totalBugs={mod.total_bugs}
+        hasRegression={regress}
+        isCredited={credited}
+        hasNoIssues={noIssues}
+        lang={lang}
+      />
+
+      <div class="case__layout">
+        <div class="case__main">
+          {mod.rounds.length > 1 && (
+            <RegressionThread rounds={mod.rounds} lang={lang} />
+          )}
+
+          {noIssues ? (
+            <section class="case__pass">
+              <h2 class="case__pass-title mono">{t(lang, "case.no_issues")}</h2>
+              <p class="case__pass-detail">
+                {t(lang, "case.no_issues_detail")}
+              </p>
+              <p class="case__pass-meta mono">
+                {mod.versions.join(" / ")} · 1 round
+              </p>
+            </section>
+          ) : (
+            <BugLedger bugs={bugs} lang={lang} />
+          )}
+
+          <section class="case__legend" aria-labelledby="legend-heading">
+            <h2 id="legend-heading" class="case__legend-heading mono">
+              {t(lang, "case.legend_title")}
+            </h2>
+            <ul class="case__legend-list">
+              <li><span class="pill" data-status="open">open</span> {t(lang, "case.legend_open")}</li>
+              <li><span class="pill" data-status="unfixed">unfixed</span> {t(lang, "case.legend_unfixed")}</li>
+              <li><span class="pill" data-status="fixed">fixed</span> {t(lang, "case.legend_fixed")}</li>
+              <li><span class="pill" data-status="noted-not-bug">noted</span> {t(lang, "case.legend_noted")}</li>
+              <li><span class="chip" data-cat="crash">crash</span> {t(lang, "case.legend_crash_label")}</li>
+            </ul>
+          </section>
+        </div>
+
+        <aside class="case__side">
+          <div class="case__panel">
+            <h3 class="case__panel-h mono">{t(lang, "case.depth_signals")}</h3>
+            {mod.depth_signals.length > 0 ? (
+              <ul class="case__signals">
+                {mod.depth_signals.map((s) => (
+                  <li><span class="chip">{s}</span></li>
+                ))}
+              </ul>
+            ) : (
+              <p class="case__panel-empty mono">{t(lang, "case.no_depth")}</p>
+            )}
+          </div>
+
+          {mcmod && (
+            <div class="case__panel">
+              <h3 class="case__panel-h mono">mcmod.cn</h3>
+              <dl class="case__dl">
+                {mcmod.loader && (
+                  <>
+                    <dt class="mono">loader</dt>
+                    <dd class="mono">{mcmod.loader}</dd>
+                  </>
+                )}
+                {mcmod.status && (
+                  <>
+                    <dt class="mono">status</dt>
+                    <dd>{mcmod.status}</dd>
+                  </>
+                )}
+                {mcmod.environment && (
+                  <>
+                    <dt class="mono">env</dt>
+                    <dd>{mcmod.environment}</dd>
+                  </>
+                )}
+              </dl>
+            </div>
+          )}
+
+          <div class="case__panel">
+            <h3 class="case__panel-h mono">{t(lang, "case.links")}</h3>
+            <ul class="case__links">
+              {mod.mcmod_url ? (
+                <li>
+                  <a href={mod.mcmod_url} rel="noopener" target="_blank">
+                    {t(lang, "case.mcmod_link")} <span aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ) : (
+                <li class="case__links-empty mono">{t(lang, "case.no_mcmod")}</li>
+              )}
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .case { padding: 2rem 0 4rem 0; }
+  .case__layout {
+    display: grid;
+    grid-template-columns: 9fr 3fr;
+    gap: 2.4rem;
+    margin-top: 1rem;
+  }
+  @media (max-width: 980px) {
+    .case__layout { grid-template-columns: 1fr; }
+  }
+  .case__main { min-width: 0; }
+  .case__side { display: flex; flex-direction: column; gap: 1.4rem; }
+  .case__panel {
+    border: 1px solid var(--rule);
+    padding: 1rem 1.1rem;
+    background: var(--surface);
+  }
+  .case__panel-h {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 0.7rem 0;
+    font-weight: 600;
+  }
+  .case__panel-empty {
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+    margin: 0;
+  }
+  .case__signals { list-style: none; padding: 0; margin: 0; }
+  .case__signals li { display: inline-block; margin: 0.12rem 0.18rem 0.12rem 0; }
+  .case__dl {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 0.4rem 0.8rem;
+    margin: 0;
+    font-size: 0.82rem;
+  }
+  .case__dl dt {
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+  }
+  .case__dl dd { margin: 0; color: var(--ink); }
+  :lang(zh) .case__dl dd { font-family: var(--font-cjk); }
+  .case__links { list-style: none; margin: 0; padding: 0; }
+  .case__links li { margin-bottom: 0.4rem; }
+  .case__links a {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+  }
+  .case__links a:hover, .case__links a:focus-visible {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .case__links-empty {
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+  }
+  .case__pass {
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--ok);
+    padding: 1.6rem 1.4rem;
+    margin: 2rem 0;
+    background: var(--surface);
+  }
+  .case__pass-title {
+    font-size: 1.2rem;
+    color: var(--ok);
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .case__pass-detail {
+    color: var(--ink);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.65;
+  }
+  :lang(zh) .case__pass-detail { font-family: var(--font-cjk); line-height: 1.85; }
+  .case__pass-meta {
+    color: var(--ink-mute);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+  .case__legend { margin: 2rem 0; }
+  .case__legend-heading {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem 0;
+    font-weight: 600;
+  }
+  .case__legend-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: var(--ink-mute);
+    font-size: 0.82rem;
+  }
+  :lang(zh) .case__legend-list { font-family: var(--font-cjk); }
+  .case__legend-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+</style>

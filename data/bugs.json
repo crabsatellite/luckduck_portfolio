@@ -1,0 +1,5362 @@
+[
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "无论是单人模式还是多人模式，核能苦力怕核爆后玩家会掉线。",
+    "categories": [
+      "crash",
+      "multiplayer"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "单人模式新存档一上线会自动解锁成就(软糖去哪里了)。",
+    "categories": [
+      "achievement",
+      "multiplayer"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 3,
+    "text_zh": "击杀舐脑魔不会掉落废料桶。但实测会。",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 4,
+    "text_zh": "不论什么颜色的软糖鱼，被击杀后的掉落物均为红色软糖鱼。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 5,
+    "text_zh": "不论什么颜色的软糖熊，被击杀后的掉落物均为红色软糖鱼和红色明胶。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 6,
+    "text_zh": "糖果独角兽被击杀后没有掉落糖。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 7,
+    "text_zh": "口香糖蠕虫跳到空中后不下落。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 8,
+    "text_zh": "用不带精准采集附魔的普通矿稿挖掘地热通口，中地热通口，细地热通口应该掉落凝灰岩才对，而不是掉落对应的方块。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 9,
+    "text_zh": "书本中关于金属砂和全息投影仪的配方图片显示不全。",
+    "categories": [
+      "visual",
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 10,
+    "text_zh": "书本文本有误，明胶由软糖熊掉落，而非软糖鱼。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 11,
+    "text_zh": "锻造模板的物品名称未汉化。",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 12,
+    "text_zh": "富铁黏液球无法放进酿造台。",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 13,
+    "text_zh": "将红石粉和磁化药水，喷溅型磁化药水，滞留型磁化药水分别放入酿造台，无法酿造效果持续时间延长的对应3种药水。",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 14,
+    "text_zh": "锈蚀金属桶无法合成。",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 15,
+    "text_zh": "核能警示灯无法合成。",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 16,
+    "text_zh": "对着洞穴勘探台右键会掉线。",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 17,
+    "text_zh": "6种洞穴石板的颜色一样。\n6种洞穴手稿的颜色一样。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 18,
+    "text_zh": "实测用石镐及更高级的镐挖掘方铅铁矿石，掉落的是方铅铁矿石方块，而不是粗铁。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 19,
+    "text_zh": "实测用矿稿挖掘赤钕节点和青钕节点，掉落的是赤钕节点方块和青钕节点方块，而不是粗赤钕和粗青钕。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 20,
+    "text_zh": "实测用附魔了“时运3”的矿稿多次挖掘赤钕柱和青钕柱，不会掉落过粗赤钕和粗青钕。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 21,
+    "text_zh": "赤钕柱，赤钕节点，赤钕合金块没有磁性，不会会“吸附”带磁力的物品（如铁质物品、下界合金物品）。无论生存模式还是创造模式，玩家穿戴铁质装备，下界合金装备，手持铁质或下界合金武器从这三者旁走过，丝毫不被影响。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 22,
+    "text_zh": "青钕柱，青钕节点，青钕合金块没有磁性，不会会“排斥”带磁力的物品（如铁质物品、下界合金物品）。无论生存模式还是创造模式，玩家穿戴铁质装备，下界合金装备，手持铁质或下界合金武器从这三者旁走过，丝毫不被影响。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 23,
+    "text_zh": "对着磁力采石场粉碎器的红色底盘左键会掉线，无法将其破坏。",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 24,
+    "text_zh": "用全息编码器对着原版生物和该mod生物右键后，再对着全息投影仪右键，结果全息投影仪投影的影像为空。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 25,
+    "text_zh": "用未扫描过生物的全息编码器对着全息投影仪右键，也无法投影玩家的影像。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 26,
+    "text_zh": "追踪箭不会追踪目标。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 27,
+    "text_zh": "手持苏铁，卷叶蕨，古老藤对堆肥桶右键无法将其放入。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 28,
+    "text_zh": "给原始大棒附魔“轻便3”后再使用，其冷却时间没有变化。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 29,
+    "text_zh": "点燃的核弹如果从高处落下超过 20 格高度，并没有直接引爆。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 30,
+    "text_zh": "玩家坐在核弹上的位置高度不对。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 31,
+    "text_zh": "实测在撼地斯拉蛋直径72格范围内，即半径36格内，使核能熔炉过载爆炸后不会导致撼地斯拉蛋孵化。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 32,
+    "text_zh": "实测直接食用辐鳃鱼会获得100秒的辐照效果，而不是90秒。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 33,
+    "text_zh": "实测酸液不会将铜格栅，雕纹铜块，铜灯，铜门，铜活板门转变成氧化形态，以上物品的斑驳形态，锈蚀形态在接触酸液后也不会转化为氧化形态。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 34,
+    "text_zh": "无论生存还是创造，陆地还是水中，手持墨水炸弹或荧光墨水炸弹右键，炸弹不会被扔出。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 35,
+    "text_zh": "深潜者，深潜者骑士，深潜者法师在水下会溺死。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 36,
+    "text_zh": "骑乘潜水艇时坐姿不对，且坐的高度也不对，行驶过程抽搐，按g键开灯会调出别的界面(虽然灯确实开了)。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 37,
+    "text_zh": "实测用附魔了盲控的控心图腾时，被操纵的目标会被白色高亮标记，而不是红色。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 38,
+    "text_zh": "实测手持神秘宝石右键绑定窥探器，在千里之外对着空中右键，不会切换至窥探器的视角。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 39,
+    "text_zh": "生存模式下，关掉光影情况下，按g键激活黑暗套装的黑暗化身状态后，玩家身后的黑色流光有渲染问题，且该状态结束后依旧可以飞行。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 40,
+    "text_zh": "同时附魔了定点打击，暗色箭扣，暮光校准，阴影缓冲这4种附魔的恐惧之弓在使用过后的显示图标会抽搐。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 41,
+    "text_zh": "生存模式下，射线枪可以同时附魔上X射线和伽马射线。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 42,
+    "text_zh": "生存模式下，螺纹长枪可以同时附魔上二次冲刷和海啸。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 43,
+    "text_zh": "生存模式下，海洋法杖可以同时附魔上水弹反冲和三向齐射。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 44,
+    "text_zh": "生存模式下，控心图腾可以同时附魔上死亡引爆和星移斗转。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 45,
+    "text_zh": "生存模式下，荒芜匕首可以同时附魔上双重打击和悬刃。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 46,
+    "text_zh": "生存模式下，口香糖霰弹枪可以同时附魔上跳弹制导和三重口味。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 47,
+    "text_zh": "生存模式下，恐惧之弓可以同时附魔上刺骨黑暗和定点打击 、暗色箭扣，暮光校准。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 48,
+    "text_zh": "生存模式下，对身中“辐照”的生物右键丢出冰淇淋球，他们身上的“辐照”buff会被清除。\n生存模式下，如果对着身中2级或3级“辐照”的玩家右键丢出冰淇淋球，玩家身上的“辐照”会统一降为1级，持续时间变成1分30秒，在此基础上继续对玩家丢出冰淇淋球，“辐照”buff不会被清除，等级依旧保持为1级，而持续时间会重新变成1分30秒。并且，此“辐照”buff无法被指令清除。倒计时为0后会重新变成1分30秒。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 49,
+    "text_zh": "获得“发光”buff的玩家只是身体轮廓被白色高亮线表示，周围亮度没有变化。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 50,
+    "text_zh": "8分钟的“渊视”药水使用后获得的“渊视”buff效果没有实现。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 51,
+    "text_zh": "生存模式下，食用糖豆不会为玩家回复1点饥饿值。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 52,
+    "text_zh": "紫色苏打水瓶火箭未实现原版火箭的功能，对地面右键不会升空再炸，装备鞘翅飞行时右键不会提供动力。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 53,
+    "text_zh": "生存模式下，无光影情况下，口香糖霰弹枪射出的子弹不显示。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 54,
+    "text_zh": "生存模式下，无论玩家饿不饿，手持未绑定的生物群系棒糖右键都不能食用。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 55,
+    "text_zh": "生存模式，即使玩家身穿全套皮甲，当冰雪薄荷糖在接触到紫色苏打水爆炸后，玩家依旧会受到冰冻伤害。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 56,
+    "text_zh": "无光影情况下，透过泡牢buff的泡泡观察流体时(如水，岩浆)，会显示流体消失。透过其看生物，生物也不显示。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 57,
+    "text_zh": "用附魔了水泡牢笼的海洋法杖攻击目标，并使其成功获得泡牢buff后，本应只持续10秒的buff却能永久存在。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 58,
+    "text_zh": "玩家站立或跳跃踩碎地底翼龙的蛋不会受到攻击。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 59,
+    "text_zh": "生存模式，撼地龙行走时会震动8格内的水源或水坑，但20格内玩家的屏幕不会震动。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 60,
+    "text_zh": "生存模式，靠近擎天龙的玩家的屏幕不会震动。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 61,
+    "text_zh": "撼地斯拉在玩家旁行走和吼叫时，玩家屏幕不会震动。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 62,
+    "text_zh": "三叶虾在水中会溺死。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 63,
+    "text_zh": "无光影情况下，用原始大棒成功将对方打出“眩晕”buff时，缺少金色星星的动画。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 64,
+    "text_zh": "无光影情况下，玩家身中“辐射”buff时无荧光效果。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 65,
+    "text_zh": "无光影情况下，射线猫身上无荧光效果。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 66,
+    "text_zh": "书本中的所有图案全部显示为黑色。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 67,
+    "text_zh": "伽马蟑螂受到玩家或怪物的伤害后不会在原地释放一团毒气。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 68,
+    "text_zh": "当玩家被窥心者施加的控心术解除时，屏幕上不会弹出窥心者的蛾脸。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 69,
+    "text_zh": "生存模式下，手持生物群系棒糖对转换坩埚右键不会使其被消耗掉，用丢入坩埚的方式会被消耗掉。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 70,
+    "text_zh": "在使用过一次转换坩埚后再对其提供绑定了其它生物群系的生物群系棒糖，该转换坩埚只会尝试转换第一次提供的棒糖所绑定的那种生物群系。除非挖掉转换坩埚重新放置。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 71,
+    "text_zh": "洞穴勘探台上会长结晶",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Caves 1.21.1 测试问题记录.txt",
+    "index": 72,
+    "text_zh": "天花板没洞的情况下洞穴小屋里会刷新绿宝石矿石和煤矿石",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 1,
+    "text_zh": "创造模式下使用射线猫刷怪蛋会掉线。",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 2,
+    "text_zh": "创造模式下使用撼地斯拉刷怪蛋，没有生成撼地斯拉。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 3,
+    "text_zh": "核能苦力怕核爆后玩家会掉线。单人模式也一样。",
+    "categories": [
+      "crash",
+      "multiplayer"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 4,
+    "text_zh": "射线猫的掉落物书本和百科都没记载，实测只有骨头，请检查代码看看是否有其它掉落物。",
+    "categories": [
+      "spec-mismatch",
+      "wiki-vs-impl"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 5,
+    "text_zh": "无论是多人模式还是单人模式，玩家一上线会自动解锁(软糖去哪里了)成就。",
+    "categories": [
+      "achievement",
+      "multiplayer"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 6,
+    "text_zh": "洞穴概论中绝大部分文字的颜色过浅，建议换成深色字体。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 7,
+    "text_zh": "书本中的金属砂，全息投影仪配方显示不全",
+    "categories": [
+      "visual",
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 8,
+    "text_zh": "不论什么颜色的软糖鱼，被击杀后的掉落物均为红色软糖鱼。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 9,
+    "text_zh": "用不带精准采集附魔的普通矿稿挖掘地热通口，中地热通口，细地热通口均会掉落对应的方块，而非凝灰岩。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 10,
+    "text_zh": "不论什么颜色的软糖熊，被击杀后的掉落物均为红色软糖鱼和红色明胶。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 11,
+    "text_zh": "在附魔了抢夺的武器的攻击下\n绿色软糖熊被击杀后，有时会掉落红色软糖鱼和红色明胶。\n黄色软糖熊被击杀后，有时会掉落红色软糖鱼和红色明胶。\n蓝色软糖熊被击杀后，有时会掉落红色软糖鱼和红色明胶。\n粉色软糖熊被击杀后，有时会掉落红色软糖鱼和红色明胶。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 12,
+    "text_zh": "文本有误：明胶由软糖熊掉落，而非软糖鱼。截图如下",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 13,
+    "text_zh": "锻造模板的物品名称未汉化，截图如下。",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 14,
+    "text_zh": "无论单人模式还是多人模式，右键使用射线枪会掉线。",
+    "categories": [
+      "crash",
+      "multiplayer"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 15,
+    "text_zh": "富铁黏液球无法放进酿造台酿造磁化药水。",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 16,
+    "text_zh": "将红石粉和磁化药水，喷溅型磁化药水，滞留型磁化药水分别放入酿造台，无法酿造效果持续时间延长的对应3种药水。",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 17,
+    "text_zh": "糖果独角兽被击杀后没有掉落物品--甜泡芙，且其文本描述的击杀掉落物应该为甜泡芙，而不是糖。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 18,
+    "text_zh": "核能警示灯无法合成。",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 19,
+    "text_zh": "对着洞穴勘探台右键会掉线",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 20,
+    "text_zh": "6种洞穴石板的颜色一样",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 21,
+    "text_zh": "6种洞穴手稿的颜色一样",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 22,
+    "text_zh": "用未附魔“精准采集”的石镐及更高级的镐挖掘方铅铁矿石，掉落的是方铅铁矿石方块，而不是粗铁。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 23,
+    "text_zh": "用矿稿挖掘赤钕节点和青钕节点，掉落的是赤钕节点方块和青钕节点方块，而不是粗赤钕和粗青钕。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 24,
+    "text_zh": "用附魔了“时运3”的矿稿多次挖掘赤钕柱和青钕柱，只见这二者掉落过赤钕柱方块和青钕柱方块，不见掉落过粗赤钕和粗青钕。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 25,
+    "text_zh": "赤钕柱，赤钕节点，赤钕合金块没有磁性，不会会“吸附”带磁力的物品（如铁质物品、下界合金物品）。无论生存模式还是创造模式，玩家穿戴铁质装备，下界合金装备，手持铁质或下界合金武器从这三者旁走过，丝毫不被影响。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 26,
+    "text_zh": "青钕柱，青钕节点，青钕合金块没有磁性，不会会“排斥”带磁力的物品（如铁质物品、下界合金物品）。无论生存模式还是创造模式，玩家穿戴铁质装备，下界合金装备，手持铁质或下界合金武器从这三者旁走过，丝毫不被影响。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 27,
+    "text_zh": "用全息编码器对着原版生物和该mod生物右键后，再对着全息投影仪右键，结果全息投影仪投影的影像为空。\n用未扫描过生物的全息编码器对着全息投影仪右键，也无法投影玩家的影像。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 28,
+    "text_zh": "对着磁力采石场粉碎器的红色底盘左键会掉线。",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 29,
+    "text_zh": "追踪箭不会追踪目标。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 30,
+    "text_zh": "手持苏铁，卷叶蕨，古老藤对堆肥桶右键无法将其放入。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 31,
+    "text_zh": "给原始大棒附魔“轻便3”再左键攻击后的冷却时间没有变化。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 32,
+    "text_zh": "玩家坐在核弹上的高度不对。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 33,
+    "text_zh": "在撼地斯拉蛋直径72格范围内，即半径36格内，使核能熔炉过载爆炸后不会导致撼地斯拉蛋孵化。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 34,
+    "text_zh": "酸液不会将铜格栅，雕纹铜块，铜灯，铜门，铜活板门转变成氧化形态，以上物品的斑驳形态，锈蚀形态在接触酸液后也不会转化为氧化形态。\n只有铜块，切制铜块，切制铜楼梯，切制铜台阶这4种铜制品及其斑驳形态，锈蚀形态能被酸液转化为氧化形态。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 35,
+    "text_zh": "无论生存还是创造，陆地还是水中，手持墨水炸弹，荧光墨水炸弹右键，炸弹没有扔出，无抛物线动画，远处也无墨水云和荧光墨水云爆开。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 36,
+    "text_zh": "深潜者，深潜者骑士，深潜者法师在水下会溺死。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 37,
+    "text_zh": "点燃的核弹如果从高处落下超过 20 格高度，并没有直接引爆。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 38,
+    "text_zh": "8分钟的“渊视”药水使用后获得的“渊视”buff效果没有实现。\n8分钟的喷溅型“渊视”药水使用后获得的“渊视”buff效果没有实现。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 39,
+    "text_zh": "生存模式下，对身中“辐照”的生物右键丢出冰淇淋球，他们身上的“辐照”buff会被清除。\n生存模式下，如果对着身中2级或3级“辐照”的玩家右键丢出冰淇淋球，玩家身上的“辐照”会统一降为1级，持续时间变成1分30秒，在此基础上继续对玩家丢出冰淇淋球，“辐照”buff不会被清除，等级依旧保持为1级，而持续时间会重新变成1分30秒。并且，此“辐照”buff无法被指令清除。倒计时为零后会重新变成1分30秒。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 40,
+    "text_zh": "生存模式下，食用任何种类的糖豆不会为玩家回复1点饥饿值。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 41,
+    "text_zh": "生存模式下，无光影情况下，口香糖霰弹枪射出的子弹不可见。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 42,
+    "text_zh": "用附魔了盲控的控心图腾时，被操纵的目标会被白色高亮标记，而不是红色。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 43,
+    "text_zh": "透过扫描机兵的扫描光线观察流体时(如水，岩浆，紫色苏打水)，会显示流体消失。传送石碑的光线也会无法显示。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 44,
+    "text_zh": "生存模式下，无论玩家饿不饿，手持未绑定的生物群系棒糖右键都不能食用。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 45,
+    "text_zh": "玩家站立或跳跃踩碎地底翼龙的蛋不会受到攻击。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 46,
+    "text_zh": "生存模式，撼地龙行走时会震动8格内的水源或水坑，但20格内玩家的屏幕不会震动。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 47,
+    "text_zh": "撼地斯拉在玩家旁行走和吼叫时，玩家屏幕不会震动。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 48,
+    "text_zh": "三叶虾在水中会溺死。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 49,
+    "text_zh": "生存模式，即使玩家身穿全套皮甲，当冰雪薄荷糖在接触到紫色苏打水爆炸后，玩家依旧会受到冰冻伤害。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 50,
+    "text_zh": "生存模式下，射线枪可以同时附魔上X射线和伽马射线。\n生存模式下，螺纹长枪可以同时附魔上二次冲刷和海啸。\n生存模式下，海洋法杖可以同时附魔上水弹反冲和三向齐射。\n生存模式下，控心图腾可以同时附魔上死亡引爆和星移斗转。\n生存模式下，荒芜匕首可以同时附魔上双重打击和悬刃。\n生存模式下，口香糖霰弹枪可以同时附魔上跳弹制导和三重口味。\n生存模式下，恐惧之弓可以同时附魔上刺骨黑暗和定点打击 、暗色箭扣，暮光校准这3个。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 51,
+    "text_zh": "生存模式下，关掉光影情况下，按g键激活黑暗套装的黑暗化身状态后，玩家身后的黑色流光有渲染问题，且该状态结束后依旧可以飞行。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 52,
+    "text_zh": "当玩家切换至非第一人称视角的情况下，手持射线枪右键，射线是正常射出的，但是枪口是朝下的。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 53,
+    "text_zh": "无光影情况下，用原始大棒成功将对方打出“眩晕”buff时，对方的头上只有3条弯曲的线段绕其头部旋转的动画，缺少金色星星的动画。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 54,
+    "text_zh": "无光影情况下，玩家和怪物身中“辐射”buff时无荧光效果。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 55,
+    "text_zh": "无光影情况下，射线猫身上无荧光效果。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 56,
+    "text_zh": "无光影情况下，玩家和怪物身中“4级辐射”buff时荧光效果的颜色不是蓝色。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 57,
+    "text_zh": "书本中的所有图案全部显示为黑色。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 58,
+    "text_zh": "伽马蟑螂受到玩家或怪物的伤害后不会在原地释放一团毒气。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 59,
+    "text_zh": "同时附魔了定点打击，暗色箭扣，暮光校准，阴影缓冲这4种附魔的恐惧之弓在使用过一次且将其放入箱子里后，其显示的小图标会变成弓拉开且搭上一只箭的样子。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 60,
+    "text_zh": "当玩家被窥心者施加的控心术解除时，屏幕上不会弹出窥心者的蛾脸。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 61,
+    "text_zh": "用附魔了水泡牢笼的海洋法杖攻击目标，并使其成功获得泡牢buff后，本应只持续10秒的buff却能永久存在。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 62,
+    "text_zh": "无光影情况下，第三人称，透过泡牢buff的泡泡观察流体时(如水，岩浆)，会显示流体消失。透过其看生物，生物也不显示。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 63,
+    "text_zh": "生存模式，靠近擎天龙的玩家的屏幕不会震动。\n生存模式，骑乘在擎天龙背上切换视角时，有两种视角下的技能充能图标会消失。\n生存模式，喂食了擎天龙一次幽静沙拉后其头部会一直冒出发光粒子，其可骑乘状态持续了非常久才消失，维基对该时间的描述是“短暂”(没写具体几分几秒)。",
+    "categories": [
+      "visual",
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 64,
+    "text_zh": "紫色苏打水瓶火箭未实现原版火箭的功能，对地面右键不会升空再炸，装备鞘翅飞行时右键不会提供动力。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 65,
+    "text_zh": "紫色苏打水瓶火箭辅助鞘翅飞行时会有该物品的小图标伴随生成。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 66,
+    "text_zh": "骑乘潜水艇时坐的高度不对，行驶过程抽搐。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 67,
+    "text_zh": "手持神秘宝石右键绑定窥探器，且在千里之外右键，屏幕上会显示一行“潜行以停止观测.....”的文字，但等待许久画面也不会切换至窥探器的视角。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 68,
+    "text_zh": "在使用过一次转换坩埚后再对其提供绑定了其它生物群系的生物群系棒糖，该转换坩埚只会尝试转换第一次提供的棒糖所绑定的那种生物群系。除非挖掉转换坩埚重新放置。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_caves",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Caves 测试问题记录 (旧).txt",
+    "index": 69,
+    "text_zh": "口香糖蠕虫被骑乘时无法前进，会原地不动。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "大王乌贼无法放置在地面上，放置后会沉进地面",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "地底矿工在使用photon-main光影的情况下会隐身，关掉光影会正常出现。",
+    "categories": [
+      "visual",
+      "mod-compat",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 3,
+    "text_zh": "幽灵矿镐在玩家的物品栏已满后，可以作为额外的容器存储9组挖掘后的物品。在玩家的物品栏有空位后会自动将存储的物品放进物品栏里。但在生存模式下实测，玩家物品栏满后进行挖掘不掉落方块，当玩家物品栏有空位后挖掘才有方块掉落。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 4,
+    "text_zh": "在使用了获取全配方的指令下，鲨鱼利齿箭无法合成",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 5,
+    "text_zh": "鹿角头饰在书本中的配方显示不全",
+    "categories": [
+      "visual",
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 6,
+    "text_zh": "彩虹玻璃无法合成",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 7,
+    "text_zh": "书本中的跨座晶石鞍的配方与实际的合成配方不一致，按书上的配方无法合成，按旧版本的配方则可以合成",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 8,
+    "text_zh": "将彩虹果冻自己吃掉或者拿着对着其它生物右键，可使自己和对应生物获得七彩彩光效果。但实测无论光影是否开关，对此mod中的生物，原版生物和玩家本身使用，均未获得七彩彩光效果",
+    "categories": [
+      "visual",
+      "spec-mismatch",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 9,
+    "text_zh": "书本上记载在酿造台：\n响尾+科莫多巨蜥唾液瓶=毒素精华\n洞穴蜈蚣腿+科莫多巨蜥唾液瓶=毒素精华\n洞穴蜈蚣腿+毒素精华=抗毒药水\n实测这3种配方均无法合成，每种配方的后一种材料都无法摆放进酿造台",
+    "categories": [
+      "recipe",
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 10,
+    "text_zh": "响尾+剧毒药水的合成结果不为毒素精华，而为粗制的药水",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 11,
+    "text_zh": "骨蟒尖齿+熔岩瓶=熔岩明视药水，但实测无法合成，2种材料都无法摆放进酿造台",
+    "categories": [
+      "recipe",
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 12,
+    "text_zh": "无法对陆地上晒太阳的海豹喂各种鱼",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 13,
+    "text_zh": "书本中合成引虫药水的文字记录有缺失，请第三行末尾的表述改成“可以与粗制的药水合成引虫药水”",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 14,
+    "text_zh": "玩家骑乘大象，獠牙兽，炽岩时的位置有误。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 15,
+    "text_zh": "鸭嘴兽的蛋(不是刷怪蛋)这个物品没有汉化。",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 16,
+    "text_zh": "龙涎香可在渔夫村民处换一大笔绿宝石，但实测刷了很久的渔夫村民没有这个物品的交换选项，且把龙涎香直接摆放进交易槽也没有物品可换。",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 17,
+    "text_zh": "衣壳体理应可容纳一组物品，实测拿着物品对其右键放不进任何东西。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 18,
+    "text_zh": "将绯红孑孓放入衣壳体中，等待片刻后，将会掉落神秘蠕虫。但实测将其放进衣壳体中6秒后会消失。",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 19,
+    "text_zh": "将生鳕鱼放进衣壳体中会转化获得宇宙鳕鱼。但实测将其放进衣壳体中6秒后会消失。",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 20,
+    "text_zh": "装上了远古疣猪靴子的獠牙兽脚底模型贴图没有发生变化。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 21,
+    "text_zh": "无法对炽岩右键喂食绯红孑孓。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 22,
+    "text_zh": "衣壳体能转化任意带有#minecraft:music_disks的物品为音乐唱片。但实测只有该mod的一张深蓝色唱片放进去可以发生变化，原版带有minecraft:music_disks的唱片放进去则无变化。",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 23,
+    "text_zh": "手持该mod的唱片对唱片机右键无法将唱片放入。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 24,
+    "text_zh": "对嬗变台右键无法将其打开。\n修复后的第二次检测，现在对嬗变台右键可以将其打开，但无论生存模式还是创造模式，在其中放入物品无法消耗经验进行嬗变，三个选项栏为空。",
+    "categories": [],
+    "status": "fixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 25,
+    "text_zh": "毁坏嬗变台会产生爆炸，不会掉落本身，只会掉落1个下界之星。但实测无论创造模式还是生存模式，毁坏嬗变台后都只会掉落1个嬗变台，而不是1个下界之星。\n修复后的第二次检测，无论创造模式还是生存模式，现在毁坏嬗变台后什么都不掉落。",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": "fixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 26,
+    "text_zh": "冠蓝鸦骑在四肢着地时的浣熊背上的高度不对。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 27,
+    "text_zh": "手持维度撕裂者或碎裂的维度撕裂者这2个工具，长按右键，玩家面前不会形成传送门。\n修复后的第二次检测，使用维度撕裂者生成的传送门的持续时间为15秒，而不是1分钟。",
+    "categories": [],
+    "status": "fixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 28,
+    "text_zh": "龙虾在水中会淹死。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 29,
+    "text_zh": "对驯服后的浣熊右键各色地毯，它披上身的永远为白色，而非对应颜色。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 30,
+    "text_zh": "拥有油腻腻buff的生物如果在水中会浮到水面，如果在下雨天会从地面飘到空中。但实测此条效果未实现。",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 31,
+    "text_zh": "手持血液喷射器单击右键无法射击",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 32,
+    "text_zh": "手持血淋巴喷射器单击右键无法射击",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 33,
+    "text_zh": "手持臭屁手枪单击右键有响屁声，但不会射出屁气弹",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 34,
+    "text_zh": "深澜之盾无论装备左手还是右手，单击右键都会迅速举起然后放下，长按右键则都是不断举起放下，无法进行防御",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 35,
+    "text_zh": "骷髅剑鱼头骨左键可正常挥舞，单击右键会迅速举起然后放下，长按右键则是不断举起放下，无法进行防御",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 36,
+    "text_zh": "末影噬菌体火箭右键地面会直接在地面炸开，而非升上天再炸，且在玩家装备鞘翅飞行时右键，也会直接炸，没有影响玩家的飞行速度",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 37,
+    "text_zh": "手持紫颂果钓竿骑乘末影缓步兽时右键无法进行加速",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 38,
+    "text_zh": "无论末影缓步兽是否披着鞍，末影缓步兽都会跟随手持紫颂果钓竿的玩家。但实测都不会跟随。",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 39,
+    "text_zh": "装备了鞍的末影缓步兽背上无显示，不过依旧可以正常骑乘",
+    "categories": [
+      "visual",
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 40,
+    "text_zh": "装备洞穴蜈蚣护腿靠近墙壁会自动攀爬，书本和百科均无此特点的描写，可能为bug",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 41,
+    "text_zh": "玩家空手右键带有菌丝的切叶蚁室没有获得菌丝球。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 42,
+    "text_zh": "实测无材质包，无光影的情况下，当驯服后的白头海雕或林鸱站在玩家的猎鹰手套上时，此时对着任何地方左键会立刻掉线。",
+    "categories": [
+      "crash",
+      "visual",
+      "spec-mismatch",
+      "shader",
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 43,
+    "text_zh": "当在雨蛙旁用唱片机播放唱片时，玩家会立刻掉线。",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 44,
+    "text_zh": "玩家和其它生物被老虎攻击后没有获得“极度恐惧”buff，依旧可以移动。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 45,
+    "text_zh": "实测无材质包，无光影的情况下，栉水母身上的彩虹效果是静止的，而非流动的。",
+    "categories": [
+      "visual",
+      "spec-mismatch",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 46,
+    "text_zh": "拥有老虎祝福buff的玩家被其它生物攻击时，老虎不会保护玩家，不会帮助玩家战斗。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 47,
+    "text_zh": "对末地海盗门，末地海盗活板门空手右键无法开关门，且门不发光。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 48,
+    "text_zh": "虚空锚绞盘无转动动画。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 49,
+    "text_zh": "通电后，船锚会突然不见，实测地点的下方地面也无。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 50,
+    "text_zh": "虚空锚绞盘断电收回船锚时，与其相连的锁链模型会消失。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 51,
+    "text_zh": "与跨板相关的4本附魔书中有3本未汉化。",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 52,
+    "text_zh": "生存模式，对4个附魔跨版左键，带有\"板归\"附魔的跨板会被打掉消失，其它3个附魔跨版会被打掉收回物品栏。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 53,
+    "text_zh": "在多人模式的新存档中，无论生存还是创造，使用动物图鉴不会解锁成就。",
+    "categories": [
+      "achievement",
+      "multiplayer"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 54,
+    "text_zh": "实测玩家被驼鹿攻击不会被击退，而是被击跳起来。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 55,
+    "text_zh": "用糖和水瓶对蜂鸟喂食器右键，shift+右键，c+右键均无法进行填充。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 56,
+    "text_zh": "杀死手持沙槌的蟑螂不会获得成就。",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 57,
+    "text_zh": "玩家首次获得造风器时不会获得成就。",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 58,
+    "text_zh": "用望远镜观察野牛不会获得成就。",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 59,
+    "text_zh": "用望远镜观察炽岩不会获得成就。",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 60,
+    "text_zh": "喂食鬃狼苹果不会获得成就。",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 61,
+    "text_zh": "喂食跨座蝌蚪绯红孑孓使其成长成跨座兽后，不会获得成就。",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 1.21.1 测试问题记录.txt",
+    "index": 62,
+    "text_zh": "操控白头海雕击杀了距离玩家本体100个方块以外的任何生物后，不会获得成就。",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 1,
+    "text_zh": "大王乌贼无法放置在地面上，用刷怪蛋放置地面上后，下一刻会完全沉进地面，就像幽灵穿墙一样。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 2,
+    "text_zh": "在使用了获取全配方的指令下，鲨鱼利齿箭，彩虹玻璃无法合成。",
+    "categories": [
+      "recipe"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 3,
+    "text_zh": "鹿角头饰在书中的配方显示不全，百度了一下缺失部分可能是线，但照着摆放后却无法合成。",
+    "categories": [
+      "visual",
+      "recipe",
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 4,
+    "text_zh": "书中的跨座晶石鞍的配方与实际的合成配方不一致。按书上的配方无法合成，但是按mc百科的配方，却可以合成。",
+    "categories": [
+      "recipe",
+      "spec-mismatch",
+      "wiki-vs-impl"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 5,
+    "text_zh": "无论光影是否打开，对此mod中的生物，原版生物和玩家本身使用彩虹果冻，均无法获得七彩彩光效果。",
+    "categories": [
+      "visual",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 6,
+    "text_zh": "书上记载在酿造台：\n响尾+科莫多巨蜥唾液瓶=毒素精华\n洞穴蜈蚣腿+科莫多巨蜥唾液瓶=毒素精华\n洞穴蜈蚣腿+毒素精华=抗毒药水\n实测这3种配方均无法合成，每种配方的后一种材料无法摆放进酿造台\n此外，mc百科中：\n响尾+剧毒药水=毒素精华\n实测的合成结果为粗制的药水",
+    "categories": [
+      "recipe",
+      "spec-mismatch",
+      "wiki-vs-impl"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 7,
+    "text_zh": "书上：\n骨蟒尖齿+熔岩瓶=熔岩明视药水\n实测无法合成，2种材料都无法摆放进去",
+    "categories": [
+      "recipe",
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 8,
+    "text_zh": "鸭嘴兽的蛋(不是刷怪蛋)这个物品没有汉化。",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 9,
+    "text_zh": "衣壳体可容纳一组物品，实测拿着物品对其右键放不进任何东西。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 10,
+    "text_zh": "书上无记录，但mc百科上有记录：\n将绯红孑孓放入衣壳体中6秒，会变成神秘蠕虫\n将生鳕鱼放入衣壳体中6秒，会变成宇宙鳕鱼\n实测将生鳕鱼，绯红孑孓分别放进衣壳体中6秒后会消失",
+    "categories": [
+      "spec-mismatch",
+      "wiki-vs-impl"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 11,
+    "text_zh": "灰熊驯服后右键无法骑乘\n大象的骑乘位置有误\n獠牙兽的骑乘位置有误，且右击獠牙兽给其装备上远古疣猪靴子后，其脚部贴图没有变化。\n炽岩的骑乘位置有误，且手持绯红孑孓右击炽岩，手臂没有挥舞的动作，疑似喂食不了，且等待许久不见繁殖动作，无后代诞生。",
+    "categories": [
+      "visual",
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 12,
+    "text_zh": "科莫多巨蜥实测单投64X5份腐肉，组投64X8份腐肉后依旧没有驯服，此问题1.20.1也有，为历史遗留bug。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 13,
+    "text_zh": "EntityLaviathan - 岩浆生物，可在所有流体中呼吸         正常呼吸 (请统一叫这玩意儿炽岩)\nEntitySkelewag - 水下骨架，可在水下呼吸                    正常呼吸 (请统一叫这玩意儿骷髅剑鱼)\nEntityAnaconda - 蟒蛇，可在水下呼吸                           正常呼吸 (统一叫森蚺)\nEntityAnacondaPart - 蟒蛇部件                                      正常呼吸 (测的整条森蚺)\nEntityAlligatorSnappingTurtle - 鳄龟                           正常呼吸 (统一叫大鳄龟)\nEntityBananaSlug - 香蕉蛞蝓                                           正常呼吸\nEntityBoneSerpent - 骨蛇（岩浆生物）                         正常呼吸(统一叫骨蟒)\nEntityCaiman - 凯门鳄 ",
+    "categories": [],
+    "status": "noted-not-bug",
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 14,
+    "text_zh": "龙虾在水中会淹死",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 15,
+    "text_zh": "骷髅剑鱼部分中文语句有歧义\n建议调整文本语序：将截图右侧第二行末尾开始的句子变更为“在骷髅剑鱼被杀死之后，有机会掉落一些鱼骨或骷髅剑鱼头骨。其中鱼骨可以用来.......”\n避免产生“鱼骨可以拿来制作骷髅剑鱼头骨”这种歧义。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 16,
+    "text_zh": "关于音乐唱片，书上无记录，但mc百科有记录\nmc百科音乐唱片页面记录：使用任意一张原版唱片放入衣壳体中可获得音乐唱片\nmc百科衣壳体页面记录：衣壳体能转化任意带有#minecraft:music_disks的物品为音乐唱片\n实测只有该mod的一张深蓝色唱片放进衣壳体可发生转变，原版带有minecraft:music_disks标签的唱片放进去则没有变化",
+    "categories": [
+      "spec-mismatch",
+      "wiki-vs-impl"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 17,
+    "text_zh": "此外，该mod的唱片无法放进唱片机播放音乐",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 18,
+    "text_zh": "嬗变台右键打不开",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 19,
+    "text_zh": "现在嬗变台右键可以开，但无论生存模式还是创造模式，在其中放入物品无法消耗经验进行嬗变，三个选项栏为空\n书上记录，毁坏它会产生爆炸，不会掉落本身，只会掉落1个下界之星\n实测无论创造模式还是生存模式，用稿敲掉嬗变台后什么都不掉落",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 20,
+    "text_zh": "末影嗜菌体，花飘飘这2个生物不飞的话不能正常走上1格高的方块，二者的台阶攀爬高度不正确。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 21,
+    "text_zh": "对驯服后的浣熊右键各色地毯，它身上显示出来的围巾颜色永远为白色，而非对应颜色。",
+    "categories": [
+      "visual",
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 22,
+    "text_zh": "实测冠蓝鸦骑在四肢着地时的浣熊背上的高度不对。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 23,
+    "text_zh": "书上关于鱼油的记载疑似机翻，如“当鱼油被浸没”，建议人工重新翻译，正确的应是“当生物或玩家被鱼油浸没”\nmc百科记录：拥有“油腻腻”buff的生物如果在水中会浮到水面，如果在下雨天会从地面飘到空中。\n                        实测此效果未实现。",
+    "categories": [
+      "i18n",
+      "spec-mismatch",
+      "wiki-vs-impl"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 24,
+    "text_zh": "实测 维度撕裂者 和 碎裂的维度撕裂者 这2个工具长按右键只会不断舞动，面前没有形成传送门。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 25,
+    "text_zh": "使用 维度撕裂者 生成的传送门的持续时间为15秒，但书上记录其持续1分钟，mc百科记录其持续15秒，二者不一致。",
+    "categories": [
+      "wiki-vs-impl"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 26,
+    "text_zh": "血液喷射器单击右键无法射击，长按右键是不断挥舞。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 27,
+    "text_zh": "血淋巴喷射器单击右键无法射击，长按右键是不断挥舞。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 28,
+    "text_zh": "臭屁手枪单击右键有响屁声，但多次单击右键只有寥寥几次有屁气弹射出，长按右键是不断挥舞。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 29,
+    "text_zh": "深澜之盾无论装备左手还是右手，单击右键都会迅速举起然后放下，长按右键则都是不断举起放下，无法进行防御。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 30,
+    "text_zh": "骷髅剑鱼头骨左键可正常挥舞，单击右键会迅速举起然后放下，长按右键则是不断举起放下，无法进行防御。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 31,
+    "text_zh": "装备洞穴蜈蚣护腿靠近墙壁会自动攀爬，书上和mc百科均无此特点的记录，可能为bug。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 32,
+    "text_zh": "末影噬菌体火箭右键地面会在地面炸开，而非升上天再炸，且在玩家装备鞘翅飞行时右键，也会直接炸，玩家的飞行速度没有变化。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 33,
+    "text_zh": "手持紫颂果钓竿骑乘末影缓步兽时右键无法进行加速。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 34,
+    "text_zh": "无论末影缓步兽是否披着鞍，末影缓步兽不会跟随手持紫颂果钓竿的玩家。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 35,
+    "text_zh": "书本上，幽灵矿镐在玩家的物品栏已满后，可以作为额外的容器存储9组挖掘后的物品。在玩家的物品栏有空位后会自动将存储的物品放进物品栏里。\n在生存模式下实测，此条效果未实现",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 36,
+    "text_zh": "蟑螂文本记录有误，请将截图中左侧的第一句话改为“彩虹果冻可以复刻出颜色光怪陆离的蟑螂”",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 37,
+    "text_zh": "实测无材质包，无光影的情况下，蘑菇君向附近同类型的蘑菇发射类似守卫者的光束时只有眼睛亮了，没有光束。",
+    "categories": [
+      "visual",
+      "spec-mismatch",
+      "shader"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 38,
+    "text_zh": "空手右键带有菌丝的切叶蚁室没有获得菌丝球。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 39,
+    "text_zh": "实测无材质包，无光影的情况下，当驯服后的白头海雕站在玩家的猎鹰手套上时，此时对着任何地方左键会立刻掉线。",
+    "categories": [
+      "crash",
+      "visual",
+      "spec-mismatch",
+      "shader",
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 40,
+    "text_zh": "当林鸱站在玩家的猎鹰手套上时，此时对着任何地方左键会立刻掉线。",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 41,
+    "text_zh": "玩家和其它生物被老虎攻击后没有获得“极度恐惧”buff，依旧可以移动。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 42,
+    "text_zh": "驯服后的拟态章鱼拟态为河豚，苦力怕，守卫者后右键喂食复刻凝胶到不能再喂，此时被敌对生物攻击，却没有使用对应生物的能力来反击。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 43,
+    "text_zh": "当在雨蛙旁用唱片机播放唱片时，会立刻掉线。",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 44,
+    "text_zh": "玩家拥有“虎佑”buff时被其它生物攻击，老虎不会保护玩家并帮助玩家战斗",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 45,
+    "text_zh": "对末地海盗门，末地海盗活板门空手右键无法开关门。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 46,
+    "text_zh": "虚空锚绞盘，无转动动画。\n绞盘下方放上船锚通电后，船锚会突然不见，实测地点的下方地面也无。\n                              断电后，等待片刻后船锚还是没有回来。\n                              在一旁不远处重新放置一个绞盘，在其下方又放了一个船锚后，会突然掉线。",
+    "categories": [
+      "crash",
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 47,
+    "text_zh": "末地海盗船舵，不可旋转，对其右键也不行。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 48,
+    "text_zh": "与跨板相关的4本附魔书中有3本未汉化",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 49,
+    "text_zh": "生存模式，空着右手对4个附魔跨版左键，带有\"板归\"附魔的跨板会被打掉消失，其它3个附魔跨版会被打掉收回物品栏。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 50,
+    "text_zh": "用糖和水瓶对蜂鸟喂食器右键，shift+右键，c+右键均无法填充。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 51,
+    "text_zh": "用带精准采集的稿，在生存模式下敲掉一个有蚂蚁的切叶蚁丘又重新在附近放置，放置后等了一会，没见蚂蚁出来。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 52,
+    "text_zh": "在线上服务器中，无论生存还是创造，使用动物图鉴没有解锁成就栏。",
+    "categories": [
+      "achievement",
+      "multiplayer"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 53,
+    "text_zh": "esc---进度---Alex生物，掉线。",
+    "categories": [
+      "crash",
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 54,
+    "text_zh": "用望远镜观察野牛会完成挑战【平原上的美景】。实测创造模式和生存模式，放置一头牛后退一定距离，手持望远镜对其右键，都没解锁。",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 55,
+    "text_zh": "用望远镜观察炽岩没有解锁【熔岩湖巨兽】",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 56,
+    "text_zh": "喂食鬃狼苹果没有获得进度【渴望苹果吗？】",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 57,
+    "text_zh": "喂食跨座蝌蚪绯红孑孓使其成长成跨座兽后，没有解锁[如父似母]",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 58,
+    "text_zh": "操控白头海雕击杀了距离玩家本体100个方块以外的任何生物，没有获得进度[致命一击]",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 59,
+    "text_zh": "越肩视角，旁观者视角的血液喷射器，血淋巴喷射器，抓钩发射弩，藤蔓套索，臭屁手枪长按右键的使用动作均为蓄力拉弓的的动作，且在此过程中武器均会变大。\n越肩视角，旁观者视角的深渊之盾长按右键没有保持举盾格挡的动作，但受到攻击依旧会被格挡。\n越肩视角，旁观者视角的骷髅剑鱼头骨长按右键的举剑格挡动作的位置不对。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 60,
+    "text_zh": "越肩视角，旁观者视角的筋腱长鞭的使用动画像剑的使用动画，我不知道这是对还是不对。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 61,
+    "text_zh": "目前已知该版本不兼容的mod：\n目前已知该版本不兼容的mod：\n1.photon-main光影：地底矿工在使用photon-main光影的情况下会隐身，关掉光影会正常出现。\n2.ysm：玩家服用彩虹果冻后的身上没有七彩效果\n3.carry on：正常来讲，玩家可通过潜行+右击来与驯服过的蜜袋鼯进行交互以将其放在头上，当一只蜜袋鼯在它的主人头上时，它就会使主人能够缓降。\n                      实测无论创造还是生存，对驯服过的蜜袋鼯按住c键+右键只能改变其行动指令。若对其shift+右键则是双手将其拿在手上，再对地面右键则会放下，且此时玩家身上会获得一个倒计时为0的缓降buff，该buff会一直存在。\n4.cutemob材质包：会导致骷髅剑鱼被溺尸骑乘的姿势由坐姿变为站姿。",
+    "categories": [
+      "visual",
+      "mod-compat",
+      "spec-mismatch",
+      "shader",
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 62,
+    "text_zh": "5.给末影缓步兽装备的鞍没有显示出来，不过依旧可以正常骑乘。                                          与之冲突的mod尚未查明。\n6.实测无材质包，无光影的情况下，栉水母身上彩虹色效果是静止的，而非流动的。            与之冲突的mod尚未查明。\n7.玩家获得“熔岩视觉”buff后，不进入岩浆，熔岩没有变得半透明，如水般无法透视。    与之冲突的mod尚未查明。",
+    "categories": [
+      "visual",
+      "spec-mismatch",
+      "shader",
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "alex_mobs",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Alex Mobs 测试问题记录 (旧).txt",
+    "index": 63,
+    "text_zh": "虾炒饭这个物品书上无记录，但创造模式可得。\nmc百科上有记录，若想在生存模式获得，必须有9种mod大米，暂时测不了。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "每次放镜入镜后，镜面世界镜子都没有环境光，没有照亮周围。在镜界额外放置的返回镜子有。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "每次从镜界返回主世界后，主世界的镜子放置处依旧还有环境光，在该镜界显示已被清理完毕后还要等上一会才会消失。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 3,
+    "text_zh": "每次放镜入镜，主世界以前放过镜子的地点，和以前在镜面世界里单独额外放置过返回镜子的地点，都会出现环境光且不会消失。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 4,
+    "text_zh": "在主世界里放置各种光源(含篝火，灵魂篝火，灯笼，灵魂灯笼等，但火把和潮涌核心除外)第一次出现在镜面世界时没有环境光，但在其旁边放置一个新光源再敲掉后，这些光源的环境光便会出现。以后每次放镜入镜，这些物品的环境光都会正常出现，但主世界新放置的光源依旧需要进行上述的操作才会在镜面世界显现光源。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 5,
+    "text_zh": "主世界点燃一棵树，放镜入镜，被点燃的树叶树木方块会维持燃烧的样子不会被烧毁。但用打火石点燃它的其它面生成新火焰后，它可被烧毁。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 6,
+    "text_zh": "当在水中放置镜子，且水只淹没一半镜子时，镜面世界的镜子没有环境光，且镜子所处的那一格水方块的水面亮度异常高，与周围对比强烈。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 7,
+    "text_zh": "当在水中放置镜子，且水完全淹没镜子时，无论是主世界还是镜面世界，这面镜子的环境光只会存在一瞬间，然后消失。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 8,
+    "text_zh": "alex洞穴mod里的南洋杉木运输船，荆棘木运输船这2个船箱子里的东西不会被镜面世界复制。回到主世界船里东西还在。",
+    "categories": [
+      "mod-compat"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 9,
+    "text_zh": "alex洞穴mod里的潜水艇不会被镜面世界复制(不是乘潜水艇进镜，只是单单在水里放置了一艘潜水艇)。回到主世界潜水艇还在。",
+    "categories": [
+      "mod-compat"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 10,
+    "text_zh": "alex洞穴mod里的磁力采石场粉碎器无论是单纯放置在地上，还是正处于工作状态下，都不会被镜面世界复制。回到主世界他们都还在。",
+    "categories": [
+      "mod-compat"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 11,
+    "text_zh": "在镜面世界输入指令：/setblock ~ ~ ~ minecraft:end_portal 创建末地传送门后进入，会成功传送到末地，且会有消息提示我已离开镜面世界。输入指令：/iwm status 会显示刚才创建的镜面世界正在清理中。若此时在这个末地中死亡，会直接退出整个游戏。",
+    "categories": [
+      "crash",
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 12,
+    "text_zh": "生存模式下，在镜面世界中死亡(不用指令)，会直接退出整个游戏，再次登录这个单人档，会出现死亡后能选择重生的那个按钮界面，选择重生后会正常出现在主世界。",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 13,
+    "text_zh": "生存模式下，在镜面世界中死亡(用指令)，会直接出现死亡后能选择重生的那个按钮界面，同时会显示消息“试图执行该命令时出现意外错误”，选择重生后会正常出现在主世界。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+    "index": 14,
+    "text_zh": "在 Y=319 放置镜子会直接退出整个游戏。",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.21.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "从镜界返回主世界后，主世界的镜子放置处有时(镜子放陆地上时1次，水中全淹没时1次，半淹没时1次)还有环境光，且不会消失，只有再一次放镜入镜出镜,或前往下界再返回才会永久消失。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.21.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "生存模式下，在镜面世界中死亡(用指令)，会直接出现死亡后能选择重生的那个按钮界面，同时会显示消息“试图执行该命令时出现意外错误”，选择重生后会正常出现在主世界。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.21.1 测试问题记录.txt",
+    "index": 3,
+    "text_zh": "从镜界返回主世界后，主世界的镜子放置处有时(镜子放陆地上时1次，水中全淹没时1次，半淹没时1次)还有环境光，且不会消失，只有再一次放镜入镜出镜,或前往下界再返回才会永久消失。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.21.1 测试问题记录.txt",
+    "index": 4,
+    "text_zh": "alex洞穴mod里的磁力采石场粉碎器无论是单纯放置在地上，还是正处于工作状态下，都不会被镜面世界复制。回到主世界他们都还在。",
+    "categories": [
+      "mod-compat"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "instant_world_mirror",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "InstantWorldMirror 1.21.1 测试问题记录.txt",
+    "index": 5,
+    "text_zh": "当在水中放置镜子，且水完全淹没镜子时，无论是主世界还是镜面世界，这面镜子的环境光只会存在一瞬间，然后消失。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "ok_orefinder",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Ok OreFinder 1.21.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "生存和创造三个物品只有耐久条，均无耐久度具体数值显示。按住shift查看详细也无耐久度具体数值显示，右键使用过程中也无耐久度具体数值显示。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "ok_orefinder",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Ok OreFinder 1.21.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "实测在该标签页内和原版 **\"工具与实用品\"** 标签页中顺序都为钻石探矿器、铁探矿器、下界合金探矿器",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "ok_orefinder",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Ok OreFinder 1.21.1 测试问题记录.txt",
+    "index": 3,
+    "text_zh": "在水平和竖直方向的9格外放置金矿，铁探矿器确认能找到",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.20.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "物品“注入器”的小图标和模型都存在贴图错误",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.20.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "注入器里无法放入DNA瓶",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.20.1 测试问题记录.txt",
+    "index": 3,
+    "text_zh": "分析仪的进度条满了后没有产出物品",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.20.1 测试问题记录.txt",
+    "index": 4,
+    "text_zh": "异棘鲨的攻击力不是4点，实测不穿任何装备被其攻击一次只掉半颗心(1点)的血。",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.20.1 测试问题记录.txt",
+    "index": 5,
+    "text_zh": "真鼻龙在陆地时没有\"干涸\"动画，直到死亡前其外观也没有任何变化。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.20.1 测试问题记录.txt",
+    "index": 6,
+    "text_zh": "真鼻龙在陆地上不会挣扎尝试返回水中，不过将其放置在离水只有一格的岸边，它会偶尔慢慢挪进海里，但这不符合“挣扎”的描述。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.20.1 测试问题记录.txt",
+    "index": 7,
+    "text_zh": "棘龙在水中会溺死。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.20.1 测试问题记录.txt",
+    "index": 8,
+    "text_zh": "分析仪里都放置远洋化石，不会分析出异棘鲨，真鼻龙，棘龙这3种生物的dna瓶。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.21.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "棘龙在水中会溺死",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.21.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "击杀激龙不掉经验",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.21.1 测试问题记录.txt",
+    "index": 3,
+    "text_zh": "击杀棘龙不掉经验",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.21.1 测试问题记录.txt",
+    "index": 4,
+    "text_zh": "挖掘远古沉积物化石方块不掉远洋化石",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "pelagic_prehistory",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Pelagic Prehistory 1.21.1 测试问题记录.txt",
+    "index": 5,
+    "text_zh": "挖掘远古沉积物煤矿石方块不掉煤",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 1,
+    "text_zh": "生存模式下破坏该模组的所有物品，方块都不会产生掉落物。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 2,
+    "text_zh": "枫树原木的图标错误。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 3,
+    "text_zh": "竹炭块方块的实际摆放位置与方块边框线存在错位，二者不重合。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 4,
+    "text_zh": "日晒竹块方块的实际摆放位置与方块边框线存在错位，二者不重合。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 5,
+    "text_zh": "竹栅栏，日晒竹栅栏放置后都存在贴图错误，且放置后都不会连接起来。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 6,
+    "text_zh": "狐火放置后的贴图显示有误。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 7,
+    "text_zh": "放置布团时，在1格的空间内无法放置，在空旷处放置会自动放置2格的布团，而不是单格的。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 8,
+    "text_zh": "太鼓放置后，2面鼓面的图有误，且放置后，和太鼓有接触的方块的那一面都会消失。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 9,
+    "text_zh": "储藏桶放置后，和储藏桶有接触的方块的那一面都会消失。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 10,
+    "text_zh": "在空旷的地带对樱花树苗施加再多骨粉它也不会变化。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 11,
+    "text_zh": "在枫糖大锅下面放置岩浆块后，即使枫糖大锅内原料已满，旁边也放置了漏斗，但60秒后依旧无产出。右键枫糖大锅，其燃料火焰图标一闪一闪的，疑似问题出在这里。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "sakura",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+    "index": 12,
+    "text_zh": "使用打火石右击不会引燃篝火。向篝火右键添加任意燃料也不会引燃篝火。手持本模组的烹饪锅右击篝火也不会把烹饪锅固定放置在篝火上。打火石，任意燃料和烹饪锅都只会在篝火上方会漂浮旋转展示其贴图，而这是将食材右键篝火时才会出现的场景。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "实测为拿起喷头，原因是和carryon这个mod冲突",
+    "categories": [
+      "mod-compat"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "实测音效非立关立停，关后会延续几秒",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 3,
+    "text_zh": "实测破坏后音效未立即停止，会持续几秒",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 4,
+    "text_zh": "倒水测试中，若对着2格高的喷头的上面那格使用水桶，上方那格喷头会含水，但是下面那格喷头则不含水\n水流冲刷测试中，实测喷头为非含水状态",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 5,
+    "text_zh": "实测牡丹和玫瑰的粒子效果相同，没有区别",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 6,
+    "text_zh": "实测除了黑色和白色的淋浴喷头外，其他材质喷头的预期结果均未实现",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 7,
+    "text_zh": "实测破坏浴缸后不会掉落浴缸方块",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 8,
+    "text_zh": "实测预期效果未实现",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 9,
+    "text_zh": "实测预期效果未实现",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 10,
+    "text_zh": "实测除水桶外，所有材质类型的浴缸内无法倒入和取出其他液体桶(包含原版的岩浆桶，奶桶，各种鱼桶以及天境mod，alex生物mod和汽车mod中的各类桶)",
+    "categories": [
+      "visual",
+      "mod-compat"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.20.1 测试问题记录.txt",
+    "index": 11,
+    "text_zh": "实测小黄鸭会卡在墙上，不会下落",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "ShowerCore 1.20.1 测试问题记录2026.4.5.txt",
+    "index": 1,
+    "text_zh": "在浴缸里倒入7种自定义液体后再打开水龙头，有水声但无水流出。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "ShowerCore 1.20.1 测试问题记录2026.4.5.txt",
+    "index": 2,
+    "text_zh": "在浴缸里倒入7种自定义液体后，其液体表面会不时有泡泡闪现。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "ShowerCore 1.20.1 测试问题记录2026.4.5.txt",
+    "index": 3,
+    "text_zh": "在浴缸里导入7种自定义液体里3种自带环境光的液体后，其环境光只会在一旁再随便放置一个光源后才会出现。接着如果敲掉后放置的这个光源，玩家前往其它维度再返回，或下线再上线后，浴液的环境光会再次消失。如果保留后放置的这个光源，玩家前往其它维度再返回，或下线再上线后，浴液的环境光则不会消失。",
+    "categories": [
+      "visual",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "ShowerCore 1.20.1 测试问题记录2026.4.5.txt",
+    "index": 4,
+    "text_zh": "关于静谧四季联动的下面3项未实现\n- [ ] 初冬时进入热水浴，获得抗性提升 I（10秒持续时间）\n- [ ] 仲冬时进入热水浴，获得抗性提升 II + 再生 I（10秒持续时间）\n- [ ] 晚冬时进入热水浴，获得抗性提升 I（10秒持续时间）\n另外，浴缸周围 3 格范围内的雪层和雪块不会融化",
+    "categories": [
+      "mod-compat",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.21.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "实测预期结果中的第三条未实现，且通过此举放置的喷头无淋浴效果",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "ShowerCore 1.21.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "实测预期结果未实现",
+    "categories": [
+      "spec-mismatch"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 1,
+    "text_zh": "站在牡丹浴,牛奶浴和玫瑰欲核心喷头下不会移除黑暗负面效果",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 2,
+    "text_zh": "站在牛奶浴核心喷头下不会每 15 秒获得一次饱和buff",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 3,
+    "text_zh": "站在蜂蜜浴核心喷头下不会获得伤害吸收 IV",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 4,
+    "text_zh": "当浴缸内存在液体（岩浆除外）的情况下，若紧挨着浴缸放置具有透明度的各种水源，便可以透过这些液体看到浴缸壁消失。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 5,
+    "text_zh": "创造模式下，当用空桶对着浴缸的一格右键将其中的液体装起来后，接下来若再拿任意一种液体桶对浴缸中刚才没有用空桶右键过的那一格右键，那么除了会将浴缸正常填满你这时倒入液体外，还会在这一格相邻的任意一格上也生成你这时倒的液体。\n生存模式下，这额外生成的液体会在生成的下一秒瞬间消失。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 6,
+    "text_zh": "所有自定义液体倒入浴缸后的颜色都一样。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 7,
+    "text_zh": "在浴缸里倒入7种自定义液体后，其液体表面会不时有泡泡闪现。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 8,
+    "text_zh": "在浴缸里倒入7种自定义液体后再打开水龙头，有水声但无水流出。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 9,
+    "text_zh": "浴缸里是岩浆时开水龙头，水龙头不会流出任何液体。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 10,
+    "text_zh": "在浴缸里导入7种自定义液体里3种自带环境光的液体后，其环境光只会在一旁再随便放置一个光源后才会出现。接着如果敲掉后放置的这个光源，玩家前往其它维度再返回，或下线再上线后，浴液的环境光会再次消失。如果保留后放置的这个光源，玩家前往其它维度再返回，或下线再上线后，浴液的环境光则不会消失。",
+    "categories": [
+      "visual",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 11,
+    "text_zh": "站在装有原来6种浴液的浴缸里不会获得对应的 Buff 效果。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 12,
+    "text_zh": "坐在牛奶浴缸里浸泡 15 秒不会移除除霉运外的所有负面效果",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 13,
+    "text_zh": "坐在中草药浴缸里不会获得抗性提升buff",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 14,
+    "text_zh": "坐在牡丹浴缸里浸泡 15 秒不会移除所有负面效果及不祥之兆",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 15,
+    "text_zh": "坐在蜂蜜浴缸里浸泡 15 秒不会移除除缓慢、霉运外的所有负面效果，也不会获得伤害吸收buff",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 16,
+    "text_zh": "坐在玫瑰浴缸里浸泡 15 秒不会移除所有负面效果及不祥之兆",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 17,
+    "text_zh": "热水核心没有环境光",
+    "categories": [
+      "visual",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 18,
+    "text_zh": "站在装有7种自定义浴液的浴缸里脏污度下降速度过快，不出2秒归零。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-06",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+    "index": 19,
+    "text_zh": "安装有静谧四季的情况下，浴缸周围 3 格范围内的雪层和雪块不会融化",
+    "categories": [
+      "mod-compat",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-18",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.18.txt",
+    "index": 1,
+    "text_zh": "站在牛奶浴核心喷头下不会每 15 秒获得一次饱和buff\n2026.4.18 未修复",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-18",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.18.txt",
+    "index": 2,
+    "text_zh": "站在蜂蜜浴核心喷头下不会获得伤害吸收 IV\n2026.4.18 未修复",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-18",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.18.txt",
+    "index": 3,
+    "text_zh": "创造模式下，当用空桶对着浴缸的一格右键将其中的液体装起来后，接下来若再拿任意一种液体桶对浴缸中刚才没有用空桶右键过的那一格右键，那么除了会将浴缸正常填满你这时倒入液体外，还会在这一格相邻的任意一格上也生成你这时倒的液体。生存模式下，这额外生成的液体会在生成的下一秒瞬间消失。\n2026.4.18 未修复，并且有新问题：无论创造还是生存，用空桶对着装有7种自定义液体的浴缸的无论哪一格右键，都会直接坐进浴缸，按住shift+右键也一样，都无法将液体装起。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-18",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.18.txt",
+    "index": 4,
+    "text_zh": "在浴缸里导入7种自定义液体里3种自带环境光的液体后，其环境光只会在一旁再随便放置一个光源后才会出现。接着如果敲掉后放置的这个光源，玩家前往其它维度再返回，或下线再上线后，浴液的环境光会再次消失。如果保留后放置的这个光源，玩家前往其它维度再返回，或下线再上线后，浴液的环境光则不会消失。\n2026.4.18 未修复",
+    "categories": [
+      "visual",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-18",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.18.txt",
+    "index": 5,
+    "text_zh": "坐在蜂蜜浴缸里浸泡 15 秒不会移除除缓慢、霉运外的所有负面效果，也不会获得伤害吸收buff\n2026.4.18 只修复了前半句bug。坐在蜂蜜浴缸里浸泡 15 秒不会获得伤害吸收buff",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-18",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.18.txt",
+    "index": 6,
+    "text_zh": "热水核心没有环境光\n2026.4.18 未修复",
+    "categories": [
+      "visual",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "shower_core",
+    "version": "1.21.1",
+    "round_date": "2026-04-18",
+    "round_file": "ShowerCore 1.21.1 测试问题记录2026.4.18.txt",
+    "index": 7,
+    "text_zh": "站在装有7种自定义浴液的浴缸里脏污度下降速度过快，不出2秒归零。\n2026.4.18 已修复，但有新问题：现在站在装有7种自定义浴液的浴缸里不掉脏污度。而且原来坐进去装有7种自定义浴液的浴缸里是会掉脏污度的，但现在却不会。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "站在地上，看向池底有灵魂沙和岩浆块的浴液，6种浴桶浴液在岩浆块上只有水面之上有泡泡显示出来，水面之下则没有泡泡显示。6种浴桶浴液在灵魂沙上无论水面上下，都不显示泡泡。当玩家进入浴液下观察，6种浴桶浴液在这2种方块上的泡泡都会正常显示。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "关于7种自定义液体在灵魂沙和岩浆块上的问题，站在地上观察均没有泡泡显示，无论水面上下。其中的烈焰和寂静即使玩家进入其中在水面下观察，也无泡泡显示。其余5种自定义液体，玩家进入其中在水面下观察，会观察到泡泡，但是和旧电视的雪花一样，泡泡的显示都是断断续续一闪一闪的。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 3,
+    "text_zh": "6种浴桶液体源头下方有滴水石锥时，滴水粒子的颜色都为水的蓝色。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 4,
+    "text_zh": "7种自定义液体的7个浴水瓶物品，鼠标悬停在瓶子上，不会看到效果列表（生命恢复、伤害吸收等），而是两行\"tooltip.hotbath.effect-entry\"，7个喷溅浴水瓶的信息显示则完全显示正常。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 5,
+    "text_zh": "在生存模式下，若物品栏里有空玻璃瓶，手持7种自定义液体的7个浴水瓶各一瓶(注意，必须是只有一瓶的情况下，不能是多瓶叠加)，饮用后，会出现物品栏里那组空玻璃瓶数量+1，但同时手里还有刚喝完的空玻璃瓶的情况。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 6,
+    "text_zh": "7种自定义液体可以主动 Waterlog 各种方块，但是显示出来的材质均为水。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 7,
+    "text_zh": "在6种浴桶液体中放置珊瑚植物和潮涌核心时，该方块所在的液体会被替换为水。（这个不算bug，算1.20.1原版行为，不予修复）",
+    "categories": [],
+    "status": "noted-not-bug",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 8,
+    "text_zh": "在7种自定义液体中放置楼梯，半台阶，栅栏，灯笼，铁链，珊瑚植物，潮涌核心时，该方块所在液体表层会替换为热水桶的液体颜色。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 9,
+    "text_zh": "热带鱼在所有浴液中(含自定义)都会溺死。",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 10,
+    "text_zh": "在7种自定义液体中不会减少脏污度。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 11,
+    "text_zh": "浣熊不会在7种自定义液体中洗东西。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 12,
+    "text_zh": "其他生物（包括原版生物和alex生物）在药草浴中不论呆多久，身上的辐射荧光一直存在。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 13,
+    "text_zh": "在7种自定义液体中会发光的那3个的环境光在玩家前往其它维度返回，或退出游戏再进后消失。",
+    "categories": [
+      "crash",
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 14,
+    "text_zh": "在7种自定义液体中击杀冰雪女王，其战利品箱生成时会将所在浴液方块的水面(就单独这一面)更改为热水桶浴液的颜色。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 15,
+    "text_zh": "无法将所有浴水瓶(含自定义)右键装入易碎药水瓶或大型药水瓶，mc的原版药水可成功装入。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 16,
+    "text_zh": "初冬时进入热水浴，不会获得抗性提升 I（10秒持续时间）\n仲冬时进入热水浴，不会获得抗性提升 II + 再生 I（10秒持续时间）\n晚冬时进入热水浴，不会获得抗性提升 I（10秒持续时间）",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 17,
+    "text_zh": "除了史莱姆浴桶和末影浴桶外，其它11种浴桶都会融化 3 格范围内的冰方块。（这个是合理的，35度以上的会融化冰，这两个正好不融化）",
+    "categories": [],
+    "status": "noted-not-bug",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 18,
+    "text_zh": "用原来测试清单里的命令获取7种自定义浴桶和浴水瓶物品，会显示有格式问题。\n用原来测试清单里的命令获取7种自定义喷溅型浴水瓶物品，会显示未知的物品。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 19,
+    "text_zh": "对其它生物扔史莱姆喷溅瓶，附魔喷溅瓶时生物身上才有药水粒子(指蚊香线)，扔其它5种自定义喷溅型浴水瓶时则无。（这是正常的，show_particles 字段控制，只有只有 slime_bath 和 enchanted_bath有效果）",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 20,
+    "text_zh": "将语言切换为繁体中文（香港特别行政区），整个hotbath模组里的物品，除了7种自定义喷溅型浴水瓶的效果列表的文字（生命恢复、伤害吸收等）为繁体外，其余所有物品的所有文字均为英文。洗浴核心的所有物品也为英文。",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 21,
+    "text_zh": "将语言切换为繁体中文（台湾），7种自定义浴液的所有物品文字都是部分繁体中文，部分英文。原6种浴桶的所有物品文字都是英文。洗浴核心的所有物品也为英文。",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 22,
+    "text_zh": "将语言切换为日文，7种自定义浴桶和7种自定义浴水瓶只有物品名称为日语，其余内容则为英文。",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 23,
+    "text_zh": "仅安装 ToughAsNails 时，鼠标挪到7种自定义浴水瓶上会显示喝了会恢复的口渴值有2行。而6种原来的浴水瓶则没有标注喝了会恢复多少口渴值。",
+    "categories": [
+      "visual",
+      "mod-compat"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 24,
+    "text_zh": "仅安装 Cold Sweat 时，进入末影浴桶体温会保持为周围的环境温度，而不是降到15度。进入6种原来的浴桶时，体温全都是升至40度，而不是37度。",
+    "categories": [
+      "mod-compat"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 25,
+    "text_zh": "仅安装 legendarysurvivaloverhaul 时，鼠标挪到7种自定义浴水瓶上缺少显示喝了会恢复多少口渴值的信息。",
+    "categories": [
+      "visual",
+      "mod-compat"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 26,
+    "text_zh": "在15度的末影浴液中和25度的史莱姆浴液中饮用浴水瓶，也会获得一个持续 15 秒的 3 级“热饮”buff，不合理。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 27,
+    "text_zh": "在15度的末影浴液中和25度的史莱姆浴液中呆满 10 秒后也会获得\"御寒\"buff和3 级\"抗寒\"buff，不合理。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 28,
+    "text_zh": "把 `hotbath_example_fluids` 数据包从 datapacks 文件夹删除后重新进入游戏，之前放置的自定义流体方块不会变成普通方块或消失，他们的外观材质会全部变为热水桶液体的材质，不会冒蒸汽，玩家站其中会获得5秒的舒适buff，不会获得其它效果，新生成的卷尾猴和之前一样，还会在里面泡，且受伤了在里面泡着还会回血。",
+    "categories": [
+      "visual",
+      "data-pack"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": null,
+    "round_file": "hotbath 1.20.1 测试问题记录.txt",
+    "index": 29,
+    "text_zh": "卸载 HotBath mod后重新启动游戏并加载该世界，之前 waterlog 的方块不会表现为普通水 waterlog，不会显示原版水材质，而是直接消失，没有液体了，但被waterlog的楼梯栅栏什么的都还在。（这个听起来似乎是正常的吧，没有破坏游戏内其他方块，而且1.20的waterlog不是我们做的是其他的mod，因此不属于我们管辖范围）",
+    "categories": [
+      "visual"
+    ],
+    "status": "noted-not-bug",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 1,
+    "text_zh": "站在地上，看向池底有灵魂沙和岩浆块的浴液，6种浴桶浴液在岩浆块上只有水面之上有泡泡显示出来，水面之下则没有泡泡显示。6种浴桶浴液在灵魂沙上无论水面上下，都不显示泡泡。当玩家进入浴液下观察，6种浴桶浴液在这2种方块上的泡泡都会正常显示。（这来源于minecraft 1.20.1老版本的bug，修复收益很小  改为水面可见渲染方式）(你针对此条做出的修改经测试发现了新问题，新问题的情况如下)",
+    "categories": [
+      "visual",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 2,
+    "text_zh": "新问题：现在站在地上，看向池底有灵魂沙和岩浆块的浴液，玩家可以透过泥土石头等方块看见所有水下泡泡。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 3,
+    "text_zh": "关于7种自定义液体在灵魂沙和岩浆块上的问题，站在地上观察均没有泡泡显示，无论水面上下。其中的烈焰和寂静即使玩家进入其中在水面下观察，也无泡泡显示。其余5种自定义液体，玩家进入其中在水面下观察，会观察到泡泡，但是和旧电视的雪花一样，泡泡的显示都是断断续续一闪一闪的。（这来源于minecraft 1.20.1老版本的bug，修复收益很小  改为水面可见渲染方式）(你针对此条做出的修改经测试发现了新问题，新问题的情况如下)",
+    "categories": [
+      "visual",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 4,
+    "text_zh": "新问题：现在站在地上，看向池底有灵魂沙和岩浆块的浴液，玩家可以透过泥土石头等方块看见所有水下泡泡。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 5,
+    "text_zh": "在7种自定义液体中放置楼梯，半台阶，栅栏，灯笼，铁链，珊瑚植物，潮涌核心时，该方块所在液体表层会替换为热水桶的液体颜色。(此条未修复)",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 6,
+    "text_zh": "在7种自定义液体中击杀冰雪女王，其战利品箱生成时会将所在浴液方块的水面(就单独这一面)更改为热水桶浴液的颜色。(此条未修复)",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 7,
+    "text_zh": "无法将所有浴水瓶(含自定义)右键装入易碎药水瓶或大型药水瓶，mc的原版药水可成功装入。(此条未修复)",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 8,
+    "text_zh": "将语言切换为繁体中文（香港特别行政区），整个hotbath模组里的物品，除了7种自定义喷溅型浴水瓶的效果列表的文字（生命恢复、伤害吸收等）为繁体外，其余所有物品的所有文字均为英文。洗浴核心的所有物品也为英文。(此条的bug未修全，现状如下)",
+    "categories": [
+      "i18n",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 9,
+    "text_zh": "现状：将语言切换为繁体中文（香港特别行政区），7种自定义浴桶，浴瓶，喷溅型浴水瓶的物品名称中仍然含有英文，以奶茶为例，其3种物品的名称分别为“Milk Tea Bath 桶”“Milk Tea Bath 瓶”“喷溅型Milk Tea Bath瓶”。",
+    "categories": [
+      "i18n",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 10,
+    "text_zh": "仅安装 ToughAsNails 时，鼠标挪到7种自定义浴水瓶上会显示喝了会恢复的口渴值有2行。而6种原来的浴水瓶则没有标注喝了会恢复多少口渴值。(此条的bug未修全，现状如下)",
+    "categories": [
+      "visual",
+      "mod-compat",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 11,
+    "text_zh": "现状：仅安装 ToughAsNails 时，鼠标挪到7种自定义浴水瓶上会显示喝了会恢复的口渴值有2行。",
+    "categories": [
+      "visual",
+      "mod-compat",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 12,
+    "text_zh": "仅安装 Cold Sweat 时，进入末影浴桶体温会保持为周围的环境温度，而不是降到15度。进入6种原来的浴桶时，体温全都是升至40度，而不是37度。(此条未修复，且问题发生了变化，现状如下)",
+    "categories": [
+      "mod-compat",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 13,
+    "text_zh": "现状：仅安装 Cold Sweat 时，进入末影浴桶体温会降到10度，而不是降到15度。进入6种原来的浴桶时，体温全都是升至32度，而不是37度。",
+    "categories": [
+      "mod-compat",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-01",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+    "index": 14,
+    "text_zh": "仅安装 legendarysurvivaloverhaul 时，鼠标挪到7种自定义浴水瓶上缺少显示喝了会恢复多少口渴值的信息。(此条未修复)",
+    "categories": [
+      "visual",
+      "mod-compat",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 1,
+    "text_zh": "在7种自定义液体中放置楼梯，半台阶，栅栏，灯笼，铁链，珊瑚植物，潮涌核心时，该方块所在液体表层会替换为热水桶的液体颜色。(此条未修复)",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 2,
+    "text_zh": "实测楼梯、半砖、栅栏、灯笼、铁链：getType() == Fluids.WATER → 不会 waterlog\n仅潮涌核心和珊瑚：is(FluidTags.WATER) → 会 waterlog",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 3,
+    "text_zh": "2026.4.5 现在在7种自定义液体中放置楼梯、半砖、栅栏、灯笼、铁链,该方块所在液体表层会替换为热水桶的液体颜色。潮涌核心和珊瑚放置在所有13种hotbath浴液中时会将该方格液体替换为水。",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 4,
+    "text_zh": "在7种自定义液体中击杀冰雪女王，其战利品箱生成时会将所在浴液方块的水面(就单独这一面)更改为热水桶浴液的颜色。(此条未修复)",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 5,
+    "text_zh": "微信发你了没有复现",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 6,
+    "text_zh": "2026.4.5 (此条问题依旧可复现，未修复)",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 7,
+    "text_zh": "无法将所有浴水瓶(含自定义)右键装入易碎药水瓶或大型药水瓶，mc的原版药水可成功装入。(此条未修复) (依旧未修复)",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 8,
+    "text_zh": "这个也没有复现",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 9,
+    "text_zh": "2026.4.5 (此条问题依旧可复现，未修复)",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 10,
+    "text_zh": "仅安装 Cold Sweat 时，进入末影浴桶体温会保持为周围的环境温度，而不是降到15度。进入6种原来的浴桶时，体温全都是升至40度，而不是37度。(此条未修复，且问题发生了变化，现状如下)",
+    "categories": [
+      "mod-compat",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 11,
+    "text_zh": "OK 现状：仅安装 Cold Sweat 时，进入末影浴桶体温会降到10度，而不是降到15度。进入6种原来的浴桶时，体温全都是升至32度，而不是37度。",
+    "categories": [
+      "mod-compat",
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.20.1",
+    "round_date": "2026-04-05",
+    "round_file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+    "index": 12,
+    "text_zh": "2026.4.5 (此条问题依旧可复现，未修复)",
+    "categories": [
+      "regression-tracked"
+    ],
+    "status": "unfixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 1,
+    "text_zh": "书本中，浴液种类--牡丹浴--效果页面的英文字未删",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 2,
+    "text_zh": "看其它玩家跳洗澡水无水花泡泡",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 3,
+    "text_zh": "热带鱼在洗澡水中一段时间后会溺死",
+    "categories": [
+      "entity-behavior"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 4,
+    "text_zh": "HotBath 液体不能 Waterlog 各种方块",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 5,
+    "text_zh": "液体边界不是无缝衔接，有时放置的方块莫名被冲毁",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 6,
+    "text_zh": "生存模式，用空桶对着放出来的自定义浴液体右键，液体消失，桶还是空的。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 7,
+    "text_zh": "生存模式，用空瓶对5种自定义液体右键，不会获得对应液体瓶。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 8,
+    "text_zh": "实测5种自定义喷溅型药水碎掉时的粒子效果均为热水桶液体的颜色，而非对应颜色。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 9,
+    "text_zh": "黄金浴桶液体不会发光\n修复后的第二次测试，黄金，烈焰，附魔，末影这4种带光的自定义液体放置后保存退出再进，其环境光没有了，只有液体光还在。",
+    "categories": [
+      "visual"
+    ],
+    "status": "fixed",
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 10,
+    "text_zh": "史莱姆浴桶液体不是热水，但是有蒸汽粒子",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 11,
+    "text_zh": "末影浴桶液体不是热水，但是有蒸汽粒子",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 12,
+    "text_zh": "生存模式，易碎药水瓶多个堆叠后放在一个格子里，再将浴水瓶拖到易碎药水瓶上右键，所有堆叠的易碎药水瓶都会被填充。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 13,
+    "text_zh": "生存模式，易碎药水瓶和大型药水瓶装盛6种原版洗浴瓶后饮用没有获得对应效果。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 14,
+    "text_zh": "热水瓶装盛进易碎药水瓶和大型药水瓶的进度条颜色和瓶子颜色不为蓝色。",
+    "categories": [
+      "achievement"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 15,
+    "text_zh": "泡在7种自定义液体里不会减少自身脏污度。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 16,
+    "text_zh": "手持7种自定义液体不喝时，不会在口渴条上显示喝了会预计回复多少口渴值。",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 17,
+    "text_zh": "在仅安装了传说生存模组下，鼠标指到7种自定义液体的浴水瓶道具图标时，预计回复的口渴值会显示有2行。",
+    "categories": [
+      "visual",
+      "mod-compat"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "hotbath",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "hotbath 1.21.1 测试问题记录.txt",
+    "index": 18,
+    "text_zh": "软糖熊在史莱姆浴桶和末影浴桶这2个自定义液体里也会掉血。",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "radios",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "1.21.1 Radios、LeaningTower、VillagerTourism、ping_system、ConstructionWand 5个小mod的测试问题记录.txt",
+    "index": 1,
+    "text_zh": "无论中文还是英文，均无搜索结果，直接搜“5”，也无搜索结果",
+    "categories": [
+      "i18n"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "leaning_tower",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "1.21.1 Radios、LeaningTower、VillagerTourism、ping_system、ConstructionWand 5个小mod的测试问题记录.txt",
+    "index": 1,
+    "text_zh": "无搜索结果",
+    "categories": [],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "villager_tourism",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "1.21.1 Radios、LeaningTower、VillagerTourism、ping_system、ConstructionWand 5个小mod的测试问题记录.txt",
+    "index": 1,
+    "text_zh": "一开始手持相机右键偶尔会显示信息，后面次数多了则再也没显示过信息，即使换了新相机右键也不会再显示。（不知道结构信息是指什么，下附显示过的截图，自己看）",
+    "categories": [
+      "visual"
+    ],
+    "status": null,
+    "regression_of": null
+  },
+  {
+    "mod_id": "villager_tourism",
+    "version": "1.21.1",
+    "round_date": null,
+    "round_file": "1.21.1 Radios、LeaningTower、VillagerTourism、ping_system、ConstructionWand 5个小mod的测试问题记录.txt",
+    "index": 2,
+    "text_zh": "生成的游客会静止不动，且一段时间后游客皮肤会变红（生物遭受攻击时的红），不会恢复原状，这个红会一直保持。退出游戏再进，红皮肤消失，但游客依旧静止不动。",
+    "categories": [
+      "crash"
+    ],
+    "status": null,
+    "regression_of": null
+  }
+]

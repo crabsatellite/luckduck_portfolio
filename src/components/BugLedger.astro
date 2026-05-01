@@ -1,0 +1,210 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+import StatusPill from "~/components/StatusPill.astro";
+import type { Bug } from "~/lib/data";
+
+interface Props {
+  bugs: Bug[];
+  lang: Lang;
+  pageSize?: number;
+}
+const { bugs, lang, pageSize = 50 } = Astro.props;
+const total = bugs.length;
+const paginate = total > pageSize;
+
+const pages: Bug[][] = [];
+if (paginate) {
+  for (let i = 0; i < total; i += pageSize) {
+    pages.push(bugs.slice(i, i + pageSize));
+  }
+} else {
+  pages.push(bugs);
+}
+---
+
+<section class="ledger" aria-labelledby="ledger-heading">
+  <h2 id="ledger-heading" class="ledger__heading mono">
+    {t(lang, "case.bug_ledger")}
+    <span class="ledger__count mono tnum">{total}</span>
+  </h2>
+
+  {pages.map((pageBugs, pageIdx) => (
+    <div
+      class:list={["ledger__page", { "ledger__page--hidden": paginate && pageIdx !== 0 }]}
+      data-page={pageIdx + 1}
+    >
+      <table class="ledger__table">
+        <thead>
+          <tr>
+            <th class="mono col-id">{t(lang, "case.bug_id")}</th>
+            <th class="mono col-ver">{t(lang, "case.bug_version")}</th>
+            <th class="mono col-tags">{t(lang, "case.tags")}</th>
+            <th class="mono col-text">{t(lang, "case.bug_text")}</th>
+            <th class="mono col-status">{t(lang, "case.bug_status")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pageBugs.map((b) => {
+            const id = `#${String(b.index).padStart(3, "0")}`;
+            const hasCrash = b.categories.includes("crash");
+            return (
+              <tr class:list={["ledger__row", { "ledger__row--crash": hasCrash }]}>
+                <td class="mono tnum col-id">{id}</td>
+                <td class="mono tnum col-ver">{b.version}</td>
+                <td class="col-tags">
+                  {b.categories.map((c) => (
+                    <span class="chip" data-cat={c}>{c}</span>
+                  ))}
+                </td>
+                <td class="col-text">
+                  <span lang="zh-Hans">{b.text_zh}</span>
+                  {b.round_date && (
+                    <span class="ledger__date mono">· {b.round_date}</span>
+                  )}
+                </td>
+                <td class="col-status">
+                  <StatusPill status={b.status} lang={lang} />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  ))}
+
+  {paginate && (
+    <nav class="ledger__pagination" aria-label="bug ledger pages">
+      {pages.map((_, idx) => (
+        <button
+          type="button"
+          class:list={["ledger__pagebtn mono", { "ledger__pagebtn--active": idx === 0 }]}
+          data-target-page={idx + 1}
+        >
+          {String(idx + 1).padStart(2, "0")}
+        </button>
+      ))}
+    </nav>
+  )}
+</section>
+
+{paginate && (
+  <script is:inline>
+    (function () {
+      var sec = document.currentScript.previousElementSibling;
+      while (sec && !sec.classList.contains("ledger")) sec = sec.previousElementSibling;
+      if (!sec) return;
+      var pages = sec.querySelectorAll(".ledger__page");
+      var btns = sec.querySelectorAll(".ledger__pagebtn");
+      btns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var target = btn.getAttribute("data-target-page");
+          pages.forEach(function (p) {
+            p.classList.toggle("ledger__page--hidden", p.getAttribute("data-page") !== target);
+          });
+          btns.forEach(function (b) {
+            b.classList.toggle("ledger__pagebtn--active", b === btn);
+          });
+          sec.scrollIntoView({ block: "start" });
+        });
+      });
+    })();
+  </script>
+)}
+
+<style>
+  .ledger { margin: 2.4rem 0; }
+  .ledger__heading {
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .ledger__count {
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+  .ledger__page--hidden { display: none; }
+  .ledger__table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid var(--rule);
+    font-size: 0.85rem;
+  }
+  .ledger__table thead th {
+    text-align: left;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface);
+  }
+  .ledger__row {
+    border-bottom: 1px solid var(--rule);
+  }
+  .ledger__row:hover {
+    background: var(--surface-hi);
+  }
+  .ledger__row--crash {
+    background: color-mix(in oklch, var(--alert) 6%, transparent);
+  }
+  .ledger__row--crash:hover {
+    background: color-mix(in oklch, var(--alert) 12%, transparent);
+  }
+  .ledger__table td {
+    padding: 0.7rem 0.8rem;
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .col-id { width: 5rem; color: var(--ink-mute); }
+  .col-ver { width: 6rem; color: var(--ink-mute); }
+  .col-tags { width: 14rem; }
+  .col-text { color: var(--ink); }
+  :lang(zh) .col-text, .col-text [lang="zh-Hans"] {
+    font-family: var(--font-cjk);
+    line-height: 1.85;
+  }
+  .ledger__date { color: var(--ink-faint); margin-left: 0.4rem; font-size: 0.78rem; }
+  .col-status { width: 6.5rem; }
+  @media (max-width: 760px) {
+    .ledger__table thead { display: none; }
+    .ledger__row { display: grid; grid-template-columns: 1fr; padding: 0.6rem 0; gap: 0.3rem; }
+    .ledger__table td { padding: 0.2rem 0; }
+    .col-id, .col-ver { display: inline-block; margin-right: 1rem; }
+    .col-tags, .col-text, .col-status { width: auto; }
+  }
+
+  .ledger__pagination {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.4rem;
+    flex-wrap: wrap;
+  }
+  .ledger__pagebtn {
+    padding: 0.35rem 0.7rem;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-mute);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+  }
+  .ledger__pagebtn:hover, .ledger__pagebtn:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .ledger__pagebtn--active {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { t } from "~/i18n/strings";
+
+const lang = "en" as const;
+---
+
+<BaseLayout title={t(lang, "about.title")} lang={lang}>
+  <article class="about">
+    <div class="container">
+      <header>
+        <p class="eyebrow"><strong>{t(lang, "about.title")}</strong> / TESTER</p>
+        <h1 class="about__name">
+          <span class="about__latin mono">Tingfeng Yang</span>
+          <span class="about__cn">楊 庭 鳳</span>
+          <span class="about__handle mono">LUCK666DUCK</span>
+        </h1>
+        <p class="about__role mono">{t(lang, "about.role")}</p>
+      </header>
+      <hr class="hairline" />
+      <div class="about__body">
+        <p>{t(lang, "about.zh_para1")}</p>
+        <p>{t(lang, "about.zh_para2")}</p>
+        <p>{t(lang, "about.zh_para3")}</p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .about { padding: 3rem 0 4rem 0; }
+  .about__name {
+    margin: 1rem 0 1rem 0;
+    line-height: 1.05;
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .about__latin {
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    color: var(--ink);
+  }
+  .about__cn {
+    font-family: var(--font-cjk);
+    font-weight: 500;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    letter-spacing: 0.32em;
+    color: var(--ink);
+  }
+  .about__handle {
+    font-size: 0.95rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-top: 0.3rem;
+  }
+  .about__role {
+    color: var(--ink-mute);
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+  }
+  .about__body {
+    max-width: 64ch;
+    padding: 1.4rem 0;
+    color: var(--ink);
+    line-height: 1.65;
+  }
+  .about__body p {
+    margin: 0 0 1.2rem 0;
+    font-size: 1rem;
+  }
+</style>

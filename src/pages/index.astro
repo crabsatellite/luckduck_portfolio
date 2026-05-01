@@ -1,0 +1,49 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Hero from "~/components/Hero.astro";
+import StatStrip from "~/components/StatStrip.astro";
+import ModCard from "~/components/ModCard.astro";
+import { sortedMods } from "~/lib/data";
+import { t } from "~/i18n/strings";
+
+const lang = "zh" as const;
+const list = sortedMods();
+---
+
+<BaseLayout title="LUCK666DUCK" lang={lang}>
+  <Hero lang={lang} />
+  <StatStrip lang={lang} />
+
+  <section class="cases-section" aria-labelledby="cases-heading">
+    <div class="container">
+      <header class="cases-section__head">
+        <p class="eyebrow"><strong>{t(lang, "cases.title")}</strong> / {list.length}</p>
+        <p class="cases-section__sub mono">{t(lang, "cases.subtitle")}</p>
+      </header>
+      <hr class="hairline" />
+      <div class="cases-grid">
+        {list.map((m) => <ModCard mod={m} lang={lang} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cases-section { padding: 1.4rem 0 2.4rem 0; }
+  .cases-section__head { padding: 1rem 0 0.8rem 0; }
+  .cases-section__sub {
+    color: var(--ink-mute);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    margin: 0.3rem 0 0 0;
+  }
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1rem;
+    padding-top: 1.4rem;
+  }
+  @media (max-width: 540px) {
+    .cases-grid { grid-template-columns: 1fr; }
+  }
+</style>

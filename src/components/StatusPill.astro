@@ -1,0 +1,21 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+
+interface Props {
+  status: "open" | "unfixed" | "fixed" | "noted-not-bug" | null;
+  lang: Lang;
+}
+const { status, lang } = Astro.props;
+const effective = status ?? "open";
+const labelMap: Record<string, "status.open" | "status.unfixed" | "status.fixed" | "status.noted-not-bug"> = {
+  open: "status.open",
+  unfixed: "status.unfixed",
+  fixed: "status.fixed",
+  "noted-not-bug": "status.noted-not-bug",
+};
+const labelKey = labelMap[effective] || "status.open";
+---
+
+<span class="pill" data-status={effective} aria-label={`status: ${effective}`}>
+  {t(lang, labelKey)}
+</span>

@@ -1,0 +1,205 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+import type { Mod } from "~/lib/data";
+import { isCredited, hasRegression, hasNoIssues, caseNumber } from "~/lib/data";
+
+interface Props {
+  mod: Mod;
+  lang: Lang;
+}
+const { mod, lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const langPrefix = lang === "en" ? `${base}/en` : base;
+
+const credited = isCredited(mod);
+const regress = hasRegression(mod);
+const noIssues = hasNoIssues(mod);
+
+const latinName = mod.name_en;
+const cnName = mod.name_zh.includes("/")
+  ? mod.name_zh.split("/")[0].trim()
+  : mod.name_zh;
+const showCn = cnName !== mod.name_en && cnName !== mod.name_zh.replace(/\s+/g, "");
+
+const slug = mod.id;
+const totalRounds = mod.rounds.length;
+const caseNo = caseNumber(mod);
+---
+
+<article
+  class:list={["card", { "card--credited": credited, "card--noissues": noIssues }]}
+  data-mc-versions={mod.versions.join(",")}
+  data-credited={credited ? "1" : "0"}
+  data-regression={regress ? "1" : "0"}
+>
+  <a href={`${langPrefix}/cases/${slug}`} class="card__link" aria-label={`Case file: ${latinName}`}>
+    <span class="card__stripe" aria-hidden="true"></span>
+    <div class="card__inner">
+      <div class="card__head">
+        <div class="card__logo" aria-hidden="true">
+          <span class="mono">{slug.replace(/_/g, "-").slice(0, 6)}</span>
+        </div>
+        <div class="card__title">
+          <p class="eyebrow">CASE / CS-{caseNo}</p>
+          <h3 class="card__name">{latinName}</h3>
+          {showCn && (
+            <p class="card__cn" aria-hidden="true">{cnName}</p>
+          )}
+        </div>
+        <div class="card__count" aria-label={`${mod.total_bugs} bugs`}>
+          <span class="card__count-value mono tnum">{mod.total_bugs}</span>
+          <span class="card__count-label mono">
+            {noIssues ? (lang === "en" ? "clean" : "通过") : "bugs"}
+          </span>
+        </div>
+      </div>
+      <div class="card__meta">
+        <span class="card__field mono">
+          MC <span class="tnum">{mod.versions.join(" / ")}</span>
+        </span>
+        <span class="card__field mono">
+          {totalRounds} {lang === "en" ? "round" + (totalRounds > 1 ? "s" : "") : "轮次"}
+        </span>
+      </div>
+      {(credited || regress || noIssues) && (
+        <div class="card__pills">
+          {credited && (
+            <span class="badge-verified">{t(lang, "credited.badge")} ✓</span>
+          )}
+          {regress && (
+            <span class="pill" data-status="unfixed">{t(lang, "regression.label")}</span>
+          )}
+          {noIssues && (
+            <span class="pill" data-status="fixed">{t(lang, "noissues.label")}</span>
+          )}
+        </div>
+      )}
+      {mod.depth_signals.length > 0 && (
+        <div class="card__signals">
+          {mod.depth_signals.slice(0, 4).map((s) => (
+            <span class="chip">{s}</span>
+          ))}
+          {mod.depth_signals.length > 4 && (
+            <span class="chip">+{mod.depth_signals.length - 4}</span>
+          )}
+        </div>
+      )}
+    </div>
+  </a>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    transition: none;
+  }
+  .card__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+    position: relative;
+  }
+  .card__stripe {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    background: var(--accent);
+  }
+  .card--noissues .card__stripe { background: var(--ok); }
+  .card__link:hover .card__stripe,
+  .card__link:focus-visible .card__stripe { width: 6px; }
+  .card__link:hover, .card__link:focus-visible {
+    background: var(--surface-hi);
+  }
+  .card__inner {
+    padding: 1.2rem 1.2rem 1.2rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .card__head {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .card__logo {
+    width: 64px;
+    height: 64px;
+    background: var(--surface-hi);
+    border: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .card__logo .mono {
+    font-size: 0.65rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    word-break: break-all;
+    text-align: center;
+    padding: 0.2rem;
+  }
+  .card__title { min-width: 0; }
+  .card__name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 0.4rem 0 0 0;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    line-height: 1.2;
+    word-break: break-word;
+  }
+  .card__cn {
+    font-family: var(--font-cjk);
+    font-weight: 500;
+    color: var(--ink-mute);
+    font-size: 0.85rem;
+    margin: 0.2rem 0 0 0;
+    letter-spacing: 0.04em;
+  }
+  .card__count {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    border: 1px solid var(--rule);
+    padding: 0.4rem 0.7rem;
+    min-width: 4.5rem;
+    background: var(--bg);
+  }
+  .card__count-value {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .card--noissues .card__count-value { color: var(--ok); }
+  .card__count-label {
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .card__meta {
+    display: flex;
+    gap: 1.6rem;
+    flex-wrap: wrap;
+    color: var(--ink-mute);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+  }
+  .card__pills, .card__signals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+</style>

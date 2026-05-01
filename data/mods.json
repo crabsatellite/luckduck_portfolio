@@ -1,0 +1,377 @@
+[
+  {
+    "id": "alex_caves",
+    "name_zh": "Alex 的洞穴 / Alex's Caves",
+    "name_en": "Alex's Caves",
+    "mcmod_url": null,
+    "versions": [
+      "1.20.1",
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "Alex Caves 1.21.1 测试问题记录.txt",
+        "bug_count": 72,
+        "label": "initial"
+      },
+      {
+        "version": "1.20.1",
+        "date": null,
+        "file": "Alex Caves 测试问题记录 (旧).txt",
+        "bug_count": 69,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 141,
+    "depth_signals": [
+      "multi-version",
+      "shader-tested"
+    ]
+  },
+  {
+    "id": "alex_mobs",
+    "name_zh": "Alex 的生物 / Alex's Mobs",
+    "name_en": "Alex's Mobs",
+    "mcmod_url": null,
+    "versions": [
+      "1.20.1",
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "Alex Mobs 1.21.1 测试问题记录.txt",
+        "bug_count": 62,
+        "label": "initial"
+      },
+      {
+        "version": "1.20.1",
+        "date": null,
+        "file": "Alex Mobs 测试问题记录 (旧).txt",
+        "bug_count": 63,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 125,
+    "depth_signals": [
+      "multi-version",
+      "mod-compat:carryon",
+      "shader-tested"
+    ]
+  },
+  {
+    "id": "instant_world_mirror",
+    "name_zh": "瞬时世界之镜 / Instant World Mirror",
+    "name_en": "Instant World Mirror",
+    "mcmod_url": "https://www.mcmod.cn/class/24605.html",
+    "versions": [
+      "1.20.1",
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.20.1",
+        "date": null,
+        "file": "InstantWorldMirror 1.20.1 测试问题记录.txt",
+        "bug_count": 14,
+        "label": "initial"
+      },
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "InstantWorldMirror 1.21.1 测试问题记录.txt",
+        "bug_count": 5,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 19,
+    "depth_signals": [
+      "multi-version",
+      "cross-mod-with-alex-mods"
+    ]
+  },
+  {
+    "id": "ok_orefinder",
+    "name_zh": "Ok 的探矿器 / Ok OreFinder",
+    "name_en": "Ok OreFinder",
+    "mcmod_url": null,
+    "versions": [
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "Ok OreFinder 1.21.1 测试问题记录.txt",
+        "bug_count": 3,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 3,
+    "depth_signals": []
+  },
+  {
+    "id": "pelagic_prehistory",
+    "name_zh": "远洋史前 / Pelagic Prehistory",
+    "name_en": "Pelagic Prehistory",
+    "mcmod_url": null,
+    "versions": [
+      "1.20.1",
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.20.1",
+        "date": null,
+        "file": "Pelagic Prehistory 1.20.1 测试问题记录.txt",
+        "bug_count": 8,
+        "label": "initial"
+      },
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "Pelagic Prehistory 1.21.1 测试问题记录.txt",
+        "bug_count": 5,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 13,
+    "depth_signals": [
+      "multi-version"
+    ]
+  },
+  {
+    "id": "sakura",
+    "name_zh": "樱花 / Sakura",
+    "name_en": "Sakura",
+    "mcmod_url": null,
+    "versions": [
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "Sakura 1.21.1 测试问题记录 (旧).txt",
+        "bug_count": 12,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 12,
+    "depth_signals": []
+  },
+  {
+    "id": "shower_core",
+    "name_zh": "洗浴核心 / Shower Core",
+    "name_en": "Shower Core",
+    "mcmod_url": "https://www.mcmod.cn/class/23766.html",
+    "versions": [
+      "1.20.1",
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.20.1",
+        "date": null,
+        "file": "ShowerCore 1.20.1 测试问题记录.txt",
+        "bug_count": 11,
+        "label": "initial"
+      },
+      {
+        "version": "1.20.1",
+        "date": "2026-04-05",
+        "file": "ShowerCore 1.20.1 测试问题记录2026.4.5.txt",
+        "bug_count": 4,
+        "label": "regression"
+      },
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "ShowerCore 1.21.1 测试问题记录.txt",
+        "bug_count": 2,
+        "label": "initial"
+      },
+      {
+        "version": "1.21.1",
+        "date": "2026-04-06",
+        "file": "ShowerCore 1.21.1 测试问题记录2026.4.6.txt",
+        "bug_count": 19,
+        "label": "regression"
+      },
+      {
+        "version": "1.21.1",
+        "date": "2026-04-18",
+        "file": "ShowerCore 1.21.1 测试问题记录2026.4.18.txt",
+        "bug_count": 7,
+        "label": "regression"
+      }
+    ],
+    "total_bugs": 43,
+    "depth_signals": [
+      "multi-version",
+      "regression-rounds",
+      "mod-compat:carryon",
+      "cross-mod-with-alex-mods",
+      "mod-compat:serene-seasons"
+    ]
+  },
+  {
+    "id": "hotbath",
+    "name_zh": "热水澡 / Hot Bath",
+    "name_en": "Hot Bath",
+    "mcmod_url": "https://www.mcmod.cn/class/16495.html",
+    "versions": [
+      "1.20.1",
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.20.1",
+        "date": null,
+        "file": "hotbath 1.20.1 测试问题记录.txt",
+        "bug_count": 29,
+        "label": "initial"
+      },
+      {
+        "version": "1.20.1",
+        "date": "2026-04-01",
+        "file": "hotbath 1.20.1 未过关问题记录2026.4.1.txt",
+        "bug_count": 14,
+        "label": "regression"
+      },
+      {
+        "version": "1.20.1",
+        "date": "2026-04-05",
+        "file": "hotbath 1.20.1 未过关问题记录2026.4.5.txt",
+        "bug_count": 12,
+        "label": "regression"
+      },
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "hotbath 1.21.1 测试问题记录.txt",
+        "bug_count": 18,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 73,
+    "depth_signals": [
+      "multi-version",
+      "regression-rounds",
+      "i18n-zh-hk",
+      "i18n-zh-tw",
+      "i18n-ja",
+      "mod-compat:cold-sweat",
+      "mod-compat:toughasnails",
+      "mod-compat:legendary-survival-overhaul",
+      "cross-mod-with-alex-mods"
+    ]
+  },
+  {
+    "id": "radios",
+    "name_zh": "无线电通讯方块 / Radios",
+    "name_en": "Radios",
+    "mcmod_url": null,
+    "versions": [
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "1.21.1 Radios、LeaningTower、VillagerTourism、ping_system、ConstructionWand 5个小mod的测试问题记录.txt",
+        "bug_count": 1,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 1,
+    "depth_signals": []
+  },
+  {
+    "id": "leaning_tower",
+    "name_zh": "身体倾斜动画 / LeaningTower",
+    "name_en": "LeaningTower",
+    "mcmod_url": null,
+    "versions": [
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "1.21.1 Radios、LeaningTower、VillagerTourism、ping_system、ConstructionWand 5个小mod的测试问题记录.txt",
+        "bug_count": 1,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 1,
+    "depth_signals": []
+  },
+  {
+    "id": "villager_tourism",
+    "name_zh": "村民旅游系统 / VillagerTourism",
+    "name_en": "VillagerTourism",
+    "mcmod_url": null,
+    "versions": [
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "1.21.1 Radios、LeaningTower、VillagerTourism、ping_system、ConstructionWand 5个小mod的测试问题记录.txt",
+        "bug_count": 2,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 2,
+    "depth_signals": []
+  },
+  {
+    "id": "ping_system",
+    "name_zh": "ping_system",
+    "name_en": "ping_system",
+    "mcmod_url": null,
+    "versions": [
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "1.21.1 Radios、LeaningTower、VillagerTourism、ping_system、ConstructionWand 5个小mod的测试问题记录.txt",
+        "bug_count": 0,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 0,
+    "depth_signals": [
+      "no-issues-found"
+    ]
+  },
+  {
+    "id": "construction_wand",
+    "name_zh": "ConstructionWand",
+    "name_en": "ConstructionWand",
+    "mcmod_url": null,
+    "versions": [
+      "1.21.1"
+    ],
+    "rounds": [
+      {
+        "version": "1.21.1",
+        "date": null,
+        "file": "1.21.1 Radios、LeaningTower、VillagerTourism、ping_system、ConstructionWand 5个小mod的测试问题记录.txt",
+        "bug_count": 0,
+        "label": "initial"
+      }
+    ],
+    "total_bugs": 0,
+    "depth_signals": [
+      "no-issues-found"
+    ]
+  }
+]

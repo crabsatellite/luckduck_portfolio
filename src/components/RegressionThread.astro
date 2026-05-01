@@ -1,0 +1,114 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+import type { Round } from "~/lib/data";
+
+interface Props {
+  rounds: Round[];
+  lang: Lang;
+}
+const { rounds, lang } = Astro.props;
+
+const labelOf = (r: Round): string => {
+  if (r.label === "regression") return lang === "en" ? "regression round" : "回归轮次";
+  return lang === "en" ? "initial intake" : "初次接收";
+};
+---
+
+<section class="rt" aria-labelledby="rt-heading">
+  <h2 id="rt-heading" class="rt__heading mono">{t(lang, "case.regression_thread")}</h2>
+  <ol class="rt__list">
+    {rounds.map((r, idx) => (
+      <li class="rt__item">
+        <div class="rt__rail" aria-hidden="true">
+          <span class="rt__dot"></span>
+          {idx < rounds.length - 1 && <span class="rt__line"></span>}
+        </div>
+        <div class="rt__body">
+          <div class="rt__top">
+            <span class="rt__version mono tnum">{r.version}</span>
+            <span class="rt__date mono">{r.date ?? (lang === "en" ? "intake" : "初轮")}</span>
+            <span class="rt__count mono tnum">
+              {r.bug_count} {lang === "en" ? "entries" : "条"}
+            </span>
+          </div>
+          <p class="rt__label mono">{labelOf(r)}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .rt { margin: 2rem 0; }
+  .rt__heading {
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+  }
+  .rt__list { list-style: none; margin: 0; padding: 0; }
+  .rt__item {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 1rem;
+    padding: 0.6rem 0;
+  }
+  .rt__rail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.55rem;
+  }
+  .rt__dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .rt__line {
+    flex: 1;
+    width: 1px;
+    background: var(--rule);
+    margin-top: 4px;
+  }
+  .rt__body {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1rem;
+  }
+  .rt__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 1.4rem;
+    margin-bottom: 0.3rem;
+  }
+  .rt__version {
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+  }
+  .rt__date {
+    color: var(--ink-mute);
+    font-size: 0.85rem;
+  }
+  .rt__count {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-left: auto;
+  }
+  .rt__label {
+    margin: 0;
+    color: var(--ink-mute);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+</style>
