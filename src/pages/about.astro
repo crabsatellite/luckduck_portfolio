@@ -1,8 +1,7 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
-import MascotDuck from "~/components/MascotDuck.astro";
-import SteamDivider from "~/components/SteamDivider.astro";
 import { t } from "~/i18n/strings";
+import { profile } from "~/lib/data";
 
 const lang = "zh" as const;
 ---
@@ -11,18 +10,39 @@ const lang = "zh" as const;
   <article class="about">
     <div class="container">
       <header class="about__head">
-        <MascotDuck size={96} alt="" blink={true} />
-        <div>
-          <h1 class="about__greet h-display">{t(lang, "about.greeting")}</h1>
-          <p class="about__role">{t(lang, "about.role")}</p>
-        </div>
+        <p class="eyebrow"><strong>about</strong></p>
+        <h1 class="about__greet h-display">{t(lang, "about.greeting")}</h1>
+        <p class="about__role">{t(lang, "about.role")}</p>
       </header>
-      <SteamDivider variant="compact" />
-      <div class="about__body">
-        <p>{t(lang, "about.zh_para1")}</p>
-        <p>{t(lang, "about.zh_para2")}</p>
-        <p>{t(lang, "about.zh_para3")}</p>
-        <p>{t(lang, "about.zh_para4")}</p>
+
+      <div class="about__layout">
+        <div class="about__body">
+          <p>{t(lang, "about.zh_para1")}</p>
+          <p>{t(lang, "about.zh_para2")}</p>
+          <p>{t(lang, "about.zh_para3")}</p>
+          <p>{t(lang, "about.zh_para4")}</p>
+        </div>
+
+        <aside class="about__side">
+          <section class="about__panel">
+            <h3 class="about__panel-h">公开署名</h3>
+            <ul class="about__credits">
+              {profile.curseforge.tester_credits.map((c) => (
+                <li>
+                  <a href={c.mod_url} rel="noopener" target="_blank">{c.mod}</a>
+                  <span class="about__credit-meta mono"> · {c.role}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section class="about__panel">
+            <h3 class="about__panel-h">联系</h3>
+            <ul class="about__links">
+              <li><a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">github / LUCK666DUCK ↗</a></li>
+              <li><a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank">curseforge / luck666duck ↗</a></li>
+            </ul>
+          </section>
+        </aside>
       </div>
     </div>
   </article>
@@ -31,15 +51,14 @@ const lang = "zh" as const;
 <style>
   .about { padding: 2.4rem 0 3rem 0; }
   .about__head {
-    display: flex;
-    align-items: center;
-    gap: 1.4rem;
-    padding: 1rem 0 1.4rem 0;
-    flex-wrap: wrap;
+    max-width: 64ch;
+    padding: 0 0 1.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2rem;
   }
   .about__greet {
     font-size: clamp(1.6rem, 3.6vw, 2.2rem);
-    margin: 0 0 0.4rem 0;
+    margin: 0.5rem 0 0.5rem 0;
   }
   .about__role {
     font-family: var(--font-sans);
@@ -49,13 +68,61 @@ const lang = "zh" as const;
     letter-spacing: 0.02em;
   }
   :lang(zh) .about__role { font-family: var(--font-cjk); }
+
+  .about__layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+  }
+  @media (max-width: 880px) {
+    .about__layout { grid-template-columns: 1fr; gap: 2rem; }
+  }
   .about__body {
     max-width: 64ch;
-    padding: 1.4rem 0;
     color: var(--ink);
   }
   .about__body p {
     margin: 0 0 1.2rem 0;
     font-size: 1rem;
+    line-height: 1.75;
   }
+
+  .about__side { display: flex; flex-direction: column; gap: 1.4rem; }
+  .about__panel {
+    border: 1px solid var(--rule);
+    background: var(--bg-soft);
+    padding: 1.1rem 1.2rem;
+    border-radius: 6px;
+  }
+  .about__panel-h {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 0.7rem 0;
+    font-weight: 600;
+  }
+  :lang(zh) .about__panel-h { font-family: var(--font-cjk); letter-spacing: 0.1em; }
+  .about__credits, .about__links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .about__credits li, .about__links li {
+    margin-bottom: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+  }
+  :lang(zh) .about__credits li, :lang(zh) .about__links li { font-family: var(--font-cjk); }
+  .about__credits a, .about__links a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .about__credits a:hover, .about__links a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .about__credit-meta { color: var(--ink-mute); font-size: 0.8rem; }
 </style>

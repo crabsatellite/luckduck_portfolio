@@ -6,10 +6,21 @@ interface Props {
   lang: Lang;
 }
 const { status } = Astro.props;
-const effective = status ?? "open";
-const display = effective === "noted-not-bug" ? "noted" : effective;
+
+// All ledger entries are CLOSED reports filed to the mod author.
+// We only render a pill when the author has a public response on record:
+//   - fixed         → author shipped a fix
+//   - unfixed       → carried through a regression round, still not fixed
+//   - noted-not-bug → author publicly clarified it's not a bug / by-design
+// status === null  → no public response known; render nothing (the row itself
+// already attests the report was filed).
+if (!status) { /* render nothing */ }
+
+const display = status === "noted-not-bug" ? "noted" : status;
 ---
 
-<span class="pill" data-status={effective} aria-label={`status: ${effective}`}>
-  {display}
-</span>
+{status && (
+  <span class="pill" data-status={status} aria-label={`author response: ${status}`}>
+    {display}
+  </span>
+)}

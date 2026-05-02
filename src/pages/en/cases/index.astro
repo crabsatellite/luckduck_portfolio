@@ -2,7 +2,6 @@
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Filters from "~/components/Filters.astro";
 import ModCard from "~/components/ModCard.astro";
-import SteamDivider from "~/components/SteamDivider.astro";
 import { sortedMods } from "~/lib/data";
 import { t } from "~/i18n/strings";
 
@@ -14,6 +13,7 @@ const list = sortedMods();
   <section class="cases-page">
     <div class="container">
       <header class="cases-page__head">
+        <p class="eyebrow"><strong>cases</strong></p>
         <h1 class="cases-page__title h-display">{t(lang, "cases.title")}</h1>
         <p class="cases-page__sub">{t(lang, "cases.subtitle")}</p>
       </header>
@@ -21,23 +21,15 @@ const list = sortedMods();
       <div class="cases-grid">
         {list.map((m) => <ModCard mod={m} lang={lang} />)}
       </div>
-      <SteamDivider variant="compact" />
     </div>
   </section>
 </BaseLayout>
 
 <style>
   .cases-page { padding: 2.4rem 0 2rem 0; }
-  .cases-page__head { margin-bottom: 1rem; }
-  .cases-page__title {
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    margin: 0.4rem 0;
-  }
-  .cases-page__sub {
-    color: var(--ink-mute);
-    font-size: 0.95rem;
-    margin: 0;
-  }
+  .cases-page__head { margin-bottom: 1rem; max-width: 64ch; }
+  .cases-page__title { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0.4rem 0; }
+  .cases-page__sub { color: var(--ink-soft); font-size: 0.95rem; margin: 0; }
   .cases-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));

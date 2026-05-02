@@ -1,27 +1,19 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
-import SteamDivider from "~/components/SteamDivider.astro";
-import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-
-const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 ---
 
 <footer class="footer">
   <div class="container">
-    <SteamDivider variant="wide" />
     <div class="footer__cols">
       <div class="footer__col">
-        <p class="footer__handle">🦆 {t(lang, "footer.handle")} / {t(lang, "footer.cn_name")}</p>
+        <p class="footer__handle">{t(lang, "footer.handle")} · {t(lang, "footer.cn_name")}</p>
         <p class="footer__tag">{t(lang, "footer.tagline")}</p>
         <p class="footer__active mono tnum">{t(lang, "footer.active")}</p>
-      </div>
-      <div class="footer__col">
-        <RetroBadgeStrip />
       </div>
       <div class="footer__col">
         <ul class="footer__links">
@@ -43,24 +35,26 @@ const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
       <p class="footer__copy">{t(lang, "footer.copy")}</p>
       <p class="footer__version mono">
         {t(lang, "footer.archived")}
-        <span class="footer__sep" aria-hidden="true">·</span>
-        <a href={`${base}/v1/`} rel="nofollow">{t(lang, "footer.v1_link")}</a>
       </p>
     </div>
-    <SteamDivider variant="compact" />
   </div>
 </footer>
 
 <style>
-  .footer { margin-top: 5rem; padding-bottom: 1.6rem; }
+  .footer {
+    margin-top: 5rem;
+    padding-top: 2.4rem;
+    padding-bottom: 1.6rem;
+    border-top: 1px solid var(--rule);
+  }
   .footer__cols {
     display: grid;
-    grid-template-columns: 1fr 1.4fr 1fr;
+    grid-template-columns: 2fr 1fr;
     gap: 2rem;
-    padding: 1.6rem 0;
+    padding: 0 0 1.6rem 0;
     align-items: start;
   }
-  @media (max-width: 880px) {
+  @media (max-width: 720px) {
     .footer__cols { grid-template-columns: 1fr; gap: 1.2rem; }
   }
   .footer__col p { margin: 0 0 0.4rem 0; }
@@ -69,6 +63,7 @@ const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
     font-weight: 700;
     font-size: 1rem;
     color: var(--ink);
+    letter-spacing: 0.02em;
   }
   :lang(zh) .footer__handle { font-family: var(--font-cjk); }
   .footer__tag {
@@ -99,7 +94,7 @@ const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
   .footer__rule {
     border: 0;
     border-top: 1px solid var(--rule);
-    margin: 1rem 0;
+    margin: 0;
   }
   .footer__meta {
     display: flex;
@@ -107,6 +102,7 @@ const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
     flex-wrap: wrap;
     gap: 0.6rem 1.4rem;
     align-items: baseline;
+    padding-top: 1rem;
   }
   .footer__copy {
     font-family: var(--font-sans);
@@ -116,7 +112,7 @@ const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
     max-width: 60ch;
     margin: 0;
   }
-  :lang(zh) .footer__copy { font-family: var(--font-cjk); line-height: 1.85; }
+  :lang(zh) .footer__copy { font-family: var(--font-cjk); line-height: 1.75; }
   .footer__version {
     font-size: 0.78rem;
     color: var(--ink-mute);

@@ -1,0 +1,148 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+import { methods, categoryCounts } from "~/lib/data";
+import SeverityChip from "~/components/SeverityChip.astro";
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const counts = categoryCounts();
+const ordered = [...methods].sort((a, b) => (counts[b.category_id] || 0) - (counts[a.category_id] || 0));
+---
+
+<section class="methods">
+  <div class="methods__list">
+    {ordered.map((m) => {
+      const count = counts[m.category_id] || 0;
+      const actions = lang === "zh" ? m.what_i_do_zh : m.what_i_do_en;
+      const summary = lang === "zh" ? m.summary_zh : m.summary_en;
+      const name = lang === "zh" ? m.name_zh : m.name_en;
+      return (
+        <article id={m.id} class="method">
+          <header class="method__head">
+            <div class="method__head-l">
+              <h3 class="method__name h-section">{name}</h3>
+              <p class="method__id mono">{m.category_id}</p>
+            </div>
+            <div class="method__head-r">
+              <SeverityChip sev={m.severity_default} />
+              <span class="method__count mono tnum">{count}</span>
+              <span class="method__count-label">{t(lang, "methods.col_count")}</span>
+            </div>
+          </header>
+
+          <div class="method__body">
+            <div class="method__field">
+              <h4 class="method__field-h">{t(lang, "methods.col_summary")}</h4>
+              <p class="method__summary">{summary}</p>
+            </div>
+            <div class="method__field">
+              <h4 class="method__field-h">{t(lang, "methods.col_actions")}</h4>
+              <ul class="method__actions">
+                {actions.map((a) => <li>{a}</li>)}
+              </ul>
+            </div>
+            {lang === "zh" && (
+              <div class="method__field">
+                <h4 class="method__field-h">{t(lang, "methods.col_judgement")}</h4>
+                <p class="method__judgement">{m.judgement_zh}</p>
+              </div>
+            )}
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .methods__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .method {
+    border-bottom: 1px solid var(--rule);
+    padding: 1.6rem 0;
+  }
+  .method__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 1.1rem;
+    flex-wrap: wrap;
+  }
+  .method__head-l { min-width: 0; flex: 1; }
+  .method__name {
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    margin: 0 0 0.25rem 0;
+    color: var(--ink);
+  }
+  .method__id {
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+  .method__head-r {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+  .method__count {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .method__count-label {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  :lang(zh) .method__count-label { font-family: var(--font-cjk); letter-spacing: 0.06em; }
+
+  .method__body {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 1.6rem;
+  }
+  @media (max-width: 880px) {
+    .method__body { grid-template-columns: 1fr; gap: 1rem; }
+  }
+  .method__field-h {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 0.55rem 0;
+    font-weight: 600;
+  }
+  :lang(zh) .method__field-h { font-family: var(--font-cjk); letter-spacing: 0.1em; }
+  .method__summary, .method__judgement {
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+  :lang(zh) .method__summary, :lang(zh) .method__judgement {
+    font-family: var(--font-cjk);
+    line-height: 1.75;
+  }
+  .method__actions {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--ink-soft);
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+  :lang(zh) .method__actions { font-family: var(--font-cjk); line-height: 1.75; }
+  .method__actions li { margin-bottom: 0.4rem; }
+</style>

@@ -1,0 +1,86 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import MethodologyTable from "~/components/MethodologyTable.astro";
+import SeverityLegend from "~/components/SeverityLegend.astro";
+import { t } from "~/i18n/strings";
+
+const lang = "en" as const;
+---
+
+<BaseLayout title={t(lang, "methods.title")} lang={lang}>
+  <article class="page">
+    <div class="container">
+      <header class="page__head">
+        <p class="eyebrow"><strong>methodology</strong></p>
+        <h1 class="page__title h-display">{t(lang, "methods.title")}</h1>
+        <p class="page__sub">{t(lang, "methods.subtitle")}</p>
+      </header>
+
+      <SeverityLegend lang={lang} />
+
+      <MethodologyTable lang={lang} />
+
+      <section class="tools">
+        <h2 class="tools__h h-section">{t(lang, "methods.tools_h")}</h2>
+        <dl class="tools__grid">
+          <div class="tools__cell">
+            <dt>{t(lang, "methods.tools_setup")}</dt>
+            <dd>{t(lang, "methods.tools_setup_d")}</dd>
+          </div>
+          <div class="tools__cell">
+            <dt>{t(lang, "methods.tools_repro")}</dt>
+            <dd>{t(lang, "methods.tools_repro_d")}</dd>
+          </div>
+          <div class="tools__cell">
+            <dt>{t(lang, "methods.tools_round")}</dt>
+            <dd>{t(lang, "methods.tools_round_d")}</dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page { padding: 2.4rem 0 3rem 0; }
+  .page__head { max-width: 64ch; margin-bottom: 1.4rem; }
+  .page__title {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0.4rem 0 0.6rem 0;
+  }
+  .page__sub {
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .tools { padding: 2.4rem 0; }
+  .tools__h { margin: 0 0 1.2rem 0; }
+  .tools__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 0;
+  }
+  @media (max-width: 880px) {
+    .tools__grid { grid-template-columns: 1fr; }
+  }
+  .tools__cell { background: var(--bg); padding: 1.2rem 1.3rem; }
+  .tools__cell dt {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin: 0 0 0.55rem 0;
+  }
+  .tools__cell dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+</style>

@@ -1,9 +1,9 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
-import MascotDuck from "~/components/MascotDuck.astro";
-import SteamDivider from "~/components/SteamDivider.astro";
-import ModLogo from "~/components/ModLogo.astro";
-import { activeMods, isCredited, hasRegression, totalBugs, totalRounds, totalRegressionRounds } from "~/lib/data";
+import {
+  totalBugs, totalRounds, totalRegressionRounds,
+  mods, profile,
+} from "~/lib/data";
 
 interface Props {
   lang: Lang;
@@ -13,232 +13,142 @@ const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 const langPrefix = lang === "en" ? `${base}/en` : base;
 
-const active = activeMods();
 const bugCount = totalBugs();
 const roundCount = totalRounds();
 const regressionCount = totalRegressionRounds();
+const modsCount = mods.length;
+const creditedCount = profile.curseforge.tester_credits.length;
 ---
 
 <section class="hero" aria-labelledby="hero-heading">
-  <SteamDivider variant="wide" />
   <div class="container">
     <div class="hero__top">
-      <div class="hero__mascot-wrap">
-        <MascotDuck size={120} alt="" blink={true} />
-      </div>
-      <div class="hero__copy">
-        <h1 id="hero-heading" class="hero__heading h-display">
-          <span class="hero__greet-en">{t(lang, "hero.greeting_en")}</span>
-          <span class="hero__greet-zh">{t(lang, "hero.greeting_zh")}</span>
-        </h1>
-        <p class="hero__role">{t(lang, "hero.role")}</p>
-        <p class="hero__stats">
-          <a href={`${langPrefix}/cases`} class="hero__stats-link">
-            {lang === "en" ? "tested " : "已测 "}
-            <span class="mono tnum hero__stats-num">13</span>
-            {lang === "en" ? " mods · filed " : " 个 mod · 提交 "}
-            <span class="mono tnum hero__stats-num">{bugCount}</span>
-            {lang === "en" ? " bugs · " : " 条 bug · "}
-            <span class="mono tnum hero__stats-num">{roundCount}</span>
-            {lang === "en" ? " rounds · " : " 轮次 · "}
-            <span class="mono tnum hero__stats-num">{regressionCount}</span>
-            {lang === "en" ? " regression rounds → " : " 多轮回归 → "}
-          </a>
-        </p>
-      </div>
+      <p class="hero__eyebrow">
+        <span class="hero__eyebrow-tag">{t(lang, "hero.tagline")}</span>
+        <span class="hero__eyebrow-sep" aria-hidden="true">·</span>
+        <span class="hero__eyebrow-name">{t(lang, "hero.subtitle")}</span>
+      </p>
+      <h1 id="hero-heading" class="hero__h h-display">{t(lang, "hero.title")}</h1>
+      <p class="hero__role">{t(lang, "hero.role")}</p>
     </div>
 
-    <div class="hero__active">
-      <p class="hero__active-label">
-        <span class="hero__active-dot" aria-hidden="true"></span>
-        {t(lang, "hero.active_label")}
-      </p>
-      <div class="hero__active-grid">
-        {active.map((m) => {
-          const cnName = m.name_zh.includes("/") ? m.name_zh.split("/")[0].trim() : m.name_zh;
-          return (
-            <a href={`${langPrefix}/cases/${m.id}`} class="hero__active-card">
-              <ModLogo mod={m} size={48} />
-              <div class="hero__active-text">
-                <span class="hero__active-name">{m.name_en}</span>
-                <span class="hero__active-cn" aria-hidden="true">{cnName}</span>
-                <span class="hero__active-meta mono tnum">
-                  {m.total_bugs} {lang === "en" ? "bugs" : "条"}
-                  {hasRegression(m) && <span class="hero__active-flag"> · {lang === "en" ? "reg" : "回归"}</span>}
-                  {isCredited(m) && <span class="hero__active-flag hero__active-flag--ok"> · ✓</span>}
-                </span>
-              </div>
-            </a>
-          );
-        })}
+    <dl class="hero__stats" aria-label="overall counts">
+      <div class="hero__stat">
+        <dt>{t(lang, "hero.stat_mods")}</dt>
+        <dd class="mono tnum">{modsCount}</dd>
       </div>
-      <p class="hero__see-all">
-        <a href={`${langPrefix}/cases`}>{t(lang, "hero.see_all")}</a>
-      </p>
+      <div class="hero__stat">
+        <dt>{t(lang, "hero.stat_bugs")}</dt>
+        <dd class="mono tnum">{bugCount}</dd>
+      </div>
+      <div class="hero__stat">
+        <dt>{t(lang, "hero.stat_rounds")}</dt>
+        <dd class="mono tnum">{roundCount}</dd>
+      </div>
+      <div class="hero__stat">
+        <dt>{t(lang, "hero.stat_regression")}</dt>
+        <dd class="mono tnum">{regressionCount}</dd>
+      </div>
+      <div class="hero__stat">
+        <dt>{t(lang, "hero.stat_credited")}</dt>
+        <dd class="mono tnum">{creditedCount}</dd>
+      </div>
+    </dl>
+
+    <div class="hero__cta">
+      <a class="btn btn--accent" href={`${langPrefix}/methodology`}>{t(lang, "hero.cta_methods")}</a>
+      <a class="btn" href={`${langPrefix}/cases`}>{t(lang, "hero.cta_cases")}</a>
     </div>
   </div>
-  <SteamDivider variant="wide" />
 </section>
 
 <style>
-  .hero { padding: 1rem 0 1.6rem 0; }
-  .hero__top {
-    display: grid;
-    grid-template-columns: 130px 1fr;
-    gap: 2rem;
-    align-items: start;
-    padding: 1.6rem 0 0.8rem 0;
+  .hero {
+    padding: 3rem 0 2rem 0;
+    border-bottom: 1px solid var(--rule);
   }
-  @media (max-width: 640px) {
-    .hero__top { grid-template-columns: 1fr; gap: 1.2rem; }
-    .hero__mascot-wrap { display: flex; justify-content: center; }
-  }
-  .hero__heading {
-    font-size: clamp(1.6rem, 4vw, 2.5rem);
-    margin: 0 0 0.6rem 0;
-    line-height: 1.18;
-  }
-  .hero__greet-en {
-    display: block;
+  .hero__top { max-width: 64ch; }
+  .hero__eyebrow {
     font-family: var(--font-sans);
-    color: var(--ink);
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
+    margin: 0 0 0.85rem 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    flex-wrap: wrap;
   }
-  .hero__greet-zh {
-    display: block;
-    font-family: var(--font-cjk);
-    font-weight: 500;
-    color: var(--ink-soft);
-    margin-top: 0.2rem;
-    font-size: 0.85em;
+  .hero__eyebrow-tag {
+    color: var(--bg);
+    background: var(--accent);
+    padding: 0.18rem 0.5rem;
+    border-radius: 3px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: none;
+  }
+  .hero__eyebrow-sep { color: var(--rule); }
+  .hero__eyebrow-name { letter-spacing: 0.04em; }
+  .hero__h {
+    font-size: clamp(1.8rem, 4.4vw, 2.8rem);
+    margin: 0 0 1rem 0;
+    color: var(--ink);
   }
   .hero__role {
     font-family: var(--font-sans);
     font-size: clamp(0.95rem, 1.3vw, 1.05rem);
     color: var(--ink-soft);
-    max-width: 64ch;
     line-height: 1.65;
-    margin: 0 0 1rem 0;
+    margin: 0 0 2rem 0;
   }
-  :lang(zh) .hero__role { font-family: var(--font-cjk); line-height: 1.85; }
-  .hero__stats { margin: 0; }
-  .hero__stats-link {
-    display: inline-block;
-    color: var(--ink);
-    text-decoration: none;
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    padding: 0.55rem 1rem;
-    background: color-mix(in oklch, var(--accent) 16%, var(--bg));
-    border: 1px solid color-mix(in oklch, var(--accent) 30%, var(--rule));
-    border-radius: var(--radius);
-    transition: all 140ms ease;
-  }
-  :lang(zh) .hero__stats-link { font-family: var(--font-cjk); }
-  .hero__stats-link:hover, .hero__stats-link:focus-visible {
-    background: var(--accent);
-    color: var(--bg);
-  }
-  .hero__stats-num {
-    font-weight: 700;
-    color: var(--accent-deep);
-  }
-  .hero__stats-link:hover .hero__stats-num,
-  .hero__stats-link:focus-visible .hero__stats-num {
-    color: var(--bg);
-  }
+  :lang(zh) .hero__role { font-family: var(--font-cjk); line-height: 1.75; }
 
-  .hero__active {
-    margin-top: 1.4rem;
-    padding-top: 1.4rem;
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
+    margin: 0 0 2rem 0;
+    padding: 0;
     border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
   }
-  .hero__active-label {
+  @media (max-width: 720px) {
+    .hero__stats { grid-template-columns: repeat(2, 1fr); }
+    .hero__stat { border-top: 1px solid var(--rule); }
+    .hero__stat:nth-child(1), .hero__stat:nth-child(2) { border-top: 0; }
+  }
+  .hero__stat {
+    padding: 1rem 1.1rem;
+    border-right: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .hero__stat:last-child { border-right: 0; }
+  @media (max-width: 720px) {
+    .hero__stat:nth-child(2n) { border-right: 0; }
+  }
+  .hero__stat dt {
     font-family: var(--font-sans);
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     color: var(--ink-mute);
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    margin: 0 0 0.8rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    margin: 0;
   }
-  :lang(zh) .hero__active-label { font-family: var(--font-cjk); letter-spacing: 0.1em; }
-  .hero__active-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: var(--ok);
-    border-radius: 50%;
-    box-shadow: 0 0 8px color-mix(in oklch, var(--ok) 40%, transparent);
-  }
-  .hero__active-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.8rem;
-  }
-  @media (max-width: 880px) {
-    .hero__active-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 480px) {
-    .hero__active-grid { grid-template-columns: 1fr; }
-  }
-  .hero__active-card {
-    display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: 0.8rem;
-    padding: 0.85rem 0.95rem;
-    background: var(--bg-soft);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
-    text-decoration: none;
-    color: var(--ink);
-    transition: all 140ms ease;
-    align-items: center;
-  }
-  .hero__active-card:hover, .hero__active-card:focus-visible {
-    border-color: var(--accent);
-    background: var(--bg-raised);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-warm);
-  }
-  .hero__active-text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.18rem;
-    min-width: 0;
-  }
-  .hero__active-name {
-    font-family: var(--font-sans);
+  :lang(zh) .hero__stat dt { font-family: var(--font-cjk); letter-spacing: 0.08em; }
+  .hero__stat dd {
+    margin: 0;
+    font-size: 1.5rem;
     font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--ink);
-    line-height: 1.2;
+    color: var(--accent);
+    line-height: 1;
   }
-  .hero__active-cn {
-    font-family: var(--font-cjk);
-    font-size: 0.78rem;
-    color: var(--ink-mute);
-    line-height: 1.2;
+
+  .hero__cta {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
   }
-  .hero__active-meta {
-    font-size: 0.74rem;
-    color: var(--accent-deep);
-    line-height: 1.2;
-  }
-  .hero__active-flag { color: var(--ink-mute); }
-  .hero__active-flag--ok { color: var(--ok); font-weight: 700; }
-  .hero__see-all {
-    margin: 0.8rem 0 0 0;
-    text-align: right;
-  }
-  .hero__see-all a {
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
-    color: var(--ink-mute);
-    text-decoration: none;
-    letter-spacing: 0.04em;
-  }
-  :lang(zh) .hero__see-all a { font-family: var(--font-cjk); }
-  .hero__see-all a:hover, .hero__see-all a:focus-visible { color: var(--accent); }
 </style>

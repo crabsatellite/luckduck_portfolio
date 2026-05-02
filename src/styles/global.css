@@ -1,9 +1,9 @@
-/* fonts: Sora variable for display + body Latin, JBM Variable for data-only mono,
-   LXGW WenKai Screen R for CJK, VT323 for retro-pixel badge labels. */
-@import "@fontsource-variable/sora/wght.css";
+/* fonts: Inter Variable for Latin display + body, Noto Sans SC for CJK,
+   JetBrains Mono for data (versions, IDs, counts, dates). All three are
+   neutral technical sans — no calligraphic / display-art voice. */
+@import "@fontsource-variable/inter/wght.css";
 @import "@fontsource-variable/jetbrains-mono/wght.css";
-@import "@fontsource/vt323/400.css";
-@import "lxgw-wenkai-screen-webfont/lxgwwenkaiscreenr.css";
+@import "@fontsource-variable/noto-sans-sc/wght.css";
 
 :root {
   /* dark soak-mode (default) */
@@ -21,16 +21,15 @@
   --alert: #f38ba8;
   --rule: #3a3d56;
 
-  --font-sans: "Sora Variable", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
-  --font-cjk: "LXGW WenKai Screen R", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-pixel: "VT323", "Courier New", monospace;
+  --font-cjk: "Noto Sans SC Variable", "Inter Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
 
   --content-max: 1240px;
   --gutter: clamp(1.25rem, 4vw, 2.6rem);
 
-  --line-latin: 1.65;
-  --line-cjk: 1.85;
+  --line-latin: 1.6;
+  --line-cjk: 1.75;
 
   --radius: 8px;
   --radius-lg: 12px;
