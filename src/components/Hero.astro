@@ -30,6 +30,7 @@ const creditedCount = profile.curseforge.tester_credits.length;
       </p>
       <h1 id="hero-heading" class="hero__h h-display">{t(lang, "hero.title")}</h1>
       <p class="hero__role">{t(lang, "hero.role")}</p>
+      <p class="hero__personal">{t(lang, "hero.personal")}</p>
     </div>
 
     <dl class="hero__stats" aria-label="overall counts">
@@ -56,8 +57,8 @@ const creditedCount = profile.curseforge.tester_credits.length;
     </dl>
 
     <div class="hero__cta">
-      <a class="btn btn--accent" href={`${langPrefix}/methodology`}>{t(lang, "hero.cta_methods")}</a>
-      <a class="btn" href={`${langPrefix}/cases`}>{t(lang, "hero.cta_cases")}</a>
+      <a class="btn btn--accent" href="#contact">{t(lang, "hero.cta_hire")}</a>
+      <a class="btn" href={`${langPrefix}/notes`}>{t(lang, "hero.cta_notes")}</a>
     </div>
   </div>
 </section>
@@ -100,9 +101,24 @@ const creditedCount = profile.curseforge.tester_credits.length;
     font-size: clamp(0.95rem, 1.3vw, 1.05rem);
     color: var(--ink-soft);
     line-height: 1.65;
-    margin: 0 0 2rem 0;
+    margin: 0 0 1rem 0;
   }
   :lang(zh) .hero__role { font-family: var(--font-cjk); line-height: 1.75; }
+  .hero__personal {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--ink-mute);
+    line-height: 1.65;
+    margin: 0 0 2rem 0;
+    padding-left: 0.85rem;
+    border-left: 2px solid var(--accent);
+    font-style: italic;
+  }
+  :lang(zh) .hero__personal {
+    font-family: var(--font-cjk);
+    line-height: 1.85;
+    font-style: normal;
+  }
 
   .hero__stats {
     display: grid;

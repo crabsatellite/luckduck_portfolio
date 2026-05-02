@@ -1,0 +1,157 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+
+const lang = "en" as const;
+const date = "2026-05-02";
+const title = "Why I file advancement misfires as S1, not S3";
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const langPrefix = `${base}/en`;
+---
+
+<BaseLayout title={title} lang={lang}>
+  <article class="note">
+    <div class="container">
+      <header class="note__head">
+        <p class="eyebrow"><strong>note</strong> · <span class="mono tnum">{date}</span></p>
+        <h1 class="note__title h-display">{title}</h1>
+        <p class="note__deck">
+          An advancement firing at the wrong moment looks like a small cosmetic bug. It isn't — it lies to the player. The system says "you did X" when the player didn't. That's an integrity bug, not polish.
+        </p>
+      </header>
+
+      <div class="note__body">
+        <h2>The S3 temptation</h2>
+        <p>
+          On its surface, "an advancement popped at the wrong time" reads like S3: nothing crashed, nothing locked up, no item was lost, no save was corrupted. The player can keep playing the game and never feel the impact. The first time I saw one I wanted to file it as S3 — drop it into the polish bucket and let the author fix it on a quiet weekend.
+        </p>
+        <p>
+          Then I logged this entry against <a href={`${langPrefix}/cases/alex_caves`}>Alex's Caves</a>:
+          <em>"Single-player. A new save auto-unlocks the advancement (Where did the gummies go?) the moment you log in."</em>
+          New save, fresh login, the player hasn't moved a pixel — and the advancement has already fired.
+        </p>
+
+        <h2>What it lies about</h2>
+        <p>
+          Minecraft's advancement system isn't decoration. It's the game's official record of what the player has done:
+        </p>
+        <ul>
+          <li>Players use it to decide what to do next</li>
+          <li>Mod authors use it as a quest gate (gating subsequent recipes / items / regions)</li>
+          <li>When players say in Discord / forums "I just hit advancement X", they're treating the system as a fair referee</li>
+        </ul>
+        <p>
+          A prematurely-fired advancement breaks all three: the player is steered toward a meaningless next step, the quest gate opens for the wrong reason, and community sharing turns into untrustworthy boasting. It isn't a broken decoration — it's a referee raising one team's victory flag before the match has started.
+        </p>
+
+        <h2>The rubric</h2>
+        <p>
+          So in my own rubric, advancement misfires explicitly belong to S1:
+        </p>
+        <ul>
+          <li><strong>S1</strong>: auto-unlock on a new save; should-fire-but-doesn't; fires on the wrong target (kill A and B's advancement triggers)</li>
+          <li><strong>S2</strong>: trigger condition slightly off (you had to do it 6 times when the doc says 5)</li>
+          <li><strong>S3</strong>: typo in the displayed text; wrong icon color</li>
+        </ul>
+        <p>
+          The question isn't "what did this bug block?" — it's "what untrue thing did this bug make the system say?".
+          Blocker bugs go to S0; lying bugs go to S1. Neither can wait for polish week.
+        </p>
+
+        <h2>The actual effect on mod authors</h2>
+        <p>
+          The practical consequence of filing advancement bugs as S1 is that when the author reads my report, the advancement batch sits at the top alongside the crashes.
+          They get fixed in the first regression cycle, not pushed to "maybe next version".
+          Across Hot Bath's 4 regression rounds, this rubric let advancement-class bugs get fixed roughly twice as fast as spec-mismatch bugs.
+        </p>
+        <p>
+          Not because they're harder to fix — quite the opposite, advancement bugs are usually a JSON predicate typo or a missed trigger condition —
+          but because <strong>the S1 tag forces the author to re-rank priority for me</strong>.
+          I don't have to argue. The rubric does the arguing.
+        </p>
+
+        <h2>The portable rule</h2>
+        <p>
+          If you're testing mods too, the next time you see an advancement firing at the wrong time, ask yourself one question:
+          <strong>what untrue thing is this bug making the game say to the player?</strong>
+          If the answer is "nothing" (e.g. a pure typo), it's S3. If the answer is "it misrepresents the player's state, progress, or eligibility", it's S1.
+        </p>
+        <p>
+          The rule generalizes well past advancements — quest systems, reputation systems, unlock systems, even buff timer displays.
+          Anywhere the game makes a <em>promise</em> to the player, a broken promise is S1, not polish.
+        </p>
+      </div>
+
+      <footer class="note__foot">
+        <p class="note__back">
+          <a href={`${langPrefix}/notes`}>← back to notes</a>
+          <span class="note__sep" aria-hidden="true">·</span>
+          <a href={`${langPrefix}/methodology#achievement`}>see the achievement test method</a>
+        </p>
+      </footer>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .note { padding: 2.4rem 0 4rem 0; }
+  .note__head {
+    max-width: 64ch;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2rem;
+  }
+  .note__title {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin: 0.5rem 0 1rem 0;
+    line-height: 1.2;
+  }
+  .note__deck {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin: 0;
+  }
+  .note__body { max-width: 64ch; }
+  .note__body h2 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin: 2.2rem 0 0.85rem 0;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .note__body p, .note__body ul {
+    font-family: var(--font-sans);
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0 0 1.1rem 0;
+  }
+  .note__body ul { padding-left: 1.4rem; }
+  .note__body li { margin-bottom: 0.4rem; }
+  .note__body strong { color: var(--accent-deep); font-weight: 600; }
+  .note__body em { color: var(--ink-soft); font-style: normal; background: var(--bg-soft); padding: 0.05em 0.3em; border-radius: 3px; }
+  .note__body a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--accent);
+    text-decoration: none;
+  }
+  .note__body a:hover { color: var(--accent); }
+  .note__foot {
+    margin-top: 3rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+    max-width: 64ch;
+  }
+  .note__back {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--ink-mute);
+    margin: 0;
+  }
+  .note__back a { color: var(--accent); text-decoration: none; }
+  .note__back a:hover { color: var(--accent-deep); }
+  .note__sep { margin: 0 0.5rem; }
+</style>
