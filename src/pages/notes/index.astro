@@ -1,0 +1,34 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import NotesList from "~/components/NotesList.astro";
+import { t } from "~/i18n/strings";
+
+const lang = "zh" as const;
+---
+
+<BaseLayout title={t(lang, "notes.title")} lang={lang}>
+  <article class="page">
+    <div class="container">
+      <header class="page__head">
+        <p class="eyebrow"><strong>notes</strong></p>
+        <h1 class="page__title h-display">{t(lang, "notes.title")}</h1>
+        <p class="page__sub">{t(lang, "notes.subtitle")}</p>
+      </header>
+      <NotesList lang={lang} />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page { padding: 2.4rem 0 3rem 0; }
+  .page__head { max-width: 64ch; margin-bottom: 2rem; }
+  .page__title { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0.4rem 0 0.6rem 0; }
+  .page__sub {
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  :lang(zh) .page__sub { font-family: var(--font-cjk); line-height: 1.75; }
+</style>

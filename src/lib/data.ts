@@ -2,6 +2,21 @@ import modsData from "../../data/mods.json";
 import bugsData from "../../data/bugs.json";
 import profileData from "../../data/profile.json";
 import methodologyData from "../../data/methodology.json";
+import notesData from "../../data/notes.json";
+
+export type Note = {
+  slug: string;
+  date: string | null;
+  title_zh: string;
+  title_en: string;
+  summary_zh: string;
+  summary_en: string;
+  tags: string[];
+};
+
+export const notes = notesData as Note[];
+
+export const isNoteDraft = (n: Note): boolean => n.date === null || n.tags.includes("draft");
 
 export type Round = {
   version: string;

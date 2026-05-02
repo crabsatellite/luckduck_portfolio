@@ -1,0 +1,167 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+
+const lang = "zh" as const;
+const date = "2026-05-02";
+const title = "为什么成就触发错记成 S1, 不是 S3";
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const langPrefix = base;
+---
+
+<BaseLayout title={title} lang={lang}>
+  <article class="note">
+    <div class="container">
+      <header class="note__head">
+        <p class="eyebrow"><strong>note</strong> · <span class="mono tnum">{date}</span></p>
+        <h1 class="note__title h-display">{title}</h1>
+        <p class="note__deck">
+          一条成就在错的时机解锁，看起来只是个小毛病。但它本质上撒谎：系统告诉玩家「你做了 X」，而玩家什么都没做。这是诚信问题，不是 polish。
+        </p>
+      </header>
+
+      <div class="note__body">
+        <h2>S3 的诱惑</h2>
+        <p>
+          按表层定义，"成就在错的时机弹出" 看起来很 S3：没崩、没卡、没掉物品、没改存档；玩家继续走完游戏完全不受影响。第一次见这种 bug 我也想标 S3，归到 "polish"，让作者周末顺手改了。
+        </p>
+        <p>
+          直到我注意到 <a href={`${langPrefix}/cases/alex_caves`}>Alex's Caves</a> 一条记录：
+          <em>「单人模式新存档一上线会自动解锁成就（软糖去哪里了）。」</em>
+          新存档，刚上线，玩家还没动一步，成就就已经亮了。
+        </p>
+
+        <h2>它撒了什么谎</h2>
+        <p>
+          Minecraft 的进度系统不是"装饰品"。它是游戏对玩家做了什么的官方记录：
+        </p>
+        <ul>
+          <li>玩家用它判断 "我接下来该做什么"</li>
+          <li>mod 作者用它做 quest gating（解锁后续配方 / 物品 / 区域）</li>
+          <li>玩家在 Discord / 论坛分享 "我打到 advancement X 了" 时，是把这个系统当作公正的裁判</li>
+        </ul>
+        <p>
+          一条提前解锁的成就把这三件事全部破坏掉：玩家被引导去做无意义的下一步、quest gate 错误地打开、社区分享变成不可信的炫耀。它不是装饰品坏了，是裁判在比赛开始前先举起了某队的胜利旗。
+        </p>
+
+        <h2>判定标准</h2>
+        <p>
+          所以我在自己的 rubric 里把 advancement 类的触发错明确放进 S1：
+        </p>
+        <ul>
+          <li><strong>S1</strong>：新存档自动解锁、应该触发的没触发、对错对象触发（杀 A 触发了 B 的成就）</li>
+          <li><strong>S2</strong>：触发条件偏严或偏松（应该 5 次实际 6 次才行）</li>
+          <li><strong>S3</strong>：成就显示文字 typo / 图标颜色不对</li>
+        </ul>
+        <p>
+          关键不是"这条 bug 阻塞了什么"，而是"这条 bug 让系统说了什么假话"。
+          阻塞类的判定走 S0；说谎类的判定走 S1。两者都不能等到 polish 周。
+        </p>
+
+        <h2>对 mod 作者的实际影响</h2>
+        <p>
+          我把成就 bug 标 S1 的实际后果是：作者拿到我的报告时，advancement 那批 bug 是和 crash 一起在最上面的。
+          这通常会在第一轮 fix list 就被解决，而不是被推到 "下个版本看看"。
+          在 Hot Bath 4 轮回归里，这个判定让 advancement 类 bug 的修复速度比 spec-mismatch 类快了一倍。
+        </p>
+        <p>
+          这不是因为 advancement 修起来更难——恰恰相反，advancement bug 通常是 JSON predicate 写错了或者 trigger condition 漏了一行——
+          而是因为 <strong>S1 标签让作者自己重新评估了优先级</strong>。
+          我不需要去说服他，rubric 替我说服了他。
+        </p>
+
+        <h2>所以我推荐的做法</h2>
+        <p>
+          如果你也在做 mod 测试，下次见到「成就在错的时机弹出」时，先问自己一个问题：
+          <strong>这条 bug 让游戏对玩家说了什么假话？</strong>
+          如果答案是 "什么都没说"（比如纯文字 typo），它是 S3。如果答案是 "它谎报了玩家的状态、进度、或资格"，它就是 S1。
+        </p>
+        <p>
+          这条规则适用范围比 advancement 大得多——同样的逻辑在 quest 系统、reputation 系统、unlock 系统、甚至 buff timer 显示上都成立。
+          凡是游戏对玩家做出 <em>承诺</em> 的地方，承诺被违反就是 S1，不是 polish。
+        </p>
+      </div>
+
+      <footer class="note__foot">
+        <p class="note__back">
+          <a href={`${langPrefix}/notes`}>← 回到 notes</a>
+          <span class="note__sep" aria-hidden="true">·</span>
+          <a href={`${langPrefix}/methodology#achievement`}>看 achievement 测试方法</a>
+        </p>
+      </footer>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .note { padding: 2.4rem 0 4rem 0; }
+  .note__head {
+    max-width: 64ch;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2rem;
+  }
+  .note__title {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin: 0.5rem 0 1rem 0;
+    line-height: 1.2;
+  }
+  .note__deck {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin: 0;
+    font-weight: 400;
+  }
+  :lang(zh) .note__deck { font-family: var(--font-cjk); line-height: 1.85; }
+
+  .note__body { max-width: 64ch; }
+  .note__body h2 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin: 2.2rem 0 0.85rem 0;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  :lang(zh) .note__body h2 { font-family: var(--font-cjk); }
+  .note__body p, .note__body ul {
+    font-family: var(--font-sans);
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0 0 1.1rem 0;
+  }
+  :lang(zh) .note__body p, :lang(zh) .note__body ul {
+    font-family: var(--font-cjk);
+    line-height: 1.95;
+  }
+  .note__body ul { padding-left: 1.4rem; }
+  .note__body li { margin-bottom: 0.4rem; }
+  .note__body strong { color: var(--accent-deep); font-weight: 600; }
+  .note__body em { color: var(--ink-soft); font-style: normal; background: var(--bg-soft); padding: 0.05em 0.3em; border-radius: 3px; }
+  .note__body a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--accent);
+    text-decoration: none;
+  }
+  .note__body a:hover { color: var(--accent); }
+
+  .note__foot {
+    margin-top: 3rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+    max-width: 64ch;
+  }
+  .note__back {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--ink-mute);
+    margin: 0;
+  }
+  :lang(zh) .note__back { font-family: var(--font-cjk); }
+  .note__back a { color: var(--accent); text-decoration: none; }
+  .note__back a:hover { color: var(--accent-deep); }
+  .note__sep { margin: 0 0.5rem; }
+</style>

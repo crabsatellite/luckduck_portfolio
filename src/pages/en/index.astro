@@ -1,8 +1,11 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Hero from "~/components/Hero.astro";
+import HirePackages from "~/components/HirePackages.astro";
 import FeaturedCaseCard from "~/components/FeaturedCaseCard.astro";
 import SeverityLegend from "~/components/SeverityLegend.astro";
+import NotesList from "~/components/NotesList.astro";
+import ContactPanel from "~/components/ContactPanel.astro";
 import { featuredMods, methods, categoryCounts } from "~/lib/data";
 import { t } from "~/i18n/strings";
 
@@ -20,10 +23,21 @@ const langPrefix = `${base}/en`;
 <BaseLayout title="LUCK666DUCK" lang={lang}>
   <Hero lang={lang} />
 
-  <section class="block" id="methods" aria-labelledby="methods-h">
+  <section class="block" id="hire" aria-labelledby="hire-h">
     <div class="container">
       <header class="block__head">
-        <p class="block__eyebrow">01 / methodology</p>
+        <p class="block__eyebrow">01 / hire</p>
+        <h2 id="hire-h" class="block__h h-section">{t(lang, "home.hire_h")}</h2>
+        <p class="block__sub">{t(lang, "home.hire_sub")}</p>
+      </header>
+      <HirePackages lang={lang} />
+    </div>
+  </section>
+
+  <section class="block block--alt" id="methods" aria-labelledby="methods-h">
+    <div class="container">
+      <header class="block__head">
+        <p class="block__eyebrow">02 / methodology</p>
         <h2 id="methods-h" class="block__h h-section">{t(lang, "home.methods_h")}</h2>
         <p class="block__sub">{t(lang, "home.methods_sub")}</p>
       </header>
@@ -46,10 +60,10 @@ const langPrefix = `${base}/en`;
     </div>
   </section>
 
-  <section class="block block--alt" id="severity" aria-labelledby="severity-h">
+  <section class="block" id="severity" aria-labelledby="severity-h">
     <div class="container">
       <header class="block__head">
-        <p class="block__eyebrow">02 / severity</p>
+        <p class="block__eyebrow">03 / severity</p>
         <h2 id="severity-h" class="block__h h-section">{t(lang, "home.severity_h")}</h2>
         <p class="block__sub">{t(lang, "home.severity_sub")}</p>
       </header>
@@ -57,10 +71,10 @@ const langPrefix = `${base}/en`;
     </div>
   </section>
 
-  <section class="block" id="featured" aria-labelledby="featured-h">
+  <section class="block block--alt" id="featured" aria-labelledby="featured-h">
     <div class="container">
       <header class="block__head">
-        <p class="block__eyebrow">03 / evidence</p>
+        <p class="block__eyebrow">04 / evidence</p>
         <h2 id="featured-h" class="block__h h-section">{t(lang, "home.featured_h")}</h2>
         <p class="block__sub">{t(lang, "home.featured_sub")}</p>
       </header>
@@ -72,11 +86,41 @@ const langPrefix = `${base}/en`;
       </p>
     </div>
   </section>
+
+  <section class="block" id="notes" aria-labelledby="notes-h">
+    <div class="container">
+      <header class="block__head">
+        <p class="block__eyebrow">05 / notes</p>
+        <h2 id="notes-h" class="block__h h-section">{t(lang, "home.notes_h")}</h2>
+        <p class="block__sub">{t(lang, "home.notes_sub")}</p>
+      </header>
+      <NotesList lang={lang} limit={3} />
+      <p class="block__more">
+        <a href={`${langPrefix}/notes`}>{t(lang, "home.notes_more")}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="block block--contact" id="contact" aria-labelledby="contact-h">
+    <div class="container">
+      <header class="block__head">
+        <p class="block__eyebrow">06 / contact</p>
+        <h2 id="contact-h" class="block__h h-section">{t(lang, "home.contact_h")}</h2>
+        <p class="block__sub">{t(lang, "home.contact_sub")}</p>
+      </header>
+      <ContactPanel lang={lang} />
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
   .block { padding: 3.5rem 0; }
   .block--alt { background: var(--bg-soft); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .block--contact {
+    background: linear-gradient(180deg, var(--bg) 0%, color-mix(in oklch, var(--accent) 6%, var(--bg)) 100%);
+    border-top: 1px solid var(--rule);
+    padding-bottom: 4rem;
+  }
   .block__head { max-width: 64ch; margin-bottom: 1.6rem; }
   .block__eyebrow {
     font-family: var(--font-mono);

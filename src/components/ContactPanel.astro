@@ -1,0 +1,117 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const steps = [
+  "home.contact_step1",
+  "home.contact_step2",
+  "home.contact_step3",
+  "home.contact_step4",
+] as const;
+---
+
+<div class="contact">
+  <div class="contact__channels">
+    <a class="contact__channel" href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank">
+      <span class="contact__channel-tag mono">curseforge</span>
+      <span class="contact__channel-handle">/ luck666duck</span>
+      <span class="contact__channel-arrow" aria-hidden="true">↗</span>
+    </a>
+    <a class="contact__channel" href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">
+      <span class="contact__channel-tag mono">github</span>
+      <span class="contact__channel-handle">/ LUCK666DUCK</span>
+      <span class="contact__channel-arrow" aria-hidden="true">↗</span>
+    </a>
+  </div>
+
+  <div class="contact__flow">
+    <h3 class="contact__flow-h">{t(lang, "home.contact_method")}</h3>
+    <ol class="contact__steps">
+      {steps.map((s, i) => (
+        <li>
+          <span class="mono tnum contact__step-num">{String(i + 1).padStart(2, "0")}</span>
+          <span class="contact__step-text">{t(lang, s)}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</div>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 2rem;
+  }
+  @media (max-width: 880px) { .contact { grid-template-columns: 1fr; } }
+
+  .contact__channels {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    align-self: start;
+  }
+  .contact__channel {
+    background: var(--bg);
+    padding: 1rem 1.2rem;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    transition: background 120ms ease;
+  }
+  .contact__channel:hover, .contact__channel:focus-visible {
+    background: var(--bg-soft);
+    color: var(--accent);
+  }
+  .contact__channel-tag {
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+  .contact__channel-handle { font-size: 0.95rem; flex: 1; }
+  .contact__channel-arrow { color: var(--ink-mute); font-size: 0.85rem; }
+
+  .contact__flow-h {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+  }
+  :lang(zh) .contact__flow-h { font-family: var(--font-cjk); letter-spacing: 0.08em; }
+  .contact__steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: step;
+  }
+  .contact__steps li {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    gap: 0.8rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .contact__steps li:last-child { border-bottom: 0; }
+  .contact__step-num {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .contact__step-text {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  :lang(zh) .contact__step-text { font-family: var(--font-cjk); line-height: 1.75; }
+</style>
