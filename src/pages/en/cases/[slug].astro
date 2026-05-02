@@ -4,10 +4,10 @@ import TestLogHeader from "~/components/TestLogHeader.astro";
 import TestLog from "~/components/TestLog.astro";
 import BugLedger from "~/components/BugLedger.astro";
 import MembersPanel from "~/components/MembersPanel.astro";
-import SteamDivider from "~/components/SteamDivider.astro";
 import {
   mods, bugsForMod, isCredited, hasRegression, hasNoIssues,
-  logNumber, getMcmodEntry, teamForMod, featuredBug, sceneForMod,
+  logNumber, getMcmodEntry, teamForMod, featuredBug,
+  modCategoryBreakdown, methodFor,
 } from "~/lib/data";
 import { t } from "~/i18n/strings";
 
@@ -25,10 +25,10 @@ const logNo = logNumber(mod);
 const mcmod = getMcmodEntry(mod);
 const team = teamForMod(mod);
 const featured = featuredBug(mod);
-const scene = sceneForMod(mod);
+const breakdown = modCategoryBreakdown(mod.id);
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
-const sceneUrl = scene ? `${base}/scenes/${scene}` : null;
+const langPrefix = `${base}/en`;
 ---
 
 <BaseLayout title={mod.name_en} lang={lang}>
@@ -46,28 +46,13 @@ const sceneUrl = scene ? `${base}/scenes/${scene}` : null;
 
       {team.length > 0 && <MembersPanel team={team} lang={lang} />}
 
-      {sceneUrl && (
-        <figure class="case__scene">
-          <img src={sceneUrl} alt={`${mod.name_en} ${t(lang, "case.scene_label")}`} loading="lazy" width="1280" height="400" />
-          <figcaption class="case__scene-cap">
-            <span class="case__scene-label">{t(lang, "case.scene_label")}</span>
-            <span class="case__scene-note">— {t(lang, "case.scene_placeholder")}</span>
-          </figcaption>
-        </figure>
-      )}
-
-      <SteamDivider variant="compact" />
-
       <div class="case__layout">
         <div class="case__main">
           {mod.rounds.length > 1 && <TestLog rounds={mod.rounds} lang={lang} />}
 
           {noIssues ? (
             <section class="case__pass">
-              <h2 class="case__pass-title h-section">
-                <span aria-hidden="true">✅</span>
-                {t(lang, "case.no_issues")}
-              </h2>
+              <h2 class="case__pass-title h-section">{t(lang, "case.no_issues")}</h2>
               <p class="case__pass-detail">{t(lang, "case.no_issues_detail")}</p>
               <p class="case__pass-meta mono tnum">
                 {mod.versions.join(" / ")} · 1 round
@@ -79,8 +64,8 @@ const sceneUrl = scene ? `${base}/scenes/${scene}` : null;
 
           <section class="case__legend" aria-labelledby="legend-heading">
             <h2 id="legend-heading" class="case__legend-h">{t(lang, "case.legend_title")}</h2>
+            <p class="case__legend-intro">{t(lang, "case.legend_intro")}</p>
             <ul class="case__legend-list">
-              <li><span class="pill" data-status="open">open</span> {t(lang, "case.legend_open")}</li>
               <li><span class="pill" data-status="unfixed">unfixed</span> {t(lang, "case.legend_unfixed")}</li>
               <li><span class="pill" data-status="fixed">fixed</span> {t(lang, "case.legend_fixed")}</li>
               <li><span class="pill" data-status="noted-not-bug">noted</span> {t(lang, "case.legend_noted")}</li>
@@ -90,16 +75,33 @@ const sceneUrl = scene ? `${base}/scenes/${scene}` : null;
         </div>
 
         <aside class="case__side">
-          <div class="case__panel">
-            <h3 class="case__panel-h">{t(lang, "case.depth_signals")}</h3>
-            {mod.depth_signals.length > 0 ? (
+          {breakdown.length > 0 && (
+            <div class="case__panel">
+              <h3 class="case__panel-h">{t(lang, "case.cat_breakdown")}</h3>
+              <ul class="case__breakdown">
+                {breakdown.map(({ cat, count }) => {
+                  const m = methodFor(cat);
+                  return (
+                    <li>
+                      <a href={`${langPrefix}/methodology#${m?.id ?? cat}`} class="case__breakdown-row">
+                        <span class="case__breakdown-name">{m ? m.name_en : cat}</span>
+                        <span class="mono tnum case__breakdown-n">{count}</span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+
+          {mod.depth_signals.length > 0 && (
+            <div class="case__panel">
+              <h3 class="case__panel-h">{t(lang, "case.depth_signals")}</h3>
               <ul class="case__signals">
                 {mod.depth_signals.map((s) => <li><span class="chip">{s}</span></li>)}
               </ul>
-            ) : (
-              <p class="case__panel-empty">{t(lang, "case.no_depth")}</p>
-            )}
-          </div>
+            </div>
+          )}
 
           {mcmod && (
             <div class="case__panel">
@@ -138,51 +140,56 @@ const sceneUrl = scene ? `${base}/scenes/${scene}` : null;
     display: grid;
     grid-template-columns: 9fr 3fr;
     gap: 2.4rem;
-    margin-top: 1rem;
+    margin-top: 1.4rem;
   }
-  @media (max-width: 980px) {
-    .case__layout { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 980px) { .case__layout { grid-template-columns: 1fr; } }
   .case__main { min-width: 0; }
   .case__side { display: flex; flex-direction: column; gap: 1.2rem; }
   .case__panel {
     border: 1px solid var(--rule);
     background: var(--bg-soft);
-    border-radius: var(--radius-lg);
+    border-radius: 6px;
     padding: 1rem 1.2rem;
   }
   .case__panel-h {
-    font-size: 0.78rem;
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
     color: var(--ink-mute);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     margin: 0 0 0.7rem 0;
     font-weight: 600;
   }
-  .case__panel-empty {
-    color: var(--ink-mute);
-    font-size: 0.85rem;
-    margin: 0;
-  }
   .case__signals { list-style: none; padding: 0; margin: 0; }
   .case__signals li { display: inline-block; margin: 0.16rem 0.2rem 0.16rem 0; }
-  .case__dl {
-    display: grid;
-    grid-template-columns: 5rem 1fr;
-    gap: 0.4rem 0.8rem;
-    margin: 0;
+  .case__breakdown { list-style: none; padding: 0; margin: 0; }
+  .case__breakdown li { border-bottom: 1px dotted var(--rule); }
+  .case__breakdown li:last-child { border-bottom: 0; }
+  .case__breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.45rem 0;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-family: var(--font-sans);
     font-size: 0.85rem;
   }
+  .case__breakdown-row:hover { color: var(--accent); }
+  .case__breakdown-n { color: var(--accent); font-weight: 700; font-size: 0.95rem; }
+  .case__dl { display: grid; grid-template-columns: 5rem 1fr; gap: 0.4rem 0.8rem; margin: 0; font-size: 0.85rem; }
   .case__dl dt {
     color: var(--ink-mute);
     letter-spacing: 0.06em;
     font-size: 0.72rem;
     text-transform: uppercase;
+    font-family: var(--font-sans);
   }
   .case__dl dd { margin: 0; color: var(--ink); }
   .case__links { list-style: none; margin: 0; padding: 0; }
   .case__links li { margin-bottom: 0.4rem; }
   .case__links a {
+    font-family: var(--font-sans);
     font-size: 0.85rem;
     color: var(--ink);
     text-decoration: none;
@@ -193,73 +200,37 @@ const sceneUrl = scene ? `${base}/scenes/${scene}` : null;
     color: var(--accent);
     border-bottom-color: var(--accent);
   }
-  .case__links-empty {
-    color: var(--ink-mute);
-    font-size: 0.82rem;
-  }
-
-  .case__scene {
-    margin: 1rem 0 0 0;
-    border: 1px solid var(--rule);
-    background: var(--bg-soft);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-  .case__scene img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1280 / 400;
-    object-fit: cover;
-  }
-  .case__scene-cap {
-    padding: 0.5rem 1rem;
-    background: var(--bg-raised);
-    color: var(--ink-mute);
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    border-top: 1px solid var(--rule);
-  }
-  .case__scene-label {
-    color: var(--accent-deep);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  .case__scene-note { margin-left: 0.4em; }
+  .case__links-empty { color: var(--ink-mute); font-size: 0.82rem; font-family: var(--font-sans); }
 
   .case__pass {
     border: 1px solid var(--rule);
-    border-left: 6px solid var(--ok);
-    border-radius: var(--radius-lg);
+    border-left: 4px solid var(--ok);
+    border-radius: 6px;
     background: var(--bg-soft);
     padding: 1.4rem 1.6rem;
     margin: 1.6rem 0;
   }
-  .case__pass-title {
-    color: var(--ok);
-    margin: 0 0 0.4rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .case__pass-detail {
-    color: var(--ink);
-    margin: 0 0 0.4rem 0;
-  }
-  .case__pass-meta {
-    color: var(--ink-mute);
-    font-size: 0.85rem;
-  }
+  .case__pass-title { color: var(--ok); margin: 0 0 0.4rem 0; }
+  .case__pass-detail { color: var(--ink); margin: 0 0 0.4rem 0; }
+  .case__pass-meta { color: var(--ink-mute); font-size: 0.85rem; }
 
   .case__legend { margin: 1.6rem 0; }
   .case__legend-h {
-    font-size: 0.78rem;
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
     color: var(--ink-mute);
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    margin: 0 0 0.7rem 0;
+    margin: 0 0 0.5rem 0;
     font-weight: 600;
+  }
+  .case__legend-intro {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0 0 0.85rem 0;
+    max-width: 64ch;
   }
   .case__legend-list {
     list-style: none;
@@ -270,10 +241,7 @@ const sceneUrl = scene ? `${base}/scenes/${scene}` : null;
     gap: 0.5rem;
     color: var(--ink-soft);
     font-size: 0.85rem;
+    font-family: var(--font-sans);
   }
-  .case__legend-list li {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
+  .case__legend-list li { display: flex; align-items: center; gap: 0.6rem; }
 </style>

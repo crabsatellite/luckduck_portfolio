@@ -1,6 +1,5 @@
 ---
 import { t, pathForLang, type Lang } from "~/i18n/strings";
-import MascotDuck from "~/components/MascotDuck.astro";
 
 interface Props {
   lang: Lang;
@@ -12,6 +11,7 @@ const langPrefix = lang === "en" ? `${base}/en` : base;
 
 const items = [
   { href: `${langPrefix}/`, key: "nav.home" as const, match: "/" },
+  { href: `${langPrefix}/methodology`, key: "nav.methods" as const, match: "/methodology" },
   { href: `${langPrefix}/cases`, key: "nav.cases" as const, match: "/cases" },
   { href: `${langPrefix}/about`, key: "nav.about" as const, match: "/about" },
 ];
@@ -21,11 +21,25 @@ const otherLang: Lang = lang === "en" ? "zh" : "en";
 const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
 ---
 
+<script is:inline>
+  // Persist explicit lang choice when user clicks the toggle, so the
+  // BaseLayout auto-redirect respects it on future visits.
+  document.addEventListener("click", function (e) {
+    var t = e.target && e.target.closest && e.target.closest("[data-lang-toggle]");
+    if (!t) return;
+    try {
+      localStorage.setItem("luckduck.lang", t.getAttribute("data-lang-toggle"));
+      sessionStorage.setItem("luckduck.lang.checked", "1");
+    } catch (_) {}
+  });
+</script>
+
 <header class="nav">
   <div class="nav__inner container">
     <a href={`${langPrefix}/`} class="nav__logo" aria-label="LUCK666DUCK home">
-      <span class="nav__mascot"><MascotDuck size={32} alt="" blink={true} /></span>
+      <span class="nav__mark" aria-hidden="true">L6D</span>
       <span class="nav__name">LUCK666DUCK</span>
+      <span class="nav__role">Minecraft mod tester</span>
     </a>
     <nav aria-label="Primary" class="nav__primary">
       <ul class="nav__list">
@@ -55,6 +69,7 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
             href={otherLangHref}
             class="nav__link nav__link--lang"
             aria-label={t(lang, "nav.lang_aria")}
+            data-lang-toggle={otherLang}
           >
             {t(lang, "nav.lang")}
           </a>
@@ -78,38 +93,58 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
     justify-content: space-between;
     padding-top: 0.85rem;
     padding-bottom: 0.85rem;
-    gap: 1rem;
+    gap: 1.5rem;
   }
   .nav__logo {
     display: inline-flex;
-    align-items: center;
-    gap: 0.65rem;
+    align-items: baseline;
+    gap: 0.55rem;
     text-decoration: none;
     color: var(--ink);
     font-family: var(--font-sans);
-    font-weight: 700;
-    letter-spacing: -0.005em;
     line-height: 1;
+    min-width: 0;
+  }
+  .nav__mark {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 0.32rem 0.45rem;
+    border-radius: 3px;
   }
   .nav__name {
-    font-size: 1rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: -0.005em;
+    color: var(--ink);
   }
-  .nav__mascot { display: inline-block; line-height: 0; }
+  .nav__role {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.01em;
+  }
+  @media (max-width: 720px) {
+    .nav__role { display: none; }
+  }
   .nav__primary { display: block; }
   .nav__list {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 1.2rem;
+    gap: 1.4rem;
     align-items: center;
   }
   .nav__link {
     display: inline-block;
     font-family: var(--font-sans);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 500;
-    color: var(--ink);
+    color: var(--ink-soft);
     text-decoration: none;
     padding: 0.3rem 0;
     border-bottom: 2px solid transparent;
@@ -121,17 +156,19 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
     border-bottom-color: var(--accent);
   }
   .nav__link--active {
-    color: var(--accent);
+    color: var(--ink);
     border-bottom-color: var(--accent);
   }
   .nav__link--lang {
     color: var(--ink-soft);
     border: 1px solid var(--rule);
-    border-radius: var(--radius-pill);
-    padding: 0.2rem 0.7rem;
-    min-width: 2.4rem;
+    border-radius: 3px;
+    padding: 0.2rem 0.55rem;
+    min-width: 2rem;
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
   }
   .nav__link--lang:hover, .nav__link--lang:focus-visible {
     color: var(--bg);
@@ -139,8 +176,8 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
     border-color: var(--accent);
   }
   @media (max-width: 540px) {
-    .nav__name { font-size: 0.9rem; }
+    .nav__name { font-size: 0.88rem; }
     .nav__list { gap: 0.85rem; }
-    .nav__link { font-size: 0.88rem; }
+    .nav__link { font-size: 0.85rem; }
   }
 </style>

@@ -24,7 +24,7 @@ const htmlLang = lang === "en" ? "en" : "zh-Hans-CN";
 const fallbackDescription =
   lang === "en"
     ? "Hi, I'm Tingfeng (LUCK666DUCK) — Minecraft mod tester. 13 mods tested, 433 bugs filed, on 1.20.1 / 1.21.1, bilingual zh / en."
-    : "嗨, 我是楊庭鳳 (LUCK666DUCK), 做 Minecraft mod 测试。已测 13 个 mod、提交 433 条 bug, 跑 1.20.1 / 1.21.1, 简体 / 繁中 / 日文 / English。";
+    : "嗨, 我是杨霆峰 (LUCK666DUCK), 做 Minecraft mod 测试。已测 13 个 mod、提交 433 条 bug, 跑 1.20.1 / 1.21.1, 简体 / 繁中 / 日文 / English。";
 
 const ogPath = `${base}/og.png`;
 ---
@@ -52,6 +52,48 @@ const ogPath = `${base}/og.png`;
 
     <meta name="theme-color" content="#1c1d2a" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#fdf6e3" media="(prefers-color-scheme: light)" />
+
+    <script is:inline define:vars={{ siteBase: base || "" }}>
+      // Browser-language preference: redirect first-time visitors to the language
+      // they're most likely reading. Subsequent navigation via the lang toggle
+      // overrides this — saved to localStorage so the choice sticks across sessions.
+      (function () {
+        try {
+          var KEY = "luckduck.lang";
+          var SESSION_KEY = "luckduck.lang.checked";
+          if (sessionStorage.getItem(SESSION_KEY)) return;
+          sessionStorage.setItem(SESSION_KEY, "1");
+
+          var pref = localStorage.getItem(KEY);
+          var path = location.pathname;
+          var basePrefix = siteBase || "";
+          var rest = basePrefix && path.indexOf(basePrefix) === 0
+            ? path.slice(basePrefix.length) : path;
+          if (!rest || rest.charAt(0) !== "/") rest = "/" + rest;
+          var isOnEn = /^\/en(\/|$)/.test(rest);
+
+          if (!pref) {
+            var langs = navigator.languages && navigator.languages.length
+              ? navigator.languages : [navigator.language || "en"];
+            var prefersZh = langs.some(function (l) {
+              return l && l.toLowerCase().indexOf("zh") === 0;
+            });
+            pref = prefersZh ? "zh" : "en";
+            localStorage.setItem(KEY, pref);
+          }
+
+          var target = null;
+          if (pref === "zh" && isOnEn) {
+            target = rest.replace(/^\/en(\/|$)/, "/");
+          } else if (pref === "en" && !isOnEn) {
+            target = rest === "/" ? "/en/" : "/en" + rest;
+          }
+          if (target) {
+            location.replace(basePrefix + target + location.search + location.hash);
+          }
+        } catch (e) { /* no storage / private mode → no-op */ }
+      })();
+    </script>
   </head>
   <body>
     <a href="#main" class="skip-link">{t(lang, "nav.skip")}</a>

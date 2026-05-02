@@ -1,6 +1,7 @@
 import modsData from "../../data/mods.json";
 import bugsData from "../../data/bugs.json";
 import profileData from "../../data/profile.json";
+import methodologyData from "../../data/methodology.json";
 
 export type Round = {
   version: string;
@@ -26,6 +27,8 @@ export type Mod = {
   mod_supported_versions_note?: string;
 };
 
+export type Severity = "S0" | "S1" | "S2" | "S3";
+
 export type Bug = {
   mod_id: string;
   version: string;
@@ -34,9 +37,25 @@ export type Bug = {
   index: number;
   text_zh: string;
   categories: string[];
+  severity: Severity;
   status: "fixed" | "unfixed" | "noted-not-bug" | null;
   regression_of: number | null;
 };
+
+export type Method = {
+  id: string;
+  category_id: string;
+  name_zh: string;
+  name_en: string;
+  severity_default: Severity;
+  summary_zh: string;
+  summary_en: string;
+  what_i_do_zh: string[];
+  what_i_do_en: string[];
+  judgement_zh: string;
+};
+
+export const methods = methodologyData as Method[];
 
 export type Profile = typeof profileData;
 
@@ -272,4 +291,46 @@ export const featuredBug = (m: Mod): Bug | null => {
 
 export const isUnfixedAcrossRounds = (m: Mod): number => {
   return bugsForMod(m.id).filter((b) => b.status === "unfixed").length;
+};
+
+// ---- methodology / category aggregation ------------------------------------
+
+export const bugsByCategory = (cat: string): Bug[] =>
+  bugs.filter((b) => b.categories.includes(cat));
+
+export const bugsBySeverity = (sev: Severity): Bug[] =>
+  bugs.filter((b) => b.severity === sev);
+
+export const categoryCounts = (): Record<string, number> => {
+  const m: Record<string, number> = {};
+  for (const b of bugs) for (const c of b.categories) m[c] = (m[c] || 0) + 1;
+  return m;
+};
+
+export const severityCounts = (): Record<Severity, number> => {
+  const m: Record<Severity, number> = { S0: 0, S1: 0, S2: 0, S3: 0 };
+  for (const b of bugs) m[b.severity]++;
+  return m;
+};
+
+export const methodFor = (catId: string): Method | undefined =>
+  methods.find((m) => m.category_id === catId);
+
+// Per-mod category breakdown used in case page sidebar.
+export const modCategoryBreakdown = (modId: string): Array<{ cat: string; count: number }> => {
+  const counts: Record<string, number> = {};
+  for (const b of bugsForMod(modId)) {
+    for (const c of b.categories) counts[c] = (counts[c] || 0) + 1;
+  }
+  return Object.entries(counts)
+    .map(([cat, count]) => ({ cat, count }))
+    .sort((a, b) => b.count - a.count);
+};
+
+// Featured cases for home page — manually curated to highlight depth.
+export const featuredMods = (): Mod[] => {
+  const wanted = ["hotbath", "alex_caves", "shower_core"];
+  return wanted
+    .map((id) => mods.find((m) => m.id === id))
+    .filter((m): m is Mod => Boolean(m));
 };

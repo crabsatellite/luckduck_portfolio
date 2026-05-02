@@ -1,0 +1,103 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+import { severityCounts, totalBugs } from "~/lib/data";
+import SeverityChip from "~/components/SeverityChip.astro";
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const counts = severityCounts();
+const total = totalBugs();
+
+const items = [
+  { sev: "S0" as const, key_h: "methods.severity_S0" as const, key_d: "methods.severity_S0_d" as const },
+  { sev: "S1" as const, key_h: "methods.severity_S1" as const, key_d: "methods.severity_S1_d" as const },
+  { sev: "S2" as const, key_h: "methods.severity_S2" as const, key_d: "methods.severity_S2_d" as const },
+  { sev: "S3" as const, key_h: "methods.severity_S3" as const, key_d: "methods.severity_S3_d" as const },
+];
+---
+
+<section class="sevlegend">
+  <h2 class="sevlegend__h h-section">{t(lang, "methods.severity_legend_h")}</h2>
+  <div class="sevlegend__grid">
+    {items.map((it) => {
+      const c = counts[it.sev];
+      const pct = total ? Math.round((c / total) * 100) : 0;
+      return (
+        <article class="sevlegend__cell">
+          <header class="sevlegend__head">
+            <SeverityChip sev={it.sev} />
+            <span class="sevlegend__title">{t(lang, it.key_h).split(" · ")[1] ?? t(lang, it.key_h)}</span>
+          </header>
+          <p class="sevlegend__desc">{t(lang, it.key_d)}</p>
+          <p class="sevlegend__num">
+            <span class="mono tnum sevlegend__count">{c}</span>
+            <span class="sevlegend__pct mono tnum">{pct}%</span>
+          </p>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .sevlegend { padding: 2rem 0; }
+  .sevlegend__h { margin: 0 0 1.2rem 0; }
+  .sevlegend__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  @media (max-width: 760px) {
+    .sevlegend__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .sevlegend__cell {
+    background: var(--bg);
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .sevlegend__head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .sevlegend__title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  :lang(zh) .sevlegend__title { font-family: var(--font-cjk); }
+  .sevlegend__desc {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+  }
+  :lang(zh) .sevlegend__desc { font-family: var(--font-cjk); line-height: 1.75; }
+  .sevlegend__num {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--rule);
+  }
+  .sevlegend__count {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .sevlegend__pct {
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+  }
+</style>

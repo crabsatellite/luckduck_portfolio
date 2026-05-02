@@ -15,11 +15,10 @@
     "archive-v1": "node scripts/rewrite-v1-archive.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
-    "@fontsource-variable/sora": "^5.2.8",
-    "@fontsource/vt323": "^5.2.7",
+    "@fontsource-variable/noto-sans-sc": "^5.2.8",
     "astro": "^5.4.0",
-    "lxgw-wenkai-screen-webfont": "^1.7.0",
     "sharp": "^0.34.0"
   },
   "devDependencies": {

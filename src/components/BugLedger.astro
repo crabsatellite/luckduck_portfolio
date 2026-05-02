@@ -1,6 +1,7 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
 import StatusPill from "~/components/StatusPill.astro";
+import SeverityChip from "~/components/SeverityChip.astro";
 import type { Bug } from "~/lib/data";
 
 interface Props {
@@ -10,17 +11,23 @@ interface Props {
 }
 const { bugs, featured, lang } = Astro.props;
 const total = bugs.length;
-const remaining = featured ? bugs.filter((b) => b.index !== featured.index || b.round_file !== featured.round_file) : bugs;
+const remaining = featured
+  ? bugs.filter((b) => b.index !== featured.index || b.round_file !== featured.round_file)
+  : bugs;
+
+// distinct categories present in this mod's bugs, used as filter chips
+const catSet = new Set<string>();
+for (const b of bugs) for (const c of b.categories) catSet.add(c);
+const cats = [...catSet].sort();
+const sevs = ["S0", "S1", "S2", "S3"] as const;
 ---
 
 {featured && (
   <section class="featured" aria-labelledby="featured-heading">
-    <h2 id="featured-heading" class="featured__h h-section">
-      <span class="featured__h-emoji" aria-hidden="true">📋</span>
-      {t(lang, "case.featured_bug")}
-    </h2>
+    <h2 id="featured-heading" class="featured__h h-section">{t(lang, "case.featured_bug")}</h2>
     <article class:list={["featured__card", { "featured__card--crash": featured.categories.includes("crash") }]}>
       <header class="featured__head">
+        <SeverityChip sev={featured.severity} />
         <span class="mono tnum featured__id">#{String(featured.index).padStart(3, "0")}</span>
         <span class="mono tnum featured__ver">{featured.version}</span>
         <div class="featured__cats">
@@ -40,25 +47,46 @@ const remaining = featured ? bugs.filter((b) => b.index !== featured.index || b.
 
 <section class="ledger" aria-labelledby="ledger-heading">
   <h2 id="ledger-heading" class="ledger__h h-section">
-    <span class="ledger__h-emoji" aria-hidden="true">📋</span>
     {t(lang, "case.full_ledger")}
     <span class="ledger__count mono tnum">{total}</span>
+    <span class="ledger__note">{t(lang, "case.full_ledger_note")}</span>
   </h2>
+
   <details class="ledger__details">
     <summary class="ledger__summary">
       <span class="ledger__summary-show">
         {t(lang, "case.full_ledger_expand_prefix")}
-        <span class="mono tnum">{total}</span>
-        {" "}
+        {" "}<span class="mono tnum">{total}</span>{" "}
         {t(lang, "case.full_ledger_expand_suffix")}
       </span>
       <span class="ledger__summary-hide">{t(lang, "case.full_ledger_collapse")}</span>
     </summary>
+
+    {(cats.length > 0) && (
+      <div class="ledger__filters" data-ledger-filters>
+        <div class="ledger__filter-group">
+          <span class="ledger__filter-label">severity</span>
+          <button type="button" class="ledger__chip ledger__chip--active" data-sev="all">all</button>
+          {sevs.map((s) => (
+            <button type="button" class="ledger__chip mono" data-sev={s}>{s}</button>
+          ))}
+        </div>
+        <div class="ledger__filter-group">
+          <span class="ledger__filter-label">{lang === "zh" ? "方法" : "method"}</span>
+          <button type="button" class="ledger__chip ledger__chip--active" data-cat="all">all</button>
+          {cats.map((c) => (
+            <button type="button" class="ledger__chip" data-cat={c}>{c}</button>
+          ))}
+        </div>
+      </div>
+    )}
+
     <div class="ledger__table-wrap">
       <table class="ledger__table">
         <thead>
           <tr>
             <th class="col-id">{t(lang, "case.bug_id")}</th>
+            <th class="col-sev">{t(lang, "case.bug_severity")}</th>
             <th class="col-ver">{t(lang, "case.bug_version")}</th>
             <th class="col-tags">{t(lang, "case.tags")}</th>
             <th class="col-text">{t(lang, "case.bug_text")}</th>
@@ -70,8 +98,13 @@ const remaining = featured ? bugs.filter((b) => b.index !== featured.index || b.
             const id = `#${String(b.index).padStart(3, "0")}`;
             const hasCrash = b.categories.includes("crash");
             return (
-              <tr class:list={["ledger__row", { "ledger__row--crash": hasCrash }]}>
+              <tr
+                class:list={["ledger__row", { "ledger__row--crash": hasCrash }]}
+                data-row-sev={b.severity}
+                data-row-cats={b.categories.join(",")}
+              >
                 <td class="mono tnum col-id">{id}</td>
+                <td class="col-sev"><SeverityChip sev={b.severity} /></td>
                 <td class="mono tnum col-ver">{b.version}</td>
                 <td class="col-tags">
                   {b.categories.map((c) => <span class="chip" data-cat={c}>{c}</span>)}
@@ -89,6 +122,42 @@ const remaining = featured ? bugs.filter((b) => b.index !== featured.index || b.
   </details>
 </section>
 
+<script is:inline>
+  (function () {
+    document.querySelectorAll("[data-ledger-filters]").forEach(function (root) {
+      var table = root.parentElement.querySelector("table");
+      if (!table) return;
+      var rows = table.querySelectorAll("tbody tr");
+      var state = { sev: "all", cat: "all" };
+      function apply() {
+        rows.forEach(function (r) {
+          var sev = r.getAttribute("data-row-sev");
+          var cats = (r.getAttribute("data-row-cats") || "").split(",");
+          var ms = state.sev === "all" || sev === state.sev;
+          var mc = state.cat === "all" || cats.indexOf(state.cat) !== -1;
+          r.style.display = ms && mc ? "" : "none";
+        });
+      }
+      root.querySelectorAll("[data-sev]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          root.querySelectorAll("[data-sev]").forEach(function (x) { x.classList.remove("ledger__chip--active"); });
+          b.classList.add("ledger__chip--active");
+          state.sev = b.getAttribute("data-sev");
+          apply();
+        });
+      });
+      root.querySelectorAll("[data-cat]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          root.querySelectorAll("[data-cat]").forEach(function (x) { x.classList.remove("ledger__chip--active"); });
+          b.classList.add("ledger__chip--active");
+          state.cat = b.getAttribute("data-cat");
+          apply();
+        });
+      });
+    });
+  })();
+</script>
+
 <style>
   .featured { margin: 1.6rem 0 2.4rem 0; }
   .featured__h, .ledger__h {
@@ -97,45 +166,56 @@ const remaining = featured ? bugs.filter((b) => b.index !== featured.index || b.
     gap: 0.5rem;
     margin: 0 0 1rem 0;
   }
-  .featured__h-emoji, .ledger__h-emoji { font-size: 1.15rem; }
   .ledger__count {
     color: var(--accent);
     font-weight: 700;
     margin-left: 0.4rem;
   }
+  .ledger__note {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    color: var(--ok);
+    background: color-mix(in oklch, var(--ok) 14%, var(--bg-soft));
+    border: 1px solid color-mix(in oklch, var(--ok) 30%, var(--rule));
+    padding: 0.18rem 0.55rem;
+    border-radius: 3px;
+    margin-left: 0.55rem;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    text-transform: lowercase;
+  }
+  :lang(zh) .ledger__note { font-family: var(--font-cjk); text-transform: none; }
 
   .featured__card {
     background: var(--bg-soft);
     border: 1px solid var(--rule);
-    border-left: 6px solid var(--accent);
-    border-radius: var(--radius-lg);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
     padding: 1.2rem 1.4rem;
   }
-  .featured__card--crash {
-    border-left-color: var(--alert);
-  }
+  .featured__card--crash { border-left-color: var(--alert); }
   .featured__head {
     display: flex;
     align-items: center;
-    gap: 0.6rem 1rem;
+    gap: 0.55rem 0.85rem;
     flex-wrap: wrap;
     margin-bottom: 0.8rem;
   }
   .featured__id {
     font-weight: 700;
     color: var(--accent);
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   .featured__ver {
     color: var(--ink-mute);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
   .featured__cats { display: flex; flex-wrap: wrap; gap: 0.3rem; }
   .featured__status { margin-left: auto; }
   .featured__text {
     font-family: var(--font-cjk);
     font-size: 1rem;
-    line-height: 1.85;
+    line-height: 1.75;
     color: var(--ink);
     margin: 0;
   }
@@ -149,7 +229,7 @@ const remaining = featured ? bugs.filter((b) => b.index !== featured.index || b.
   .ledger__details {
     background: var(--bg-soft);
     border: 1px solid var(--rule);
-    border-radius: var(--radius-lg);
+    border-radius: 6px;
     overflow: hidden;
   }
   .ledger__summary {
@@ -167,10 +247,65 @@ const remaining = featured ? bugs.filter((b) => b.index !== featured.index || b.
   }
   :lang(zh) .ledger__summary { font-family: var(--font-cjk); }
   .ledger__summary::-webkit-details-marker { display: none; }
+  .ledger__summary::before {
+    content: "▸";
+    margin-right: 0.5rem;
+    color: var(--ink-mute);
+    transition: transform 120ms ease;
+    display: inline-block;
+  }
+  .ledger__details[open] .ledger__summary::before { transform: rotate(90deg); }
   .ledger__summary:hover { background: var(--bg-raised); color: var(--accent); }
   .ledger__summary-hide { display: none; }
   .ledger__details[open] .ledger__summary-show { display: none; }
   .ledger__details[open] .ledger__summary-hide { display: inline; }
+
+  .ledger__filters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.85rem 1.2rem;
+    border-top: 1px solid var(--rule);
+    background: var(--bg-raised);
+  }
+  .ledger__filter-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .ledger__filter-label {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-right: 0.5rem;
+    min-width: 4.5rem;
+  }
+  :lang(zh) .ledger__filter-label { font-family: var(--font-cjk); letter-spacing: 0.08em; }
+  .ledger__chip {
+    padding: 0.2rem 0.55rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 100ms ease;
+  }
+  :lang(zh) .ledger__chip { font-family: var(--font-cjk); }
+  .ledger__chip.mono { font-family: var(--font-mono); }
+  .ledger__chip:hover, .ledger__chip:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .ledger__chip--active {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
 
   .ledger__table-wrap {
     border-top: 1px solid var(--rule);
@@ -184,7 +319,7 @@ const remaining = featured ? bugs.filter((b) => b.index !== featured.index || b.
   .ledger__table thead th {
     text-align: left;
     font-family: var(--font-sans);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     color: var(--ink-mute);
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -193,36 +328,31 @@ const remaining = featured ? bugs.filter((b) => b.index !== featured.index || b.
     border-bottom: 1px solid var(--rule);
     background: var(--bg-raised);
   }
-  :lang(zh) .ledger__table thead th { font-family: var(--font-cjk); letter-spacing: 0.1em; }
-  .ledger__row {
-    border-bottom: 1px solid var(--rule);
-  }
+  :lang(zh) .ledger__table thead th { font-family: var(--font-cjk); letter-spacing: 0.08em; }
+  .ledger__row { border-bottom: 1px solid var(--rule); }
   .ledger__row:hover { background: var(--bg-raised); }
-  .ledger__row--crash {
-    background: color-mix(in oklch, var(--alert) 5%, transparent);
-  }
-  .ledger__row--crash:hover {
-    background: color-mix(in oklch, var(--alert) 10%, transparent);
-  }
+  .ledger__row--crash { background: color-mix(in oklch, var(--alert) 5%, transparent); }
+  .ledger__row--crash:hover { background: color-mix(in oklch, var(--alert) 10%, transparent); }
   .ledger__table td {
     padding: 0.7rem 0.9rem;
     vertical-align: top;
     line-height: 1.55;
   }
-  .col-id { width: 5rem; color: var(--ink-mute); }
-  .col-ver { width: 6rem; color: var(--ink-mute); }
-  .col-tags { width: 14rem; }
+  .col-id { width: 4.5rem; color: var(--ink-mute); }
+  .col-sev { width: 4rem; }
+  .col-ver { width: 5.5rem; color: var(--ink-mute); }
+  .col-tags { width: 13rem; }
   .col-text { color: var(--ink); }
   .col-text [lang="zh-Hans"] {
     font-family: var(--font-cjk);
-    line-height: 1.85;
+    line-height: 1.75;
   }
   .col-status { width: 6.5rem; }
   @media (max-width: 760px) {
     .ledger__table thead { display: none; }
     .ledger__row { display: grid; grid-template-columns: 1fr; padding: 0.6rem 0.9rem; gap: 0.3rem; }
     .ledger__table td { padding: 0.2rem 0; }
-    .col-id, .col-ver { display: inline-block; margin-right: 1rem; }
+    .col-id, .col-sev, .col-ver { display: inline-block; margin-right: 1rem; }
     .col-tags, .col-text, .col-status { width: auto; }
   }
 </style>

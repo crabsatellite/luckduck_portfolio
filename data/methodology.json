@@ -1,0 +1,262 @@
+[
+  {
+    "id": "crash",
+    "category_id": "crash",
+    "name_zh": "崩溃测试",
+    "name_en": "Crash testing",
+    "severity_default": "S0",
+    "summary_zh": "把客户端 / 服务端打崩、把玩家踢出存档、把存档写坏的所有路径，先于 release 触发出来。",
+    "summary_en": "Force-trigger every path that crashes the client, kicks the player, or corrupts the save before it ships.",
+    "what_i_do_zh": [
+      "对照 mod 的高交互方块 / 物品逐一拉一遍触发矩阵：单人 × 多人 × 创造 × 生存",
+      "对每个新加 entity 的死亡 / 大爆炸 / 大体积 AOE 单独跑一次",
+      "崩溃后立即拉 latest.log + crash-reports，最小化复现路径再提交"
+    ],
+    "what_i_do_en": [
+      "Walk every high-interaction block/item across single × multi × creative × survival",
+      "Force-test death / large-AOE / nuke paths for every new entity",
+      "After a crash, pull latest.log + crash-reports and minimize the repro before filing"
+    ],
+    "judgement_zh": "硬崩溃（hard crash, 闪退 / 服务端断连）一律 S0；卡死 / 黑屏需要强退也算 S0。"
+  },
+  {
+    "id": "multiplayer",
+    "category_id": "multiplayer",
+    "name_zh": "多人 / 同步测试",
+    "name_en": "Multiplayer / sync testing",
+    "severity_default": "S0",
+    "summary_zh": "服务端记录与客户端表现是否一致 — 状态、tick、entity 包同步差异。",
+    "summary_en": "Server vs client divergence — state, tick, and entity-packet drift.",
+    "what_i_do_zh": [
+      "本地 host + 第二客户端连入，操作同一对象观察双端输出",
+      "对 mod 新增 capability / NBT，观察重登 / 跨维度 / 跨服迁移行为",
+      "多人特有 bug 一定标 mp-only，避免开发者按单人复现失败"
+    ],
+    "what_i_do_en": [
+      "Local host + second client; operate the same object and watch both sides",
+      "For mod-added capability / NBT, observe relog / dimension-cross / migration",
+      "Tag mp-only explicitly so the dev doesn't waste time repro-ing in single-player"
+    ],
+    "judgement_zh": "导致掉线 / 黑屏 → S0；状态不同步但可恢复 → S1；纯客户端粒子 / 音效偏差 → S2。"
+  },
+  {
+    "id": "mod-compat",
+    "category_id": "mod-compat",
+    "name_zh": "跨 mod 兼容测试",
+    "name_en": "Cross-mod compatibility",
+    "severity_default": "S1",
+    "summary_zh": "把目标 mod 与常见 mod 组合（CarryOn / Cold Sweat / Serene Seasons / ToughAsNails / Legendary Survival Overhaul / Alex 系列）组装到同一存档里跑取证。",
+    "summary_en": "Compose target mod with common partners (CarryOn / Cold Sweat / Serene Seasons / ToughAsNails / LSO / Alex's series) and forensically observe interaction.",
+    "what_i_do_zh": [
+      "为每个被测 mod 设计一个 \"compat 矩阵\"：目标 mod × 4-6 个常见 mod",
+      "重点跑 capability 冲突、tag 替换、温度 / 季节 / 背包系统的副作用",
+      "在 Hot Bath 上跑出过 6 种独立兼容性场景的取证"
+    ],
+    "what_i_do_en": [
+      "Design a compat matrix per target mod: target × 4-6 common partners",
+      "Focus on capability conflicts, tag overrides, temperature/season/inventory side-effects",
+      "Hot Bath alone surfaced 6 independent compat scenarios"
+    ],
+    "judgement_zh": "出现互锁 / 数据损坏 → S0；功能在某 mod 在场时失效 → S1；纯外观叠加 → S3。"
+  },
+  {
+    "id": "mechanic",
+    "category_id": "mechanic",
+    "name_zh": "机制测试",
+    "name_en": "Mechanic testing",
+    "severity_default": "S1",
+    "summary_zh": "右键 / 左键 / shift+ / 长按 / 附魔冲突 / buff 时长 — 所有 \"代码层应该做但没做\" 的事。",
+    "summary_en": "Right-click / left-click / shift+ / long-press / enchant conflicts / buff duration — everything the code should do but doesn't.",
+    "what_i_do_zh": [
+      "为每件新物品 / 方块手抄一份交互表：单击 / 长按 / shift / 副手 / 越肩视角",
+      "附魔互斥矩阵：枚举所有可上的附魔组合，找出本应互斥却能共存的对",
+      "buff 时长全部用倒计时观察，验证文档标的时长是否实测一致"
+    ],
+    "what_i_do_en": [
+      "Hand-trace an interaction table per new item/block: click / long-press / shift / off-hand / over-shoulder",
+      "Enchant exclusion matrix: enumerate all combos, find pairs that should be mutually exclusive but co-exist",
+      "All buffs timed against the in-game countdown; verify documented duration matches measured"
+    ],
+    "judgement_zh": "完全没实现 → S1；实现了但表现错（持续时间错 / 冷却错） → S2。"
+  },
+  {
+    "id": "achievement",
+    "category_id": "achievement",
+    "name_zh": "成就 / 进度测试",
+    "name_en": "Achievement / progression",
+    "severity_default": "S1",
+    "summary_zh": "advancements 触发条件、JSON predicate、跨存档迁移、新存档自动解锁。",
+    "summary_en": "Advancement trigger conditions, JSON predicates, save migration, and the new-save auto-unlock bug class.",
+    "what_i_do_zh": [
+      "新建空存档 → 立刻 /list-advancements，验证哪些被错误置为已完成",
+      "每条 advancement 的官方触发动作都做一次，看是否真的触发",
+      "对喂食 / 击杀 / 拾取类 advancement 跑跨实体测试"
+    ],
+    "what_i_do_en": [
+      "Fresh world → /list-advancements immediately; flag any wrongly pre-completed",
+      "Walk every advancement's documented trigger action and confirm it fires",
+      "For feed/kill/pickup-class advancements, sweep across all eligible entities"
+    ],
+    "judgement_zh": "新存档自动解锁 → S1（语义错误）；该触发不触发 → S1；触发条件偏严 / 偏松 → S2。"
+  },
+  {
+    "id": "loot-drops",
+    "category_id": "loot-drops",
+    "name_zh": "掉落 / 战利品测试",
+    "name_en": "Loot / drop-table testing",
+    "severity_default": "S2",
+    "summary_zh": "战利品表、精准采集、时运 / 抢夺修饰、矿物正确掉落。",
+    "summary_en": "Loot tables, silk-touch, fortune/looting modifiers, ore drop correctness.",
+    "what_i_do_zh": [
+      "对所有可挖方块跑 silk-touch ON / OFF × tier 1-5 矩阵",
+      "对带颜色变体的生物（软糖鱼 / 软糖熊）跑全色击杀，验证掉落是否反映颜色",
+      "时运 / 抢夺：每级跑 ≥30 次取样，估算掉落分布"
+    ],
+    "what_i_do_en": [
+      "Silk-touch ON/OFF × tier 1-5 matrix for every breakable block",
+      "Color-variant entities (gummy fish / bears): kill every variant, verify drop reflects color",
+      "Fortune/looting: ≥30 samples per level to estimate drop distribution"
+    ],
+    "judgement_zh": "掉落物完全错 → S1；颜色 / 数量轻微偏差 → S2；时运曲线缓 → S3。"
+  },
+  {
+    "id": "recipe",
+    "category_id": "recipe",
+    "name_zh": "配方 / 合成测试",
+    "name_en": "Recipe / crafting testing",
+    "severity_default": "S2",
+    "summary_zh": "JEI 对照、tag 替换、堆肥成功率、酿造副产物、modpack 中的 tag 串味。",
+    "summary_en": "JEI cross-check, tag substitution, compost success rate, brewing by-products, modpack-induced tag bleed.",
+    "what_i_do_zh": [
+      "JEI 列出的每个配方都手动跑一次，确认能合成 + 产物正确",
+      "可堆肥物品逐一进堆肥桶，验证文档说的成功率",
+      "对常见 mod 的木 / 石 / 食物 tag 加入后，看本 mod 配方是否串味"
+    ],
+    "what_i_do_en": [
+      "Run every JEI-listed recipe by hand; confirm result + correct output",
+      "Drop every \"compostable\" item into a composter and verify the documented rate",
+      "After adding common mods' wood/stone/food tags, check the target mod's recipes for unintended substitutions"
+    ],
+    "judgement_zh": "整个配方做不出来 → S1；产物错 / 数量错 → S2；JEI 显示问题 → S3。"
+  },
+  {
+    "id": "entity-behavior",
+    "category_id": "entity-behavior",
+    "name_zh": "生物行为 / AI 测试",
+    "name_en": "Entity / AI testing",
+    "severity_default": "S2",
+    "summary_zh": "AI、寻路、攻击 / 被驯服 / 繁殖 / 死亡四周期、生成条件、骑乘 / 牵引、跨 biome / 昼夜。",
+    "summary_en": "AI, pathfinding, attack/tame/breed/die lifecycle, spawn conditions, mounting/leashing, biome × time-of-day matrix.",
+    "what_i_do_zh": [
+      "为每个新生物跑生命周期：刷怪笼出生 → 喂食 → 繁殖 → 受攻击 → 反击 → 死亡",
+      "biome 矩阵：把生物逐个放到原版 / mod 新增 biome 看是否符合 spawn 规则",
+      "骑乘类专门测：站立高度、跳跃高度、跨 portal 是否丢骑乘对象"
+    ],
+    "what_i_do_en": [
+      "Lifecycle per entity: spawn-egg → feed → breed → take-hit → retaliate → die",
+      "Biome matrix: drop each entity in vanilla / mod-added biomes; verify spawn rules",
+      "Mountable entities: standing height, jump arc, portal-crossing behavior"
+    ],
+    "judgement_zh": "AI 整段不工作 → S1；该攻击的不攻击 / 该跟随的不跟随 → S2；动画偏移 → S3。"
+  },
+  {
+    "id": "spec-mismatch",
+    "category_id": "spec-mismatch",
+    "name_zh": "规格对照测试",
+    "name_en": "Spec cross-check",
+    "severity_default": "S2",
+    "summary_zh": "wiki / 物品描述 / 教程书 / mcmod.cn 写的 vs 实测 — 三方对账。",
+    "summary_en": "wiki / item tooltip / tutorial book / mcmod.cn vs actual behavior — three-way reconciliation.",
+    "what_i_do_zh": [
+      "教程书逐字读，凡是出现具体数字（持续时间 / 半径 / 数量）一律实测",
+      "mcmod.cn 与 CurseForge 描述对照，标出 \"文档间内部矛盾\" 与 \"文档与实测不符\"",
+      "每条 spec-mismatch 写清楚 \"应为 X，实测为 Y\""
+    ],
+    "what_i_do_en": [
+      "Read the in-game tutorial book line by line; every concrete number (duration/radius/count) gets measured",
+      "Cross-check mcmod.cn vs CurseForge; surface internal-doc contradictions and doc-vs-actual divergences",
+      "Every spec-mismatch entry states \"expected X, observed Y\""
+    ],
+    "judgement_zh": "实测值与文档差 ≥50% → S1；轻微数值偏差 → S2；纯文案错字 → S3。"
+  },
+  {
+    "id": "animation",
+    "category_id": "animation",
+    "name_zh": "动画 / 视角测试",
+    "name_en": "Animation / camera testing",
+    "severity_default": "S2",
+    "summary_zh": "第一人称 vs 第三人称 vs 越肩视角差异、屏幕震动、长按动作、骑乘高度、模型穿模。",
+    "summary_en": "First-person vs third-person vs over-shoulder divergence, screen shake, long-press actions, mount-rider height, model clipping.",
+    "what_i_do_zh": [
+      "每个手持物 / 武器在三种视角下分别跑：单击 / 长按 / 持续举起",
+      "屏幕震动类机制：在文档标的半径内外各放一个观察点对照",
+      "骑乘组合：每对 \"载体 × 骑手\" 的位置、地形适配单独检验"
+    ],
+    "what_i_do_en": [
+      "Every held item / weapon under all three camera modes: click / long-press / hold-up",
+      "Screen-shake mechanics: place an observer just inside and just outside the documented radius",
+      "Mount pairs: verify position + terrain fit for every (mount × rider) combo"
+    ],
+    "judgement_zh": "动作完全不出现 → S1；视角偏差 / 高度偏移 → S2；颜色 / 微细抖动 → S3。"
+  },
+  {
+    "id": "shader",
+    "category_id": "shader",
+    "name_zh": "shader 兼容测试",
+    "name_en": "Shader compatibility",
+    "severity_default": "S2",
+    "summary_zh": "Iris / Optifine 下 mod 的特殊渲染（粒子、发光、自定义 shader 段）是否正确。",
+    "summary_en": "Iris / Optifine compatibility for mod-specific rendering — particles, glow, custom shader programs.",
+    "what_i_do_zh": [
+      "vanilla → no-shader 验证 baseline → 加 shader 后对照",
+      "对发光 / 自发光 / 屏幕后处理类特效专门跑一遍 shader-on / off",
+      "记录用的 shader 包名 + 版本"
+    ],
+    "what_i_do_en": [
+      "vanilla → no-shader baseline → shader-on diff",
+      "Run a dedicated pass for emissive / glow / post-process effects under shader-on/off",
+      "Record shader pack name + version per session"
+    ],
+    "judgement_zh": "shader 下崩溃 → S0；视觉完全错 → S2；微小色差 → S3。"
+  },
+  {
+    "id": "visual",
+    "category_id": "visual",
+    "name_zh": "贴图 / 视觉测试",
+    "name_en": "Visual / texture testing",
+    "severity_default": "S3",
+    "summary_zh": "贴图、颜色、字体、UI 排版、文字可读性。",
+    "summary_en": "Textures, colors, fonts, UI layout, text legibility.",
+    "what_i_do_zh": [
+      "暗色 GUI 上的浅灰文字一律拍照标 \"对比度不够\"",
+      "颜色变体是否真的不同 — 不靠人眼，截图取色",
+      "中文 / 日文长文本在 GUI 中的换行 / 截断"
+    ],
+    "what_i_do_en": [
+      "Light-grey text on dark GUI: always flag for contrast",
+      "Color variants: don't trust eyeballs — screenshot + pixel pick",
+      "CJK long text wrapping/truncation in GUI"
+    ],
+    "judgement_zh": "默认 S3；如果可读性影响游戏进行 → S2。"
+  },
+  {
+    "id": "i18n",
+    "category_id": "i18n",
+    "name_zh": "本地化测试",
+    "name_en": "Localization testing",
+    "severity_default": "S3",
+    "summary_zh": "zh-cn / zh-hk / zh-tw / ja_JP — 缺键、误译、文案歧义、术语不统一。",
+    "summary_en": "zh-cn / zh-hk / zh-tw / ja_JP — missing keys, mistranslation, ambiguous phrasing, inconsistent terminology.",
+    "what_i_do_zh": [
+      "每个语言下都把 GUI / 物品名 / 教程书走一遍",
+      "术语表对照：同一概念在不同位置是否用了同一个译名",
+      "文案歧义专门标注，给出建议改法（避免开发者反复返工）"
+    ],
+    "what_i_do_en": [
+      "Walk GUI / item names / tutorial book under each locale",
+      "Glossary cross-check: same concept must use the same translation across surfaces",
+      "Flag ambiguous phrasing with a suggested rewrite (saves dev round-trips)"
+    ],
+    "judgement_zh": "默认 S3；缺键导致 GUI 显示原 key → S2。"
+  }
+]
