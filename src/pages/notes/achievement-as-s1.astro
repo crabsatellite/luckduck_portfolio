@@ -16,7 +16,7 @@ const langPrefix = base;
         <p class="eyebrow"><strong>note</strong> · <span class="mono tnum">{date}</span></p>
         <h1 class="note__title h-display">{title}</h1>
         <p class="note__deck">
-          一条成就在错的时机解锁，看起来只是个小毛病。但它本质上撒谎：系统告诉玩家「你做了 X」，而玩家什么都没做。这是诚信问题，不是 polish。
+          一条成就在错的时机解锁，看起来只是个小毛病。但它在撒谎：系统告诉玩家「你做了 X」，而玩家什么都没做。这是诚信问题，不是 polish。
         </p>
       </header>
 
@@ -33,7 +33,7 @@ const langPrefix = base;
 
         <h2>它撒了什么谎</h2>
         <p>
-          Minecraft 的进度系统不是"装饰品"。它是游戏对玩家做了什么的官方记录：
+          Minecraft 的进度系统是游戏对玩家做了什么的官方记录：
         </p>
         <ul>
           <li>玩家用它判断 "我接下来该做什么"</li>
@@ -41,12 +41,12 @@ const langPrefix = base;
           <li>玩家在 Discord / 论坛分享 "我打到 advancement X 了" 时，是把这个系统当作公正的裁判</li>
         </ul>
         <p>
-          一条提前解锁的成就把这三件事全部破坏掉：玩家被引导去做无意义的下一步、quest gate 错误地打开、社区分享变成不可信的炫耀。它不是装饰品坏了，是裁判在比赛开始前先举起了某队的胜利旗。
+          一条提前解锁的成就把这三件事一起打掉：玩家被引导去做无意义的下一步，quest gate 在玩家还没满足条件时就把后续配方放出来，社区分享变成不可信的炫耀。
         </p>
 
         <h2>判定标准</h2>
         <p>
-          所以我在自己的 rubric 里把 advancement 类的触发错明确放进 S1：
+          我在自己的 rubric 里把 advancement 类的触发错放进 S1：
         </p>
         <ul>
           <li><strong>S1</strong>：新存档自动解锁、应该触发的没触发、对错对象触发（杀 A 触发了 B 的成就）</li>
@@ -54,8 +54,7 @@ const langPrefix = base;
           <li><strong>S3</strong>：成就显示文字 typo / 图标颜色不对</li>
         </ul>
         <p>
-          关键不是"这条 bug 阻塞了什么"，而是"这条 bug 让系统说了什么假话"。
-          阻塞类的判定走 S0；说谎类的判定走 S1。两者都不能等到 polish 周。
+          我看的是这条 bug 让系统说了什么假话。阻塞走 S0，说谎走 S1，两者都不能拖到 polish 周。
         </p>
 
         <h2>对 mod 作者的实际影响</h2>
@@ -65,20 +64,16 @@ const langPrefix = base;
           在 Hot Bath 4 轮回归里，这个判定让 advancement 类 bug 的修复速度比 spec-mismatch 类快了一倍。
         </p>
         <p>
-          这不是因为 advancement 修起来更难——恰恰相反，advancement bug 通常是 JSON predicate 写错了或者 trigger condition 漏了一行——
-          而是因为 <strong>S1 标签让作者自己重新评估了优先级</strong>。
-          我不需要去说服他，rubric 替我说服了他。
+          advancement bug 通常就是 JSON predicate 写错了或者 trigger condition 漏了一行，并不难修。真正起作用的是 <strong>S1 标签让作者自己重新评估了优先级</strong>。我没去跟他吵优先级，rubric 自己就把事办了。
         </p>
 
-        <h2>所以我推荐的做法</h2>
+        <h2>判定一句话</h2>
         <p>
-          如果你也在做 mod 测试，下次见到「成就在错的时机弹出」时，先问自己一个问题：
-          <strong>这条 bug 让游戏对玩家说了什么假话？</strong>
-          如果答案是 "什么都没说"（比如纯文字 typo），它是 S3。如果答案是 "它谎报了玩家的状态、进度、或资格"，它就是 S1。
+          判定时我就问一句：<strong>这条 bug 让游戏对玩家说了什么假话？</strong>
+          纯文字 typo 没说什么假话，走 S3。谎报玩家做过什么、有什么资格，走 S1。
         </p>
         <p>
-          这条规则适用范围比 advancement 大得多——同样的逻辑在 quest 系统、reputation 系统、unlock 系统、甚至 buff timer 显示上都成立。
-          凡是游戏对玩家做出 <em>承诺</em> 的地方，承诺被违反就是 S1，不是 polish。
+          quest 系统、reputation 系统、unlock 系统我都按这个判。
         </p>
       </div>
 

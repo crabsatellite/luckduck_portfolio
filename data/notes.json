@@ -4,7 +4,7 @@
     "date": "2026-05-02",
     "title_zh": "为什么成就触发错记成 S1, 不是 S3",
     "title_en": "Why I file advancement misfires as S1, not S3",
-    "summary_zh": "一条成就在错的时机解锁, 看起来只是个小毛病。但它本质上撒谎: 系统告诉玩家 \"你做了 X\", 而玩家什么都没做。这是诚信问题, 不是polish。",
+    "summary_zh": "一条成就在错的时机解锁, 看起来只是个小毛病。但它在撒谎: 系统告诉玩家 \"你做了 X\", 而玩家什么都没做。这是诚信问题, 不是polish。",
     "summary_en": "An advancement firing at the wrong moment looks like a small cosmetic bug. It isn't — it lies to the player. The system says \"you did X\" when the player didn't. That's an integrity bug, not polish.",
     "tags": ["severity", "achievement", "rubric"]
   },
