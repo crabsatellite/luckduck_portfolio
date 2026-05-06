@@ -1,170 +1,57 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
-import {
-  totalBugs, totalRounds, totalRegressionRounds,
-  mods, profile,
-} from "~/lib/data";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-
-const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
-const langPrefix = lang === "en" ? `${base}/en` : base;
-
-const bugCount = totalBugs();
-const roundCount = totalRounds();
-const regressionCount = totalRegressionRounds();
-const modsCount = mods.length;
-const creditedCount = profile.curseforge.tester_credits.length;
 ---
 
-<section class="hero" aria-labelledby="hero-heading">
+<section class="hero">
   <div class="container">
-    <div class="hero__top">
-      <p class="hero__eyebrow">
-        <span class="hero__eyebrow-tag">{t(lang, "hero.tagline")}</span>
-        <span class="hero__eyebrow-sep" aria-hidden="true">·</span>
-        <span class="hero__eyebrow-name">{t(lang, "hero.subtitle")}</span>
-      </p>
-      <h1 id="hero-heading" class="hero__h h-display">{t(lang, "hero.title")}</h1>
-      <p class="hero__role">{t(lang, "hero.role")}</p>
-      <p class="hero__personal">{t(lang, "hero.personal")}</p>
-    </div>
-
-    <dl class="hero__stats" aria-label="overall counts">
-      <div class="hero__stat">
-        <dt>{t(lang, "hero.stat_mods")}</dt>
-        <dd class="mono tnum">{modsCount}</dd>
-      </div>
-      <div class="hero__stat">
-        <dt>{t(lang, "hero.stat_bugs")}</dt>
-        <dd class="mono tnum">{bugCount}</dd>
-      </div>
-      <div class="hero__stat">
-        <dt>{t(lang, "hero.stat_rounds")}</dt>
-        <dd class="mono tnum">{roundCount}</dd>
-      </div>
-      <div class="hero__stat">
-        <dt>{t(lang, "hero.stat_regression")}</dt>
-        <dd class="mono tnum">{regressionCount}</dd>
-      </div>
-      <div class="hero__stat">
-        <dt>{t(lang, "hero.stat_credited")}</dt>
-        <dd class="mono tnum">{creditedCount}</dd>
-      </div>
-    </dl>
-
-    <div class="hero__cta">
-      <a class="btn btn--accent" href="#contact">{t(lang, "hero.cta_hire")}</a>
-      <a class="btn" href={`${langPrefix}/notes`}>{t(lang, "hero.cta_notes")}</a>
-    </div>
+    <h1 class="hero__name h-display">{lang === "zh" ? "杨霆峰" : "Tingfeng Yang"}</h1>
+    <p class="hero__line">
+      <span class="hero__role">{t(lang, "hero.role")}</span>
+      <span class="hero__sep" aria-hidden="true">·</span>
+      <a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank" class="hero__link">github</a>
+      <span class="hero__sep" aria-hidden="true">·</span>
+      <a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank" class="hero__link">curseforge</a>
+    </p>
   </div>
 </section>
 
 <style>
   .hero {
-    padding: 3rem 0 2rem 0;
-    border-bottom: 1px solid var(--rule);
+    padding: 3.5rem 0 2rem 0;
   }
-  .hero__top { max-width: 64ch; }
-  .hero__eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.06em;
-    margin: 0 0 0.85rem 0;
-    display: flex;
-    align-items: baseline;
-    gap: 0.55rem;
-    flex-wrap: wrap;
-  }
-  .hero__eyebrow-tag {
-    color: var(--bg);
-    background: var(--accent);
-    padding: 0.18rem 0.5rem;
-    border-radius: 3px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    text-transform: none;
-  }
-  .hero__eyebrow-sep { color: var(--rule); }
-  .hero__eyebrow-name { letter-spacing: 0.04em; }
-  .hero__h {
-    font-size: clamp(1.8rem, 4.4vw, 2.8rem);
-    margin: 0 0 1rem 0;
+  .hero__name {
+    font-size: clamp(2rem, 5.2vw, 3rem);
+    margin: 0 0 0.55rem 0;
     color: var(--ink);
+    letter-spacing: -0.01em;
   }
-  .hero__role {
-    font-family: var(--font-sans);
-    font-size: clamp(0.95rem, 1.3vw, 1.05rem);
-    color: var(--ink-soft);
-    line-height: 1.65;
-    margin: 0 0 1rem 0;
-  }
-  :lang(zh) .hero__role { font-family: var(--font-cjk); line-height: 1.75; }
-  .hero__personal {
+  .hero__line {
+    margin: 0;
     font-family: var(--font-sans);
     font-size: 0.95rem;
-    color: var(--ink-mute);
-    line-height: 1.65;
-    margin: 0 0 2rem 0;
-    padding-left: 0.85rem;
-    border-left: 2px solid var(--accent);
-    font-style: italic;
-  }
-  :lang(zh) .hero__personal {
-    font-family: var(--font-cjk);
-    line-height: 1.85;
-    font-style: normal;
-  }
-
-  .hero__stats {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 0;
-    margin: 0 0 2rem 0;
-    padding: 0;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-  }
-  @media (max-width: 720px) {
-    .hero__stats { grid-template-columns: repeat(2, 1fr); }
-    .hero__stat { border-top: 1px solid var(--rule); }
-    .hero__stat:nth-child(1), .hero__stat:nth-child(2) { border-top: 0; }
-  }
-  .hero__stat {
-    padding: 1rem 1.1rem;
-    border-right: 1px solid var(--rule);
+    color: var(--ink-soft);
     display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-  .hero__stat:last-child { border-right: 0; }
-  @media (max-width: 720px) {
-    .hero__stat:nth-child(2n) { border-right: 0; }
-  }
-  .hero__stat dt {
-    font-family: var(--font-sans);
-    font-size: 0.72rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin: 0;
-  }
-  :lang(zh) .hero__stat dt { font-family: var(--font-cjk); letter-spacing: 0.08em; }
-  .hero__stat dd {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .hero__cta {
-    display: flex;
-    gap: 0.8rem;
+    align-items: baseline;
     flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+  :lang(zh) .hero__line { font-family: var(--font-cjk); }
+  .hero__role { color: var(--ink-soft); }
+  .hero__sep { color: var(--rule); }
+  .hero__link {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: color 120ms, border-color 120ms;
+  }
+  .hero__link:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
   }
 </style>

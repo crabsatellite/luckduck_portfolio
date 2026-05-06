@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "LUCK666DUCK/hot-bath-tester-log",
+    "name_zh": "Hot Bath 测试归档",
+    "name_en": "Hot Bath tester log",
+    "desc_zh": "4 轮回归原始记录, 跨 mod 兼容矩阵",
+    "desc_en": "4 regression rounds, cross-mod compat matrix",
+    "status": "wip"
+  },
+  {
+    "slug": "LUCK666DUCK/shower-core-tester-log",
+    "name_zh": "Shower Core 测试归档",
+    "name_en": "Shower Core tester log",
+    "desc_zh": "5 轮回归 (4.5 / 4.6 / 4.18) 全程记录",
+    "desc_en": "5 regression rounds (4.5 / 4.6 / 4.18)",
+    "status": "wip"
+  },
+  {
+    "slug": "LUCK666DUCK/alex-caves-bug-archive",
+    "name_zh": "Alex's Caves 测试归档",
+    "name_en": "Alex's Caves bug archive",
+    "desc_zh": "1.20.1 / 1.21.1 双版本对照",
+    "desc_en": "1.20.1 / 1.21.1 dual-version pass",
+    "status": "wip"
+  },
+  {
+    "slug": "LUCK666DUCK/alex-mobs-bug-archive",
+    "name_zh": "Alex's Mobs 测试归档",
+    "name_en": "Alex's Mobs bug archive",
+    "desc_zh": "1.20.1 / 1.21.1 双版本对照",
+    "desc_en": "1.20.1 / 1.21.1 dual-version pass",
+    "status": "wip"
+  },
+  {
+    "slug": "LUCK666DUCK/mod-test-templates",
+    "name_zh": "测试模板",
+    "name_en": "Test templates",
+    "desc_zh": "intake / regression 报告 markdown 模板",
+    "desc_en": "intake / regression report markdown templates",
+    "status": "soon"
+  }
+]
