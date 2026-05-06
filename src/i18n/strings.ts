@@ -120,17 +120,16 @@ export const STRINGS = {
 
     "about.title": "关于",
     "about.role": "Minecraft mod tester",
-    "about.greeting": "杨霆峰 · LUCK666DUCK",
+    "about.greeting": "LUCK666DUCK",
     "about.zh_para1": "独立 Minecraft mod 测试。主要做多轮回归、多语言验证、跨 mod 兼容性取证。版本不锁, 已测 mod 在官方发布上覆盖 MC 1.14 → 1.21。",
     "about.zh_para2": "测试报告以中文撰写，覆盖崩溃、机制、生物行为、动画、配方、规格对照、本地化、跨 mod 兼容等 13 类。每条 bug 记录包含可复现描述、严重度、版本与轮次溯源。",
     "about.zh_para3": "本站收录的 13 个 mod、433 条 bug 均来自公开提交记录或与 mod 作者私下沟通的整理稿。已公开署名的 Tester 项目两个：Hot Bath（CurseForge 下载量 100 万+）与 Instant World Mirror，均隶属 CrabMods 团队。",
     "about.zh_para4": "如果你做 mod 想找人帮忙跑回归，简体 / 繁中 / 日文 / English 都可以，欢迎在 CurseForge 或 GitHub 找我。",
 
     "footer.handle": "LUCK666DUCK",
-    "footer.cn_name": "杨 霆 峰",
     "footer.tagline": "Minecraft mod tester · zh / 繁 / 日 / en",
     "footer.active": "MC 1.14 → 1.21 across mods tested",
-    "footer.copy": "© 2026 Tingfeng Yang. 所有 bug 记录归原始提交者所有，mod 名称及商标归各自作者所有。",
+    "footer.copy": "© 2026 LUCK666DUCK. 所有 bug 记录归原始提交者所有，mod 名称及商标归各自作者所有。",
     "footer.archived": "v0.3.0 · 2026-05 redesigned",
   },
   en: {
@@ -235,17 +234,16 @@ export const STRINGS = {
 
     "about.title": "About",
     "about.role": "Minecraft mod tester",
-    "about.greeting": "Tingfeng Yang · LUCK666DUCK",
+    "about.greeting": "LUCK666DUCK",
     "about.zh_para1": "Independent Minecraft mod tester. Focus on multi-round regression, multi-locale verification, and cross-mod compatibility forensics. Version-agnostic — tested mods span MC 1.14 → 1.21 across canonical releases.",
     "about.zh_para2": "Test reports are written in Chinese and cover 13 methods: crash, mechanic, entity behavior, animation, recipe, spec cross-check, localization, cross-mod compat, and more. Each bug carries severity, version, and round-of-intake.",
     "about.zh_para3": "The 13 mods and 433 bug entries on this site come from public submissions and from mod-author-direct correspondence. Two mods carry a publicly verifiable Tester credit: Hot Bath (1M+ CurseForge downloads) and Instant World Mirror, both under the CrabMods team.",
     "about.zh_para4": "If you build mods and want a regression run, I read 简体 / 繁中 / 日本語 / English. Find me on CurseForge or GitHub.",
 
     "footer.handle": "LUCK666DUCK",
-    "footer.cn_name": "杨 霆 峰",
     "footer.tagline": "Minecraft mod tester · zh / 繁 / 日 / en",
     "footer.active": "MC 1.14 → 1.21 across mods tested",
-    "footer.copy": "© 2026 Tingfeng Yang. Bug reports remain authored by their filer. Mod names and trademarks belong to their respective authors.",
+    "footer.copy": "© 2026 LUCK666DUCK. Bug reports remain authored by their filer. Mod names and trademarks belong to their respective authors.",
     "footer.archived": "v0.3.0 · redesigned 2026-05",
   },
 } as const;
