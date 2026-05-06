@@ -1,199 +1,45 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Hero from "~/components/Hero.astro";
-import HirePackages from "~/components/HirePackages.astro";
-import FeaturedCaseCard from "~/components/FeaturedCaseCard.astro";
-import SeverityLegend from "~/components/SeverityLegend.astro";
-import NotesList from "~/components/NotesList.astro";
-import ContactPanel from "~/components/ContactPanel.astro";
-import { featuredMods, methods, categoryCounts } from "~/lib/data";
+import ActivityFeed from "~/components/ActivityFeed.astro";
+import Deliverables from "~/components/Deliverables.astro";
 import { t } from "~/i18n/strings";
 
 const lang = "zh" as const;
-const featured = featuredMods();
-const counts = categoryCounts();
-const topMethods = [...methods]
-  .sort((a, b) => (counts[b.category_id] || 0) - (counts[a.category_id] || 0))
-  .slice(0, 6);
-
-const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
-const langPrefix = base;
 ---
 
 <BaseLayout title="LUCK666DUCK" lang={lang}>
   <Hero lang={lang} />
 
-  <section class="block" id="hire" aria-labelledby="hire-h">
+  <section class="block" aria-labelledby="activity-h">
     <div class="container">
-      <header class="block__head">
-        <p class="block__eyebrow">01 / hire</p>
-        <h2 id="hire-h" class="block__h h-section">{t(lang, "home.hire_h")}</h2>
-        <p class="block__sub">{t(lang, "home.hire_sub")}</p>
-      </header>
-      <HirePackages lang={lang} />
+      <h2 id="activity-h" class="block__h">{t(lang, "home.activity_h")}</h2>
+      <ActivityFeed lang={lang} />
     </div>
   </section>
 
-  <section class="block block--alt" id="methods" aria-labelledby="methods-h">
+  <section class="block" aria-labelledby="deliv-h">
     <div class="container">
-      <header class="block__head">
-        <p class="block__eyebrow">02 / methodology</p>
-        <h2 id="methods-h" class="block__h h-section">{t(lang, "home.methods_h")}</h2>
-        <p class="block__sub">{t(lang, "home.methods_sub")}</p>
-      </header>
-      <ul class="methods-strip">
-        {topMethods.map((m) => {
-          const c = counts[m.category_id] || 0;
-          const name = lang === "zh" ? m.name_zh : m.name_en;
-          return (
-            <li class="methods-strip__item">
-              <a href={`${langPrefix}/methodology#${m.id}`} class="methods-strip__link">
-                <span class="methods-strip__name">{name}</span>
-                <span class="methods-strip__count mono tnum">{c}</span>
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-      <p class="block__more">
-        <a href={`${langPrefix}/methodology`}>{t(lang, "home.methods_more")}</a>
-      </p>
-    </div>
-  </section>
-
-  <section class="block" id="severity" aria-labelledby="severity-h">
-    <div class="container">
-      <header class="block__head">
-        <p class="block__eyebrow">03 / severity</p>
-        <h2 id="severity-h" class="block__h h-section">{t(lang, "home.severity_h")}</h2>
-        <p class="block__sub">{t(lang, "home.severity_sub")}</p>
-      </header>
-      <SeverityLegend lang={lang} />
-    </div>
-  </section>
-
-  <section class="block block--alt" id="featured" aria-labelledby="featured-h">
-    <div class="container">
-      <header class="block__head">
-        <p class="block__eyebrow">04 / evidence</p>
-        <h2 id="featured-h" class="block__h h-section">{t(lang, "home.featured_h")}</h2>
-        <p class="block__sub">{t(lang, "home.featured_sub")}</p>
-      </header>
-      <div class="block__grid block__grid--3">
-        {featured.map((m) => <FeaturedCaseCard mod={m} lang={lang} />)}
-      </div>
-      <p class="block__more">
-        <a href={`${langPrefix}/cases`}>看全部 13 个案例 →</a>
-      </p>
-    </div>
-  </section>
-
-  <section class="block" id="notes" aria-labelledby="notes-h">
-    <div class="container">
-      <header class="block__head">
-        <p class="block__eyebrow">05 / notes</p>
-        <h2 id="notes-h" class="block__h h-section">{t(lang, "home.notes_h")}</h2>
-        <p class="block__sub">{t(lang, "home.notes_sub")}</p>
-      </header>
-      <NotesList lang={lang} limit={3} />
-      <p class="block__more">
-        <a href={`${langPrefix}/notes`}>{t(lang, "home.notes_more")}</a>
-      </p>
-    </div>
-  </section>
-
-  <section class="block block--contact" id="contact" aria-labelledby="contact-h">
-    <div class="container">
-      <header class="block__head">
-        <p class="block__eyebrow">06 / contact</p>
-        <h2 id="contact-h" class="block__h h-section">{t(lang, "home.contact_h")}</h2>
-        <p class="block__sub">{t(lang, "home.contact_sub")}</p>
-      </header>
-      <ContactPanel lang={lang} />
+      <h2 id="deliv-h" class="block__h">{t(lang, "home.deliverables_h")}</h2>
+      <Deliverables lang={lang} />
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .block { padding: 3.5rem 0; }
-  .block--alt { background: var(--bg-soft); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-  .block--contact {
-    background: linear-gradient(180deg, var(--bg) 0%, color-mix(in oklch, var(--accent) 6%, var(--bg)) 100%);
-    border-top: 1px solid var(--rule);
-    padding-bottom: 4rem;
-  }
-  .block__head { max-width: 64ch; margin-bottom: 1.6rem; }
-  .block__eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--accent);
+  .block { padding: 2.4rem 0; }
+  .block + .block { border-top: 1px solid var(--rule); }
+  .block__h {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: var(--ink-mute);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    margin: 0 0 0.65rem 0;
+    margin: 0 0 1.2rem 0;
   }
-  .block__h {
-    font-size: clamp(1.4rem, 2.8vw, 1.95rem);
-    margin: 0 0 0.55rem 0;
-  }
-  .block__sub {
-    font-family: var(--font-sans);
-    color: var(--ink-soft);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 0;
-  }
-  :lang(zh) .block__sub { font-family: var(--font-cjk); line-height: 1.75; }
-
-  .block__grid { display: grid; gap: 1rem; }
-  .block__grid--3 { grid-template-columns: repeat(3, 1fr); }
-  @media (max-width: 980px) { .block__grid--3 { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 640px) { .block__grid--3 { grid-template-columns: 1fr; } }
-
-  .block__more {
-    margin: 1.4rem 0 0 0;
-    font-family: var(--font-sans);
-    font-size: 0.9rem;
-  }
-  :lang(zh) .block__more { font-family: var(--font-cjk); }
-  .block__more a {
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid currentColor;
-  }
-  .block__more a:hover { color: var(--accent-deep); }
-
-  .methods-strip {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
-  }
-  @media (max-width: 760px) { .methods-strip { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 480px) { .methods-strip { grid-template-columns: 1fr; } }
-  .methods-strip__item { background: var(--bg); }
-  .methods-strip__link {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 1rem 1.1rem;
-    text-decoration: none;
-    color: var(--ink);
-    font-family: var(--font-sans);
-    transition: background 120ms ease, color 120ms ease;
-  }
-  :lang(zh) .methods-strip__link { font-family: var(--font-cjk); }
-  .methods-strip__link:hover, .methods-strip__link:focus-visible {
-    background: var(--bg-raised);
-    color: var(--accent);
-  }
-  .methods-strip__name { font-size: 0.95rem; font-weight: 500; }
-  .methods-strip__count {
-    font-weight: 700;
-    color: var(--accent);
-    font-size: 1.1rem;
+  :lang(zh) .block__h {
+    font-family: var(--font-cjk);
+    letter-spacing: 0.1em;
   }
 </style>

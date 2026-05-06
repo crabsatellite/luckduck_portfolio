@@ -3,6 +3,18 @@ import bugsData from "../../data/bugs.json";
 import profileData from "../../data/profile.json";
 import methodologyData from "../../data/methodology.json";
 import notesData from "../../data/notes.json";
+import deliverablesData from "../../data/deliverables.json";
+
+export type Deliverable = {
+  slug: string;
+  name_zh: string;
+  name_en: string;
+  desc_zh: string;
+  desc_en: string;
+  status: "wip" | "soon" | "live";
+};
+
+export const deliverables = deliverablesData as Deliverable[];
 
 export type Note = {
   slug: string;
