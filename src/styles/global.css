@@ -24,6 +24,7 @@
   --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
   --font-cjk: "Noto Sans SC Variable", "Inter Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-pixel: "JetBrains Mono Variable", ui-monospace, monospace;
 
   --content-max: 1240px;
   --gutter: clamp(1.25rem, 4vw, 2.6rem);

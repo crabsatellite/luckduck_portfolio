@@ -1,6 +1,6 @@
 // v2 build-assets: invokes mascot + badges + scenes generators, then builds
 // favicon (duck head on amber square) and OG card (warm-deep, mascot left,
-// title right, steam-curl strips top + bottom).
+// collaboration-positioning text right, steam-curl strips top + bottom).
 
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -93,8 +93,8 @@ async function buildOg() {
   <image href="data:image/png;base64,${mascotB64}" x="80" y="200" width="280" height="280" style="image-rendering: pixelated"/>
 
   <text x="420" y="270" font-family="ui-sans-serif, system-ui, sans-serif" font-size="76" font-weight="800" fill="${COLORS.ink}" letter-spacing="-1">LUCK666DUCK</text>
-  <text x="420" y="335" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="500" fill="${COLORS.accent}" letter-spacing="0">Minecraft mod tester</text>
-  <text x="420" y="380" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" font-weight="400" fill="${COLORS.inkSoft}">multi-round regression · multi-locale verification</text>
+  <text x="420" y="335" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="500" fill="${COLORS.accent}" letter-spacing="0">QA runs for Minecraft mod authors</text>
+  <text x="420" y="380" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" font-weight="400" fill="${COLORS.inkSoft}">regression · compatibility · localization · reproducible reports</text>
 
   <g transform="translate(420, 420)" font-family="ui-monospace, monospace">
     <rect x="0" y="0" rx="8" ry="8" width="140" height="60" fill="${COLORS.bgSoft}" stroke="${COLORS.accent}" stroke-width="2"/>

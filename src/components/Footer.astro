@@ -1,10 +1,13 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
+import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const langPrefix = lang === "en" ? `${base}/en` : base;
 ---
 
 <footer class="footer">
@@ -14,9 +17,13 @@ const { lang } = Astro.props;
         <p class="footer__handle">{t(lang, "footer.handle")}</p>
         <p class="footer__tag">{t(lang, "footer.tagline")}</p>
         <p class="footer__active mono tnum">{t(lang, "footer.active")}</p>
+        <div class="footer__badges"><RetroBadgeStrip /></div>
       </div>
       <div class="footer__col">
         <ul class="footer__links">
+          <li><a href={`${langPrefix}/cases`}>{t(lang, "nav.cases")}</a></li>
+          <li><a href={`${langPrefix}/methodology`}>{t(lang, "nav.methods")}</a></li>
+          <li><a href={`${langPrefix}/notes`}>{t(lang, "nav.notes")}</a></li>
           <li>
             <a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">
               github / LUCK666DUCK <span aria-hidden="true">↗</span>
@@ -76,6 +83,14 @@ const { lang } = Astro.props;
     font-size: 0.78rem;
     color: var(--ink-mute);
     letter-spacing: 0.04em;
+  }
+  .footer__badges {
+    margin-top: 1rem;
+  }
+  .footer__badges :global(.badge-strip) {
+    background: transparent;
+    padding: 0;
+    border: 0;
   }
   .footer__links { list-style: none; padding: 0; margin: 0; }
   .footer__links li { margin-bottom: 0.5rem; }

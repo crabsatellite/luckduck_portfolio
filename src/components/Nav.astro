@@ -1,5 +1,6 @@
 ---
 import { t, pathForLang, type Lang } from "~/i18n/strings";
+import MascotDuck from "~/components/MascotDuck.astro";
 
 interface Props {
   lang: Lang;
@@ -11,8 +12,9 @@ const langPrefix = lang === "en" ? `${base}/en` : base;
 
 const items = [
   { href: `${langPrefix}/`, key: "nav.home" as const, match: "/" },
-  { href: `${langPrefix}/methodology`, key: "nav.methods" as const, match: "/methodology" },
   { href: `${langPrefix}/cases`, key: "nav.cases" as const, match: "/cases" },
+  { href: `${langPrefix}/methodology`, key: "nav.methods" as const, match: "/methodology" },
+  { href: `${langPrefix}/notes`, key: "nav.notes" as const, match: "/notes" },
   { href: `${langPrefix}/about`, key: "nav.about" as const, match: "/about" },
 ];
 
@@ -37,9 +39,9 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
 <header class="nav">
   <div class="nav__inner container">
     <a href={`${langPrefix}/`} class="nav__logo" aria-label="LUCK666DUCK home">
-      <span class="nav__mark" aria-hidden="true">L6D</span>
+      <MascotDuck size={28} alt="" />
       <span class="nav__name">LUCK666DUCK</span>
-      <span class="nav__role">Minecraft mod tester</span>
+      <span class="nav__role">{t(lang, "hero.role")}</span>
     </a>
     <nav aria-label="Primary" class="nav__primary">
       <ul class="nav__list">
@@ -97,23 +99,13 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
   }
   .nav__logo {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
     gap: 0.55rem;
     text-decoration: none;
     color: var(--ink);
     font-family: var(--font-sans);
     line-height: 1;
     min-width: 0;
-  }
-  .nav__mark {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    color: var(--bg);
-    background: var(--accent);
-    padding: 0.32rem 0.45rem;
-    border-radius: 3px;
   }
   .nav__name {
     font-weight: 700;
@@ -136,6 +128,7 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
     margin: 0;
     padding: 0;
     display: flex;
+    flex-wrap: wrap;
     gap: 1.4rem;
     align-items: center;
   }
@@ -175,9 +168,13 @@ const otherLangHref = pathForLang(Astro.url.pathname, otherLang, base);
     background: var(--accent);
     border-color: var(--accent);
   }
-  @media (max-width: 540px) {
+  @media (max-width: 640px) {
     .nav__name { font-size: 0.88rem; }
-    .nav__list { gap: 0.85rem; }
+    .nav__list { gap: 0.75rem; }
     .nav__link { font-size: 0.85rem; }
+  }
+  @media (max-width: 470px) {
+    .nav__inner { align-items: flex-start; flex-direction: column; gap: 0.7rem; }
+    .nav__list { gap: 0.8rem; }
   }
 </style>

@@ -1,57 +1,202 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
+import MascotDuck from "~/components/MascotDuck.astro";
+import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
+import ModLogo from "~/components/ModLogo.astro";
+import { activeMods, profile, totalBugs, totalRounds, mods } from "~/lib/data";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const langPrefix = lang === "en" ? `${base}/en` : base;
+const focusMods = activeMods();
+
+const stats = [
+  { value: mods.length, label: t(lang, "hero.stat_mods") },
+  { value: totalBugs(), label: t(lang, "hero.stat_bugs") },
+  { value: totalRounds(), label: t(lang, "hero.stat_rounds") },
+  { value: profile.curseforge.tester_credits.length, label: t(lang, "hero.stat_credits") },
+];
 ---
 
 <section class="hero">
   <div class="container">
-    <h1 class="hero__name h-display">LUCK666DUCK</h1>
-    <p class="hero__line">
-      <span class="hero__role">{t(lang, "hero.role")}</span>
-      <span class="hero__sep" aria-hidden="true">·</span>
-      <a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank" class="hero__link">github</a>
-      <span class="hero__sep" aria-hidden="true">·</span>
-      <a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank" class="hero__link">curseforge</a>
-    </p>
+    <div class="hero__panel">
+      <div class="hero__copy">
+        <p class="hero__role">{t(lang, "hero.role")}</p>
+        <h1 class="hero__title h-display">{t(lang, "hero.title")}</h1>
+        <p class="hero__subtitle">{t(lang, "hero.subtitle")}</p>
+
+        <div class="hero__actions" aria-label="primary actions">
+          <a href={`${langPrefix}/about`} class="btn btn--accent">{t(lang, "hero.cta_primary")}</a>
+          <a href={`${langPrefix}/cases/hotbath`} class="btn">{t(lang, "hero.cta_secondary")}</a>
+        </div>
+
+        <dl class="hero__stats">
+          {stats.map((s) => (
+            <div class="hero__stat">
+              <dt>{s.label}</dt>
+              <dd class="mono tnum">{s.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <aside class="hero__proof" aria-labelledby="proof-label">
+        <div class="hero__mascot">
+          <MascotDuck size={112} blink={true} alt="LUCK666DUCK mascot" />
+        </div>
+        <p id="proof-label" class="hero__proof-label">{t(lang, "hero.active_label")}</p>
+        <div class="hero__mods">
+          {focusMods.map((mod) => (
+            <a href={`${langPrefix}/cases/${mod.id}`} class="hero__mod">
+              <ModLogo mod={mod} size={40} />
+              <span>{mod.name_en}</span>
+            </a>
+          ))}
+        </div>
+        <RetroBadgeStrip />
+      </aside>
+    </div>
   </div>
 </section>
 
 <style>
   .hero {
-    padding: 3.5rem 0 2rem 0;
+    padding: clamp(2rem, 5vw, 4rem) 0 2.2rem 0;
   }
-  .hero__name {
-    font-size: clamp(2rem, 5.2vw, 3rem);
-    margin: 0 0 0.55rem 0;
+  .hero__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.85fr);
+    gap: clamp(1.4rem, 4vw, 3rem);
+    align-items: stretch;
+    border: 1px solid var(--rule);
+    background:
+      radial-gradient(circle at 92% 10%, color-mix(in oklch, var(--steam) 16%, transparent), transparent 32%),
+      linear-gradient(135deg, var(--bg-soft), var(--bg));
+    border-radius: var(--radius-lg);
+    padding: clamp(1.4rem, 4vw, 2.6rem);
+  }
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+  .hero__role {
+    margin: 0 0 0.7rem 0;
+    font-family: var(--font-sans);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+  }
+  :lang(zh) .hero__role { font-family: var(--font-cjk); letter-spacing: 0.06em; }
+  .hero__title {
+    max-width: 12ch;
+    font-size: clamp(2.2rem, 6.4vw, 4.7rem);
     color: var(--ink);
-    letter-spacing: -0.01em;
   }
-  .hero__line {
+  :lang(en) .hero__title { max-width: 13ch; }
+  .hero__subtitle {
+    max-width: 58ch;
+    margin: 1rem 0 0 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: clamp(1rem, 1.7vw, 1.16rem);
+    line-height: 1.72;
+  }
+  :lang(zh) .hero__subtitle { font-family: var(--font-cjk); line-height: 1.85; }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.45rem;
+  }
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin: 1.65rem 0 0 0;
+  }
+  .hero__stat {
+    margin: 0;
+    padding: 0.85rem 0.9rem;
+    border: 1px solid var(--rule);
+    background: color-mix(in oklch, var(--bg-raised) 72%, transparent);
+    border-radius: var(--radius);
+  }
+  .hero__stat dt {
+    font-family: var(--font-sans);
+    color: var(--ink-mute);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+  :lang(zh) .hero__stat dt { font-family: var(--font-cjk); letter-spacing: 0.06em; }
+  .hero__stat dd {
+    color: var(--accent);
+    font-weight: 800;
+    font-size: clamp(1.35rem, 3vw, 2rem);
+    line-height: 1;
+    margin: 0.35rem 0 0 0;
+  }
+  .hero__proof {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.95rem;
+    min-width: 0;
+  }
+  .hero__mascot {
+    line-height: 0;
+  }
+  .hero__proof-label {
     margin: 0;
     font-family: var(--font-sans);
-    font-size: 0.95rem;
-    color: var(--ink-soft);
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
+    color: var(--ink-mute);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  :lang(zh) .hero__proof-label { font-family: var(--font-cjk); letter-spacing: 0.1em; }
+  .hero__mods {
+    display: grid;
     gap: 0.55rem;
   }
-  :lang(zh) .hero__line { font-family: var(--font-cjk); }
-  .hero__role { color: var(--ink-soft); }
-  .hero__sep { color: var(--rule); }
-  .hero__link {
+  .hero__mod {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--bg-soft);
     color: var(--ink);
     text-decoration: none;
-    border-bottom: 1px solid var(--rule);
-    padding-bottom: 1px;
-    transition: color 120ms, border-color 120ms;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 650;
   }
-  .hero__link:hover {
+  .hero__mod:hover,
+  .hero__mod:focus-visible {
+    border-color: var(--accent);
     color: var(--accent);
-    border-bottom-color: var(--accent);
+  }
+  @media (max-width: 900px) {
+    .hero__panel { grid-template-columns: 1fr; }
+    .hero__proof { align-items: flex-start; }
+  }
+  @media (max-width: 620px) {
+    .hero__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero__title { max-width: none; }
+  }
+  @media (max-width: 420px) {
+    .hero__actions .btn { width: 100%; justify-content: center; }
   }
 </style>

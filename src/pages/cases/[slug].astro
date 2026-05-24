@@ -7,7 +7,7 @@ import MembersPanel from "~/components/MembersPanel.astro";
 import {
   mods, bugsForMod, isCredited, hasRegression, hasNoIssues,
   logNumber, getMcmodEntry, teamForMod, featuredBug,
-  modCategoryBreakdown, methodFor,
+  modCategoryBreakdown, methodFor, sceneForMod,
 } from "~/lib/data";
 import { t } from "~/i18n/strings";
 
@@ -26,6 +26,7 @@ const mcmod = getMcmodEntry(mod);
 const team = teamForMod(mod);
 const featured = featuredBug(mod);
 const breakdown = modCategoryBreakdown(mod.id);
+const scene = sceneForMod(mod);
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 const langPrefix = base;
@@ -45,6 +46,19 @@ const langPrefix = base;
       />
 
       {team.length > 0 && <MembersPanel team={team} lang={lang} />}
+
+      {scene && (
+        <figure class="case__scene">
+          <img
+            src={`${base}/scenes/${scene}`}
+            alt={`${mod.name_en} ${t(lang, "case.scene_label")}`}
+            width="1280"
+            height="400"
+            loading="eager"
+          />
+          <figcaption>{t(lang, "case.scene_placeholder")}</figcaption>
+        </figure>
+      )}
 
       <div class="case__layout">
         <div class="case__main">
@@ -147,6 +161,28 @@ const langPrefix = base;
     .case__layout { grid-template-columns: 1fr; }
   }
   .case__main { min-width: 0; }
+  .case__scene {
+    margin: 1.2rem 0 1.4rem 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--bg-soft);
+  }
+  .case__scene img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 5;
+    object-fit: cover;
+  }
+  .case__scene figcaption {
+    margin: 0;
+    padding: 0.55rem 0.8rem;
+    color: var(--ink-mute);
+    font-family: var(--font-cjk);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--rule);
+  }
   .case__side { display: flex; flex-direction: column; gap: 1.2rem; }
   .case__panel {
     border: 1px solid var(--rule);

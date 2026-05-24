@@ -1,0 +1,11 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import NotesIndex from "~/components/NotesIndex.astro";
+import { t } from "~/i18n/strings";
+
+const lang = "zh" as const;
+---
+
+<BaseLayout title={t(lang, "notes.title")} lang={lang}>
+  <NotesIndex lang={lang} />
+</BaseLayout>

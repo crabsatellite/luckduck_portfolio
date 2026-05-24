@@ -1,0 +1,211 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+import { profile } from "~/lib/data";
+import MascotDuck from "~/components/MascotDuck.astro";
+import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const offer = ["about.offer_1", "about.offer_2", "about.offer_3", "about.offer_4"] as const;
+const deliver = ["about.deliver_1", "about.deliver_2", "about.deliver_3"] as const;
+const prepare = ["about.prepare_1", "about.prepare_2", "about.prepare_3"] as const;
+---
+
+<article class="about">
+  <div class="container">
+    <header class="about__head">
+      <div class="about__intro">
+        <p class="eyebrow"><strong>about</strong></p>
+        <h1 class="about__greet h-display">{t(lang, "about.greeting")}</h1>
+        <p class="about__role">{t(lang, "about.role")}</p>
+      </div>
+      <MascotDuck size={92} blink={true} alt="LUCK666DUCK mascot" />
+    </header>
+
+    <div class="about__layout">
+      <main class="about__main">
+        <section class="about__body">
+          <p>{t(lang, "about.zh_para1")}</p>
+          <p>{t(lang, "about.zh_para2")}</p>
+          <p>{t(lang, "about.zh_para3")}</p>
+          <p>{t(lang, "about.zh_para4")}</p>
+        </section>
+
+        <section class="about__cards" aria-label="collaboration details">
+          <article class="about__card">
+            <h2>{t(lang, "about.offer_h")}</h2>
+            <ul>{offer.map((key) => <li>{t(lang, key)}</li>)}</ul>
+          </article>
+          <article class="about__card">
+            <h2>{t(lang, "about.deliver_h")}</h2>
+            <ul>{deliver.map((key) => <li>{t(lang, key)}</li>)}</ul>
+          </article>
+          <article class="about__card about__card--wide">
+            <h2>{t(lang, "about.prepare_h")}</h2>
+            <ul>{prepare.map((key) => <li>{t(lang, key)}</li>)}</ul>
+          </article>
+        </section>
+      </main>
+
+      <aside class="about__side">
+        <section class="about__panel">
+          <h3 class="about__panel-h">{lang === "en" ? "Public credits" : "公开署名"}</h3>
+          <ul class="about__credits">
+            {profile.curseforge.tester_credits.map((c) => (
+              <li>
+                <a href={c.mod_url} rel="noopener" target="_blank">{c.mod}</a>
+                <span class="about__credit-meta mono"> · {c.role}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="about__panel">
+          <h3 class="about__panel-h">{lang === "en" ? "Contact" : "联系"}</h3>
+          <ul class="about__links">
+            <li><a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank">curseforge / luck666duck ↗</a></li>
+            <li><a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">github / LUCK666DUCK ↗</a></li>
+          </ul>
+        </section>
+
+        <RetroBadgeStrip />
+      </aside>
+    </div>
+  </div>
+</article>
+
+<style>
+  .about { padding: 2.4rem 0 3.4rem 0; }
+  .about__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1.5rem;
+    padding: 0 0 1.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2rem;
+  }
+  .about__intro { max-width: 70ch; }
+  .about__greet {
+    font-size: clamp(2rem, 4.4vw, 3rem);
+    margin: 0.5rem 0;
+  }
+  .about__role {
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.6;
+  }
+  :lang(zh) .about__role { font-family: var(--font-cjk); line-height: 1.75; }
+  .about__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 0.8fr);
+    gap: clamp(2rem, 4vw, 3rem);
+    align-items: start;
+  }
+  .about__body {
+    max-width: 72ch;
+    color: var(--ink);
+  }
+  .about__body p {
+    margin: 0 0 1.15rem 0;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+  :lang(zh) .about__body p { font-family: var(--font-cjk); line-height: 1.9; }
+  .about__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.7rem;
+  }
+  .about__card,
+  .about__panel {
+    border: 1px solid var(--rule);
+    background: var(--bg-soft);
+    padding: 1.1rem 1.2rem;
+    border-radius: var(--radius);
+  }
+  .about__card {
+    border-left: 4px solid var(--accent);
+  }
+  .about__card--wide { grid-column: 1 / -1; }
+  .about__card h2,
+  .about__panel-h {
+    font-family: var(--font-sans);
+    font-size: 0.86rem;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem 0;
+    font-weight: 700;
+  }
+  :lang(zh) .about__card h2,
+  :lang(zh) .about__panel-h { font-family: var(--font-cjk); letter-spacing: 0.08em; }
+  .about__card ul,
+  .about__credits,
+  .about__links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .about__card li {
+    position: relative;
+    padding-left: 1rem;
+    margin-bottom: 0.55rem;
+    color: var(--ink-soft);
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+  .about__card li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.38rem;
+    height: 0.38rem;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  :lang(zh) .about__card li { font-family: var(--font-cjk); line-height: 1.8; }
+  .about__side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .about__credits li,
+  .about__links li {
+    margin-bottom: 0.55rem;
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+  }
+  :lang(zh) .about__credits li,
+  :lang(zh) .about__links li { font-family: var(--font-cjk); }
+  .about__credits a,
+  .about__links a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .about__credits a:hover,
+  .about__links a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .about__credit-meta { color: var(--ink-mute); font-size: 0.8rem; }
+  @media (max-width: 900px) {
+    .about__layout { grid-template-columns: 1fr; }
+    .about__head { align-items: center; }
+  }
+  @media (max-width: 620px) {
+    .about__head { display: block; }
+    .about__head .mascot { margin-top: 1rem; }
+    .about__cards { grid-template-columns: 1fr; }
+  }
+</style>
