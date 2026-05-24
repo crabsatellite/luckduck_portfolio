@@ -3,6 +3,8 @@ import { t, type Lang } from "~/i18n/strings";
 import { profile } from "~/lib/data";
 import MascotDuck from "~/components/MascotDuck.astro";
 import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
+import PageHead from "~/components/PageHead.astro";
+import MarqueeDivider from "~/components/MarqueeDivider.astro";
 
 interface Props {
   lang: Lang;
@@ -12,38 +14,46 @@ const { lang } = Astro.props;
 const offer = ["about.offer_1", "about.offer_2", "about.offer_3", "about.offer_4"] as const;
 const deliver = ["about.deliver_1", "about.deliver_2", "about.deliver_3"] as const;
 const prepare = ["about.prepare_1", "about.prepare_2", "about.prepare_3"] as const;
+
+const kicker = lang === "en" ? "about · tester ledger" : "about · 测试员手记";
 ---
 
 <article class="about">
   <div class="container">
-    <header class="about__head">
-      <div class="about__intro">
-        <p class="eyebrow"><strong>about</strong></p>
-        <h1 class="about__greet h-display">{t(lang, "about.greeting")}</h1>
-        <p class="about__role">{t(lang, "about.role")}</p>
+    <PageHead
+      lang={lang}
+      mark="01"
+      kicker={kicker}
+      title={t(lang, "about.greeting")}
+      sub={t(lang, "about.role")}
+    >
+      <div class="about__mascot-row">
+        <MascotDuck size={72} blink={true} alt="LUCK666DUCK mascot" />
       </div>
-      <MascotDuck size={92} blink={true} alt="LUCK666DUCK mascot" />
-    </header>
+    </PageHead>
 
     <div class="about__layout">
       <main class="about__main">
-        <section class="about__body">
+        <div class="prose about__body">
           <p>{t(lang, "about.zh_para1")}</p>
           <p>{t(lang, "about.zh_para2")}</p>
           <p>{t(lang, "about.zh_para3")}</p>
           <p>{t(lang, "about.zh_para4")}</p>
-        </section>
+        </div>
 
         <section class="about__cards" aria-label="collaboration details">
           <article class="about__card">
+            <span class="about__card-idx mono">01</span>
             <h2>{t(lang, "about.offer_h")}</h2>
             <ul>{offer.map((key) => <li>{t(lang, key)}</li>)}</ul>
           </article>
           <article class="about__card">
+            <span class="about__card-idx mono">02</span>
             <h2>{t(lang, "about.deliver_h")}</h2>
             <ul>{deliver.map((key) => <li>{t(lang, key)}</li>)}</ul>
           </article>
           <article class="about__card about__card--wide">
+            <span class="about__card-idx mono">03</span>
             <h2>{t(lang, "about.prepare_h")}</h2>
             <ul>{prepare.map((key) => <li>{t(lang, key)}</li>)}</ul>
           </article>
@@ -77,76 +87,75 @@ const prepare = ["about.prepare_1", "about.prepare_2", "about.prepare_3"] as con
   </div>
 </article>
 
+<MarqueeDivider
+  text={lang === "en" ? "ABOUT · COLLABORATION · LUCK666DUCK" : "关于 · 合作 · LUCK666DUCK"}
+  animated={true}
+  size="sm"
+/>
+
 <style>
-  .about { padding: 2.4rem 0 3.4rem 0; }
-  .about__head {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    gap: 1.5rem;
-    padding: 0 0 1.6rem 0;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 2rem;
-  }
-  .about__intro { max-width: 70ch; }
-  .about__greet {
-    font-size: clamp(2rem, 4.4vw, 3rem);
-    margin: 0.5rem 0;
-  }
-  .about__role {
-    font-family: var(--font-sans);
-    color: var(--ink-soft);
-    font-size: 1rem;
-    margin: 0;
-    line-height: 1.6;
-  }
-  :lang(zh) .about__role { font-family: var(--font-cjk); line-height: 1.75; }
+  .about { padding: 0 0 3rem 0; }
+  .about__mascot-row { margin-top: 0.4rem; }
+
   .about__layout {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(280px, 0.8fr);
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 0.85fr);
     gap: clamp(2rem, 4vw, 3rem);
     align-items: start;
   }
-  .about__body {
-    max-width: 72ch;
-    color: var(--ink);
-  }
-  .about__body p {
-    margin: 0 0 1.15rem 0;
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.75;
-  }
-  :lang(zh) .about__body p { font-family: var(--font-cjk); line-height: 1.9; }
+  .about__body { max-width: 70ch; }
+
   .about__cards {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-    margin-top: 1.7rem;
+    gap: 0;
+    margin-top: 2rem;
+    border-top: 2px solid var(--ink);
+    border-left: 1px solid var(--rule);
   }
-  .about__card,
+  .about__card {
+    position: relative;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg-soft);
+    padding: 1.4rem 1.3rem 1.3rem 1.4rem;
+  }
+  .about__card--wide { grid-column: 1 / -1; }
+  .about__card-idx {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.9rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--ink-mute);
+    font-size: 1.05rem;
+  }
   .about__panel {
     border: 1px solid var(--rule);
     background: var(--bg-soft);
     padding: 1.1rem 1.2rem;
     border-radius: var(--radius);
   }
-  .about__card {
-    border-left: 4px solid var(--accent);
+  .about__card h2 {
+    font-family: var(--font-serif);
+    font-size: var(--fs-h3);
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.8rem 0;
   }
-  .about__card--wide { grid-column: 1 / -1; }
-  .about__card h2,
+  :lang(zh) .about__card h2 { font-family: var(--font-cjk); letter-spacing: 0; }
   .about__panel-h {
     font-family: var(--font-sans);
-    font-size: 0.86rem;
+    font-size: var(--fs-meta);
     color: var(--ink);
     letter-spacing: 0.04em;
     text-transform: uppercase;
     margin: 0 0 0.8rem 0;
     font-weight: 700;
   }
-  :lang(zh) .about__card h2,
-  :lang(zh) .about__panel-h { font-family: var(--font-cjk); letter-spacing: 0.08em; }
+  :lang(zh) .about__panel-h { font-family: var(--font-cjk); letter-spacing: 0; }
+
   .about__card ul,
   .about__credits,
   .about__links {
@@ -160,7 +169,7 @@ const prepare = ["about.prepare_1", "about.prepare_2", "about.prepare_3"] as con
     margin-bottom: 0.55rem;
     color: var(--ink-soft);
     font-family: var(--font-sans);
-    font-size: 0.92rem;
+    font-size: var(--fs-meta);
     line-height: 1.65;
   }
   .about__card li::before {
@@ -173,7 +182,8 @@ const prepare = ["about.prepare_1", "about.prepare_2", "about.prepare_3"] as con
     background: var(--accent);
     border-radius: 50%;
   }
-  :lang(zh) .about__card li { font-family: var(--font-cjk); line-height: 1.8; }
+  :lang(zh) .about__card li { font-family: var(--font-cjk); line-height: 1.85; }
+
   .about__side {
     display: flex;
     flex-direction: column;
@@ -183,7 +193,7 @@ const prepare = ["about.prepare_1", "about.prepare_2", "about.prepare_3"] as con
   .about__links li {
     margin-bottom: 0.55rem;
     font-family: var(--font-sans);
-    font-size: 0.92rem;
+    font-size: var(--fs-meta);
   }
   :lang(zh) .about__credits li,
   :lang(zh) .about__links li { font-family: var(--font-cjk); }
@@ -199,13 +209,11 @@ const prepare = ["about.prepare_1", "about.prepare_2", "about.prepare_3"] as con
     border-bottom-color: var(--accent);
   }
   .about__credit-meta { color: var(--ink-mute); font-size: 0.8rem; }
+
   @media (max-width: 900px) {
     .about__layout { grid-template-columns: 1fr; }
-    .about__head { align-items: center; }
   }
   @media (max-width: 620px) {
-    .about__head { display: block; }
-    .about__head .mascot { margin-top: 1rem; }
     .about__cards { grid-template-columns: 1fr; }
   }
 </style>

@@ -22,7 +22,7 @@
   --ink: #f2e9d4;
   --ink-soft: #c6bda8;
   --ink-mute: #8a8273;
-  --accent: #f0b04a;       /* duck-yolk, a touch more saturated than the
+  --accent: #f0b04a; /* duck-yolk, a touch more saturated than the
                               old #f9c47a so it stops reading as a generic
                               "soft warm AI accent". */
   --accent-deep: #c87420;
@@ -32,14 +32,18 @@
   --alert: #e07088;
   --rule: #3a342c;
 
-  --font-sans: "IBM Plex Sans Variable", "IBM Plex Sans", system-ui,
-    -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
-  --font-serif: "IBM Plex Serif", "Iowan Old Style", "Source Serif Pro",
-    Georgia, "Times New Roman", serif;
-  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular",
-    "Menlo", "Consolas", monospace;
-  --font-cjk: "LXGW WenKai GB Screen", "LXGW WenKai Screen",
-    "IBM Plex Sans Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-sans:
+    "IBM Plex Sans Variable", "IBM Plex Sans", system-ui, -apple-system,
+    "Segoe UI", "Helvetica Neue", sans-serif;
+  --font-serif:
+    "IBM Plex Serif", "Iowan Old Style", "Source Serif Pro", Georgia,
+    "Times New Roman", serif;
+  --font-mono:
+    "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", "Menlo",
+    "Consolas", monospace;
+  --font-cjk:
+    "LXGW WenKai GB Screen", "LXGW WenKai Screen", "IBM Plex Sans Variable",
+    "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-pixel: "JetBrains Mono Variable", ui-monospace, monospace;
 
   --content-max: 1240px;
@@ -47,6 +51,22 @@
 
   --line-latin: 1.6;
   --line-cjk: 1.78;
+
+  /* type scale — single source of truth, all pages read from these.
+     Each token uses clamp(min, fluid, max) so it scales with viewport
+     without ever blowing past a sensible ceiling. Tweak here and the
+     whole site rebalances. */
+  --fs-base: 16px;            /* root font-size */
+  --fs-body: 0.98rem;         /* default body copy */
+  --fs-body-lg: 1.05rem;      /* lead paragraphs */
+  --fs-meta: 0.84rem;         /* captions, meta */
+  --fs-micro: 0.74rem;        /* dateline, tags */
+  --fs-h1: clamp(1.7rem, 3.4vw, 2.4rem);    /* page H1 (display) */
+  --fs-h2: clamp(1.3rem, 2.3vw, 1.7rem);    /* section H2 */
+  --fs-h3: clamp(1.05rem, 1.5vw, 1.18rem);  /* card / sub-section */
+  --fs-h4: 0.98rem;                          /* small headers */
+  --fs-mega: clamp(2.4rem, 6.4vw, 4.4rem);   /* hero display (reduced) */
+  --fs-counter: clamp(2rem, 4.4vw, 2.9rem);  /* stat numerals */
 
   --radius: 6px;
   --radius-lg: 10px;
@@ -76,22 +96,26 @@
     --warn: #c87420;
     --alert: #a8334a;
     --rule: #d4c7a6;
-    --shadow-soft: 0 2px 10px rgba(42, 36, 26, 0.10);
+    --shadow-soft: 0 2px 10px rgba(42, 36, 26, 0.1);
     --shadow-warm: 0 4px 20px rgba(200, 116, 32, 0.16);
     color-scheme: light;
   }
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 html {
   background: var(--bg);
   color: var(--ink);
+  font-size: var(--fs-base);
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
+  font-size: var(--fs-body);
   line-height: var(--line-latin);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -111,16 +135,28 @@ body::before {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 @media (prefers-color-scheme: light) {
-  body::before { opacity: 0.06; mix-blend-mode: multiply; }
+  body::before {
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+  }
 }
-main, header, footer { position: relative; z-index: 1; }
+main,
+header,
+footer {
+  position: relative;
+  z-index: 1;
+}
 
-:lang(zh), :lang(zh-Hans), :lang(zh-Hans-CN) {
+:lang(zh),
+:lang(zh-Hans),
+:lang(zh-Hans-CN) {
   font-family: var(--font-cjk);
   line-height: var(--line-cjk);
 }
 
-main { display: block; }
+main {
+  display: block;
+}
 
 a {
   color: var(--ink);
@@ -128,7 +164,10 @@ a {
   text-decoration-thickness: 1px;
   transition: color 120ms ease;
 }
-a:hover, a:focus-visible { color: var(--accent); }
+a:hover,
+a:focus-visible {
+  color: var(--accent);
+}
 
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -149,7 +188,10 @@ a:hover, a:focus-visible { color: var(--accent); }
   z-index: 100;
   border-radius: var(--radius);
 }
-.skip-link:focus { left: 1rem; top: 1rem; }
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
 
 .container {
   max-width: var(--content-max);
@@ -163,7 +205,9 @@ a:hover, a:focus-visible { color: var(--accent); }
   font-family: var(--font-mono);
   font-feature-settings: "tnum" 1;
 }
-.tnum { font-variant-numeric: tabular-nums; }
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
 
 /* eyebrow uses humanist sans (warm), no longer mono uppercase */
 .eyebrow {
@@ -173,7 +217,10 @@ a:hover, a:focus-visible { color: var(--accent); }
   letter-spacing: 0.02em;
   color: var(--ink-mute);
 }
-:lang(zh) .eyebrow { font-family: var(--font-cjk); letter-spacing: 0; }
+:lang(zh) .eyebrow {
+  font-family: var(--font-cjk);
+  letter-spacing: 0;
+}
 .eyebrow strong {
   color: var(--accent);
   font-weight: 600;
@@ -195,9 +242,14 @@ a:hover, a:focus-visible { color: var(--accent); }
   border-radius: var(--radius-pill);
   white-space: nowrap;
 }
-:lang(zh) .pill { font-family: var(--font-cjk); letter-spacing: 0; }
+:lang(zh) .pill {
+  font-family: var(--font-cjk);
+  letter-spacing: 0;
+}
 
-.pill[data-status="open"] { color: var(--ink-mute); }
+.pill[data-status="open"] {
+  color: var(--ink-mute);
+}
 .pill[data-status="unfixed"] {
   color: var(--accent-deep);
   border-color: var(--accent);
@@ -208,7 +260,9 @@ a:hover, a:focus-visible { color: var(--accent); }
   border-color: var(--ok);
   background: color-mix(in oklch, var(--ok) 14%, var(--bg-soft));
 }
-.pill[data-status="noted-not-bug"] { color: var(--ink-mute); }
+.pill[data-status="noted-not-bug"] {
+  color: var(--ink-mute);
+}
 
 /* category chip */
 .chip {
@@ -224,7 +278,10 @@ a:hover, a:focus-visible { color: var(--accent); }
   white-space: nowrap;
   border-radius: var(--radius);
 }
-:lang(zh) .chip { font-family: var(--font-cjk); letter-spacing: 0; }
+:lang(zh) .chip {
+  font-family: var(--font-cjk);
+  letter-spacing: 0;
+}
 
 .chip[data-cat="crash"] {
   color: var(--alert);
@@ -265,8 +322,11 @@ a:hover, a:focus-visible { color: var(--accent); }
   border-radius: var(--radius);
   transition: all 140ms ease;
 }
-:lang(zh) .btn { font-family: var(--font-cjk); }
-.btn:hover, .btn:focus-visible {
+:lang(zh) .btn {
+  font-family: var(--font-cjk);
+}
+.btn:hover,
+.btn:focus-visible {
   color: var(--bg);
   background: var(--ink);
 }
@@ -275,22 +335,28 @@ a:hover, a:focus-visible { color: var(--accent); }
   color: var(--bg);
   background: var(--accent);
 }
-.btn--accent:hover, .btn--accent:focus-visible {
+.btn--accent:hover,
+.btn--accent:focus-visible {
   background: var(--accent-deep);
   border-color: var(--accent-deep);
   color: var(--bg);
 }
 
 /* display headings — Latin uses Plex Serif for a printed, less-AI feel;
-   CJK stays on the warm kaiti via --font-cjk. */
+   CJK stays on the warm kaiti via --font-cjk. All sizes flow from the
+   global --fs-* tokens so individual pages don't need to redeclare. */
 .h-display {
   font-family: var(--font-serif);
   font-weight: 700;
   letter-spacing: -0.005em;
   line-height: 1.14;
+  font-size: var(--fs-h1);
   margin: 0;
 }
-:lang(zh) .h-display { font-family: var(--font-cjk); font-weight: 700; }
+:lang(zh) .h-display {
+  font-family: var(--font-cjk);
+  font-weight: 700;
+}
 
 .h-section {
   font-family: var(--font-sans);
@@ -298,19 +364,21 @@ a:hover, a:focus-visible { color: var(--accent); }
   letter-spacing: 0;
   line-height: 1.22;
   margin: 0;
-  font-size: clamp(1.4rem, 2.6vw, 1.95rem);
+  font-size: var(--fs-h2);
 }
-:lang(zh) .h-section { font-family: var(--font-cjk); }
+:lang(zh) .h-section {
+  font-family: var(--font-cjk);
+}
 
 /* huge editorial display for hero — Plex Serif at oversized scale.
    Latin gets a tight, slightly negative tracking; CJK falls back to the
-   warm kaiti at a more conservative weight. */
+   warm kaiti at a more conservative weight. Size lives in --fs-mega. */
 .h-mega {
   font-family: var(--font-serif);
   font-weight: 700;
-  font-size: clamp(2.8rem, 9vw, 6.4rem);
-  line-height: 0.95;
-  letter-spacing: -0.025em;
+  font-size: var(--fs-mega);
+  line-height: 0.98;
+  letter-spacing: -0.022em;
   margin: 0;
   color: var(--ink);
 }
@@ -318,7 +386,7 @@ a:hover, a:focus-visible { color: var(--accent); }
   font-family: var(--font-cjk);
   font-weight: 700;
   letter-spacing: -0.005em;
-  line-height: 1.05;
+  line-height: 1.08;
 }
 .h-mega em {
   font-style: italic;
@@ -347,7 +415,80 @@ a:hover, a:focus-visible { color: var(--accent); }
   background: var(--accent);
   width: 100%;
 }
-.band--ink { background: var(--ink); height: 3px; }
+.band--ink {
+  background: var(--ink);
+  height: 3px;
+}
+
+/* ---------------------------------------------------------------- */
+/* .prose — single global article style. Any long-form copy block on
+   any page wraps its paragraphs in <div class="prose">…</div> (or just
+   gets `class="prose"` on the parent) and inherits these. No page-
+   level p/h overrides should be necessary. */
+.prose {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.72;
+  color: var(--ink-soft);
+  max-width: 68ch;
+}
+:lang(zh) .prose {
+  font-family: var(--font-cjk);
+  line-height: 1.88;
+}
+.prose > * + * { margin-top: 1rem; }
+.prose p { margin: 0; }
+.prose p strong { color: var(--ink); font-weight: 600; }
+.prose a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in oklch, var(--accent) 50%, transparent);
+}
+.prose a:hover { border-bottom-color: var(--accent); }
+
+.prose h2 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h2);
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.22;
+  margin: 2rem 0 0.5rem 0;
+}
+:lang(zh) .prose h2 { font-family: var(--font-cjk); }
+
+.prose h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h3);
+  color: var(--ink);
+  font-weight: 600;
+  margin: 1.5rem 0 0.4rem 0;
+}
+:lang(zh) .prose h3 { font-family: var(--font-cjk); }
+
+.prose ul, .prose ol { margin: 0; padding-left: 1.2rem; }
+.prose li + li { margin-top: 0.35rem; }
+.prose li { color: var(--ink-soft); }
+
+.prose blockquote {
+  margin: 0;
+  padding: 0.4rem 0 0.4rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--ink);
+  font-style: italic;
+}
+
+/* page-head subtitle — used by all PageHead instances + ad-hoc heads. */
+.page-sub {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 60ch;
+}
+:lang(zh) .page-sub { font-family: var(--font-cjk); line-height: 1.85; }
+
+/* ---------------------------------------------------------------- */
 
 /* Global de-AI overrides: kaiti reads poorly when tracked-out or upper-cased,
    and uppercase + wide tracking is the single biggest "SaaS landing page"
@@ -361,7 +502,9 @@ a:hover, a:focus-visible { color: var(--accent); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

@@ -54,7 +54,7 @@ const ordered = [...methods].sort((a, b) => (counts[b.category_id] || 0) - (coun
     gap: 0.8rem;
   }
   .method__name {
-    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    font-size: var(--fs-h3);
     margin: 0;
     color: var(--ink);
   }
@@ -68,7 +68,7 @@ const ordered = [...methods].sort((a, b) => (counts[b.category_id] || 0) - (coun
   .method__summary {
     font-family: var(--font-sans);
     color: var(--ink-soft);
-    font-size: 0.9rem;
+    font-size: var(--fs-meta);
     line-height: 1.7;
     margin: 0;
     flex: 1;
@@ -83,10 +83,12 @@ const ordered = [...methods].sort((a, b) => (counts[b.category_id] || 0) - (coun
     border-top: 1px solid var(--rule);
   }
   .method__count {
+    font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     color: var(--accent);
     line-height: 1;
+    letter-spacing: -0.02em;
   }
   .method__count-label {
     font-family: var(--font-sans);

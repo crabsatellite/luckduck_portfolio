@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import MethodologyTable from "~/components/MethodologyTable.astro";
+import PageHead from "~/components/PageHead.astro";
+import MarqueeDivider from "~/components/MarqueeDivider.astro";
 import { t } from "~/i18n/strings";
 
 const lang = "en" as const;
@@ -9,29 +11,19 @@ const lang = "en" as const;
 <BaseLayout title={t(lang, "methods.title")} lang={lang}>
   <article class="page">
     <div class="container">
-      <header class="page__head">
-        <p class="eyebrow"><strong>method</strong></p>
-        <h1 class="page__title h-display">{t(lang, "methods.title")}</h1>
-        <p class="page__sub">{t(lang, "methods.subtitle")}</p>
-      </header>
-
+      <PageHead
+        lang={lang}
+        mark="03"
+        kicker="method · how we test"
+        title={t(lang, "methods.title")}
+        sub={t(lang, "methods.subtitle")}
+      />
       <MethodologyTable lang={lang} />
     </div>
   </article>
+  <MarqueeDivider text="METHOD · REPRO · REGRESSION · LUCK666DUCK" animated={true} size="sm" />
 </BaseLayout>
 
 <style>
-  .page { padding: 2.4rem 0 3rem 0; }
-  .page__head { max-width: 64ch; margin-bottom: 1.4rem; }
-  .page__title {
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    margin: 0.4rem 0 0.6rem 0;
-  }
-  .page__sub {
-    font-family: var(--font-sans);
-    color: var(--ink-soft);
-    font-size: 1rem;
-    line-height: 1.65;
-    margin: 0;
-  }
+  .page { padding: 0 0 2.4rem 0; }
 </style>

@@ -50,7 +50,7 @@ const { lang, mark, kicker, title, sub } = Astro.props;
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 700;
-    font-size: clamp(2.8rem, 7vw, 4.6rem);
+    font-size: clamp(2.4rem, 5.5vw, 3.6rem);
     line-height: 0.85;
     color: var(--accent);
     letter-spacing: -0.02em;
@@ -69,7 +69,7 @@ const { lang, mark, kicker, title, sub } = Astro.props;
     min-width: 0;
   }
   .ph__title {
-    font-size: clamp(2.1rem, 5.5vw, 3.6rem);
+    /* size comes from .h-display via --fs-h1 */
     color: var(--ink);
     max-width: 22ch;
   }
@@ -78,7 +78,7 @@ const { lang, mark, kicker, title, sub } = Astro.props;
     margin: 0;
     font-family: var(--font-sans);
     color: var(--ink-soft);
-    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    font-size: var(--fs-body);
     line-height: 1.7;
     max-width: 56ch;
   }
