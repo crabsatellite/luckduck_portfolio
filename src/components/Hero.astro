@@ -183,16 +183,17 @@ const marqueeText =
     font-variant-numeric: tabular-nums;
   }
   .hero__counter-label {
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
+    font-family: var(--font-stamp);
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-mute);
+    line-height: 1;
   }
   :lang(zh) .hero__counter-label {
-    font-family: var(--font-cjk);
+    font-family: var(--font-stamp), var(--font-cjk);
     text-transform: none;
-    letter-spacing: 0;
+    letter-spacing: 0.06em;
   }
   .hero__mascot {
     line-height: 0;
@@ -217,14 +218,20 @@ const marqueeText =
   }
   .hero__stat:last-child { border-right: none; }
   .hero__stat dt {
-    font-family: var(--font-sans);
+    font-family: var(--font-stamp);
     color: var(--ink-mute);
-    font-size: 0.78rem;
-    letter-spacing: 0.02em;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     margin: 0;
     order: 2;
+    line-height: 1;
   }
-  :lang(zh) .hero__stat dt { font-family: var(--font-cjk); letter-spacing: 0; }
+  :lang(zh) .hero__stat dt {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.06em;
+    text-transform: none;
+  }
   .hero__stat dd {
     color: var(--ink);
     font-family: var(--font-serif);

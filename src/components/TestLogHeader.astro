@@ -19,61 +19,103 @@ const {
 const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mod.name_zh;
 const showCn = cnName !== mod.name_en;
 const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
+const issueDate = new Date().toISOString().slice(0, 10);
+const dateline = lang === "en"
+  ? `CASE LOG · №${logNo} · ${mod.id.toUpperCase()} · ${issueDate}`
+  : `测试日志 · №${logNo} · ${mod.id.toUpperCase()} · ${issueDate}`;
+const bugsLabel = lang === "en" ? "bugs filed" : "条 bug";
 ---
 
 <header class="tlh">
-  <div class="tlh__top">
-    <p class="eyebrow"><strong>{t(lang, "case.eyebrow")}</strong> #{logNo}</p>
-    <div class="tlh__pills">
-      {isCredited && <span class="badge">{t(lang, "credited.badge")} ✓</span>}
-      {hasRegression && <span class="pill" data-status="unfixed">{t(lang, "regression.label")}</span>}
-      {hasNoIssues && <span class="pill" data-status="fixed">{t(lang, "noissues.label")}</span>}
+  <p class="dateline tlh__dateline">{dateline}</p>
+
+  <div class="tlh__grid">
+    <div class="tlh__rail" aria-hidden="true">
+      <span class="tlh__mark">№{logNo}</span>
+      <span class="tlh__kicker">{lang === "en" ? "case log" : "测试日志"}</span>
     </div>
-  </div>
-  <div class="tlh__body">
-    <div class="tlh__icon"><ModLogo mod={mod} size={88} /></div>
-    <div class="tlh__title">
-      <h1 class="tlh__name h-display">{mod.name_en}</h1>
-      {showCn && <p class="tlh__cn" aria-hidden="true">{cnName}</p>}
+
+    <div class="tlh__main">
+      <div class="tlh__pills">
+        {isCredited && <span class="badge">{t(lang, "credited.badge")} ✓</span>}
+        {hasRegression && <span class="pill" data-status="unfixed">{t(lang, "regression.label")}</span>}
+        {hasNoIssues && <span class="pill" data-status="fixed">{t(lang, "noissues.label")}</span>}
+      </div>
+
+      <div class="tlh__title-row">
+        <div class="tlh__icon"><ModLogo mod={mod} size={72} /></div>
+        <div class="tlh__title">
+          <h1 class="tlh__name h-display">{mod.name_en}</h1>
+          {showCn && <p class="tlh__cn">{cnName}</p>}
+        </div>
+      </div>
+
       <p class="tlh__meta mono tnum">{versionLine}</p>
-      <p class="tlh__bug">
-        <span class="tlh__bugcount mono tnum">{totalBugs}</span>
-        {" "}{lang === "en" ? "bugs filed" : "条 bug"}
-      </p>
+    </div>
+
+    <div class="tlh__counter">
+      <span class="tlh__bugcount mono tnum">{totalBugs}</span>
+      <span class="tlh__bugcount-label">{bugsLabel}</span>
     </div>
   </div>
 </header>
 
 <style>
-  .tlh { padding: 1.2rem 0 1.4rem 0; }
-  .tlh__top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-bottom: 1rem;
+  .tlh {
+    padding: 1rem 0 1.6rem 0;
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 1.4rem;
   }
-  .tlh__pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-  .tlh__body {
+  .tlh__dateline { margin: 0 0 1rem 0; }
+
+  .tlh__grid {
     display: grid;
-    grid-template-columns: 88px 1fr;
-    gap: 1.2rem;
-    align-items: center;
-    background: var(--bg-soft);
-    border: 1px solid var(--rule);
-    border-left: 4px solid var(--accent);
-    border-radius: 6px;
-    padding: 1.2rem 1.4rem;
+    grid-template-columns: minmax(0, 0.22fr) minmax(0, 1fr) minmax(160px, 0.34fr);
+    gap: clamp(1rem, 3vw, 2.2rem);
+    align-items: start;
   }
-  @media (max-width: 540px) {
-    .tlh__body { grid-template-columns: 1fr; gap: 0.6rem; padding: 1rem; }
+  .tlh__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-right: clamp(0.5rem, 1.5vw, 1.2rem);
+    border-right: 1px dotted var(--rule);
+  }
+  .tlh__mark {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 0.88;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .tlh__kicker {
+    font-family: var(--font-stamp);
+    font-size: 0.95rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    line-height: 1;
+  }
+  :lang(zh) .tlh__kicker { font-family: var(--font-stamp), var(--font-cjk); letter-spacing: 0.1em; }
+
+  .tlh__main { min-width: 0; }
+  .tlh__pills { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
+
+  .tlh__title-row {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 1rem;
+    align-items: center;
   }
   .tlh__icon { line-height: 0; }
+  .tlh__title { min-width: 0; }
   .tlh__name {
-    font-size: var(--fs-h1);
     margin: 0;
     color: var(--ink);
+    line-height: 1.08;
   }
   .tlh__cn {
     font-family: var(--font-cjk);
@@ -83,22 +125,59 @@ const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
     margin: 0.3rem 0 0 0;
   }
   .tlh__meta {
-    margin: 0.5rem 0 0 0;
-    font-size: 0.78rem;
+    margin: 0.7rem 0 0 0;
+    font-size: var(--fs-meta);
     color: var(--ink-mute);
-    letter-spacing: 0.01em;
-    line-height: 1.45;
+    line-height: 1.5;
   }
-  .tlh__bug {
-    margin: 0.3rem 0 0 0;
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
-    color: var(--ink-mute);
+
+  /* hard-shadow counter — matches Hero language */
+  .tlh__counter {
+    border: 2px solid var(--ink);
+    background: var(--bg-soft);
+    padding: 0.7rem 0.9rem 0.85rem 0.9rem;
+    box-shadow: 5px 5px 0 var(--accent);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
   }
-  :lang(zh) .tlh__bug { font-family: var(--font-cjk); }
   .tlh__bugcount {
+    font-family: var(--font-serif);
     font-weight: 700;
-    color: var(--accent);
-    font-size: 1.05rem;
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    color: var(--ink);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  .tlh__bugcount-label {
+    font-family: var(--font-stamp);
+    font-size: 0.9rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    line-height: 1;
+  }
+  :lang(zh) .tlh__bugcount-label {
+    font-family: var(--font-stamp), var(--font-cjk);
+    text-transform: none;
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 860px) {
+    .tlh__grid { grid-template-columns: 1fr; }
+    .tlh__rail {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 0.9rem;
+      border-right: none;
+      border-bottom: 1px dotted var(--rule);
+      padding-right: 0;
+      padding-bottom: 0.7rem;
+    }
+    .tlh__counter { align-self: flex-start; }
+  }
+  @media (max-width: 540px) {
+    .tlh__title-row { grid-template-columns: 56px 1fr; gap: 0.7rem; }
   }
 </style>

@@ -45,16 +45,17 @@ const repeated = Array(12).fill(text).join("  ·  ");
     white-space: nowrap;
   }
   .marquee__line {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    font-size: 0.78rem;
-    letter-spacing: 0.32em;
+    font-family: var(--font-stamp);
+    font-weight: 400;
+    font-size: 1.05rem;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--ink);
     flex: 0 0 auto;
+    line-height: 1;
   }
-  .marquee--sm .marquee__line { font-size: 0.7rem; letter-spacing: 0.28em; }
-  .marquee--lg .marquee__line { font-size: 0.95rem; letter-spacing: 0.38em; }
+  .marquee--sm .marquee__line { font-size: 0.95rem; letter-spacing: 0.2em; }
+  .marquee--lg .marquee__line { font-size: 1.25rem; letter-spacing: 0.26em; }
   .marquee--ink .marquee__line { color: var(--ink); }
   .marquee--mute .marquee__line { color: var(--ink-mute); }
   .marquee--accent {

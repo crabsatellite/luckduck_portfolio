@@ -4,6 +4,7 @@ import TestLogHeader from "~/components/TestLogHeader.astro";
 import TestLog from "~/components/TestLog.astro";
 import BugLedger from "~/components/BugLedger.astro";
 import MembersPanel from "~/components/MembersPanel.astro";
+import MarqueeDivider from "~/components/MarqueeDivider.astro";
 import {
   mods, bugsForMod, isCredited, hasRegression, hasNoIssues,
   logNumber, getMcmodEntry, teamForMod, featuredBug,
@@ -146,10 +147,11 @@ const langPrefix = `${base}/en`;
       </div>
     </div>
   </article>
+  <MarqueeDivider text={`CASE №${logNo} · ${mod.id.toUpperCase()} · LUCK666DUCK · TESTER LEDGER`} animated={true} size="sm" />
 </BaseLayout>
 
 <style>
-  .case { padding: 2rem 0 3rem 0; }
+  .case { padding: 0 0 2.4rem 0; }
   .case__layout {
     display: grid;
     grid-template-columns: 9fr 3fr;

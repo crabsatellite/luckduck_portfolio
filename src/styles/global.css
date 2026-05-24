@@ -6,12 +6,18 @@
    - LXGW WenKai Screen (GB subset, screen-optimized) — CJK body & headings.
      Hand-tuned kaiti, beloved by Chinese OSS / indie community; instantly
      removes the corporate "思源黑体 / Noto Sans" default look.
-   - JetBrains Mono (variable) — strictly DATA: versions, IDs, counts, dates. */
+   - JetBrains Mono (variable) — strictly DATA: versions, IDs, counts, dates.
+   - VT323 — readable terminal/console pixel font, used as the site's
+     "stamp" face for datelines, marquees, kickers, log numbers, badge
+     labels. Reads as a Minecraft debug overlay / F3 readout, signaling
+     the domain without sacrificing legibility. Used sparingly so it never
+     competes with body copy. */
 @import "@fontsource-variable/ibm-plex-sans";
 @import "@fontsource/ibm-plex-serif/latin-400.css";
 @import "@fontsource/ibm-plex-serif/latin-600.css";
 @import "@fontsource/ibm-plex-serif/latin-700.css";
 @import "@fontsource-variable/jetbrains-mono/wght.css";
+@import "@fontsource/vt323";
 @import "lxgw-wenkai-screen-webfont/lxgwwenkaigbscreen.css";
 
 :root {
@@ -45,6 +51,12 @@
     "LXGW WenKai GB Screen", "LXGW WenKai Screen", "IBM Plex Sans Variable",
     "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-pixel: "JetBrains Mono Variable", ui-monospace, monospace;
+  /* MC-flavor stamp face — VT323. Slightly larger natural metrics than
+     Press Start 2P, far more readable at small sizes. Used for short
+     latin strings only (datelines, marquees, kickers, log numbers). */
+  --font-stamp:
+    "VT323", "JetBrains Mono Variable", ui-monospace, "Menlo",
+    monospace;
 
   --content-max: 1240px;
   --gutter: clamp(1.25rem, 4vw, 2.6rem);
@@ -56,17 +68,17 @@
      Each token uses clamp(min, fluid, max) so it scales with viewport
      without ever blowing past a sensible ceiling. Tweak here and the
      whole site rebalances. */
-  --fs-base: 16px;            /* root font-size */
-  --fs-body: 0.98rem;         /* default body copy */
-  --fs-body-lg: 1.05rem;      /* lead paragraphs */
-  --fs-meta: 0.84rem;         /* captions, meta */
-  --fs-micro: 0.74rem;        /* dateline, tags */
-  --fs-h1: clamp(1.7rem, 3.4vw, 2.4rem);    /* page H1 (display) */
-  --fs-h2: clamp(1.3rem, 2.3vw, 1.7rem);    /* section H2 */
-  --fs-h3: clamp(1.05rem, 1.5vw, 1.18rem);  /* card / sub-section */
-  --fs-h4: 0.98rem;                          /* small headers */
-  --fs-mega: clamp(2.4rem, 6.4vw, 4.4rem);   /* hero display (reduced) */
-  --fs-counter: clamp(2rem, 4.4vw, 2.9rem);  /* stat numerals */
+  --fs-base: 16px; /* root font-size */
+  --fs-body: 0.98rem; /* default body copy */
+  --fs-body-lg: 1.05rem; /* lead paragraphs */
+  --fs-meta: 0.84rem; /* captions, meta */
+  --fs-micro: 0.74rem; /* dateline, tags */
+  --fs-h1: clamp(1.7rem, 3.4vw, 2.4rem); /* page H1 (display) */
+  --fs-h2: clamp(1.3rem, 2.3vw, 1.7rem); /* section H2 */
+  --fs-h3: clamp(1.05rem, 1.5vw, 1.18rem); /* card / sub-section */
+  --fs-h4: 0.98rem; /* small headers */
+  --fs-mega: clamp(2.4rem, 6.4vw, 4.4rem); /* hero display (reduced) */
+  --fs-counter: clamp(2rem, 4.4vw, 2.9rem); /* stat numerals */
 
   --radius: 6px;
   --radius-lg: 10px;
@@ -209,17 +221,23 @@ a:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
-/* eyebrow uses humanist sans (warm), no longer mono uppercase */
+/* eyebrow uses MC-flavor stamp face for that F3-overlay/sign feel.
+   Strictly latin chars only; CJK contexts swap back to kaiti so the
+   pixel face doesn't try to render 中文 (which it can't). */
 .eyebrow {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-family: var(--font-stamp);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--ink-mute);
+  line-height: 1;
 }
 :lang(zh) .eyebrow {
   font-family: var(--font-cjk);
   letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.85rem;
 }
 .eyebrow strong {
   color: var(--accent);
@@ -394,18 +412,22 @@ a:focus-visible {
   font-weight: 700;
 }
 
-/* "issue dateline" — small all-caps mono line used to anchor pages and
-   sections as if they were printed editions. */
+/* "issue dateline" — small all-caps stamp line used to anchor pages and
+   sections as if they were printed editions. Uses the MC-flavor stamp
+   face (VT323) for that F3-overlay feel. */
 .dateline {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.26em;
+  font-family: var(--font-stamp);
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-mute);
+  line-height: 1;
 }
 :lang(zh) .dateline {
-  font-family: var(--font-mono);
-  letter-spacing: 0.22em;
+  /* keep stamp face on the latin parts of CJK datelines; the CJK chars
+     fall back to the kaiti automatically via the system stack. */
+  font-family: var(--font-stamp), var(--font-cjk);
+  letter-spacing: 0.12em;
 }
 
 /* full-bleed accent band — punctuates sections with a confident color
@@ -436,15 +458,24 @@ a:focus-visible {
   font-family: var(--font-cjk);
   line-height: 1.88;
 }
-.prose > * + * { margin-top: 1rem; }
-.prose p { margin: 0; }
-.prose p strong { color: var(--ink); font-weight: 600; }
+.prose > * + * {
+  margin-top: 1rem;
+}
+.prose p {
+  margin: 0;
+}
+.prose p strong {
+  color: var(--ink);
+  font-weight: 600;
+}
 .prose a {
   color: var(--accent);
   text-decoration: none;
   border-bottom: 1px solid color-mix(in oklch, var(--accent) 50%, transparent);
 }
-.prose a:hover { border-bottom-color: var(--accent); }
+.prose a:hover {
+  border-bottom-color: var(--accent);
+}
 
 .prose h2 {
   font-family: var(--font-sans);
@@ -454,7 +485,9 @@ a:focus-visible {
   line-height: 1.22;
   margin: 2rem 0 0.5rem 0;
 }
-:lang(zh) .prose h2 { font-family: var(--font-cjk); }
+:lang(zh) .prose h2 {
+  font-family: var(--font-cjk);
+}
 
 .prose h3 {
   font-family: var(--font-sans);
@@ -463,11 +496,21 @@ a:focus-visible {
   font-weight: 600;
   margin: 1.5rem 0 0.4rem 0;
 }
-:lang(zh) .prose h3 { font-family: var(--font-cjk); }
+:lang(zh) .prose h3 {
+  font-family: var(--font-cjk);
+}
 
-.prose ul, .prose ol { margin: 0; padding-left: 1.2rem; }
-.prose li + li { margin-top: 0.35rem; }
-.prose li { color: var(--ink-soft); }
+.prose ul,
+.prose ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.prose li + li {
+  margin-top: 0.35rem;
+}
+.prose li {
+  color: var(--ink-soft);
+}
 
 .prose blockquote {
   margin: 0;
@@ -486,7 +529,10 @@ a:focus-visible {
   margin: 0;
   max-width: 60ch;
 }
-:lang(zh) .page-sub { font-family: var(--font-cjk); line-height: 1.85; }
+:lang(zh) .page-sub {
+  font-family: var(--font-cjk);
+  line-height: 1.85;
+}
 
 /* ---------------------------------------------------------------- */
 
