@@ -7,8 +7,10 @@ import ModLogo from "~/components/ModLogo.astro";
 interface Props {
   mod: Mod;
   lang: Lang;
+  /** Optional 1-based index for editorial numbering in card grids. */
+  index?: number;
 }
-const { mod, lang } = Astro.props;
+const { mod, lang, index } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 const langPrefix = lang === "en" ? `${base}/en` : base;
@@ -22,6 +24,7 @@ const showCn = cnName !== mod.name_en;
 
 const totalRounds = mod.rounds.length;
 const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
+const indexLabel = typeof index === "number" ? String(index).padStart(2, "0") : null;
 ---
 
 <article
@@ -32,6 +35,7 @@ const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
 >
   <a href={`${langPrefix}/cases/${mod.id}`} class="card__link" aria-label={`Tester log: ${mod.name_en}`}>
     <span class="card__stripe" aria-hidden="true"></span>
+    {indexLabel && <span class="card__index mono tnum" aria-hidden="true">№{indexLabel}</span>}
     <div class="card__inner">
       <div class="card__head">
         <ModLogo mod={mod} size={64} />
@@ -87,13 +91,16 @@ const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
     position: relative;
     background: var(--bg-soft);
     border: 1px solid var(--rule);
-    border-radius: var(--radius-lg);
+    border-radius: 0;
     overflow: hidden;
-    transition: all 160ms ease;
+    transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
   }
   .card:hover {
-    border-color: var(--accent);
+    border-color: var(--ink);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--accent);
   }
+  .card--noissues:hover { box-shadow: 4px 4px 0 var(--ok); }
   .card__link {
     display: block;
     color: inherit;
@@ -106,18 +113,30 @@ const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
     top: 0;
     bottom: 0;
     left: 0;
-    width: 6px;
+    width: 10px;
     background: var(--accent);
     transition: width 140ms ease;
   }
   .card--noissues .card__stripe { background: var(--ok); }
   .card__link:hover .card__stripe,
-  .card__link:focus-visible .card__stripe { width: 9px; }
+  .card__link:focus-visible .card__stripe { width: 14px; }
+  .card__index {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.85rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--ink-mute);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    z-index: 2;
+  }
   .card__inner {
-    padding: 1.2rem 1.2rem 1.2rem 1.5rem;
+    padding: 1.3rem 1.3rem 1.3rem 1.7rem;
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    gap: 0.95rem;
   }
   .card__head {
     display: grid;
@@ -127,24 +146,26 @@ const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
   }
   .card__title { min-width: 0; }
   .card__name {
-    font-family: var(--font-sans);
+    font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.15rem;
+    font-size: 1.32rem;
     margin: 0;
     color: var(--ink);
-    line-height: 1.2;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
   }
   .card__cn {
     font-family: var(--font-cjk);
     font-weight: 500;
     color: var(--ink-soft);
-    font-size: 0.85rem;
-    margin: 0.18rem 0 0 0;
+    font-size: 0.9rem;
+    margin: 0.22rem 0 0 0;
+    line-height: 1.4;
   }
   .card__meta {
     font-size: 0.74rem;
     color: var(--ink-mute);
-    margin: 0.35rem 0 0 0;
+    margin: 0.4rem 0 0 0;
     letter-spacing: 0.01em;
     line-height: 1.45;
   }
@@ -153,17 +174,18 @@ const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
     flex-direction: column;
     align-items: flex-end;
     gap: 0.15rem;
-    padding: 0.5rem 0.8rem;
+    padding: 0.45rem 0.75rem 0.55rem 0.75rem;
     background: var(--bg);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
+    border: 1.5px solid var(--ink);
     min-width: 4.6rem;
   }
   .card__count-num {
+    font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.85rem;
     color: var(--accent);
     line-height: 1;
+    letter-spacing: -0.03em;
   }
   .card--noissues .card__count-num { color: var(--ok); }
   .card__count-label {
@@ -171,12 +193,15 @@ const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
     font-size: 0.7rem;
     color: var(--ink-mute);
     letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
-  :lang(zh) .card__count-label { font-family: var(--font-cjk); letter-spacing: 0.06em; }
+  :lang(zh) .card__count-label { font-family: var(--font-cjk); letter-spacing: 0; text-transform: none; }
   .card__rounds {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: var(--ink-mute);
     letter-spacing: 0.02em;
+    padding-top: 0.2rem;
+    border-top: 1px dotted var(--rule);
   }
   .card__pills, .card__signals {
     display: flex;

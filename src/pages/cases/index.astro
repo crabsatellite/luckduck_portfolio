@@ -2,6 +2,8 @@
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Filters from "~/components/Filters.astro";
 import ModCard from "~/components/ModCard.astro";
+import PageHead from "~/components/PageHead.astro";
+import MarqueeDivider from "~/components/MarqueeDivider.astro";
 import { sortedMods } from "~/lib/data";
 import { t } from "~/i18n/strings";
 
@@ -14,55 +16,67 @@ const langPrefix = base;
 <BaseLayout title={t(lang, "cases.title")} lang={lang}>
   <section class="cases-page">
     <div class="container">
-      <header class="cases-page__head">
-        <p class="eyebrow"><strong>cases</strong></p>
-        <h1 class="cases-page__title h-display">{t(lang, "cases.title")}</h1>
-        <p class="cases-page__sub">{t(lang, "cases.subtitle")}</p>
+      <PageHead
+        lang={lang}
+        mark="02"
+        kicker="cases · 测试日志"
+        title={t(lang, "cases.title")}
+        sub={t(lang, "cases.subtitle")}
+      >
         <p class="cases-page__note">
           想找人测试自己的 MOD，建议先看公开署名和多轮回归案例，再到
           <a href={`${langPrefix}/about`}>关于页</a>
           看合作说明。
         </p>
-      </header>
+      </PageHead>
       <Filters lang={lang} />
       <div class="cases-grid">
-        {list.map((m) => <ModCard mod={m} lang={lang} />)}
+        {list.map((m, i) => <ModCard mod={m} lang={lang} index={i + 1} />)}
       </div>
     </div>
   </section>
+  <MarqueeDivider text={`LEDGER · ${list.length} MODS ON FILE · LUCK666DUCK · 测试员账本`} animated={true} />
 </BaseLayout>
 
 <style>
-  .cases-page { padding: 2.4rem 0 2rem 0; }
-  .cases-page__head { margin-bottom: 1rem; max-width: 64ch; }
-  .cases-page__title {
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    margin: 0.4rem 0 0.4rem 0;
-  }
-  .cases-page__sub {
-    font-family: var(--font-sans);
-    color: var(--ink-soft);
-    font-size: 0.95rem;
-    margin: 0;
-  }
+  .cases-page { padding: 0 0 2rem 0; }
   .cases-page__note {
     font-family: var(--font-cjk);
     color: var(--ink-soft);
-    font-size: 0.9rem;
-    line-height: 1.75;
-    margin: 0.7rem 0 0 0;
+    font-size: 0.92rem;
+    line-height: 1.85;
+    margin: 0.4rem 0 0 0;
+    padding: 0.7rem 0 0 0;
+    border-top: 1px dotted var(--rule);
+    max-width: 56ch;
   }
   .cases-page__note a {
     color: var(--accent);
     text-decoration: none;
     border-bottom: 1px solid currentColor;
   }
-  :lang(zh) .cases-page__sub { font-family: var(--font-cjk); }
   .cases-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 1rem;
-    padding-top: 0.6rem;
+    gap: 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  /* Editorial "newsprint" grid — cards share borders rather than floating
+     with gaps. Reads like a printed listing. */
+  .cases-grid > :global(.card) {
+    border-radius: 0;
+    border-left: none;
+    border-top: none;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .cases-grid > :global(.card:hover) {
+    transform: none;
+    box-shadow: none;
+    z-index: 2;
+    border-color: var(--ink);
   }
   @media (max-width: 540px) {
     .cases-grid { grid-template-columns: 1fr; }

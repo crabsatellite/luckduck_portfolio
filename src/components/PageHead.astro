@@ -1,0 +1,102 @@
+---
+// Editorial page-head: numeric section marker on the left, large serif
+// title + sub on the right, separated by a fat rule. Designed to give every
+// page a confident "issue cover" feel without a hero illustration.
+import type { Lang } from "~/i18n/strings";
+
+interface Props {
+  lang: Lang;
+  /** Two-character marker, e.g. "02", "№4". */
+  mark: string;
+  /** Small label that sits next to the marker, e.g. "cases · 测试日志". */
+  kicker: string;
+  title: string;
+  sub?: string;
+}
+const { lang, mark, kicker, title, sub } = Astro.props;
+---
+
+<header class="ph" lang={lang}>
+  <div class="ph__rail" aria-hidden="true">
+    <span class="ph__mark">{mark}</span>
+    <span class="ph__kicker">{kicker}</span>
+  </div>
+  <div class="ph__body">
+    <h1 class="ph__title h-display">{title}</h1>
+    {sub && <p class="ph__sub">{sub}</p>}
+    <slot />
+  </div>
+</header>
+
+<style>
+  .ph {
+    display: grid;
+    grid-template-columns: minmax(0, 0.34fr) minmax(0, 1fr);
+    gap: clamp(1.2rem, 4vw, 3rem);
+    padding: clamp(1.6rem, 4vw, 2.6rem) 0 clamp(1.4rem, 3.5vw, 2.2rem) 0;
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: clamp(1.4rem, 3.5vw, 2.4rem);
+  }
+  .ph__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding-top: 0.35rem;
+    border-right: 1px dotted var(--rule);
+    padding-right: clamp(0.6rem, 2vw, 1.4rem);
+  }
+  .ph__mark {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(2.8rem, 7vw, 4.6rem);
+    line-height: 0.85;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .ph__kicker {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .ph__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    min-width: 0;
+  }
+  .ph__title {
+    font-size: clamp(2.1rem, 5.5vw, 3.6rem);
+    color: var(--ink);
+    max-width: 22ch;
+  }
+  :lang(zh) .ph__title { max-width: 18ch; }
+  .ph__sub {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    line-height: 1.7;
+    max-width: 56ch;
+  }
+  :lang(zh) .ph__sub { font-family: var(--font-cjk); line-height: 1.85; }
+  @media (max-width: 640px) {
+    .ph {
+      grid-template-columns: 1fr;
+      gap: 0.7rem;
+    }
+    .ph__rail {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 0.9rem;
+      border-right: none;
+      border-bottom: 1px dotted var(--rule);
+      padding-right: 0;
+      padding-bottom: 0.6rem;
+    }
+    .ph__mark { font-size: 2.6rem; }
+  }
+</style>

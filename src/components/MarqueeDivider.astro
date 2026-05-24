@@ -1,0 +1,77 @@
+---
+// Static letter-spaced repeated text strip. No animation by default — it
+// reads as printed newsprint dateline rather than a moving banner.
+// `animated` enables a slow horizontal scroll, automatically disabled
+// under prefers-reduced-motion.
+interface Props {
+  text: string;
+  tone?: "ink" | "accent" | "mute";
+  animated?: boolean;
+  size?: "sm" | "md" | "lg";
+}
+const { text, tone = "ink", animated = false, size = "md" } = Astro.props;
+const repeated = Array(12).fill(text).join("  ·  ");
+---
+
+<div
+  class:list={[
+    "marquee",
+    `marquee--${tone}`,
+    `marquee--${size}`,
+    { "marquee--anim": animated },
+  ]}
+  role="presentation"
+  aria-hidden="true"
+>
+  <div class="marquee__track">
+    <span class="marquee__line">{repeated}</span>
+    {animated && <span class="marquee__line">{repeated}</span>}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .marquee--sm { padding: 0.45rem 0; }
+  .marquee--md { padding: 0.65rem 0; }
+  .marquee--lg { padding: 0.9rem 0; }
+  .marquee__track {
+    display: flex;
+    gap: 2.5rem;
+    white-space: nowrap;
+  }
+  .marquee__line {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink);
+    flex: 0 0 auto;
+  }
+  .marquee--sm .marquee__line { font-size: 0.7rem; letter-spacing: 0.28em; }
+  .marquee--lg .marquee__line { font-size: 0.95rem; letter-spacing: 0.38em; }
+  .marquee--ink .marquee__line { color: var(--ink); }
+  .marquee--mute .marquee__line { color: var(--ink-mute); }
+  .marquee--accent {
+    background: var(--accent);
+    border-color: var(--accent-deep);
+  }
+  .marquee--accent .marquee__line { color: var(--bg); }
+
+  .marquee--anim .marquee__track {
+    animation: marquee-scroll 80s linear infinite;
+    will-change: transform;
+  }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee--anim .marquee__track { animation: none; }
+  }
+</style>

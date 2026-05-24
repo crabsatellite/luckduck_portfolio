@@ -95,7 +95,25 @@ body {
   line-height: var(--line-latin);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  position: relative;
 }
+
+/* paper grain — breaks the flat-plastic AI surface. Encoded as a tiny
+   inline SVG fractal noise; very low opacity, fixed so it doesn't scroll. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+@media (prefers-color-scheme: light) {
+  body::before { opacity: 0.06; mix-blend-mode: multiply; }
+}
+main, header, footer { position: relative; z-index: 1; }
 
 :lang(zh), :lang(zh-Hans), :lang(zh-Hans-CN) {
   font-family: var(--font-cjk);
@@ -283,6 +301,53 @@ a:hover, a:focus-visible { color: var(--accent); }
   font-size: clamp(1.4rem, 2.6vw, 1.95rem);
 }
 :lang(zh) .h-section { font-family: var(--font-cjk); }
+
+/* huge editorial display for hero — Plex Serif at oversized scale.
+   Latin gets a tight, slightly negative tracking; CJK falls back to the
+   warm kaiti at a more conservative weight. */
+.h-mega {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(2.8rem, 9vw, 6.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  margin: 0;
+  color: var(--ink);
+}
+:lang(zh) .h-mega {
+  font-family: var(--font-cjk);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  line-height: 1.05;
+}
+.h-mega em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* "issue dateline" — small all-caps mono line used to anchor pages and
+   sections as if they were printed editions. */
+.dateline {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+:lang(zh) .dateline {
+  font-family: var(--font-mono);
+  letter-spacing: 0.22em;
+}
+
+/* full-bleed accent band — punctuates sections with a confident color
+   block instead of just a 1px rule. Drop in as a sibling between <section>s. */
+.band {
+  height: 6px;
+  background: var(--accent);
+  width: 100%;
+}
+.band--ink { background: var(--ink); height: 3px; }
 
 /* Global de-AI overrides: kaiti reads poorly when tracked-out or upper-cased,
    and uppercase + wide tracking is the single biggest "SaaS landing page"
