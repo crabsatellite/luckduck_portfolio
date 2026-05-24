@@ -74,9 +74,7 @@ const stats = [
     gap: clamp(1.4rem, 4vw, 3rem);
     align-items: stretch;
     border: 1px solid var(--rule);
-    background:
-      radial-gradient(circle at 92% 10%, color-mix(in oklch, var(--steam) 16%, transparent), transparent 32%),
-      linear-gradient(135deg, var(--bg-soft), var(--bg));
+    background: var(--bg-soft);
     border-radius: var(--radius-lg);
     padding: clamp(1.4rem, 4vw, 2.6rem);
   }
@@ -158,12 +156,11 @@ const stats = [
     margin: 0;
     font-family: var(--font-sans);
     color: var(--ink-mute);
-    font-weight: 700;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.01em;
   }
-  :lang(zh) .hero__proof-label { font-family: var(--font-cjk); letter-spacing: 0.1em; }
+  :lang(zh) .hero__proof-label { font-family: var(--font-cjk); letter-spacing: 0; }
   .hero__mods {
     display: grid;
     gap: 0.55rem;

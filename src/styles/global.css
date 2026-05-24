@@ -1,66 +1,83 @@
-/* fonts: Inter Variable for Latin display + body, Noto Sans SC for CJK,
-   JetBrains Mono for data (versions, IDs, counts, dates). All three are
-   neutral technical sans — no calligraphic / display-art voice. */
-@import "@fontsource-variable/inter/wght.css";
+/* fonts:
+   - IBM Plex Sans (variable) — Latin body & UI. More humanist character than
+     Inter; long-standing OSS workhorse, less "AI landing page" tone.
+   - IBM Plex Serif (static 400/600/700) — used selectively for display
+     headings, gives weight without falling back on a generic geometric sans.
+   - LXGW WenKai Screen (GB subset, screen-optimized) — CJK body & headings.
+     Hand-tuned kaiti, beloved by Chinese OSS / indie community; instantly
+     removes the corporate "思源黑体 / Noto Sans" default look.
+   - JetBrains Mono (variable) — strictly DATA: versions, IDs, counts, dates. */
+@import "@fontsource-variable/ibm-plex-sans";
+@import "@fontsource/ibm-plex-serif/latin-400.css";
+@import "@fontsource/ibm-plex-serif/latin-600.css";
+@import "@fontsource/ibm-plex-serif/latin-700.css";
 @import "@fontsource-variable/jetbrains-mono/wght.css";
-@import "@fontsource-variable/noto-sans-sc/wght.css";
+@import "lxgw-wenkai-screen-webfont/lxgwwenkaigbscreen.css";
 
 :root {
-  /* dark soak-mode (default) */
-  --bg: #1c1d2a;
-  --bg-soft: #25273a;
-  --bg-raised: #2c2e44;
-  --ink: #f4ebd9;
-  --ink-soft: #c8c0b0;
-  --ink-mute: #8e8a7d;
-  --accent: #f9c47a;
-  --accent-deep: #e89c4d;
-  --steam: #b8d8e6;
-  --ok: #a6e3a1;
-  --warn: #f9c47a;
-  --alert: #f38ba8;
-  --rule: #3a3d56;
+  /* dark soak-mode (default) — warm charcoal, no blue/purple tint */
+  --bg: #1d1a17;
+  --bg-soft: #25211d;
+  --bg-raised: #2e2924;
+  --ink: #f2e9d4;
+  --ink-soft: #c6bda8;
+  --ink-mute: #8a8273;
+  --accent: #f0b04a;       /* duck-yolk, a touch more saturated than the
+                              old #f9c47a so it stops reading as a generic
+                              "soft warm AI accent". */
+  --accent-deep: #c87420;
+  --steam: #a8c8d6;
+  --ok: #8fc97a;
+  --warn: #f0b04a;
+  --alert: #e07088;
+  --rule: #3a342c;
 
-  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
-  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
-  --font-cjk: "Noto Sans SC Variable", "Inter Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-sans: "IBM Plex Sans Variable", "IBM Plex Sans", system-ui,
+    -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+  --font-serif: "IBM Plex Serif", "Iowan Old Style", "Source Serif Pro",
+    Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular",
+    "Menlo", "Consolas", monospace;
+  --font-cjk: "LXGW WenKai GB Screen", "LXGW WenKai Screen",
+    "IBM Plex Sans Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-pixel: "JetBrains Mono Variable", ui-monospace, monospace;
 
   --content-max: 1240px;
   --gutter: clamp(1.25rem, 4vw, 2.6rem);
 
   --line-latin: 1.6;
-  --line-cjk: 1.75;
+  --line-cjk: 1.78;
 
-  --radius: 8px;
-  --radius-lg: 12px;
+  --radius: 6px;
+  --radius-lg: 10px;
   --radius-pill: 999px;
 
   --rule-width: 1px;
 
-  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.18);
-  --shadow-warm: 0 4px 24px rgba(249, 196, 122, 0.14);
+  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.22);
+  --shadow-warm: 0 4px 24px rgba(240, 176, 74, 0.12);
 
   color-scheme: dark;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --bg: #fdf6e3;
-    --bg-soft: #f4ecd8;
-    --bg-raised: #ece4d0;
-    --ink: #2e2a1d;
-    --ink-soft: #5e5a4d;
-    --ink-mute: #8e8a7d;
-    --accent: #d97e1c;
-    --accent-deep: #a85a14;
-    --steam: #6a92a8;
-    --ok: #3aa05c;
-    --warn: #d97e1c;
-    --alert: #b53055;
-    --rule: #d8d0bc;
-    --shadow-soft: 0 2px 10px rgba(46, 42, 29, 0.1);
-    --shadow-warm: 0 4px 20px rgba(217, 126, 28, 0.18);
+    /* paper-mode — warm cream, no green tint */
+    --bg: #f6ecd6;
+    --bg-soft: #ede2c9;
+    --bg-raised: #e3d6b9;
+    --ink: #2a241a;
+    --ink-soft: #5a5042;
+    --ink-mute: #8b8170;
+    --accent: #c87420;
+    --accent-deep: #8f4d0e;
+    --steam: #608a9e;
+    --ok: #3a8a4e;
+    --warn: #c87420;
+    --alert: #a8334a;
+    --rule: #d4c7a6;
+    --shadow-soft: 0 2px 10px rgba(42, 36, 26, 0.10);
+    --shadow-warm: 0 4px 20px rgba(200, 116, 32, 0.16);
     color-scheme: light;
   }
 }
@@ -135,10 +152,10 @@ a:hover, a:focus-visible { color: var(--accent); }
   font-family: var(--font-sans);
   font-size: 0.85rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: var(--ink-mute);
 }
-:lang(zh) .eyebrow { font-family: var(--font-cjk); }
+:lang(zh) .eyebrow { font-family: var(--font-cjk); letter-spacing: 0; }
 .eyebrow strong {
   color: var(--accent);
   font-weight: 600;
@@ -160,7 +177,7 @@ a:hover, a:focus-visible { color: var(--accent); }
   border-radius: var(--radius-pill);
   white-space: nowrap;
 }
-:lang(zh) .pill { font-family: var(--font-cjk); }
+:lang(zh) .pill { font-family: var(--font-cjk); letter-spacing: 0; }
 
 .pill[data-status="open"] { color: var(--ink-mute); }
 .pill[data-status="unfixed"] {
@@ -189,7 +206,7 @@ a:hover, a:focus-visible { color: var(--accent); }
   white-space: nowrap;
   border-radius: var(--radius);
 }
-:lang(zh) .chip { font-family: var(--font-cjk); }
+:lang(zh) .chip { font-family: var(--font-cjk); letter-spacing: 0; }
 
 .chip[data-cat="crash"] {
   color: var(--alert);
@@ -246,12 +263,13 @@ a:hover, a:focus-visible { color: var(--accent); }
   color: var(--bg);
 }
 
-/* warm headings — humanist sans, never mono */
+/* display headings — Latin uses Plex Serif for a printed, less-AI feel;
+   CJK stays on the warm kaiti via --font-cjk. */
 .h-display {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-weight: 700;
   letter-spacing: -0.005em;
-  line-height: 1.12;
+  line-height: 1.14;
   margin: 0;
 }
 :lang(zh) .h-display { font-family: var(--font-cjk); font-weight: 700; }
@@ -260,11 +278,22 @@ a:hover, a:focus-visible { color: var(--accent); }
   font-family: var(--font-sans);
   font-weight: 600;
   letter-spacing: 0;
-  line-height: 1.2;
+  line-height: 1.22;
   margin: 0;
   font-size: clamp(1.4rem, 2.6vw, 1.95rem);
 }
 :lang(zh) .h-section { font-family: var(--font-cjk); }
+
+/* Global de-AI overrides: kaiti reads poorly when tracked-out or upper-cased,
+   and uppercase + wide tracking is the single biggest "SaaS landing page"
+   tell. Strip it from CJK contexts site-wide so component-level
+   text-transform / letter-spacing rules don't disfigure 中文. */
+:lang(zh) :is(.eyebrow, .pill, .chip, .badge, dt, th),
+:lang(zh) [class*="__label"],
+:lang(zh) [class*="__h"] {
+  text-transform: none;
+  letter-spacing: 0;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
