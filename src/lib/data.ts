@@ -2,33 +2,6 @@ import modsData from "../../data/mods.json";
 import bugsData from "../../data/bugs.json";
 import profileData from "../../data/profile.json";
 import methodologyData from "../../data/methodology.json";
-import notesData from "../../data/notes.json";
-import deliverablesData from "../../data/deliverables.json";
-
-export type Deliverable = {
-  slug: string;
-  name_zh: string;
-  name_en: string;
-  desc_zh: string;
-  desc_en: string;
-  status: "wip" | "soon" | "live";
-};
-
-export const deliverables = deliverablesData as Deliverable[];
-
-export type Note = {
-  slug: string;
-  date: string | null;
-  title_zh: string;
-  title_en: string;
-  summary_zh: string;
-  summary_en: string;
-  tags: string[];
-};
-
-export const notes = notesData as Note[];
-
-export const isNoteDraft = (n: Note): boolean => n.date === null || n.tags.includes("draft");
 
 export type Round = {
   version: string;
@@ -74,12 +47,8 @@ export type Method = {
   category_id: string;
   name_zh: string;
   name_en: string;
-  severity_default: Severity;
   summary_zh: string;
   summary_en: string;
-  what_i_do_zh: string[];
-  what_i_do_en: string[];
-  judgement_zh: string;
 };
 
 export const methods = methodologyData as Method[];
@@ -325,18 +294,9 @@ export const isUnfixedAcrossRounds = (m: Mod): number => {
 export const bugsByCategory = (cat: string): Bug[] =>
   bugs.filter((b) => b.categories.includes(cat));
 
-export const bugsBySeverity = (sev: Severity): Bug[] =>
-  bugs.filter((b) => b.severity === sev);
-
 export const categoryCounts = (): Record<string, number> => {
   const m: Record<string, number> = {};
   for (const b of bugs) for (const c of b.categories) m[c] = (m[c] || 0) + 1;
-  return m;
-};
-
-export const severityCounts = (): Record<Severity, number> => {
-  const m: Record<Severity, number> = { S0: 0, S1: 0, S2: 0, S3: 0 };
-  for (const b of bugs) m[b.severity]++;
   return m;
 };
 

@@ -1,7 +1,6 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
 import StatusPill from "~/components/StatusPill.astro";
-import SeverityChip from "~/components/SeverityChip.astro";
 import type { Bug } from "~/lib/data";
 
 interface Props {
@@ -19,7 +18,6 @@ const remaining = featured
 const catSet = new Set<string>();
 for (const b of bugs) for (const c of b.categories) catSet.add(c);
 const cats = [...catSet].sort();
-const sevs = ["S0", "S1", "S2", "S3"] as const;
 ---
 
 {featured && (
@@ -27,7 +25,6 @@ const sevs = ["S0", "S1", "S2", "S3"] as const;
     <h2 id="featured-heading" class="featured__h h-section">{t(lang, "case.featured_bug")}</h2>
     <article class:list={["featured__card", { "featured__card--crash": featured.categories.includes("crash") }]}>
       <header class="featured__head">
-        <SeverityChip sev={featured.severity} />
         <span class="mono tnum featured__id">#{String(featured.index).padStart(3, "0")}</span>
         <span class="mono tnum featured__ver">{featured.version}</span>
         <div class="featured__cats">
@@ -65,14 +62,7 @@ const sevs = ["S0", "S1", "S2", "S3"] as const;
     {(cats.length > 0) && (
       <div class="ledger__filters" data-ledger-filters>
         <div class="ledger__filter-group">
-          <span class="ledger__filter-label">severity</span>
-          <button type="button" class="ledger__chip ledger__chip--active" data-sev="all">all</button>
-          {sevs.map((s) => (
-            <button type="button" class="ledger__chip mono" data-sev={s}>{s}</button>
-          ))}
-        </div>
-        <div class="ledger__filter-group">
-          <span class="ledger__filter-label">{lang === "zh" ? "方法" : "method"}</span>
+          <span class="ledger__filter-label">{lang === "zh" ? "类型" : "type"}</span>
           <button type="button" class="ledger__chip ledger__chip--active" data-cat="all">all</button>
           {cats.map((c) => (
             <button type="button" class="ledger__chip" data-cat={c}>{c}</button>
@@ -86,7 +76,6 @@ const sevs = ["S0", "S1", "S2", "S3"] as const;
         <thead>
           <tr>
             <th class="col-id">{t(lang, "case.bug_id")}</th>
-            <th class="col-sev">{t(lang, "case.bug_severity")}</th>
             <th class="col-ver">{t(lang, "case.bug_version")}</th>
             <th class="col-tags">{t(lang, "case.tags")}</th>
             <th class="col-text">{t(lang, "case.bug_text")}</th>
@@ -100,11 +89,9 @@ const sevs = ["S0", "S1", "S2", "S3"] as const;
             return (
               <tr
                 class:list={["ledger__row", { "ledger__row--crash": hasCrash }]}
-                data-row-sev={b.severity}
                 data-row-cats={b.categories.join(",")}
               >
                 <td class="mono tnum col-id">{id}</td>
-                <td class="col-sev"><SeverityChip sev={b.severity} /></td>
                 <td class="mono tnum col-ver">{b.version}</td>
                 <td class="col-tags">
                   {b.categories.map((c) => <span class="chip" data-cat={c}>{c}</span>)}

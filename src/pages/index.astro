@@ -2,10 +2,12 @@
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Hero from "~/components/Hero.astro";
 import ActivityFeed from "~/components/ActivityFeed.astro";
-import Deliverables from "~/components/Deliverables.astro";
+import ModCard from "~/components/ModCard.astro";
+import { sortedMods } from "~/lib/data";
 import { t } from "~/i18n/strings";
 
 const lang = "zh" as const;
+const list = sortedMods();
 ---
 
 <BaseLayout title="LUCK666DUCK" lang={lang}>
@@ -18,10 +20,12 @@ const lang = "zh" as const;
     </div>
   </section>
 
-  <section class="block" aria-labelledby="deliv-h">
+  <section class="block" aria-labelledby="cases-h">
     <div class="container">
-      <h2 id="deliv-h" class="block__h">{t(lang, "home.deliverables_h")}</h2>
-      <Deliverables lang={lang} />
+      <h2 id="cases-h" class="block__h">{t(lang, "home.cases_h")}</h2>
+      <div class="cases-grid">
+        {list.map((m) => <ModCard mod={m} lang={lang} />)}
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -41,5 +45,13 @@ const lang = "zh" as const;
   :lang(zh) .block__h {
     font-family: var(--font-cjk);
     letter-spacing: 0.1em;
+  }
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1rem;
+  }
+  @media (max-width: 540px) {
+    .cases-grid { grid-template-columns: 1fr; }
   }
 </style>
