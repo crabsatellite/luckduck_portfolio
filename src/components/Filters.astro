@@ -29,7 +29,7 @@ const { lang } = Astro.props;
 </section>
 
 <script is:inline>
-  (function () {
+  document.addEventListener("DOMContentLoaded", function () {
     var versionBtns = document.querySelectorAll(".filters__chip[data-version]");
     var creditedTgl = document.getElementById("filter-credited");
     var regressionTgl = document.getElementById("filter-regression");
@@ -63,7 +63,7 @@ const { lang } = Astro.props;
     if (regressionTgl) regressionTgl.addEventListener("change", function () {
       current.regression = regressionTgl.checked; apply();
     });
-  })();
+  });
 </script>
 
 <style>
