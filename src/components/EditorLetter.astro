@@ -1,0 +1,191 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+import MascotDuck from "~/components/MascotDuck.astro";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section class="letter" aria-labelledby="letter-title" data-reveal>
+  <div class="container letter__container">
+    <aside class="letter__rail" aria-hidden="true">
+      <p class="letter__rail-kicker dateline">{t(lang, "letter.kicker")}</p>
+      <span class="letter__rail-mark fancy-num fancy-num--accent">01</span>
+      <div class="letter__rail-mascot">
+        <MascotDuck size={68} alt="" />
+      </div>
+      <span class="letter__rail-dot" aria-hidden="true"></span>
+    </aside>
+    <div class="letter__body">
+      <h2 id="letter-title" class="letter__title">{t(lang, "letter.title")}</h2>
+      <p class="letter__greeting">{t(lang, "letter.body_1")}</p>
+      <p class="letter__para drop-cap">{t(lang, "letter.body_2")}</p>
+      <p class="letter__para">{t(lang, "letter.body_3")}</p>
+      <p class="letter__para letter__para--accent">{t(lang, "letter.body_4")}</p>
+
+      <p class="signoff">
+        <span class="signoff__mark" aria-hidden="true">
+          {lang === "en" ? "duck" : "鸭"}
+        </span>
+        <span class="signoff__text">{t(lang, "letter.signoff")}</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .letter {
+    padding: clamp(2.8rem, 6vw, 4.6rem) 0;
+    position: relative;
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .letter::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        70% 50% at 10% 30%,
+        color-mix(in oklch, var(--accent) 10%, transparent) 0%,
+        transparent 70%
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+  .letter__container {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: clamp(1.4rem, 3vw, 2.6rem);
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+  .letter__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    align-items: flex-start;
+    padding-right: clamp(0.6rem, 2vw, 1.4rem);
+    border-right: 1px dashed var(--rule);
+    height: 100%;
+  }
+  .letter__rail-kicker {
+    color: var(--accent);
+    margin: 0;
+    font-size: 0.92rem;
+    letter-spacing: 0.18em;
+    line-height: 1;
+  }
+  :lang(zh) .letter__rail-kicker { letter-spacing: 0.06em; }
+  .letter__rail-mark {
+    font-size: clamp(3.6rem, 7vw, 5rem);
+    line-height: 0.78;
+    margin-top: 0.2rem;
+  }
+  .letter__rail-mascot {
+    margin-top: 0.4rem;
+    padding: 0.6rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: color-mix(in oklch, var(--accent) 9%, var(--bg-soft));
+    line-height: 0;
+  }
+  .letter__rail-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 0.4rem;
+  }
+
+  .letter__body {
+    max-width: 60ch;
+    min-width: 0;
+  }
+  .letter__title {
+    margin: 0 0 1.3rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3.6vw, 2.4rem);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  :lang(zh) .letter__title {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.35;
+  }
+
+  .letter__greeting {
+    margin: 0 0 1rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.005em;
+  }
+  :lang(zh) .letter__greeting {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  .letter__para {
+    margin: 0 0 1.05rem 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 1.04rem;
+    line-height: 1.78;
+  }
+  :lang(zh) .letter__para {
+    font-family: var(--font-cjk);
+    line-height: 1.95;
+  }
+  .letter__para--accent {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .letter__para::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+  .signoff__text {
+    color: var(--ink);
+    font-size: 1rem;
+  }
+
+  @media (max-width: 720px) {
+    .letter__container {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+    .letter__rail {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+      border-right: none;
+      border-bottom: 1px dashed var(--rule);
+      padding-right: 0;
+      padding-bottom: 1rem;
+      height: auto;
+    }
+    .letter__rail-kicker { order: 1; }
+    .letter__rail-mark {
+      order: 2;
+      font-size: 3rem;
+    }
+    .letter__rail-mascot { order: 3; margin-top: 0; }
+    .letter__rail-dot { display: none; }
+  }
+</style>

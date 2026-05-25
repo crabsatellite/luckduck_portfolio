@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Hero from "~/components/Hero.astro";
+import EditorLetter from "~/components/EditorLetter.astro";
 import HomeSections from "~/components/HomeSections.astro";
 
 const lang = "en" as const;
@@ -8,5 +9,6 @@ const lang = "en" as const;
 
 <BaseLayout title="LUCK666DUCK" lang={lang}>
   <Hero lang={lang} />
+  <EditorLetter lang={lang} />
   <HomeSections lang={lang} />
 </BaseLayout>

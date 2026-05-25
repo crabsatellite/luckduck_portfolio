@@ -21,18 +21,11 @@ const stats = [
 ];
 
 const issueDate = new Date().toISOString().slice(0, 10);
-const issueNo = String(mods.length).padStart(2, "0");
-
-const issueStampPrimary =
-  lang === "en"
-    ? `FIELD JOURNAL · ISSUE №${issueNo}`
-    : `测试员手记 · 第 №${issueNo} 期`;
-const issueStampSecondary = `SOAK MODE · ${issueDate}`;
 
 const counterLabelTop =
-  lang === "en" ? "bugs filed · public ledger" : "条 bug · 公开账本";
+  lang === "en" ? "bugs filed · on the public ledger" : "条 bug · 全部公开账";
 const counterLabelSub =
-  lang === "en" ? "across 13 mods · 24 rounds" : "覆盖 13 个 MOD · 24 轮回归";
+  lang === "en" ? "across 13 mods · 24 test rounds" : "覆盖 13 个 MOD · 24 轮回归";
 
 const benchLabel =
   lang === "en" ? "currently on the bench" : "正在测试台上";
@@ -44,43 +37,58 @@ const benchSubLabel =
 const headlineParts = (() => {
   if (lang === "en") {
     return {
-      lead: "Reproducible QA runs",
-      mid: "for",
-      em: "mod authors",
-      tail: "who care.",
+      lead: "Reproducible",
+      em: "QA",
+      mid: "for the",
+      em2: "mods",
+      tail: "you care about.",
     };
   }
   return {
-    lead: "给 MOD 作者",
+    lead: "给",
+    em: "MOD 作者",
     mid: "跑",
-    em: "可复现",
+    em2: "可复现",
     tail: "的测试。",
   };
 })();
 
 const mascotCaption =
-  lang === "en" ? "— say hi to the duck" : "— 一只测试用的鸭子";
+  lang === "en" ? "↑ The editor. Likes warm water." : "↑ 本志主编。喜欢热水。";
 ---
 
-<section class="hero steam-glow" aria-labelledby="hero-title">
+<section class="hero" aria-labelledby="hero-title">
   <div class="container hero__container">
-    <div class="hero__topline">
-      <span class="hero__stamp stamp">{issueStampPrimary}</span>
-      <span class="hero__stamp-sub dateline">{issueStampSecondary}</span>
-    </div>
+    <header class="masthead" aria-label="publication masthead">
+      <div>
+        <h2 class="masthead__title">{t(lang, "masthead.title")}</h2>
+        <p class="masthead__tag">{t(lang, "masthead.tagline")}</p>
+      </div>
+      <p class="masthead__meta">
+        <strong>{t(lang, "masthead.issue")}</strong>
+        <span>{t(lang, "masthead.season")} · {issueDate}</span>
+      </p>
+    </header>
 
-    <div class="hero__layout">
-      <div class="hero__copy">
+    <p class="hero__coverline">{t(lang, "masthead.coverline")}</p>
+
+    <div class="hero__cover">
+      <div class="hero__copy" data-reveal>
         <p class="hero__role">
           <span class="hero__role-mark" aria-hidden="true">¶</span>
           {t(lang, "hero.role")}
         </p>
 
         <h1 id="hero-title" class="hero__title h-mega">
-          {headlineParts.lead}
-          <span class="hero__title-mid"> {headlineParts.mid} </span>
-          <em>{headlineParts.em}</em>
-          <span class="hero__title-tail">{headlineParts.tail}</span>
+          <span class="hero__title-line">
+            {headlineParts.lead}
+            <em>{headlineParts.em}</em>
+          </span>
+          <span class="hero__title-line">
+            <span class="hero__title-mid">{headlineParts.mid} </span>
+            <em class="hero__title-em2">{headlineParts.em2}</em>
+            <span class="hero__title-tail">{headlineParts.tail}</span>
+          </span>
         </h1>
 
         <p class="hero__subtitle">{t(lang, "hero.subtitle")}</p>
@@ -92,11 +100,20 @@ const mascotCaption =
           </a>
           <a href={`${langPrefix}/cases/hotbath`} class="btn">{t(lang, "hero.cta_secondary")}</a>
         </div>
+
+        <div class="hero__bottomline" aria-hidden="true">
+          <span class="hero__bottomline-dot">●</span>
+          <span class="hero__bottomline-text">{t(lang, "masthead.subscribe")}</span>
+          <span class="hero__bottomline-dot">●</span>
+        </div>
       </div>
 
-      <aside class="hero__sidebar" aria-label="public ledger headline">
-        <div class="hero__counter">
-          <span class="hero__counter-eyebrow dateline">filed · 已记录</span>
+      <aside class="hero__feature" aria-label="cover counter">
+        <div class="hero__counter ledger-card" data-reveal>
+          <div class="hero__counter-tag">
+            <span class="stamp">{lang === "en" ? "exclusive" : "本期专题"}</span>
+            <span class="dateline">filed · 已记录</span>
+          </div>
           <span class="hero__counter-num fancy-num fancy-num--accent mono tnum">{headlineBugs}</span>
           <div class="hero__counter-bar">
             <span class="hero__counter-label">{counterLabelTop}</span>
@@ -104,25 +121,26 @@ const mascotCaption =
           </div>
         </div>
 
-        <div class="hero__mascot-wrap">
-          <div class="hero__mascot-aura" aria-hidden="true"></div>
-          <MascotDuck size={172} blink={true} alt="LUCK666DUCK mascot" />
+        <div class="hero__mascot duck-stage" data-reveal>
+          <div class="duck-stage__aura"></div>
+          <MascotDuck size={232} blink={true} alt="LUCK666DUCK mascot" />
+          <div class="duck-stage__pedestal"></div>
           <p class="hero__mascot-caption caption">{mascotCaption}</p>
         </div>
       </aside>
     </div>
 
-    <dl class="hero__stats">
+    <dl class="hero__stats" data-reveal>
       {stats.map((s, i) => (
         <div class={`hero__stat hero__stat--${s.tint}`}>
-          <span class="hero__stat-idx mono tnum">0{i + 1}</span>
+          <span class="hero__stat-idx mono tnum">№0{i + 1}</span>
           <dd class={`hero__stat-num fancy-num fancy-num--${s.tint} mono tnum`}>{s.value}</dd>
           <dt class="hero__stat-label">{s.label}</dt>
         </div>
       ))}
     </dl>
 
-    <section class="hero__bench" aria-labelledby="bench-label">
+    <section class="hero__bench" aria-labelledby="bench-label" data-reveal>
       <header class="hero__bench-head">
         <div>
           <p class="hero__bench-kicker dateline">currently on bench</p>
@@ -151,31 +169,46 @@ const mascotCaption =
 
 <style>
   .hero {
-    padding: clamp(1.5rem, 3.6vw, 2.8rem) 0 clamp(2.2rem, 5vw, 3.6rem) 0;
+    padding: clamp(1.4rem, 3vw, 2.4rem) 0 clamp(2.2rem, 5vw, 3.6rem) 0;
     position: relative;
+    background:
+      radial-gradient(
+        60% 55% at 85% 22%,
+        color-mix(in oklch, var(--accent) 28%, transparent) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        50% 60% at 12% 70%,
+        color-mix(in oklch, var(--steam) 12%, transparent) 0%,
+        transparent 70%
+      );
   }
   .hero__container { position: relative; }
 
-  /* ---- top issue stamp line ---------------------------------- */
-  .hero__topline {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: clamp(1.5rem, 3vw, 2.2rem);
+  /* ---- cover line: a single bold strip between masthead + cover --- */
+  .hero__coverline {
+    margin: 0 0 clamp(1.4rem, 3vw, 2rem) 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: clamp(0.98rem, 1.4vw, 1.12rem);
+    line-height: 1.4;
+    max-width: 64ch;
+    position: relative;
+    padding-left: 1.1rem;
+    border-left: 3px solid var(--accent);
   }
-  .hero__stamp { box-shadow: 2px 2px 0 var(--accent-deep); }
-  .hero__stamp-sub {
-    color: var(--ink-mute);
-    letter-spacing: 0.14em;
-    font-size: 0.85rem;
+  :lang(zh) .hero__coverline {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    line-height: 1.7;
   }
 
-  /* ---- main 2-column layout: title vs counter/mascot --------- */
-  .hero__layout {
+  /* ---- cover: copy left, feature right ------------------------ */
+  .hero__cover {
     display: grid;
-    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.95fr);
-    gap: clamp(1.6rem, 4.5vw, 3.2rem);
+    grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr);
+    gap: clamp(2rem, 5vw, 3.6rem);
     align-items: stretch;
     padding-bottom: clamp(1.6rem, 4vw, 2.4rem);
     border-bottom: 2px solid var(--ink);
@@ -184,7 +217,8 @@ const mascotCaption =
     display: flex;
     flex-direction: column;
     min-width: 0;
-    align-self: center;
+    align-self: stretch;
+    justify-content: center;
   }
   .hero__role {
     margin: 0 0 1.1rem 0;
@@ -207,9 +241,23 @@ const mascotCaption =
 
   .hero__title {
     color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    gap: 0.04em;
     max-width: 17ch;
   }
-  :lang(zh) .hero__title { max-width: 14ch; }
+  :lang(zh) .hero__title {
+    max-width: none;
+    font-size: clamp(2.2rem, 5.8vw, 4.2rem);
+    word-break: keep-all;
+    line-height: 1.15;
+  }
+  .hero__title-line {
+    display: block;
+  }
+  :lang(zh) .hero__title-line {
+    white-space: nowrap;
+  }
   .hero__title-mid {
     color: var(--ink-soft);
     font-weight: 400;
@@ -226,7 +274,7 @@ const mascotCaption =
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0.06em;
+    bottom: 0.08em;
     height: 0.18em;
     background: color-mix(in oklch, var(--accent) 32%, transparent);
     z-index: -1;
@@ -250,40 +298,68 @@ const mascotCaption =
     gap: 0.8rem;
     margin-top: 1.8rem;
   }
-  .hero__cta-arrow {
-    transition: transform 160ms ease;
-  }
+  .hero__cta-arrow { transition: transform 160ms ease; }
   .btn:hover .hero__cta-arrow,
   .btn:focus-visible .hero__cta-arrow { transform: translateX(3px); }
 
-  /* ---- right column: oversized counter + mascot composition -- */
-  .hero__sidebar {
+  /* ---- subscribe-style bottom-line on the cover --------------- */
+  .hero__bottomline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1.8rem;
+    padding: 0.45rem 0;
+    border-top: 1px dashed var(--rule);
+    border-bottom: 1px dashed var(--rule);
+    font-family: var(--font-stamp);
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    align-self: flex-start;
+    padding-left: 0.6rem;
+    padding-right: 0.9rem;
+  }
+  :lang(zh) .hero__bottomline {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.06em;
+    text-transform: none;
+  }
+  .hero__bottomline-dot {
+    color: var(--accent);
+    font-size: 0.5rem;
+  }
+
+  /* ---- feature column: counter card + mascot stage ------------ */
+  .hero__feature {
     position: relative;
     display: grid;
     grid-template-rows: auto 1fr;
-    gap: 1rem;
+    gap: 1.2rem;
     min-width: 0;
   }
   .hero__counter {
-    background: var(--paper);
-    border: 1.5px solid var(--ink);
+    padding: 1.2rem 1.4rem 1.3rem 1.4rem;
     border-top: 4px solid var(--accent);
-    padding: 1.1rem 1.3rem 1.2rem 1.3rem;
-    position: relative;
-    box-shadow:
-      8px 8px 0 color-mix(in oklch, var(--accent) 70%, transparent),
-      0 0 0 1px color-mix(in oklch, var(--ink) 30%, transparent);
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
-    column-gap: 0.9rem;
-    row-gap: 0.4rem;
+    column-gap: 0.95rem;
+    row-gap: 0.55rem;
+    position: relative;
   }
-  .hero__counter-eyebrow {
+  .hero__counter-tag {
     grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .hero__counter-tag .dateline {
     color: var(--ink-mute);
     font-size: 0.78rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
   }
   .hero__counter-num {
     font-size: var(--fs-stat);
@@ -294,58 +370,41 @@ const mascotCaption =
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.25rem;
-    padding-left: 0.4rem;
+    gap: 0.3rem;
+    padding-left: 0.6rem;
     border-left: 2px solid var(--ink);
   }
   .hero__counter-label {
     font-family: var(--font-sans);
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: var(--ink);
-    font-weight: 600;
-    line-height: 1.2;
+    font-weight: 700;
+    line-height: 1.25;
   }
   :lang(zh) .hero__counter-label { font-family: var(--font-cjk); }
   .hero__counter-sub {
     font-family: var(--font-sans);
-    font-size: 0.74rem;
+    font-size: 0.76rem;
     color: var(--ink-mute);
-    line-height: 1.35;
+    line-height: 1.4;
   }
   :lang(zh) .hero__counter-sub { font-family: var(--font-cjk); }
 
-  /* ---- mascot composition ------------------------------------ */
-  .hero__mascot-wrap {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    padding-top: 0.5rem;
-    min-height: 200px;
-  }
-  .hero__mascot-aura {
-    position: absolute;
-    inset: -10% -8% 6% -8%;
-    background:
-      radial-gradient(60% 55% at 50% 60%, color-mix(in oklch, var(--accent) 36%, transparent) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-    filter: blur(2px);
-  }
-  .hero__mascot-wrap :global(.mascot) {
-    position: relative;
-    z-index: 1;
+  /* ---- mascot stage in the cover ----------------------------- */
+  .hero__mascot {
+    min-height: 260px;
+    padding-top: 0.4rem;
   }
   .hero__mascot-caption {
-    margin: 0.55rem 0 0 0;
+    margin: 0.6rem 0 0 0;
     text-align: center;
     color: var(--ink-mute);
+    font-size: 0.85rem;
     position: relative;
     z-index: 1;
   }
 
-  /* ---- stat strip: 3 big serif numerals with index ----------- */
+  /* ---- 3-stat strip ----------------------------------------- */
   .hero__stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -403,7 +462,7 @@ const mascotCaption =
     font-size: 0.92rem;
   }
 
-  /* ---- bench section: numbered mod ledger -------------------- */
+  /* ---- bench section: numbered mod ledger --------------------- */
   .hero__bench {
     padding-top: clamp(1.4rem, 3.5vw, 2rem);
     border-top: 1px solid var(--rule);
@@ -425,6 +484,7 @@ const mascotCaption =
   .hero__bench-label {
     margin: 0;
     font-family: var(--font-serif);
+    font-style: italic;
     color: var(--ink);
     font-weight: 700;
     font-size: var(--fs-h2);
@@ -432,7 +492,9 @@ const mascotCaption =
   }
   :lang(zh) .hero__bench-label {
     font-family: var(--font-cjk);
+    font-style: normal;
     letter-spacing: 0;
+    font-weight: 400;
   }
   .hero__bench-meta { margin: 0; }
 
@@ -493,7 +555,6 @@ const mascotCaption =
     letter-spacing: -0.005em;
     color: var(--ink);
   }
-  :lang(zh) .hero__mod-name { font-family: var(--font-sans); }
   .hero__mod-bugs {
     font-size: 0.74rem;
     color: var(--ink-mute);
@@ -513,23 +574,22 @@ const mascotCaption =
 
   /* ---- responsive ------------------------------------------- */
   @media (max-width: 960px) {
-    .hero__layout {
+    .hero__cover {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 2.4rem;
     }
-    .hero__sidebar {
-      grid-template-columns: minmax(0, 1.4fr) minmax(160px, 0.9fr);
+    .hero__feature {
+      grid-template-columns: minmax(0, 1.4fr) minmax(180px, 0.95fr);
       grid-template-rows: auto;
-      gap: 1.2rem;
+      gap: 1.3rem;
       align-items: center;
     }
-    .hero__mascot-wrap { min-height: 0; padding-top: 0; }
+    .hero__mascot { min-height: 0; }
   }
-  @media (max-width: 620px) {
+  @media (max-width: 640px) {
     .hero__title { max-width: none; }
-    .hero__counter { box-shadow: 5px 5px 0 color-mix(in oklch, var(--accent) 70%, transparent); }
-    .hero__sidebar { grid-template-columns: 1fr; }
-    .hero__mascot-wrap { padding-top: 1rem; }
+    .hero__feature { grid-template-columns: 1fr; }
+    .hero__mascot { padding-top: 1rem; }
   }
   @media (max-width: 460px) {
     .hero__stats { grid-template-columns: 1fr; }

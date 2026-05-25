@@ -901,3 +901,378 @@ a:focus-visible {
   border-right: 1px solid var(--rule);
   pointer-events: none;
 }
+
+/* ================================================================
+   redesign v4 — magazine-issue art-direction layer
+   Drop-cap, pull-quote, big section numerals, colored panels,
+   scroll reveal animation, mascot-stage frames, masthead, etc.
+   ================================================================ */
+
+/* ---- drop cap for editorial body openings -------------------
+   Latin first letter receives a tall serif initial. Chinese
+   gets a tall character variant that doesn't crash the line
+   metric (line-height kept normal; floats around a 2-line cap). */
+.drop-cap::first-letter {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-style: italic;
+  float: left;
+  font-size: 4.6em;
+  line-height: 0.85;
+  margin: 0.08em 0.12em 0 -0.04em;
+  color: var(--accent);
+  padding: 0.04em 0.06em 0 0;
+}
+:lang(zh) .drop-cap::first-letter {
+  font-family: var(--font-cjk);
+  font-weight: 400;
+  font-style: normal;
+  float: left;
+  font-size: 3.8em;
+  line-height: 0.88;
+  margin: 0.04em 0.18em 0 0;
+  color: var(--accent);
+  background:
+    linear-gradient(180deg, transparent 0%, transparent 60%, color-mix(in oklch, var(--accent) 18%, transparent) 60%, color-mix(in oklch, var(--accent) 18%, transparent) 100%);
+  padding: 0 0.06em;
+}
+
+/* ---- pull-quote: massive italic serif declaration ----------- */
+.pull-quote {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.4vw, 2.4rem);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  position: relative;
+  padding-left: 0;
+  max-width: 28ch;
+}
+:lang(zh) .pull-quote {
+  font-family: var(--font-cjk);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(1.35rem, 2.8vw, 1.95rem);
+  line-height: 1.55;
+  letter-spacing: 0;
+  max-width: 22ch;
+}
+.pull-quote__mark {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.8em;
+  line-height: 0.6;
+  color: var(--accent);
+  display: block;
+  margin-bottom: -0.4em;
+}
+:lang(zh) .pull-quote__mark { font-family: var(--font-serif); }
+.pull-quote em {
+  color: var(--accent);
+  font-style: italic;
+  background: color-mix(in oklch, var(--accent) 18%, transparent);
+  padding: 0 0.05em;
+}
+:lang(zh) .pull-quote em { font-style: normal; }
+.pull-quote__attr {
+  display: block;
+  margin-top: 1rem;
+  font-family: var(--font-stamp);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  line-height: 1;
+}
+:lang(zh) .pull-quote__attr {
+  font-family: var(--font-stamp), var(--font-cjk);
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+
+/* ---- BIG italic section numeral, used as a watermark or
+   left-side "page marker" inside section panels ---------- */
+.mega-mark {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(7rem, 16vw, 13rem);
+  line-height: 0.78;
+  letter-spacing: -0.04em;
+  color: color-mix(in oklch, var(--accent) 75%, transparent);
+  -webkit-text-stroke: 0;
+  pointer-events: none;
+  user-select: none;
+}
+.mega-mark--outline {
+  color: transparent;
+  -webkit-text-stroke: 2px color-mix(in oklch, var(--accent) 55%, transparent);
+}
+
+/* ---- colored magazine panel backgrounds --------------------
+   Full-bleed dark/light panels that interrupt the warm-dark
+   base flow. Each panel sets its own --bg-context so child
+   elements (typography, pills) read against the new ground. */
+.panel {
+  position: relative;
+  isolation: isolate;
+  --bg-context: var(--bg);
+}
+.panel--paper {
+  background: var(--paper);
+  --bg-context: var(--paper);
+  color: var(--ink);
+}
+.panel--steam {
+  background:
+    linear-gradient(180deg,
+      color-mix(in oklch, var(--steam-deep) 75%, var(--bg)) 0%,
+      color-mix(in oklch, var(--steam-deep) 90%, var(--bg)) 100%);
+  color: var(--ink);
+  --bg-context: var(--steam-deep);
+  --ink: #f3ecd6;
+  --ink-soft: #c8d0d4;
+  --ink-mute: #8a96a0;
+  --rule: color-mix(in oklch, var(--steam) 30%, transparent);
+}
+.panel--cream {
+  background: linear-gradient(180deg, #f6ecd6 0%, #ede2c9 100%);
+  color: #2a241a;
+  --ink: #2a241a;
+  --ink-soft: #5a5042;
+  --ink-mute: #8b8170;
+  --rule: #d4c7a6;
+  --paper: #fffaf0;
+  --bg-context: #f6ecd6;
+}
+@media (prefers-color-scheme: light) {
+  /* in light mode, paper IS the base — make the dark inversion explicit
+     so we always get section contrast against the default cream page. */
+  .panel--paper { background: #ffffff; }
+  .panel--steam {
+    background:
+      linear-gradient(180deg,
+        color-mix(in oklch, var(--steam-deep) 80%, #fff) 0%,
+        color-mix(in oklch, var(--steam-deep) 92%, #fff) 100%);
+    --ink: #f3ecd6;
+    --ink-soft: #c8d0d4;
+    --ink-mute: #8a96a0;
+    --rule: color-mix(in oklch, var(--steam) 30%, transparent);
+  }
+  .panel--cream {
+    background: linear-gradient(180deg, #fff8e3 0%, #f3e8c8 100%);
+    --ink: #2a241a;
+    --ink-soft: #5a5042;
+    --ink-mute: #8b8170;
+    --rule: #d4c7a6;
+  }
+}
+
+/* ---- masthead: the "publication name" treatment ------------
+   Used at the very top of the hero. Big italic serif for the
+   title, small caps for the tagline. Lives in its own row. */
+.masthead {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 1.2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
+}
+.masthead__title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+:lang(zh) .masthead__title {
+  font-family: var(--font-cjk);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+}
+.masthead__tag {
+  margin: 0.55rem 0 0 0;
+  font-family: var(--font-stamp);
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  line-height: 1;
+}
+:lang(zh) .masthead__tag {
+  font-family: var(--font-stamp), var(--font-cjk);
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+.masthead__meta {
+  text-align: right;
+  font-family: var(--font-stamp);
+  font-size: 0.9rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+:lang(zh) .masthead__meta {
+  font-family: var(--font-stamp), var(--font-cjk);
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+.masthead__meta strong {
+  color: var(--accent);
+  font-weight: 700;
+  display: block;
+}
+@media (max-width: 640px) {
+  .masthead { grid-template-columns: 1fr; }
+  .masthead__meta { text-align: left; }
+}
+
+/* ---- mascot stage: a deliberate "frame" the duck stands inside
+   Used to give the mascot a real presence rather than a decoration.
+   Pinned aura + scribed pedestal. */
+.duck-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  isolation: isolate;
+}
+.duck-stage__aura {
+  position: absolute;
+  inset: -6% -6% 12% -6%;
+  background:
+    radial-gradient(50% 50% at 50% 60%, color-mix(in oklch, var(--accent) 36%, transparent) 0%, transparent 70%);
+  filter: blur(2px);
+  pointer-events: none;
+  z-index: -1;
+}
+.duck-stage__pedestal {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 8px;
+  background:
+    radial-gradient(50% 100% at 50% 0%, color-mix(in oklch, var(--ink) 60%, transparent) 0%, transparent 80%);
+  pointer-events: none;
+}
+
+/* ---- "section page marker" — full-bleed big italic numeral
+   pinned to the corner of a section panel. Reads as the page
+   number in a print magazine. */
+.section-marker {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.4rem;
+}
+.section-marker__num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(3rem, 6vw, 4.6rem);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+.section-marker__kicker {
+  font-family: var(--font-stamp);
+  font-size: 0.95rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  line-height: 1;
+}
+:lang(zh) .section-marker__kicker {
+  font-family: var(--font-stamp), var(--font-cjk);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  font-size: 0.92rem;
+}
+
+/* ---- scroll reveal: subtle additive entry animation ---------
+   Elements remain fully visible by default (so no-JS and screen
+   readers see content). When the IntersectionObserver tags an
+   element with `data-revealed`, it gets a gentle one-off entry
+   animation. This stays a progressive enhancement and never
+   blocks legibility. */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-reveal][data-revealed] {
+  animation: reveal-rise 700ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal][data-revealed] { animation: none; }
+}
+
+/* ---- duck signoff stamp ------------------------------------- */
+.signoff {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 1.4rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--ink);
+  font-size: 1rem;
+}
+:lang(zh) .signoff { font-family: var(--font-cjk); font-style: normal; }
+.signoff__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  font-family: var(--font-stamp);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  transform: rotate(-8deg);
+  background: color-mix(in oklch, var(--accent) 8%, transparent);
+}
+:lang(zh) .signoff__mark {
+  font-family: var(--font-stamp), var(--font-cjk);
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.78rem;
+}
+
+/* ---- diagonal stripes panel (a deliberate texture for breaks) */
+.candy-band {
+  height: 14px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--accent) 0 8px,
+    var(--ink) 8px 16px
+  );
+  opacity: 0.85;
+}
