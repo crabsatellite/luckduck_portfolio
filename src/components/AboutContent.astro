@@ -111,9 +111,20 @@ const sections = [
           </section>
         ))}
 
-        <!-- ============ NEXT ISSUE TEASER (in-page) ============= -->
-        <section class="about__teaser">
-          <p class="about__teaser-kicker dateline">{lang === "en" ? "in the next issue" : "下回预告"}</p>
+        <!-- ============ ENGAGEMENT (per-round / hourly note) ===== -->
+        <section class="about__teaser about__teaser--engagement">
+          <p class="about__teaser-kicker dateline">
+            {lang === "en" ? "engagement" : "合作"}
+          </p>
+          <h3 class="about__teaser-h">{t(lang, "about.engagement_h")}</h3>
+          <p class="about__teaser-body">{t(lang, "about.engagement_p")}</p>
+        </section>
+
+        <!-- ============ NEXT-UP TEASER (in-page) ================ -->
+        <section class="about__teaser about__teaser--next">
+          <p class="about__teaser-kicker dateline">
+            {lang === "en" ? "what's next" : "接下来"}
+          </p>
           <h3 class="about__teaser-h">{t(lang, "about.next_issue_h")}</h3>
           <p class="about__teaser-body">{t(lang, "about.next_issue_body")}</p>
         </section>
@@ -403,14 +414,23 @@ const sections = [
     font-weight: 700;
   }
 
-  /* ============== NEXT-ISSUE TEASER ======================= */
+  /* ============== TEASER PANELS (engagement / next) ======= */
   .about__teaser {
-    margin-top: 1rem;
-    padding: 1.5rem 1.6rem 1.7rem 1.6rem;
-    border: 1px dashed var(--accent);
-    border-radius: var(--radius-lg);
-    background: color-mix(in oklch, var(--accent) 6%, transparent);
+    margin-top: 0.4rem;
+    padding: 1.3rem 1.5rem 1.4rem 1.5rem;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    background: var(--bg-soft);
     position: relative;
+  }
+  .about__teaser--engagement {
+    border-left-color: var(--accent);
+    background: color-mix(in oklch, var(--accent) 6%, var(--bg-soft));
+  }
+  .about__teaser--next {
+    border-left-color: var(--ink-faint);
+    background: var(--bg-soft);
   }
   .about__teaser-kicker {
     color: var(--accent);
