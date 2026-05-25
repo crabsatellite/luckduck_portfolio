@@ -155,14 +155,16 @@ const overstampVariant = noIssues ? "ok" : "accent";
     text-decoration: none;
     height: 100%;
     position: relative;
-    padding: 1.6rem 1.4rem 1.3rem 1.4rem;
+    /* extra top padding leaves room for the absolute № index
+       so it doesn't overlap with the mod logo below */
+    padding: 2.6rem 1.4rem 1.3rem 1.4rem;
     isolation: isolate;
   }
 
   /* ---- editorial index № at top-left ------------------------ */
   .card__index {
     position: absolute;
-    top: 0.85rem;
+    top: 0.9rem;
     left: 1.4rem;
     display: inline-flex;
     align-items: baseline;
@@ -181,7 +183,7 @@ const overstampVariant = noIssues ? "ok" : "accent";
     font-style: italic;
     font-weight: 700;
     color: var(--accent);
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     letter-spacing: 0;
   }
 
@@ -191,7 +193,7 @@ const overstampVariant = noIssues ? "ok" : "accent";
     grid-template-columns: 56px 1fr;
     gap: 0.95rem;
     align-items: center;
-    margin-top: 0.4rem;
+    margin-top: 0;
   }
   .card__logo { line-height: 0; }
   .card__title { min-width: 0; }
