@@ -1029,17 +1029,18 @@ a:focus-visible {
   --bg-context: var(--paper);
   color: var(--ink);
 }
-.panel--steam {
+/* Deep warm coffee panel. Used to mark a section as 'denser /
+   archival' inside the warm-dark flow without breaking the warm
+   palette. Reads as the same paper page as everything else, just
+   pressed darker — like a stack of tester logs in shadow. */
+.panel--coffee {
   background:
     linear-gradient(180deg,
-      color-mix(in oklch, var(--steam-deep) 75%, var(--bg)) 0%,
-      color-mix(in oklch, var(--steam-deep) 90%, var(--bg)) 100%);
+      #14100c 0%,
+      #1a140f 100%);
   color: var(--ink);
-  --bg-context: var(--steam-deep);
-  --ink: #f3ecd6;
-  --ink-soft: #c8d0d4;
-  --ink-mute: #8a96a0;
-  --rule: color-mix(in oklch, var(--steam) 30%, transparent);
+  --bg-context: #14100c;
+  --rule: color-mix(in oklch, var(--accent) 14%, #2a2118);
 }
 .panel--cream {
   background: linear-gradient(180deg, #f6ecd6 0%, #ede2c9 100%);
@@ -1055,15 +1056,13 @@ a:focus-visible {
   /* in light mode, paper IS the base — make the dark inversion explicit
      so we always get section contrast against the default cream page. */
   .panel--paper { background: #ffffff; }
-  .panel--steam {
-    background:
-      linear-gradient(180deg,
-        color-mix(in oklch, var(--steam-deep) 80%, #fff) 0%,
-        color-mix(in oklch, var(--steam-deep) 92%, #fff) 100%);
+  .panel--coffee {
+    background: linear-gradient(180deg, #2a1f15 0%, #1f1610 100%);
+    color: #f3ecd6;
     --ink: #f3ecd6;
-    --ink-soft: #c8d0d4;
-    --ink-mute: #8a96a0;
-    --rule: color-mix(in oklch, var(--steam) 30%, transparent);
+    --ink-soft: #d8cdb5;
+    --ink-mute: #a59880;
+    --rule: color-mix(in oklch, var(--accent) 20%, #4a3a28);
   }
   .panel--cream {
     background: linear-gradient(180deg, #fff8e3 0%, #f3e8c8 100%);

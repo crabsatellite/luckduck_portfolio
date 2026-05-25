@@ -260,9 +260,9 @@ const cards = [
     background: color-mix(in oklch, var(--accent-deep) 12%, var(--bg-soft));
   }
   .notes__row-status--research {
-    color: var(--steam-deep);
-    border-color: var(--steam);
-    background: color-mix(in oklch, var(--steam) 14%, var(--bg-soft));
+    color: var(--ink-mute);
+    border-color: var(--ink-faint);
+    background: var(--bg-soft);
   }
 
   .notes__row-body { min-width: 0; }
@@ -337,10 +337,8 @@ const cards = [
     align-items: center;
     padding: clamp(1.6rem, 3.5vw, 2.4rem);
     background:
-      linear-gradient(180deg,
-        color-mix(in oklch, var(--steam-deep) 88%, var(--bg)) 0%,
-        color-mix(in oklch, var(--steam-deep) 95%, var(--bg)) 100%);
-    border: 1px solid color-mix(in oklch, var(--steam) 35%, transparent);
+      linear-gradient(180deg, #221912 0%, #1a130d 100%);
+    border: 1px solid color-mix(in oklch, var(--accent) 22%, #3a2c1e);
     border-radius: var(--radius-lg);
     color: #f3ecd6;
     position: relative;
@@ -387,7 +385,7 @@ const cards = [
   .notes__cta-p {
     margin: 0;
     font-family: var(--font-sans);
-    color: #c8d0d4;
+    color: #d8cdb5;
     font-size: 0.96rem;
     line-height: 1.7;
     max-width: 60ch;

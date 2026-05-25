@@ -95,9 +95,9 @@ const noteCards = [
   </div>
 </section>
 
-<!-- ================== SECTION 03 · EVIDENCE (steam-blue panel) ================= -->
+<!-- ================== SECTION 03 · EVIDENCE (deep warm panel) ================== -->
 <section
-  class="home-block panel panel--steam"
+  class="home-block panel panel--coffee"
   aria-labelledby="proof-h"
   data-reveal
 >
@@ -497,25 +497,23 @@ const noteCards = [
     margin-top: 0.4rem;
   }
   .proof-badges :global(.badge-strip) {
-    background: color-mix(in oklch, var(--steam) 16%, transparent);
-    border-color: color-mix(in oklch, var(--steam) 35%, transparent);
+    background: color-mix(in oklch, var(--accent) 8%, transparent);
+    border-color: color-mix(in oklch, var(--accent) 24%, transparent);
   }
 
   .credit-panel {
     padding: 1.4rem 1.5rem 1.6rem 1.5rem;
     position: relative;
-    /* deliberately a darker steam shade so the cream type + ok stamp
-       both stand cleanly against it, not a lighter mint mix */
+    /* slightly lighter warm-coffee so the panel reads as raised on
+       top of the section background — same family, warmer tint. */
     background:
-      linear-gradient(180deg,
-        color-mix(in oklch, var(--steam-deep) 92%, #000) 0%,
-        color-mix(in oklch, var(--steam-deep) 80%, #000) 100%);
-    border-color: color-mix(in oklch, var(--steam) 40%, transparent);
+      linear-gradient(180deg, #221912 0%, #1a130d 100%);
+    border-color: color-mix(in oklch, var(--accent) 22%, #3a2c1e);
     color: #f3ecd6;
     --ink: #f3ecd6;
-    --ink-soft: #c8d0d4;
-    --ink-mute: #8a96a0;
-    --rule: color-mix(in oklch, var(--steam) 35%, transparent);
+    --ink-soft: #d8cdb5;
+    --ink-mute: #a59880;
+    --rule: color-mix(in oklch, var(--accent) 16%, #3a2c1e);
   }
   .credit-panel .stamp--ok {
     color: var(--ok);
