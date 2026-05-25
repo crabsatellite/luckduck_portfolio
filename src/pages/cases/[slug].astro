@@ -65,9 +65,7 @@ const langPrefix = base;
 
           {noIssues ? (
             <section class="case__pass">
-              <span class="case__pass-stamp stamp stamp--ok" aria-hidden="true">
-                {lang === "en" ? "clean pass" : "零 bug 通过"}
-              </span>
+              <span class="case__pass-stamp stamp stamp--ok" aria-hidden="true">零 bug 通过</span>
               <h2 class="case__pass-title">{t(lang, "case.no_issues")}</h2>
               <p class="case__pass-detail">{t(lang, "case.no_issues_detail")}</p>
               <p class="case__pass-meta mono tnum">
