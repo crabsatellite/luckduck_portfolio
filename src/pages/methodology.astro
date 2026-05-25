@@ -2,7 +2,6 @@
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import MethodologyTable from "~/components/MethodologyTable.astro";
 import PageHead from "~/components/PageHead.astro";
-import MarqueeDivider from "~/components/MarqueeDivider.astro";
 import { t } from "~/i18n/strings";
 
 const lang = "zh" as const;
@@ -14,14 +13,14 @@ const lang = "zh" as const;
       <PageHead
         lang={lang}
         mark="03"
-        kicker="method · 测试方法"
+        kicker={t(lang, "methods.kicker")}
         title={t(lang, "methods.title")}
         sub={t(lang, "methods.subtitle")}
+        deck={t(lang, "methods.deck")}
       />
       <MethodologyTable lang={lang} />
     </div>
   </article>
-  <MarqueeDivider text="方法 · 复现 · 多轮回归 · LUCK666DUCK" animated={true} size="sm" />
 </BaseLayout>
 
 <style>

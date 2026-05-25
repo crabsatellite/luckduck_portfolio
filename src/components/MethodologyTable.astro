@@ -1,4 +1,8 @@
 ---
+// Magazine-style "field guide" rendering of the 13 bug categories.
+// Each method becomes a numbered entry with its bug count rendered as
+// a giant italic accent numeral, a small Latin category tag in stamp
+// face, and a body description. The largest-count entries lead.
 import { t, type Lang } from "~/i18n/strings";
 import { methods, categoryCounts } from "~/lib/data";
 
@@ -6,96 +10,280 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 
 const counts = categoryCounts();
-const ordered = [...methods].sort((a, b) => (counts[b.category_id] || 0) - (counts[a.category_id] || 0));
+const ordered = [...methods].sort(
+  (a, b) => (counts[b.category_id] || 0) - (counts[a.category_id] || 0)
+);
+
+// crash is the only "high alert" category; tint its numeral differently
+const alertCategories = new Set(["crash"]);
 ---
 
-<section class="methods">
-  <div class="methods__list">
-    {ordered.map((m) => {
+<section class="taxon" aria-label="bug taxonomy">
+  <header class="taxon__intro">
+    <div class="taxon__intro-text">
+      <h2 class="taxon__intro-h">{t(lang, "methods.lead_h")}</h2>
+      <p class="taxon__intro-p">{t(lang, "methods.lead_p")}</p>
+    </div>
+    <figure class="taxon__quote" aria-label="house rule">
+      <blockquote class="pull-quote">
+        <span class="pull-quote__mark" aria-hidden="true">“</span>
+        {t(lang, "methods.quote")}
+        <span class="pull-quote__attr">{t(lang, "methods.quote_attr")}</span>
+      </blockquote>
+    </figure>
+  </header>
+
+  <ol class="taxon__list">
+    {ordered.map((m, i) => {
       const count = counts[m.category_id] || 0;
       const summary = lang === "zh" ? m.summary_zh : m.summary_en;
       const name = lang === "zh" ? m.name_zh : m.name_en;
+      const isAlert = alertCategories.has(m.category_id);
       return (
-        <article id={m.id} class="method">
-          <div class="method__head">
-            <h3 class="method__name h-section">{name}</h3>
-            <p class="method__id mono">{m.category_id}</p>
+        <li id={m.id} class={`taxon__entry ${isAlert ? "taxon__entry--alert" : ""}`}>
+          <div class="taxon__rail" aria-hidden="true">
+            <span class="taxon__idx mono tnum">№{String(i + 1).padStart(2, "0")}</span>
+            <span class={`taxon__count fancy-num ${isAlert ? "" : "fancy-num--accent"} mono tnum`}>
+              {count}
+            </span>
+            <span class="taxon__count-label">{t(lang, "methods.entry_n_label")}</span>
           </div>
-          <p class="method__summary">{summary}</p>
-          <p class="method__count-row">
-            <span class="method__count mono tnum">{count}</span>
-            <span class="method__count-label">{t(lang, "methods.col_count")}</span>
-          </p>
-        </article>
+          <div class="taxon__body">
+            <div class="taxon__head">
+              <h3 class="taxon__name">{name}</h3>
+              <span class="taxon__tag mono">
+                <span class="taxon__tag-label">{t(lang, "methods.method_id_label")}</span>
+                <span class="taxon__tag-id">{m.category_id}</span>
+              </span>
+            </div>
+            <p class="taxon__summary">{summary}</p>
+          </div>
+        </li>
       );
     })}
-  </div>
+  </ol>
 </section>
 
 <style>
-  .methods__list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
+  .taxon {
+    margin: 0 0 2rem 0;
   }
-  .method {
-    background: var(--bg);
-    padding: 1.3rem 1.4rem;
+
+  /* ---- intro: explanation + pull-quote --------------------- */
+  .taxon__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: clamp(1.6rem, 4vw, 3rem);
+    align-items: start;
+    padding: clamp(1.4rem, 3vw, 2rem) 0;
+    margin: 0 0 clamp(1.6rem, 3.5vw, 2.4rem) 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+  .taxon__intro-text { min-width: 0; }
+  .taxon__intro-h {
+    margin: 0 0 0.7rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.35rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  :lang(zh) .taxon__intro-h {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .taxon__intro-p {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.72;
+    max-width: 60ch;
+  }
+  :lang(zh) .taxon__intro-p {
+    font-family: var(--font-cjk);
+    line-height: 1.9;
+  }
+  .taxon__quote {
+    margin: 0;
+    padding-left: clamp(0.8rem, 2vw, 1.4rem);
+    border-left: 1px dotted var(--rule);
+  }
+
+  /* ---- list of entries ------------------------------------ */
+  .taxon__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 2px solid var(--ink);
+  }
+  .taxon__entry {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: clamp(1.4rem, 3vw, 2.4rem);
+    align-items: start;
+    padding: clamp(1.4rem, 3vw, 1.9rem) 0.4rem;
+    border-bottom: 1px dashed var(--rule);
+    position: relative;
+    transition: background 200ms ease;
+  }
+  .taxon__entry::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background 200ms ease;
+  }
+  .taxon__entry:hover {
+    background: color-mix(in oklch, var(--accent) 5%, transparent);
+  }
+  .taxon__entry:hover::before {
+    background: var(--accent);
+  }
+  .taxon__entry--alert::before { background: var(--alert); opacity: 0.4; }
+  .taxon__entry--alert:hover::before { background: var(--alert); opacity: 1; }
+
+  /* ---- rail: index + big number + label ------------------ */
+  .taxon__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: flex-start;
+    padding-left: 0.6rem;
+    padding-right: clamp(0.6rem, 1.6vw, 1rem);
+    border-right: 1px dotted var(--rule);
+  }
+  .taxon__idx {
+    font-family: var(--font-stamp);
+    color: var(--ink-mute);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    line-height: 1;
+  }
+  .taxon__count {
+    font-size: clamp(3rem, 5.6vw, 4.2rem);
+    line-height: 0.82;
+    color: var(--accent);
+  }
+  .taxon__entry--alert .taxon__count { color: var(--alert); }
+  .taxon__count-label {
+    font-family: var(--font-stamp);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    line-height: 1;
+  }
+  :lang(zh) .taxon__count-label {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.06em;
+    text-transform: none;
+  }
+
+  /* ---- body: head + summary ----------------------------- */
+  .taxon__body {
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
   }
-  .method__head {
+  .taxon__head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 0.8rem;
+    flex-wrap: wrap;
   }
-  .method__name {
-    font-size: var(--fs-h3);
+  .taxon__name {
     margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.45rem;
+    line-height: 1.2;
     color: var(--ink);
+    letter-spacing: -0.01em;
   }
-  .method__id {
-    font-size: 0.7rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.04em;
-    margin: 0;
-    flex-shrink: 0;
+  :lang(zh) .taxon__name {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
   }
-  .method__summary {
-    font-family: var(--font-sans);
-    color: var(--ink-soft);
-    font-size: var(--fs-meta);
-    line-height: 1.7;
-    margin: 0;
-    flex: 1;
-  }
-  :lang(zh) .method__summary { font-family: var(--font-cjk); line-height: 1.8; }
-  .method__count-row {
-    margin: 0;
-    display: flex;
+  .taxon__tag {
+    display: inline-flex;
     align-items: baseline;
     gap: 0.4rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--rule);
-  }
-  .method__count {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--accent);
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-  .method__count-label {
-    font-family: var(--font-sans);
+    padding: 0.18rem 0.55rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--ink-mute);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    line-height: 1.2;
+    white-space: nowrap;
   }
-  :lang(zh) .method__count-label { font-family: var(--font-cjk); letter-spacing: 0.06em; }
+  .taxon__tag-label {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-mute);
+    font-size: 0.65rem;
+  }
+  :lang(zh) .taxon__tag-label { text-transform: none; letter-spacing: 0; }
+  .taxon__tag-id {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .taxon__entry--alert .taxon__tag-id { color: var(--alert); }
+  .taxon__summary {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+  :lang(zh) .taxon__summary {
+    font-family: var(--font-cjk);
+    line-height: 1.9;
+  }
+
+  /* ---- responsive --------------------------------------- */
+  @media (max-width: 920px) {
+    .taxon__intro {
+      grid-template-columns: 1fr;
+    }
+    .taxon__quote {
+      padding-left: 0;
+      padding-top: 1rem;
+      border-left: none;
+      border-top: 1px dotted var(--rule);
+    }
+  }
+  @media (max-width: 640px) {
+    .taxon__entry {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+      padding: 1.2rem 0.4rem;
+    }
+    .taxon__rail {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 0.8rem;
+      border-right: none;
+      border-bottom: 1px dotted var(--rule);
+      padding-right: 0;
+      padding-bottom: 0.6rem;
+    }
+    .taxon__count { font-size: 2.4rem; }
+  }
 </style>
