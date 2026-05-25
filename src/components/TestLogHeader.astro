@@ -1,12 +1,8 @@
 ---
-// Feature-article masthead for a single case detail page.
-//
-// Inside Issue No.13, each tester log is its own feature. This
-// component renders the article's opening "splash": the publication
-// ribbon, a kicker + numeric mark, the mod name in italic serif at
-// display scale, the byline, a status pill row, and an oversized
-// bug-count counter pulled out to the right (or the 'clean pass'
-// marker when no bugs were filed).
+// Per-mod test-log header: kicker + log number on the left, mod
+// name as the italic-serif display title in the middle, oversized
+// bug-count counter (or clean-pass marker) on the right. Closed by
+// a thin diamond rule.
 import { t, type Lang } from "~/i18n/strings";
 import { modVersionMeta, modVersionMetaZh, type Mod } from "~/lib/data";
 import ModLogo from "~/components/ModLogo.astro";
@@ -27,11 +23,6 @@ const {
 const cnName = mod.name_zh.includes("/") ? mod.name_zh.split("/")[0].trim() : mod.name_zh;
 const showCn = cnName !== mod.name_en;
 const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
-const issueDate = new Date().toISOString().slice(0, 10);
-
-const ribbon = lang === "en"
-  ? `THE BATH-HOUSE ALMANAC · ISSUE №13 · TESTER LOG №${logNo} · ${issueDate}`
-  : `汤屋测试志 · 第 13 期 · 测试日志 №${logNo} · ${issueDate}`;
 
 const bugsLabel = hasNoIssues
   ? t(lang, "case.bugs_label_zero")
@@ -39,8 +30,6 @@ const bugsLabel = hasNoIssues
 ---
 
 <header class="tlh">
-  <p class="tlh__ribbon dateline">{ribbon}</p>
-
   <div class="tlh__grid">
     <!-- ===== Left rail: department mark + log number ====== -->
     <div class="tlh__rail" aria-hidden="true">
@@ -99,13 +88,6 @@ const bugsLabel = hasNoIssues
     padding: clamp(1.4rem, 3.4vw, 2.2rem) 0 clamp(0.9rem, 1.8vw, 1.4rem) 0;
     margin-bottom: clamp(1.4rem, 3vw, 2rem);
   }
-  .tlh__ribbon {
-    margin: 0 0 clamp(1rem, 2vw, 1.4rem) 0;
-    color: var(--ink-mute);
-    letter-spacing: 0.14em;
-    font-size: 0.86rem;
-  }
-  :lang(zh) .tlh__ribbon { letter-spacing: 0.06em; font-size: 0.9rem; }
 
   /* ---- Main grid ----------------------------------------- */
   .tlh__grid {

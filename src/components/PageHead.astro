@@ -1,13 +1,8 @@
 ---
-// Magazine-section masthead for every non-home page.
-//
-// Each page in this site is a "department" of the same publication
-// (The Bath-House Almanac · Issue №13). The PageHead is that
-// department's masthead — a small publication line at the top, a
-// HUGE italic-serif section numeral, the kicker reading 'DEPT 03 /
-// METHOD', the title in italic serif, and the deck below it.
-// A perforated tear-band closes the head, echoing the section-break
-// vocabulary used on the home page.
+// Section head for every non-home page. Small kicker + a big italic
+// section numeral in the rail, italic-serif title and optional deck
+// in the body. Closed by a thin diamond-bookended rule. Just a page
+// header — no publication / issue framing.
 import { t, type Lang } from "~/i18n/strings";
 import MascotDuck from "~/components/MascotDuck.astro";
 
@@ -15,32 +10,22 @@ interface Props {
   lang: Lang;
   /** Two-character marker, e.g. "02", "№4". */
   mark: string;
-  /** Small label that sits next to the marker, e.g. "cases · 测试日志". */
+  /** Small label next to the marker, e.g. "cases · tester logs". */
   kicker: string;
   title: string;
   sub?: string;
-  /** Optional ribbon string above the title, e.g. "BATH-HOUSE ALMANAC · ISSUE №13". */
-  ribbon?: string;
   /** When true, render the mascot in the rail (used on the about page). */
   showMascot?: boolean;
-  /** Optional editorial 'deck' / standfirst paragraph between sub and slot. */
+  /** Optional italic 'deck' / standfirst paragraph between sub and slot. */
   deck?: string;
 }
 const {
   lang, mark, kicker, title, sub,
-  ribbon, showMascot = false, deck,
+  showMascot = false, deck,
 } = Astro.props;
-
-const issueDate = new Date().toISOString().slice(0, 10);
-const defaultRibbon = lang === "en"
-  ? `THE BATH-HOUSE ALMANAC · ISSUE №13 · ${issueDate}`
-  : `汤屋测试志 · 第 13 期 · ${issueDate}`;
-const ribbonText = ribbon ?? defaultRibbon;
 ---
 
 <header class="ph" lang={lang} data-reveal>
-  <p class="ph__ribbon dateline">{ribbonText}</p>
-
   <div class="ph__grid">
     <div class="ph__rail" aria-hidden="true">
       <span class="ph__kicker">{kicker}</span>
@@ -72,15 +57,6 @@ const ribbonText = ribbon ?? defaultRibbon;
     margin-bottom: clamp(1.4rem, 3.5vw, 2.4rem);
     position: relative;
   }
-
-  /* ---- publication ribbon: dateline-style ----------------- */
-  .ph__ribbon {
-    margin: 0 0 clamp(1rem, 2vw, 1.4rem) 0;
-    color: var(--ink-mute);
-    letter-spacing: 0.16em;
-    font-size: 0.88rem;
-  }
-  :lang(zh) .ph__ribbon { letter-spacing: 0.06em; font-size: 0.92rem; }
 
   /* ---- main grid: rail | body --------------------------- */
   .ph__grid {
