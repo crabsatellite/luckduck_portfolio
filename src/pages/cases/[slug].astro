@@ -4,7 +4,6 @@ import TestLogHeader from "~/components/TestLogHeader.astro";
 import TestLog from "~/components/TestLog.astro";
 import BugLedger from "~/components/BugLedger.astro";
 import MembersPanel from "~/components/MembersPanel.astro";
-import MarqueeDivider from "~/components/MarqueeDivider.astro";
 import {
   mods, bugsForMod, isCredited, hasRegression, hasNoIssues,
   logNumber, getMcmodEntry, teamForMod, featuredBug,
@@ -67,7 +66,10 @@ const langPrefix = base;
 
           {noIssues ? (
             <section class="case__pass">
-              <h2 class="case__pass-title h-section">{t(lang, "case.no_issues")}</h2>
+              <span class="case__pass-stamp stamp stamp--ok" aria-hidden="true">
+                {lang === "en" ? "clean pass" : "零 bug 通过"}
+              </span>
+              <h2 class="case__pass-title">{t(lang, "case.no_issues")}</h2>
               <p class="case__pass-detail">{t(lang, "case.no_issues_detail")}</p>
               <p class="case__pass-meta mono tnum">
                 {mod.versions.join(" / ")} · 1 round
@@ -77,7 +79,7 @@ const langPrefix = base;
             <BugLedger bugs={bugs} featured={featured} lang={lang} />
           )}
 
-          <section class="case__legend" aria-labelledby="legend-heading">
+          <section class="case__legend ledger-card" aria-labelledby="legend-heading">
             <h2 id="legend-heading" class="case__legend-h">{t(lang, "case.legend_title")}</h2>
             <p class="case__legend-intro">{t(lang, "case.legend_intro")}</p>
             <ul class="case__legend-list">
@@ -91,8 +93,8 @@ const langPrefix = base;
 
         <aside class="case__side">
           {breakdown.length > 0 && (
-            <div class="case__panel">
-              <h3 class="case__panel-h">{t(lang, "case.cat_breakdown")}</h3>
+            <div class="case__panel ledger-card">
+              <p class="case__panel-h dateline">{t(lang, "case.sidebar_breakdown_h")}</p>
               <ul class="case__breakdown">
                 {breakdown.map(({ cat, count }) => {
                   const m = methodFor(cat);
@@ -111,8 +113,8 @@ const langPrefix = base;
           )}
 
           {mod.depth_signals.length > 0 && (
-            <div class="case__panel">
-              <h3 class="case__panel-h">{t(lang, "case.depth_signals")}</h3>
+            <div class="case__panel ledger-card">
+              <p class="case__panel-h dateline">{t(lang, "case.sidebar_signals_h")}</p>
               <ul class="case__signals">
                 {mod.depth_signals.map((s) => <li><span class="chip">{s}</span></li>)}
               </ul>
@@ -120,8 +122,8 @@ const langPrefix = base;
           )}
 
           {mcmod && (
-            <div class="case__panel">
-              <h3 class="case__panel-h">mcmod.cn</h3>
+            <div class="case__panel ledger-card">
+              <p class="case__panel-h dateline">{t(lang, "case.sidebar_mcmod_h")}</p>
               <dl class="case__dl">
                 {mcmod.loader && (<><dt>loader</dt><dd class="mono">{mcmod.loader}</dd></>)}
                 {mcmod.status && (<><dt>status</dt><dd>{mcmod.status}</dd></>)}
@@ -130,8 +132,8 @@ const langPrefix = base;
             </div>
           )}
 
-          <div class="case__panel">
-            <h3 class="case__panel-h">{t(lang, "case.links")}</h3>
+          <div class="case__panel ledger-card">
+            <p class="case__panel-h dateline">{t(lang, "case.sidebar_links_h")}</p>
             <ul class="case__links">
               {mod.mcmod_url ? (
                 <li>
@@ -148,27 +150,32 @@ const langPrefix = base;
       </div>
     </div>
   </article>
-  <MarqueeDivider text={`案例 №${logNo} · ${mod.id.toUpperCase()} · LUCK666DUCK · 测试员账本`} animated={true} size="sm" />
 </BaseLayout>
 
 <style>
-  .case { padding: 0 0 2.4rem 0; }
+  .case { padding: 0 0 3rem 0; }
   .case__layout {
     display: grid;
-    grid-template-columns: 9fr 3fr;
-    gap: 2.4rem;
-    margin-top: 1.4rem;
+    grid-template-columns: minmax(0, 9fr) minmax(280px, 3.2fr);
+    gap: clamp(1.8rem, 3.5vw, 2.6rem);
+    margin-top: clamp(1.2rem, 2.5vw, 1.8rem);
+    align-items: start;
   }
   @media (max-width: 980px) {
     .case__layout { grid-template-columns: 1fr; }
   }
   .case__main { min-width: 0; }
+
+  /* ---- scene preview ----------------------------------- */
   .case__scene {
-    margin: 1.2rem 0 1.4rem 0;
+    margin: 1.2rem 0 1.6rem 0;
     border: 1px solid var(--rule);
     border-radius: var(--radius-lg);
     overflow: hidden;
     background: var(--bg-soft);
+    box-shadow:
+      0 1px 0 color-mix(in oklch, var(--accent-deep) 14%, transparent),
+      0 18px 28px -22px rgba(0, 0, 0, 0.55);
   }
   .case__scene img {
     display: block;
@@ -179,31 +186,50 @@ const langPrefix = base;
   }
   .case__scene figcaption {
     margin: 0;
-    padding: 0.55rem 0.8rem;
+    padding: 0.65rem 0.95rem;
     color: var(--ink-mute);
-    font-family: var(--font-cjk);
-    font-size: 0.78rem;
+    font-family: var(--font-stamp);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     border-top: 1px solid var(--rule);
+    background: color-mix(in oklch, var(--bg) 80%, transparent);
   }
-  .case__side { display: flex; flex-direction: column; gap: 1.2rem; }
+  :lang(zh) .case__scene figcaption {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.06em;
+    text-transform: none;
+  }
+
+  /* ---- sidebar ----------------------------------------- */
+  .case__side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    position: sticky;
+    top: 5rem;
+  }
+  @media (max-width: 980px) {
+    .case__side { position: static; }
+  }
   .case__panel {
-    border: 1px solid var(--rule);
-    background: var(--bg-soft);
-    border-radius: 6px;
-    padding: 1rem 1.2rem;
+    padding: 1.05rem 1.2rem 1.15rem 1.2rem;
+    border-radius: var(--radius-lg);
   }
   .case__panel-h {
-    font-family: var(--font-sans);
-    font-size: 0.74rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
     margin: 0 0 0.7rem 0;
-    font-weight: 600;
+    color: var(--accent);
+    font-size: 0.86rem;
+    letter-spacing: 0.18em;
+    line-height: 1;
   }
-  :lang(zh) .case__panel-h { font-family: var(--font-cjk); letter-spacing: 0.1em; }
+  :lang(zh) .case__panel-h { letter-spacing: 0.06em; }
+
+  /* ---- depth signals ----------------------------------- */
   .case__signals { list-style: none; padding: 0; margin: 0; }
   .case__signals li { display: inline-block; margin: 0.16rem 0.2rem 0.16rem 0; }
+
+  /* ---- category breakdown ------------------------------ */
   .case__breakdown { list-style: none; padding: 0; margin: 0; }
   .case__breakdown li { border-bottom: 1px dotted var(--rule); }
   .case__breakdown li:last-child { border-bottom: 0; }
@@ -211,36 +237,56 @@ const langPrefix = base;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: 0.45rem 0;
+    padding: 0.55rem 0;
     text-decoration: none;
     color: var(--ink-soft);
     font-family: var(--font-sans);
-    font-size: 0.85rem;
+    font-size: 0.92rem;
+    transition: color 140ms ease, padding-left 140ms ease;
   }
   :lang(zh) .case__breakdown-row { font-family: var(--font-cjk); }
-  .case__breakdown-row:hover { color: var(--accent); }
-  .case__breakdown-n { color: var(--accent); font-weight: 700; font-size: 0.95rem; }
+  .case__breakdown-row:hover {
+    color: var(--accent);
+    padding-left: 0.3rem;
+  }
+  .case__breakdown-n {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1rem;
+    font-family: var(--font-mono);
+  }
+
+  /* ---- mcmod definition list ---------------------------- */
   .case__dl {
     display: grid;
     grid-template-columns: 5rem 1fr;
-    gap: 0.4rem 0.8rem;
+    gap: 0.45rem 0.8rem;
     margin: 0;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
   }
   .case__dl dt {
     color: var(--ink-mute);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.1em;
     font-size: 0.72rem;
     text-transform: uppercase;
-    font-family: var(--font-sans);
+    font-family: var(--font-stamp);
+    line-height: 1.5;
+  }
+  :lang(zh) .case__dl dt {
+    font-family: var(--font-stamp), var(--font-cjk);
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-size: 0.78rem;
   }
   .case__dl dd { margin: 0; color: var(--ink); }
   :lang(zh) .case__dl dd { font-family: var(--font-cjk); }
+
+  /* ---- links list -------------------------------------- */
   .case__links { list-style: none; margin: 0; padding: 0; }
-  .case__links li { margin-bottom: 0.4rem; }
+  .case__links li { margin-bottom: 0.45rem; }
   .case__links a {
     font-family: var(--font-sans);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--ink);
     text-decoration: none;
     border-bottom: 1px solid var(--rule);
@@ -253,62 +299,106 @@ const langPrefix = base;
   }
   .case__links-empty {
     color: var(--ink-mute);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     font-family: var(--font-sans);
   }
   :lang(zh) .case__links-empty { font-family: var(--font-cjk); }
 
+  /* ---- clean-pass banner -------------------------------- */
   .case__pass {
-    border: 1px solid var(--rule);
-    border-left: 4px solid var(--ok);
-    border-radius: 6px;
-    background: var(--bg-soft);
-    padding: 1.4rem 1.6rem;
-    margin: 1.6rem 0;
+    position: relative;
+    border: 1px solid color-mix(in oklch, var(--ok) 35%, var(--rule));
+    border-left: 5px solid var(--ok);
+    border-radius: var(--radius-lg);
+    background:
+      linear-gradient(180deg,
+        color-mix(in oklch, var(--ok) 8%, var(--bg-soft)) 0%,
+        var(--bg-soft) 100%);
+    padding: 1.8rem 1.8rem 1.6rem 1.8rem;
+    margin: 1.6rem 0 2rem 0;
+    overflow: hidden;
+  }
+  .case__pass-stamp {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    transform: rotate(-6deg);
+    box-shadow: 3px 3px 0 color-mix(in oklch, var(--ok-deep) 60%, transparent);
   }
   .case__pass-title {
-    color: var(--ok);
-    margin: 0 0 0.4rem 0;
-  }
-  .case__pass-detail { color: var(--ink); margin: 0 0 0.4rem 0; }
-  :lang(zh) .case__pass-detail { line-height: 1.75; }
-  .case__pass-meta { color: var(--ink-mute); font-size: 0.85rem; }
-
-  .case__legend { margin: 1.6rem 0; }
-  .case__legend-h {
-    font-family: var(--font-sans);
-    font-size: 0.74rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
     margin: 0 0 0.5rem 0;
-    font-weight: 600;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    color: var(--ok);
+    font-size: clamp(1.4rem, 3vw, 1.85rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
   }
-  :lang(zh) .case__legend-h { font-family: var(--font-cjk); letter-spacing: 0.1em; }
+  :lang(zh) .case__pass-title {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .case__pass-detail {
+    color: var(--ink);
+    margin: 0 0 0.5rem 0;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 60ch;
+  }
+  :lang(zh) .case__pass-detail { font-family: var(--font-cjk); line-height: 1.85; }
+  .case__pass-meta {
+    color: var(--ink-mute);
+    font-size: 0.85rem;
+  }
+
+  /* ---- legend ------------------------------------------- */
+  .case__legend {
+    margin: 1.8rem 0 0 0;
+    padding: 1.3rem 1.5rem 1.45rem 1.5rem;
+    border-radius: var(--radius-lg);
+  }
+  .case__legend-h {
+    margin: 0 0 0.55rem 0;
+    font-family: var(--font-stamp);
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.88rem;
+    line-height: 1;
+  }
+  :lang(zh) .case__legend-h {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.06em;
+    text-transform: none;
+  }
   .case__legend-intro {
     font-family: var(--font-sans);
-    font-size: 0.85rem;
+    font-size: 0.92rem;
     color: var(--ink-soft);
-    line-height: 1.6;
-    margin: 0 0 0.85rem 0;
+    line-height: 1.7;
+    margin: 0 0 1rem 0;
     max-width: 64ch;
   }
-  :lang(zh) .case__legend-intro { font-family: var(--font-cjk); line-height: 1.75; }
+  :lang(zh) .case__legend-intro { font-family: var(--font-cjk); line-height: 1.85; }
   .case__legend-list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.55rem;
     color: var(--ink-soft);
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     font-family: var(--font-sans);
   }
   :lang(zh) .case__legend-list { font-family: var(--font-cjk); }
   .case__legend-list li {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.7rem;
   }
 </style>

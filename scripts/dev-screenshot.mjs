@@ -45,7 +45,8 @@ const browser = await chromium.launch();
 
 // section mode: take a hi-res clip of a single selector on one page
 if (named.section) {
-  const url = named.lang === 'en' ? `${URL_BASE}/en/` : (named.url || `${URL_BASE}/`);
+  const defaultUrl = named.lang === 'en' ? `${URL_BASE}/en/` : `${URL_BASE}/`;
+  const url = named.url || defaultUrl;
   const ctx = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     deviceScaleFactor: 2,
