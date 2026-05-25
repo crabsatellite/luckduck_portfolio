@@ -204,15 +204,24 @@ export const mergedPRCount = (): number =>
 const normalizeProjectName = (value: string): string =>
   value.toLowerCase().replace(/[^a-z0-9]/g, "");
 
-const CREDIT_PROJECT_KEYS: Record<string, string> = {
-  hotbath: "hotbath",
-  instantworldmirror: "instantworldmirror",
+// Pull the CurseForge slug out of a mod URL like
+// `https://www.curseforge.com/minecraft/mc-mods/<slug>`. This is the
+// same key the daily refresh script uses when writing remote-metrics,
+// so any new tester credit added to profile.json resolves
+// automatically as long as it has a valid mod_url.
+const curseforgeKeyFromUrl = (url: string | null | undefined): string | null => {
+  if (!url) return null;
+  const match = url.match(/curseforge\.com\/minecraft\/mc-mods\/([^/?#]+)/i);
+  return match ? normalizeProjectName(match[1]) : null;
 };
 
 export const remoteProjectForCredit = (credit: TesterCredit): RemoteCurseForgeProject | null => {
-  const key = CREDIT_PROJECT_KEYS[normalizeProjectName(credit.mod)];
-  if (!key) return null;
-  return remoteMetrics.curseforge.projects[key] || null;
+  const projects = remoteMetrics.curseforge.projects;
+  const fromUrl = curseforgeKeyFromUrl(credit.mod_url);
+  if (fromUrl && projects[fromUrl]) return projects[fromUrl];
+  const fromName = normalizeProjectName(credit.mod);
+  if (fromName && projects[fromName]) return projects[fromName];
+  return null;
 };
 
 export const creditDownloads = (credit: TesterCredit): number => {
@@ -235,7 +244,7 @@ export const creditDownloadsCompactLabel = (credit: TesterCredit): string =>
 
 export const hotBathDownloadsCompactLabel = (): string => {
   const credit = profile.curseforge.tester_credits.find(
-    (c) => CREDIT_PROJECT_KEYS[normalizeProjectName(c.mod)] === "hotbath"
+    (c) => curseforgeKeyFromUrl(c.mod_url) === "hotbath"
   );
   return credit ? creditDownloadsCompactLabel(credit) : "1M+ DL";
 };

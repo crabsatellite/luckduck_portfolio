@@ -6,34 +6,75 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = join(__dirname, "..");
 const OUT = join(ROOT, "data", "remote-metrics.json");
+const PROFILE_PATH = join(ROOT, "data", "profile.json");
 
 const GITHUB_USER = "LUCK666DUCK";
-const CURSEFORGE_PROJECTS = [
-  {
-    key: "hotbath",
-    id: 859412,
-    slug: "hotbath",
-    title: "Hot Bath",
-    url: "https://www.curseforge.com/minecraft/mc-mods/hotbath",
-  },
-  {
-    key: "instantworldmirror",
-    id: 1449670,
-    slug: "instantworldmirror",
-    title: "InstantWorldMirror",
-    url: "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
-  },
-];
 
-// PR-mode credit verification. Each entry is a PR whose body credits
-// LUCK666DUCK as Tester; daily refresh checks that the PR is still
-// merged so the "verified" badge cannot lie.
-const PR_CREDITS = [
-  { repo: "AlexModGuy/AlexsCaves", number: 1693 },
-  { repo: "AlexModGuy/AlexsCaves", number: 1698 },
-  { repo: "AlexModGuy/AlexsMobs", number: 2315 },
-  { repo: "AlexModGuy/AlexsMobs", number: 2317 },
-];
+// Optional numeric-ID overrides for CurseForge projects. cfwidget will
+// happily resolve `minecraft/mc-mods/<slug>`, but where we already know
+// a project's stable numeric ID we prefer to use it (more durable if a
+// project is ever renamed). Add a row here when you have the ID; not
+// required for new credits to start working.
+const CURSEFORGE_ID_OVERRIDES = {
+  hotbath: 859412,
+  instantworldmirror: 1449670,
+};
+
+function normalizeProjectKey(value) {
+  return String(value || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function curseforgeSlugFromUrl(url) {
+  const match = String(url || "").match(
+    /curseforge\.com\/minecraft\/mc-mods\/([^/?#]+)/i
+  );
+  return match ? match[1].toLowerCase() : null;
+}
+
+// Derive the list of CurseForge projects to refresh straight from
+// profile.json's `curseforge.tester_credits`. When you add a new
+// tester credit there, the next daily run picks it up automatically —
+// no second edit in this script.
+function deriveCurseForgeProjects(profile) {
+  const credits = profile?.curseforge?.tester_credits ?? [];
+  const out = [];
+  const seen = new Set();
+  for (const credit of credits) {
+    const slug = curseforgeSlugFromUrl(credit?.mod_url);
+    if (!slug) continue;
+    const key = normalizeProjectKey(slug);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({
+      key,
+      id: CURSEFORGE_ID_OVERRIDES[key] ?? null,
+      slug,
+      title: credit?.mod || slug,
+      url: credit?.mod_url,
+    });
+  }
+  return out;
+}
+
+// Derive the list of PR-mode credits to verify straight from
+// profile.json's `pr_credits[].prs[]`. Daily refresh checks that
+// each PR is still merged so the "verified" badge cannot lie.
+function derivePRCredits(profile) {
+  const credits = profile?.pr_credits ?? [];
+  const out = [];
+  const seen = new Set();
+  for (const credit of credits) {
+    if (!credit?.repo) continue;
+    for (const pr of credit.prs ?? []) {
+      if (typeof pr?.number !== "number") continue;
+      const key = `${credit.repo}#${pr.number}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ repo: credit.repo, number: pr.number });
+    }
+  }
+  return out;
+}
 
 const GITHUB_HEADERS = {
   Accept: "application/vnd.github+json",
@@ -73,7 +114,10 @@ async function fetchJson(url, headers) {
 
 async function fetchCurseForgeProject(project, previous) {
   try {
-    const data = await fetchJson(`https://api.cfwidget.com/${project.id}`, {
+    const endpoint = project.id
+      ? `https://api.cfwidget.com/${project.id}`
+      : `https://api.cfwidget.com/minecraft/mc-mods/${project.slug}`;
+    const data = await fetchJson(endpoint, {
       Accept: "application/json",
       "User-Agent": "luckduck-portfolio-metrics",
     });
@@ -83,7 +127,7 @@ async function fetchCurseForgeProject(project, previous) {
     }
     return {
       key: project.key,
-      id: project.id,
+      id: project.id ?? data.id ?? null,
       slug: project.slug,
       title: data.title || project.title,
       url: project.url,
@@ -255,10 +299,17 @@ async function fetchGitHub(previous) {
 
 async function main() {
   const previous = await readExisting();
+  const profile = JSON.parse(await readFile(PROFILE_PATH, "utf8"));
+  const curseforgeProjects = deriveCurseForgeProjects(profile);
+  const prCreditEntries = derivePRCredits(profile);
   const fetchedAt = new Date().toISOString();
 
+  console.log(
+    `[remote-metrics] tracking ${curseforgeProjects.length} CurseForge project(s) + ${prCreditEntries.length} PR credit(s) from data/profile.json`
+  );
+
   const projects = {};
-  for (const project of CURSEFORGE_PROJECTS) {
+  for (const project of curseforgeProjects) {
     projects[project.key] = await fetchCurseForgeProject(project, previous);
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
@@ -271,7 +322,7 @@ async function main() {
       : "ok";
 
   const prCredits = {};
-  for (const entry of PR_CREDITS) {
+  for (const entry of prCreditEntries) {
     const [key, value] = await fetchPRCredit(entry, previous);
     prCredits[key] = value;
     await new Promise((resolve) => setTimeout(resolve, 250));
