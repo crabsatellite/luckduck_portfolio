@@ -77,6 +77,7 @@ export type RemoteMetrics = {
     curseforge: { status: string; method: string };
     github: { status: string; method: string; user: string; error?: { message: string; at: string } };
     pr_credits?: { status: string; method: string };
+    tester_credits_live?: { status: string; method: string };
   };
   curseforge: {
     projects: Record<string, RemoteCurseForgeProject>;
@@ -102,6 +103,26 @@ export type RemoteMetrics = {
     };
   };
   pr_credits?: Record<string, RemotePRCreditPR>;
+  tester_credits_live?: Record<string, RemoteTesterLive>;
+};
+
+// Daily Wayback verification for a single CurseForge tester credit.
+// Written by scripts/update-remote-metrics.mjs after probing
+// archive.org for the closest snapshot of the mod page and checking
+// that the user's id + Tester role still co-occur in the rendered
+// member panel payload.
+export type RemoteTesterLive = {
+  mod_url: string | null;
+  mod: string | null;
+  verified: boolean;
+  verified_role: string | null;
+  basis: "id+role" | "name+role" | "name-only" | "absent" | null;
+  snapshot_url: string | null;
+  snapshot_at: string | null;
+  status: "ok" | "unverified" | "missing" | "stale" | "error" | "skipped";
+  reason?: string;
+  checked_at: string;
+  error?: { message: string; at: string };
 };
 
 export type RemotePRCreditPR = {
@@ -260,6 +281,39 @@ const modNameKeys = (m: Mod) =>
 
 export const isCredited = (m: Mod): boolean =>
   modNameKeys(m).some((k) => creditedSet.has(k));
+
+// Wayback live-verification helpers. The case page can use these to
+// render "verified · YYYY-MM-DD" alongside the static badge so the
+// reader sees a real, dated proof rather than a months-old curation.
+const liveTesterMap = (): Record<string, RemoteTesterLive> =>
+  remoteMetrics.tester_credits_live ?? {};
+
+export const liveTesterForCredit = (credit: TesterCredit): RemoteTesterLive | null => {
+  const key = curseforgeKeyFromUrl(credit.mod_url);
+  if (!key) return null;
+  return liveTesterMap()[key] ?? null;
+};
+
+const creditsForMod = (mod: Mod): TesterCredit[] => {
+  const keys = new Set(modNameKeys(mod));
+  return profile.curseforge.tester_credits.filter((c) =>
+    keys.has(c.mod.toLowerCase().replace(/\s+/g, ""))
+  );
+};
+
+export const liveTesterForMod = (mod: Mod): RemoteTesterLive | null => {
+  for (const credit of creditsForMod(mod)) {
+    const live = liveTesterForCredit(credit);
+    if (live) return live;
+  }
+  return null;
+};
+
+export const formatVerifiedDate = (iso: string | null | undefined): string | null => {
+  if (!iso) return null;
+  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[1]}-${m[2]}-${m[3]}` : null;
+};
 
 export const getMcmodEntry = (m: Mod) => {
   const slugMap: Record<string, string> = {

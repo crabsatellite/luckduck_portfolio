@@ -168,6 +168,9 @@ export const STRINGS = {
 
     "credited.badge": "verified tester",
     "credited.label": "公开署名",
+    "credited.live_verified_prefix": "Wayback 已验证 ·",
+    "credited.live_unverified": "成员页待刷新",
+    "credited.live_missing": "暂无快照",
     "regression.label": "多轮回归",
     "noissues.label": "零 bug 通过",
 
@@ -394,6 +397,9 @@ export const STRINGS = {
 
     "credited.badge": "verified tester",
     "credited.label": "publicly credited",
+    "credited.live_verified_prefix": "verified via Wayback ·",
+    "credited.live_unverified": "member panel pending re-check",
+    "credited.live_missing": "no snapshot yet",
     "regression.label": "regression rounds",
     "noissues.label": "zero-bug pass",
 

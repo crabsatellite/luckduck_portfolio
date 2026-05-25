@@ -229,6 +229,157 @@ async function fetchPRCredit(entry, previous) {
   }
 }
 
+// ---- Wayback-based tester-credit verification ---------------------
+//
+// CurseForge's mod pages are Cloudflare-protected so we cannot fetch
+// the live Members panel from CI. The closest stable, CI-accessible
+// proxy is the Internet Archive's Wayback Machine, which already has
+// the rendered HTML cached including the Next.js __next_f.push
+// payload that lists every team member with their role.
+//
+// Strategy: for each entry in profile.curseforge.tester_credits,
+// 1) ask archive.org which snapshot is closest,
+// 2) fetch that snapshot's HTML,
+// 3) prove that the user's id + Tester role co-occur in the payload,
+// 4) write the result into remote-metrics.json so the UI can render
+//    "verified · <snapshot date>" instead of relying on a months-old
+//    static curation.
+
+function escapeRegex(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// CurseForge serves its team list inside a Next.js __next_f.push()
+// payload — JSON whose quotes are escaped twice (HTML attribute → JS
+// string → JSON), so a strict `"role":"Tester"` regex won't match.
+// Instead we just check proximity: id (or name) and the literal word
+// "Tester" appearing within a tight window of one another. The
+// member-panel block clusters those tokens far closer than any
+// coincidental usage elsewhere on the page.
+function verifyMembershipInHtml(html, expectedMemberId, expectedName, expectedRole) {
+  const role = escapeRegex(expectedRole || "Tester");
+  const PROXIMITY = 250;
+
+  if (expectedMemberId !== null && expectedMemberId !== undefined) {
+    const id = escapeRegex(expectedMemberId);
+    const idAndRole = new RegExp(
+      `(?:${id}[\\s\\S]{0,${PROXIMITY}}?${role}|${role}[\\s\\S]{0,${PROXIMITY}}?${id})`
+    );
+    if (idAndRole.test(html)) {
+      return { verified: true, basis: "id+role" };
+    }
+  }
+
+  if (expectedName) {
+    const name = escapeRegex(expectedName);
+    const nameAndRole = new RegExp(
+      `(?:${name}[\\s\\S]{0,${PROXIMITY}}?${role}|${role}[\\s\\S]{0,${PROXIMITY}}?${name})`
+    );
+    if (nameAndRole.test(html)) {
+      return { verified: true, basis: "name+role" };
+    }
+    if (new RegExp(name).test(html)) {
+      return { verified: false, basis: "name-only" };
+    }
+  }
+  return { verified: false, basis: "absent" };
+}
+
+function parseWaybackTimestamp(ts) {
+  if (!ts || String(ts).length < 14) return null;
+  const s = String(ts);
+  return `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}T${s.slice(8, 10)}:${s.slice(10, 12)}:${s.slice(12, 14)}Z`;
+}
+
+async function fetchText(url, headers = {}) {
+  const response = await fetch(url, {
+    headers: { "User-Agent": "luckduck-portfolio-metrics", ...headers },
+  });
+  const text = await response.text();
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${text.slice(0, 200)}`);
+  }
+  return text;
+}
+
+async function fetchWaybackVerification(credit, previousLive) {
+  const modUrl = credit?.mod_url;
+  const checkedAt = new Date().toISOString();
+  if (!modUrl) {
+    return {
+      mod_url: null,
+      mod: credit?.mod ?? null,
+      verified: false,
+      verified_role: null,
+      basis: null,
+      snapshot_url: null,
+      snapshot_at: null,
+      status: "skipped",
+      reason: "no_mod_url",
+      checked_at: checkedAt,
+    };
+  }
+  const expectedRole = credit?.role || "Tester";
+  const expectedId = credit?.verbatim_member_entry?.id ?? null;
+  const expectedName = credit?.verbatim_member_entry?.name || GITHUB_USER;
+  try {
+    const availUrl = `https://archive.org/wayback/available?url=${encodeURIComponent(modUrl)}`;
+    const avail = await fetchJson(availUrl, {
+      Accept: "application/json",
+      "User-Agent": "luckduck-portfolio-metrics",
+    });
+    const snapshot = avail?.archived_snapshots?.closest;
+    if (!snapshot || !snapshot.url || snapshot.available !== true) {
+      return {
+        mod_url: modUrl,
+        mod: credit?.mod ?? null,
+        verified: false,
+        verified_role: null,
+        basis: null,
+        snapshot_url: null,
+        snapshot_at: null,
+        status: "missing",
+        checked_at: checkedAt,
+      };
+    }
+    const html = await fetchText(snapshot.url);
+    const result = verifyMembershipInHtml(
+      html,
+      expectedId,
+      expectedName,
+      expectedRole
+    );
+    return {
+      mod_url: modUrl,
+      mod: credit?.mod ?? null,
+      verified: result.verified,
+      verified_role: result.verified ? expectedRole : null,
+      basis: result.basis,
+      snapshot_url: snapshot.url.replace(/^http:/, "https:"),
+      snapshot_at: parseWaybackTimestamp(snapshot.timestamp),
+      status: result.verified ? "ok" : "unverified",
+      checked_at: checkedAt,
+    };
+  } catch (error) {
+    const fallback = previousLive?.[curseforgeSlugFromUrl(modUrl) || modUrl];
+    if (fallback) {
+      return { ...fallback, status: "stale", error: errorPayload(error), checked_at: checkedAt };
+    }
+    return {
+      mod_url: modUrl,
+      mod: credit?.mod ?? null,
+      verified: false,
+      verified_role: null,
+      basis: null,
+      snapshot_url: null,
+      snapshot_at: null,
+      status: "error",
+      error: errorPayload(error),
+      checked_at: checkedAt,
+    };
+  }
+}
+
 async function fetchPublicEvents() {
   const params = new URLSearchParams({ per_page: "10" });
   const data = await fetchJson(
@@ -333,6 +484,33 @@ async function main() {
       ? "stale"
       : "ok";
 
+  // CurseForge tester credits → Wayback membership verification.
+  // We loop over the same source-of-truth list (profile.json) and
+  // emit a mod_url-keyed record per credit.
+  const testerCreditsLive = {};
+  const testerCredits = profile?.curseforge?.tester_credits ?? [];
+  for (const credit of testerCredits) {
+    if (!credit?.mod_url) continue;
+    const slug = curseforgeSlugFromUrl(credit.mod_url);
+    const liveKey = slug ? normalizeProjectKey(slug) : credit.mod_url;
+    testerCreditsLive[liveKey] = await fetchWaybackVerification(
+      credit,
+      previous?.tester_credits_live
+    );
+    // Be polite to archive.org: 1.5s between snapshots is well below
+    // their published rate ceiling and small enough to keep the
+    // workflow fast even with a dozen credits.
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+  }
+  const liveValues = Object.values(testerCreditsLive);
+  const testerCreditsLiveStatus = liveValues.some((t) => t.status === "error")
+    ? "partial"
+    : liveValues.some((t) => t.status === "missing" || t.status === "stale" || t.status === "unverified")
+      ? "stale"
+      : liveValues.length === 0
+        ? "missing"
+        : "ok";
+
   const payload = {
     schema: 2,
     fetched_at: fetchedAt,
@@ -351,10 +529,15 @@ async function main() {
         status: prCreditsStatus,
         method: "repos/.../pulls/:number",
       },
+      tester_credits_live: {
+        status: testerCreditsLiveStatus,
+        method: "wayback",
+      },
     },
     curseforge: { projects },
     github: github.data,
     pr_credits: prCredits,
+    tester_credits_live: testerCreditsLive,
   };
 
   await writeFile(OUT, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
@@ -367,6 +550,13 @@ async function main() {
     console.log(
       `[remote-metrics] ${pr.repo}#${pr.number}: ${pr.state}${pr.merged ? " (merged)" : ""} (${pr.status})`
     );
+  }
+  for (const live of Object.values(testerCreditsLive)) {
+    const date = live.snapshot_at ? live.snapshot_at.slice(0, 10) : "no snapshot";
+    const verdict = live.verified
+      ? `verified as ${live.verified_role || "?"} via ${live.basis || "?"}`
+      : `unverified (${live.basis || live.status})`;
+    console.log(`[remote-metrics] tester ${live.mod}: ${verdict} (${date})`);
   }
 }
 

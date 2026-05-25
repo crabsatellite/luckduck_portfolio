@@ -4,7 +4,13 @@
 // bug-count counter (or clean-pass marker) on the right. Closed by
 // a thin diamond rule.
 import { t, type Lang } from "~/i18n/strings";
-import { modVersionMeta, modVersionMetaZh, type Mod } from "~/lib/data";
+import {
+  formatVerifiedDate,
+  liveTesterForMod,
+  modVersionMeta,
+  modVersionMetaZh,
+  type Mod,
+} from "~/lib/data";
 import ModLogo from "~/components/ModLogo.astro";
 
 interface Props {
@@ -27,6 +33,30 @@ const versionLine = lang === "zh" ? modVersionMetaZh(mod) : modVersionMeta(mod);
 const bugsLabel = hasNoIssues
   ? t(lang, "case.bugs_label_zero")
   : t(lang, "case.bugs_label_plural");
+
+const live = isCredited ? liveTesterForMod(mod) : null;
+const liveDate = formatVerifiedDate(live?.snapshot_at ?? null);
+const liveStatus: "ok" | "unverified" | "missing" | "stale" | "error" | "skipped" | null =
+  live?.status ?? null;
+const liveBadgeText: string | null = (() => {
+  if (!live || !liveStatus) return null;
+  if (liveStatus === "ok" && live.verified && liveDate) {
+    return `${t(lang, "credited.live_verified_prefix")} ${liveDate}`;
+  }
+  if (liveStatus === "unverified" || liveStatus === "stale") {
+    return t(lang, "credited.live_unverified");
+  }
+  if (liveStatus === "missing") {
+    return t(lang, "credited.live_missing");
+  }
+  return null;
+})();
+const liveBadgeTone: "ok" | "warn" | null = (() => {
+  if (!live) return null;
+  if (live.status === "ok" && live.verified) return "ok";
+  if (live.status === "missing" || live.status === "unverified" || live.status === "stale") return "warn";
+  return null;
+})();
 ---
 
 <header class="tlh">
@@ -45,6 +75,17 @@ const bugsLabel = hasNoIssues
     <div class="tlh__main">
       <div class="tlh__pills">
         {isCredited && <span class="badge">{t(lang, "credited.badge")} ✓</span>}
+        {liveBadgeText && (
+          <a
+            class:list={["tlh__live-pill", `tlh__live-pill--${liveBadgeTone ?? "warn"}`]}
+            href={live?.snapshot_url ?? "#"}
+            rel="noopener nofollow"
+            target="_blank"
+            aria-label={`Wayback verification source for ${mod.name_en}`}
+          >
+            {liveBadgeText}
+          </a>
+        )}
         {hasRegression && <span class="pill" data-status="unfixed">{t(lang, "regression.label")}</span>}
         {hasNoIssues && <span class="pill" data-status="fixed">{t(lang, "noissues.label")}</span>}
       </div>
@@ -165,7 +206,64 @@ const bugsLabel = hasNoIssues
     display: flex;
     gap: 0.45rem;
     flex-wrap: wrap;
+    align-items: center;
   }
+  /* Wayback live-verification chip — small, dated proof attached to
+     the static verified-tester badge. Clickable, points at the
+     archived snapshot used to verify membership. */
+  .tlh__live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    background: var(--bg-soft);
+    color: var(--ink-mute);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    line-height: 1.2;
+    transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+  :lang(zh) .tlh__live-pill {
+    font-family: var(--font-mono), var(--font-cjk);
+  }
+  .tlh__live-pill::before {
+    content: "↗";
+    font-size: 0.78rem;
+    color: var(--ink-fade, var(--ink-mute));
+    transition: transform 160ms ease, color 160ms ease;
+  }
+  .tlh__live-pill:hover,
+  .tlh__live-pill:focus-visible {
+    color: var(--ink);
+    border-color: var(--ink);
+    outline: 0;
+  }
+  .tlh__live-pill:hover::before,
+  .tlh__live-pill:focus-visible::before {
+    transform: translate(2px, -2px);
+  }
+  .tlh__live-pill--ok {
+    color: var(--ok);
+    border-color: color-mix(in oklch, var(--ok) 50%, var(--rule));
+    background: color-mix(in oklch, var(--ok) 8%, var(--bg-soft));
+  }
+  .tlh__live-pill--ok::before { color: var(--ok); }
+  .tlh__live-pill--ok:hover,
+  .tlh__live-pill--ok:focus-visible {
+    color: var(--ok-deep, var(--ok));
+    border-color: var(--ok);
+    background: color-mix(in oklch, var(--ok) 14%, var(--bg-soft));
+  }
+  .tlh__live-pill--warn {
+    color: var(--accent);
+    border-color: color-mix(in oklch, var(--accent) 40%, var(--rule));
+    background: color-mix(in oklch, var(--accent) 6%, var(--bg-soft));
+  }
+  .tlh__live-pill--warn::before { color: var(--accent); }
   .tlh__title-row {
     display: grid;
     grid-template-columns: 72px 1fr;
