@@ -1,8 +1,10 @@
 ---
+// Compact site footer. Three rows: brand block + nav, hairline, then
+// legal + version. No imprint metadata, no oversized closing panel —
+// it is just a footer.
 import { t, type Lang } from "~/i18n/strings";
 import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
 import MascotDuck from "~/components/MascotDuck.astro";
-import { mods, totalBugs, totalRounds } from "~/lib/data";
 
 interface Props {
   lang: Lang;
@@ -10,70 +12,21 @@ interface Props {
 const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 const langPrefix = lang === "en" ? `${base}/en` : base;
-
-const totals = {
-  mods: mods.length,
-  bugs: totalBugs(),
-  rounds: totalRounds(),
-};
-const issueDate = new Date().toISOString().slice(0, 10);
 ---
 
 <footer class="ftr" role="contentinfo">
-  <!-- Closing-of-issue band: editorial sign-off above the colophon ------- -->
-  <section class="ftr__closing panel--steam">
-    <div class="container ftr__closing-inner">
-      <div class="ftr__closing-text">
-        <p class="ftr__closing-kicker">{t(lang, "footer.closing_kicker")}</p>
-        <h2 class="ftr__closing-title">{t(lang, "footer.closing_title")}</h2>
-        <p class="ftr__closing-body">{t(lang, "footer.closing_body")}</p>
-        <a href={`${langPrefix}/about`} class="ftr__closing-cta">
-          {t(lang, "footer.subscribe_cta")}
-          <span aria-hidden="true">→</span>
-        </a>
-        <p class="ftr__closing-hint caption">{t(lang, "footer.subscribe_hint")}</p>
-      </div>
-      <aside class="ftr__closing-mascot" aria-hidden="true">
-        <div class="ftr__closing-aura"></div>
-        <MascotDuck size={140} alt="" />
-        <p class="ftr__closing-caption caption">{t(lang, "footer.signoff_caption")}</p>
-      </aside>
-    </div>
-  </section>
-
-  <!-- Imprint / colophon band: heavy editorial separator -------------------- -->
-  <div class="ftr__imprint-band" aria-hidden="true">
-    <span class="ftr__imprint-band-text">{t(lang, "footer.imprint_kicker")}</span>
-  </div>
-
-  <!-- Main back-cover content: brand block, in-issue index, off-site list -- -->
-  <div class="container ftr__main">
+  <div class="container ftr__inner">
     <section class="ftr__brand">
       <div class="ftr__brand-head">
         <span class="ftr__brand-mark" aria-hidden="true">
-          <MascotDuck size={48} alt="" />
+          <MascotDuck size={36} alt="" />
         </span>
         <div class="ftr__brand-text">
           <p class="ftr__handle">{t(lang, "footer.handle")}</p>
           <p class="ftr__tag">{t(lang, "footer.tagline")}</p>
         </div>
       </div>
-
-      <dl class="ftr__counts" aria-label="issue totals">
-        <div class="ftr__count">
-          <dt>{lang === "en" ? "mods" : "MOD"}</dt>
-          <dd class="mono tnum">{totals.mods}</dd>
-        </div>
-        <div class="ftr__count ftr__count--accent">
-          <dt>{lang === "en" ? "bugs" : "bug"}</dt>
-          <dd class="mono tnum">{totals.bugs}</dd>
-        </div>
-        <div class="ftr__count">
-          <dt>{lang === "en" ? "rounds" : "轮次"}</dt>
-          <dd class="mono tnum">{totals.rounds}</dd>
-        </div>
-      </dl>
-
+      <p class="ftr__active mono tnum">{t(lang, "footer.active")}</p>
       <div class="ftr__badges"><RetroBadgeStrip /></div>
     </section>
 
@@ -107,314 +60,75 @@ const issueDate = new Date().toISOString().slice(0, 10);
     </nav>
   </div>
 
-  <!-- Editorial imprint: typeset / press metadata, plus active version line - -->
-  <div class="container ftr__imprint">
-    <dl class="ftr__imprint-dl">
-      <div class="ftr__imprint-row">
-        <dt>{t(lang, "footer.imprint_typeset_label")}</dt>
-        <dd>{t(lang, "footer.imprint_typeset")}</dd>
-      </div>
-      <div class="ftr__imprint-row">
-        <dt>{t(lang, "footer.imprint_engine_label")}</dt>
-        <dd>{t(lang, "footer.imprint_engine")}</dd>
-      </div>
-      <div class="ftr__imprint-row">
-        <dt>{lang === "en" ? "coverage" : "覆盖"}</dt>
-        <dd class="mono tnum">{t(lang, "footer.active")}</dd>
-      </div>
-      <div class="ftr__imprint-row">
-        <dt>{lang === "en" ? "filed by" : "编辑"}</dt>
-        <dd>{t(lang, "footer.imprint_published")}</dd>
-      </div>
-    </dl>
-  </div>
-
-  <!-- Bottom legal/version strip -------------------------------------------- -->
   <div class="container ftr__bottom">
     <p class="ftr__copy">{t(lang, "footer.copy")}</p>
-    <p class="ftr__version mono tnum">
-      <span>{t(lang, "footer.archived")}</span>
-      <span aria-hidden="true" class="ftr__version-sep">·</span>
-      <span>{issueDate}</span>
-    </p>
+    <p class="ftr__version mono tnum">{t(lang, "footer.archived")}</p>
   </div>
 </footer>
 
 <style>
   .ftr {
-    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
     background: var(--bg);
-    position: relative;
+    border-top: 1px solid var(--rule);
   }
 
-  /* ---------- closing-of-issue panel (steam-blue) ------------- */
-  .ftr__closing {
-    /* full-bleed: escape the container by reaching the viewport edges */
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-    padding: clamp(2.4rem, 5vw, 3.6rem) 0;
-    border-top: 2px solid var(--accent);
-    position: relative;
-  }
-  /* tiny perforation along the top edge */
-  .ftr__closing::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 2px;
-    height: 5px;
-    background-image: radial-gradient(circle at 4px 50%, var(--bg) 1.4px, transparent 1.7px);
-    background-size: 14px 5px;
-    background-repeat: repeat-x;
-    pointer-events: none;
-    opacity: 0.55;
-  }
-  .ftr__closing-inner {
+  /* ---- main row: brand on the left, nav on the right ------- */
+  .ftr__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(180px, 280px);
-    gap: clamp(1.6rem, 4vw, 3rem);
-    align-items: center;
-  }
-  .ftr__closing-text { max-width: 60ch; min-width: 0; }
-  .ftr__closing-kicker {
-    margin: 0 0 0.7rem 0;
-    font-family: var(--font-stamp);
-    font-size: 0.92rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--accent);
-    line-height: 1;
-  }
-  :lang(zh) .ftr__closing-kicker {
-    font-family: var(--font-stamp), var(--font-cjk);
-    letter-spacing: 0.1em;
-    text-transform: none;
-  }
-  .ftr__closing-title {
-    margin: 0 0 1rem 0;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 700;
-    font-size: clamp(1.6rem, 3.6vw, 2.4rem);
-    line-height: 1.1;
-    letter-spacing: -0.015em;
-    color: var(--ink);
-  }
-  :lang(zh) .ftr__closing-title {
-    font-family: var(--font-cjk);
-    font-style: normal;
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 1.32;
-  }
-  .ftr__closing-body {
-    margin: 0 0 1.4rem 0;
-    font-family: var(--font-sans);
-    color: var(--ink-soft);
-    font-size: 1.02rem;
-    line-height: 1.7;
-  }
-  :lang(zh) .ftr__closing-body {
-    font-family: var(--font-cjk);
-    line-height: 1.9;
-  }
-  .ftr__closing-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.85rem 1.4rem;
-    font-family: var(--font-sans);
-    font-size: 0.98rem;
-    font-weight: 700;
-    text-decoration: none;
-    color: var(--bg);
-    background: var(--accent);
-    border: 1.5px solid var(--accent);
-    border-radius: var(--radius);
-    transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
-    box-shadow: 4px 4px 0 color-mix(in oklch, var(--accent-deep) 70%, transparent);
-  }
-  :lang(zh) .ftr__closing-cta { font-family: var(--font-cjk); }
-  .ftr__closing-cta span { transition: transform 160ms ease; }
-  .ftr__closing-cta:hover,
-  .ftr__closing-cta:focus-visible {
-    background: var(--accent-deep);
-    color: var(--bg);
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 color-mix(in oklch, var(--accent-deep) 80%, transparent);
-  }
-  .ftr__closing-cta:hover span,
-  .ftr__closing-cta:focus-visible span { transform: translateX(3px); }
-  .ftr__closing-hint {
-    margin: 0.95rem 0 0 0;
-    color: var(--ink-mute);
-    font-size: 0.86rem;
-  }
-
-  .ftr__closing-mascot {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    isolation: isolate;
-    line-height: 0;
-  }
-  .ftr__closing-aura {
-    position: absolute;
-    inset: -20% -10% 0% -10%;
-    background:
-      radial-gradient(55% 55% at 50% 55%, color-mix(in oklch, var(--accent) 32%, transparent) 0%, transparent 70%);
-    filter: blur(2px);
-    pointer-events: none;
-    z-index: -1;
-  }
-  .ftr__closing-caption {
-    margin: 0.7rem 0 0 0;
-    color: var(--ink-mute);
-    font-size: 0.85rem;
-    line-height: 1.4;
-  }
-
-  /* ---------- imprint band: ticket-stub divider --------------- */
-  .ftr__imprint-band {
-    background: var(--paper);
-    border-top: 2px solid var(--accent);
-    border-bottom: 1px solid var(--rule);
-    padding: 0.62rem 0;
-    text-align: center;
-    position: relative;
-  }
-  .ftr__imprint-band::before,
-  .ftr__imprint-band::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background-image: radial-gradient(circle at 4px 50%, var(--bg) 1.4px, transparent 1.7px);
-    background-size: 14px 5px;
-    background-repeat: repeat-x;
-    pointer-events: none;
-    opacity: 0.65;
-  }
-  .ftr__imprint-band::before { top: -2px; }
-  .ftr__imprint-band::after { bottom: 0; }
-  .ftr__imprint-band-text {
-    font-family: var(--font-stamp);
-    font-size: 0.88rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-  :lang(zh) .ftr__imprint-band-text {
-    font-family: var(--font-stamp), var(--font-cjk);
-    letter-spacing: 0.1em;
-    text-transform: none;
-  }
-
-  /* ---------- main back-cover: brand + nav -------------------- */
-  .ftr__main {
-    display: grid;
-    grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.9fr);
-    gap: clamp(2rem, 4vw, 3rem);
-    padding-top: clamp(2rem, 4vw, 3rem);
-    padding-bottom: clamp(1.6rem, 3.5vw, 2.4rem);
+    grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.9fr);
+    gap: clamp(1.8rem, 4vw, 3rem);
+    padding-top: clamp(1.6rem, 3vw, 2.2rem);
+    padding-bottom: clamp(1.2rem, 2.5vw, 1.6rem);
     align-items: start;
   }
+  @media (max-width: 760px) {
+    .ftr__inner { grid-template-columns: 1fr; gap: 1.4rem; }
+  }
+
   .ftr__brand-head {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
-    margin-bottom: 1rem;
+    gap: 0.75rem;
+    margin-bottom: 0.8rem;
   }
   .ftr__brand-mark {
     line-height: 0;
-    padding: 5px;
+    padding: 4px;
     border: 1px solid var(--rule);
     border-radius: 4px;
     background: color-mix(in oklch, var(--accent) 12%, var(--bg-soft));
-    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--accent) 22%, transparent);
   }
-  .ftr__brand-text { line-height: 1; }
+  .ftr__brand-text { line-height: 1.1; }
   .ftr__handle {
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: var(--ink);
-    margin: 0 0 0.32rem 0;
+    margin: 0 0 0.25rem 0;
     letter-spacing: 0.01em;
   }
   :lang(zh) .ftr__handle { font-family: var(--font-cjk); letter-spacing: 0; }
   .ftr__tag {
     font-family: var(--font-sans);
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     color: var(--ink-soft);
     margin: 0;
   }
   :lang(zh) .ftr__tag { font-family: var(--font-cjk); }
-
-  .ftr__counts {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin: 0 0 1.4rem 0;
-    border-top: 2px solid var(--ink);
-    border-bottom: 1px solid var(--rule);
-  }
-  .ftr__count {
-    padding: 0.8rem 1rem 0.85rem 1rem;
-    border-right: 1px solid var(--rule);
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    position: relative;
-  }
-  .ftr__count:last-child { border-right: none; }
-  .ftr__count::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--rule);
-  }
-  .ftr__count--accent::before { background: var(--accent); }
-  .ftr__count dt {
-    font-family: var(--font-stamp);
-    color: var(--ink-mute);
+  .ftr__active {
+    margin: 0 0 0.9rem 0;
     font-size: 0.78rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin: 0;
-    order: 2;
-  }
-  :lang(zh) .ftr__count dt {
-    font-family: var(--font-stamp), var(--font-cjk);
+    color: var(--ink-mute);
     letter-spacing: 0.04em;
-    text-transform: none;
   }
-  .ftr__count dd {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 700;
-    font-size: 1.55rem;
-    color: var(--ink);
-    line-height: 1;
-    margin: 0;
-    order: 1;
-    letter-spacing: -0.02em;
-  }
-  .ftr__count--accent dd { color: var(--accent); }
-
   .ftr__badges :global(.badge-strip) {
-    background: var(--paper);
-    padding: 0.55rem;
-    border: 1px solid var(--rule);
+    background: transparent;
+    padding: 0;
+    border: 0;
   }
 
+  /* ---- nav: two columns ------------------------------------ */
   .ftr__nav {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -425,17 +139,17 @@ const issueDate = new Date().toISOString().slice(0, 10);
   .ftr__nav-col { min-width: 0; }
   .ftr__nav-label {
     color: var(--ink-mute);
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     letter-spacing: 0.14em;
-    margin: 0 0 0.7rem 0;
+    margin: 0 0 0.6rem 0;
     line-height: 1;
   }
   :lang(zh) .ftr__nav-label { letter-spacing: 0.06em; }
   .ftr__links { list-style: none; padding: 0; margin: 0; }
-  .ftr__links li { margin-bottom: 0.55rem; }
+  .ftr__links li { margin-bottom: 0.45rem; }
   .ftr__links a {
     font-family: var(--font-sans);
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     color: var(--ink);
     text-decoration: none;
     border-bottom: 1px solid var(--rule);
@@ -448,93 +162,33 @@ const issueDate = new Date().toISOString().slice(0, 10);
     color: var(--accent);
     border-bottom-color: var(--accent);
   }
+  @media (max-width: 460px) {
+    .ftr__nav { grid-template-columns: 1fr; gap: 1rem; }
+  }
 
-  /* ---------- imprint metadata block (typeset / press) -------- */
-  .ftr__imprint {
-    padding: 1.2rem 0;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-  }
-  .ftr__imprint-dl {
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.6rem 1.8rem;
-  }
-  .ftr__imprint-row {
-    display: grid;
-    grid-template-columns: 5.2rem minmax(0, 1fr);
-    gap: 0.65rem;
-    align-items: baseline;
-    font-size: 0.82rem;
-    line-height: 1.5;
-  }
-  .ftr__imprint-row dt {
-    font-family: var(--font-stamp);
-    color: var(--ink-mute);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin: 0;
-    font-size: 0.72rem;
-    line-height: 1.5;
-  }
-  :lang(zh) .ftr__imprint-row dt {
-    font-family: var(--font-stamp), var(--font-cjk);
-    letter-spacing: 0.06em;
-    text-transform: none;
-    font-size: 0.78rem;
-  }
-  .ftr__imprint-row dd {
-    margin: 0;
-    color: var(--ink-soft);
-    font-family: var(--font-sans);
-  }
-  :lang(zh) .ftr__imprint-row dd { font-family: var(--font-cjk); }
-  .ftr__imprint-row dd.mono { font-family: var(--font-mono); }
-
-  /* ---------- bottom: legal + version -------------------------- */
+  /* ---- bottom: legal + version ----------------------------- */
   .ftr__bottom {
-    padding: 1.1rem 0 1.5rem 0;
+    padding: 0.9rem 0 1.2rem 0;
+    border-top: 1px solid var(--rule);
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 0.6rem 1.4rem;
+    gap: 0.5rem 1.4rem;
     align-items: baseline;
   }
   .ftr__copy {
     font-family: var(--font-sans);
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--ink-mute);
-    line-height: 1.55;
+    line-height: 1.5;
     max-width: 60ch;
     margin: 0;
   }
-  :lang(zh) .ftr__copy { font-family: var(--font-cjk); line-height: 1.75; }
+  :lang(zh) .ftr__copy { font-family: var(--font-cjk); line-height: 1.7; }
   .ftr__version {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--ink-mute);
     letter-spacing: 0.04em;
     margin: 0;
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.5rem;
-  }
-  .ftr__version-sep { opacity: 0.55; }
-
-  /* ---------- responsive --------------------------------------- */
-  @media (max-width: 920px) {
-    .ftr__closing-inner {
-      grid-template-columns: 1fr;
-      gap: 1.6rem;
-    }
-    .ftr__closing-mascot { order: -1; }
-    .ftr__main { grid-template-columns: 1fr; gap: 1.4rem; }
-  }
-  @media (max-width: 580px) {
-    .ftr__imprint-dl { grid-template-columns: 1fr; gap: 0.5rem; }
-    .ftr__nav { grid-template-columns: 1fr; gap: 1rem; }
-    .ftr__counts { grid-template-columns: 1fr; }
-    .ftr__count { border-right: none; border-bottom: 1px solid var(--rule); }
-    .ftr__count:last-child { border-bottom: none; }
   }
 </style>
