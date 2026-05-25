@@ -121,6 +121,74 @@
       }
     ]
   },
+  "pr_credits": [
+    {
+      "mod": "Alex's Caves",
+      "mod_id": "alex_caves",
+      "role": "Tester",
+      "owner": "AlexModGuy",
+      "repo": "AlexModGuy/AlexsCaves",
+      "repo_url": "https://github.com/AlexModGuy/AlexsCaves",
+      "mod_url": "https://www.curseforge.com/minecraft/mc-mods/alexscaves",
+      "credit_form": "pr_body",
+      "credit_note": "Credited as Tester in the body of two merged PRs by crabsatellite (a CrabMods member); the LUCK666DUCK GitHub URL appears in each PR's description.",
+      "prs": [
+        {
+          "number": 1693,
+          "title": "Port to 1.21.1",
+          "url": "https://github.com/AlexModGuy/AlexsCaves/pull/1693",
+          "author": "crabsatellite",
+          "state": "closed",
+          "merged": true,
+          "merged_at": "2026-01-10T17:02:44Z",
+          "credit_excerpt": "Tester: GitHub: https://github.com/LUCK666DUCK"
+        },
+        {
+          "number": 1698,
+          "title": "1.21.1 neoforge bug fix",
+          "url": "https://github.com/AlexModGuy/AlexsCaves/pull/1698",
+          "author": "crabsatellite",
+          "state": "closed",
+          "merged": true,
+          "merged_at": "2026-02-04T17:39:29Z",
+          "credit_excerpt": "Huge thanks to our testers for the extensive and high-quality testing effort ... GitHub: https://github.com/LUCK666DUCK"
+        }
+      ]
+    },
+    {
+      "mod": "Alex's Mobs",
+      "mod_id": "alex_mobs",
+      "role": "Tester",
+      "owner": "AlexModGuy",
+      "repo": "AlexModGuy/AlexsMobs",
+      "repo_url": "https://github.com/AlexModGuy/AlexsMobs",
+      "mod_url": "https://www.curseforge.com/minecraft/mc-mods/alexs-mobs",
+      "credit_form": "pr_body",
+      "credit_note": "Credited as Tester in the body of two merged PRs by crabsatellite (a CrabMods member); the LUCK666DUCK GitHub URL appears in each PR's description.",
+      "prs": [
+        {
+          "number": 2315,
+          "title": "Port to 1.21.1 neoforge",
+          "url": "https://github.com/AlexModGuy/AlexsMobs/pull/2315",
+          "author": "crabsatellite",
+          "state": "closed",
+          "merged": true,
+          "merged_at": "2025-12-29T18:04:25Z",
+          "credit_excerpt": "Tester: GitHub: https://github.com/LUCK666DUCK"
+        },
+        {
+          "number": 2317,
+          "title": "1.21 Port Bug Fix",
+          "url": "https://github.com/AlexModGuy/AlexsMobs/pull/2317",
+          "author": "crabsatellite",
+          "state": "closed",
+          "merged": true,
+          "merged_at": "2026-01-07T17:25:32Z",
+          "credit_excerpt": "Tester: GitHub: https://github.com/LUCK666DUCK"
+        }
+      ]
+    }
+  ],
   "mcmod_cn": {
     "user_listed": false,
     "user_listed_note": "LUCK666DUCK is not credited on any mcmod.cn page that we could fetch. The Chinese-side QA tester credit on Shower Core is held by HotBathRed (mcmod author id 33402), a different user.",
@@ -410,9 +478,13 @@
       "Hot Bath",
       "Shower Core"
     ],
-    "publicly_verified_tester_credit": [
+    "publicly_verified_tester_credit_cf": [
       "Hot Bath",
       "Instant World Mirror"
+    ],
+    "publicly_verified_tester_credit_pr": [
+      "Alex's Caves",
+      "Alex's Mobs"
     ],
     "publicly_verified_no_credit": [
       "Tanuki Decor",
@@ -421,11 +493,9 @@
       "Nomadic Tents"
     ],
     "could_not_verify": [
-      "Alex's Mobs (no LUCK666DUCK in 2024 snapshot)",
-      "Alex's Caves (Cloudflare-blocked)",
       "Shower Core (no Wayback CF snapshot)"
     ],
-    "interpretation": "Public CurseForge member panels list LUCK666DUCK as Tester on exactly the 2 newer CrabMods mods (Hot Bath, Instant World Mirror), matching the user's own CurseForge profile project count. The other tested mods in the source list may reflect private/Discord-only tester relationships not surfaced on the public mod pages."
+    "interpretation": "Two verification modes: (a) CurseForge member panels list LUCK666DUCK as Tester on Hot Bath and Instant World Mirror; (b) Merged PRs in AlexModGuy/AlexsCaves and AlexModGuy/AlexsMobs credit LUCK666DUCK as Tester directly in the PR body. The remaining tested mods may reflect private / Discord-only tester relationships not surfaced on public sources."
   },
   "fetch_log": [
     {

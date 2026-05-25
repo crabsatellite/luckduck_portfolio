@@ -2,7 +2,7 @@
 import { t, type Lang } from "~/i18n/strings";
 import MascotDuck from "~/components/MascotDuck.astro";
 import ModLogo from "~/components/ModLogo.astro";
-import { activeMods, profile, totalBugs, totalRounds, mods } from "~/lib/data";
+import { activeMods, hardCreditModCount, totalBugs, totalRounds, mods } from "~/lib/data";
 
 interface Props {
   lang: Lang;
@@ -17,7 +17,7 @@ const headlineBugs = totalBugs();
 const stats = [
   { value: mods.length, label: t(lang, "hero.stat_mods"), tint: "ink" as const },
   { value: totalRounds(), label: t(lang, "hero.stat_rounds"), tint: "accent" as const },
-  { value: profile.curseforge.tester_credits.length, label: t(lang, "hero.stat_credits"), tint: "ok" as const },
+  { value: hardCreditModCount(), label: t(lang, "hero.stat_credits"), tint: "ok" as const },
 ];
 
 const issueDate = new Date().toISOString().slice(0, 10);

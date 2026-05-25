@@ -1,11 +1,14 @@
 ---
 import RetroBadge from "~/components/RetroBadge.astro";
+import { hotBathDownloadsCompactLabel } from "~/lib/data";
+
+const hotBathDownloads = hotBathDownloadsCompactLabel();
 ---
 
 <div class="badge-strip" role="group" aria-label="achievement badges">
   <RetroBadge src="mc-range.svg" alt="MC 1.14 → 1.21" />
   <RetroBadge src="regression-rounds.svg" alt="5 regression rounds" />
-  <RetroBadge src="hot-bath-1m-dl.svg" alt="Hot Bath 1M+ DL" />
+  <RetroBadge src="hot-bath-dl.svg" alt={`Hot Bath ${hotBathDownloads}`} />
   <RetroBadge src="verified-tester.svg" alt="verified tester" />
   <RetroBadge src="bilingual-zh-en.svg" alt="bilingual zh / en" />
   <RetroBadge src="powered-by-duck.svg" alt="powered by duck" />

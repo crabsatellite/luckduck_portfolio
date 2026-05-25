@@ -2,7 +2,9 @@
 import { t, type Lang } from "~/i18n/strings";
 import {
   creditDownloadsCompactLabel,
-  mods, profile, remoteMetrics, totalBugs, totalRounds,
+  hardCreditModCount,
+  mergedPRCount,
+  mods, prCredits, profile, remoteMetrics, totalBugs, totalRounds,
 } from "~/lib/data";
 import MascotDuck from "~/components/MascotDuck.astro";
 import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
@@ -21,9 +23,16 @@ const hotBathCredit = profile.curseforge.tester_credits.find(
   (credit) => credit.mod.toLowerCase().replace(/\s+/g, "") === "hotbath"
 );
 const hotBathDownloads = hotBathCredit ? creditDownloadsCompactLabel(hotBathCredit) : "1M+ DL";
+const prCreditList = prCredits();
+const mergedPR = mergedPRCount();
+const totalHardCredits = hardCreditModCount();
+
+const prModNames = prCreditList.map((c) => c.mod);
+const prModNamesEn = prModNames.length === 2 ? `${prModNames[0]} and ${prModNames[1]}` : prModNames.join(", ");
+const prModNamesZh = prModNames.join(" 与 ");
 const aboutProof = lang === "en"
-  ? `The ${mods.length} mods and ${totalBugs()} bug entries on this site come from public submissions and mod-author-direct correspondence. Two mods carry a publicly verifiable Tester credit: Hot Bath (${hotBathDownloads} CurseForge downloads) and Instant World Mirror, both under the CrabMods team.`
-  : `本站收录的 ${mods.length} 个 mod、${totalBugs()} 条 bug 来自公开提交记录或与 mod 作者私下沟通的整理稿。已公开署名的 Tester 项目两个：Hot Bath（CurseForge 下载量 ${hotBathDownloads}）与 Instant World Mirror，均隶属 CrabMods 团队。`;
+  ? `Two CurseForge member panels list it directly (Hot Bath at ${hotBathDownloads} downloads, plus Instant World Mirror, both under the CrabMods team). Two more arrive through merged PRs on ${prModNamesEn}, where the PR body credits the tester by GitHub URL.`
+  : `两份记录在 CurseForge 成员栏里直接署名（Hot Bath，下载量 ${hotBathDownloads}；以及 Instant World Mirror，均隶属 CrabMods 团队）。另外两份通过 ${prModNamesZh} 的已合并 PR 留下凭据，PR 描述里直接写了测试者的 GitHub 链接。`;
 
 const githubStats = [
   { label: lang === "en" ? "public PRs" : "公开 PR", value: remoteMetrics.github.prs.total },
@@ -34,7 +43,7 @@ const facts = [
   { label: t(lang, "about.fact_mods"), value: mods.length },
   { label: t(lang, "about.fact_bugs"), value: totalBugs(), accent: true },
   { label: t(lang, "about.fact_rounds"), value: totalRounds() },
-  { label: t(lang, "about.fact_credits"), value: profile.curseforge.tester_credits.length },
+  { label: t(lang, "about.fact_credits"), value: totalHardCredits },
 ];
 
 const sections = [
@@ -133,7 +142,11 @@ const sections = [
       <!-- ============ SIDEBAR: credits + contact + activity ===== -->
       <aside class="about__side">
         <section class="about__panel ledger-card">
-          <p class="about__panel-kicker dateline">{lang === "en" ? "public credits" : "公开 Tester 署名"}</p>
+          <p class="about__panel-kicker dateline">{lang === "en" ? "public credits" : "公开署名"}</p>
+
+          <p class="about__panel-subh caption">
+            {lang === "en" ? "CurseForge member panel" : "CurseForge 成员栏"}
+          </p>
           <ul class="about__panel-list">
             {profile.curseforge.tester_credits.map((c) => (
               <li class="about__panel-row">
@@ -145,6 +158,47 @@ const sections = [
               </li>
             ))}
           </ul>
+
+          {prCreditList.length > 0 && (
+            <>
+              <p class="about__panel-subh caption about__panel-subh--pr">
+                {lang === "en" ? "Merged PR body" : "已合并 PR 描述"}
+              </p>
+              <ul class="about__panel-list">
+                {prCreditList.map((c) => {
+                  const merged = c.prs.filter((p) => p.merged).length;
+                  const meta = lang === "en"
+                    ? `${c.role.toLowerCase()} · ${merged}/${c.prs.length} merged`
+                    : `测试 · ${merged}/${c.prs.length} 已合并`;
+                  return (
+                    <li class="about__panel-row">
+                      <span class="about__panel-bullet" aria-hidden="true">◦</span>
+                      <div class="about__panel-link about__panel-link--prs">
+                        <span class="about__panel-name">{c.mod}</span>
+                        <span class="about__panel-meta caption">{meta}</span>
+                        <span class="about__panel-prs">
+                          {c.prs.map((pr, i) => (
+                            <>
+                              {i > 0 && <span class="about__panel-prs-sep" aria-hidden="true">·</span>}
+                              <a
+                                href={pr.url}
+                                rel="noopener"
+                                target="_blank"
+                                class="about__panel-pr mono tnum"
+                                title={`${c.repo}#${pr.number} · ${pr.title}`}
+                              >
+                                #{pr.number}
+                              </a>
+                            </>
+                          ))}
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
+          )}
         </section>
 
         <section class="about__panel ledger-card">
@@ -531,6 +585,42 @@ const sections = [
   }
   :lang(zh) .about__panel-name { font-family: var(--font-cjk); font-weight: 500; }
   .about__panel-meta { color: var(--ink-mute); }
+  .about__panel-subh {
+    color: var(--ink-mute);
+    margin: 0 0 0.3rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.66rem;
+  }
+  .about__panel-subh--pr {
+    margin-top: 0.9rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule);
+  }
+  .about__panel-link--prs { cursor: default; }
+  .about__panel-prs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0 0.4rem;
+    margin-top: 0.18rem;
+    font-size: 0.78rem;
+  }
+  .about__panel-pr {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklch, var(--accent) 45%, transparent);
+    padding-bottom: 1px;
+    transition: color 120ms ease, border-color 120ms ease;
+  }
+  .about__panel-pr:hover,
+  .about__panel-pr:focus-visible {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+  .about__panel-prs-sep {
+    color: var(--ink-faint);
+    user-select: none;
+  }
   .about__panel-stat {
     color: var(--accent);
     font-weight: 600;

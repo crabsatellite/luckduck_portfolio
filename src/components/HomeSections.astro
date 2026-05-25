@@ -3,7 +3,7 @@ import { t, type Lang } from "~/i18n/strings";
 import ModCard from "~/components/ModCard.astro";
 import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
 import MascotDuck from "~/components/MascotDuck.astro";
-import { creditDownloadsLabel, featuredMods, profile, remoteMetrics } from "~/lib/data";
+import { creditDownloadsLabel, featuredMods, prCredits, profile, remoteMetrics } from "~/lib/data";
 
 interface Props {
   lang: Lang;
@@ -16,6 +16,7 @@ const featured = featuredMods();
 const metricsDate = remoteMetrics.fetched_at
   ? new Date(remoteMetrics.fetched_at).toISOString().slice(0, 10)
   : null;
+const prCreditList = prCredits();
 
 const services = [
   {
@@ -130,9 +131,13 @@ const noteCards = [
 
       <aside class="credit-panel ledger-card cornered">
         <div class="credit-panel__head">
-          <h3 class="credit-panel__h">{lang === "en" ? "Public tester credits" : "公开 Tester 署名"}</h3>
+          <h3 class="credit-panel__h">{lang === "en" ? "Public credits" : "公开署名"}</h3>
           <span class="stamp stamp--ok">{lang === "en" ? "verified" : "已核实"}</span>
         </div>
+
+        <p class="credit-panel__subh caption">
+          {lang === "en" ? "CurseForge member panel" : "CurseForge 成员栏"}
+        </p>
         <ul class="credit-panel__list">
           {profile.curseforge.tester_credits.map((credit) => (
             <li class="credit-panel__row">
@@ -145,6 +150,49 @@ const noteCards = [
             </li>
           ))}
         </ul>
+
+        {prCreditList.length > 0 && (
+          <>
+            <p class="credit-panel__subh caption credit-panel__subh--pr">
+              {lang === "en" ? "Merged PR body" : "已合并 PR 描述"}
+            </p>
+            <ul class="credit-panel__list credit-panel__list--pr">
+              {prCreditList.map((credit) => {
+                const merged = credit.prs.filter((p) => p.merged);
+                const total = credit.prs.length;
+                const meta = lang === "en"
+                  ? `tester · ${merged.length}/${total} merged`
+                  : `测试 · ${merged.length}/${total} 已合并`;
+                return (
+                  <li class="credit-panel__row">
+                    <span class="credit-panel__row-bullet" aria-hidden="true">◦</span>
+                    <div class="credit-panel__link credit-panel__link--prs">
+                      <span class="credit-panel__mod">{credit.mod}</span>
+                      <span class="credit-panel__role caption">{meta}</span>
+                      <span class="credit-panel__prs">
+                        {credit.prs.map((pr, i) => (
+                          <>
+                            {i > 0 && <span class="credit-panel__prs-sep" aria-hidden="true">·</span>}
+                            <a
+                              href={pr.url}
+                              rel="noopener"
+                              target="_blank"
+                              class={`credit-panel__pr mono tnum${pr.merged ? "" : " credit-panel__pr--unmerged"}`}
+                              title={`${pr.author}/${credit.repo}#${pr.number} · ${pr.title}`}
+                            >
+                              #{pr.number}
+                            </a>
+                          </>
+                        ))}
+                      </span>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        )}
+
         {metricsDate && (
           <p class="credit-panel__meta">
             <span class="caption">{lang === "en" ? "Remote snapshot" : "远程快照"}</span>
@@ -577,6 +625,53 @@ const noteCards = [
     font-size: 0.85rem;
     white-space: nowrap;
     font-weight: 600;
+  }
+  .credit-panel__subh {
+    color: var(--ink-mute);
+    margin: 0 0 0.4rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.7rem;
+  }
+  .credit-panel__subh--pr {
+    margin-top: 1.05rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--rule);
+  }
+  .credit-panel__list--pr .credit-panel__row {
+    grid-template-columns: 0.8rem 1fr;
+    align-items: start;
+  }
+  .credit-panel__link--prs {
+    cursor: default;
+  }
+  .credit-panel__prs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0 0.45rem;
+    margin-top: 0.2rem;
+    font-size: 0.82rem;
+  }
+  .credit-panel__pr {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklch, var(--accent) 45%, transparent);
+    padding-bottom: 1px;
+    transition: color 120ms ease, border-color 120ms ease;
+  }
+  .credit-panel__pr:hover,
+  .credit-panel__pr:focus-visible {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+  .credit-panel__pr--unmerged {
+    color: var(--ink-mute);
+    border-bottom-color: var(--ink-faint);
+    font-style: italic;
+  }
+  .credit-panel__prs-sep {
+    color: var(--ink-faint);
+    user-select: none;
   }
   .credit-panel__meta {
     margin: 0.95rem 0 0 0;

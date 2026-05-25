@@ -2,6 +2,7 @@ import modsData from "../../data/mods.json";
 import bugsData from "../../data/bugs.json";
 import profileData from "../../data/profile.json";
 import methodologyData from "../../data/methodology.json";
+import remoteMetricsData from "../../data/remote-metrics.json";
 
 export type Round = {
   version: string;
@@ -55,9 +56,189 @@ export const methods = methodologyData as Method[];
 
 export type Profile = typeof profileData;
 
+export type RemoteCurseForgeProject = {
+  key: string;
+  id: number;
+  slug: string;
+  title: string | null;
+  url: string;
+  downloads: number | null;
+  thumbnail?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  status: "ok" | "stale" | "error" | "pending" | string;
+  error?: { message: string; at: string };
+};
+
+export type RemoteMetrics = {
+  schema: number;
+  fetched_at: string | null;
+  sources: {
+    curseforge: { status: string; method: string };
+    github: { status: string; method: string; user: string; error?: { message: string; at: string } };
+    pr_credits?: { status: string; method: string };
+  };
+  curseforge: {
+    projects: Record<string, RemoteCurseForgeProject>;
+  };
+  github: {
+    user: string;
+    prs: {
+      total: number;
+      open: number;
+      merged: number;
+      closed_unmerged: number;
+      items: Array<Record<string, unknown>>;
+    };
+    issues: {
+      total: number;
+      open: number;
+      closed: number;
+      items: Array<Record<string, unknown>>;
+    };
+    public_events: {
+      count: number;
+      items: Array<Record<string, unknown>>;
+    };
+  };
+  pr_credits?: Record<string, RemotePRCreditPR>;
+};
+
+export type RemotePRCreditPR = {
+  repo: string;
+  number: number;
+  state: "open" | "closed" | string;
+  merged: boolean;
+  merged_at: string | null;
+  updated_at: string | null;
+  status: "ok" | "stale" | "error" | string;
+  error?: { message: string; at: string };
+};
+
+export type PRCreditPR = {
+  number: number;
+  title: string;
+  url: string;
+  author: string;
+  state: "open" | "closed" | string;
+  merged: boolean;
+  merged_at: string | null;
+  credit_excerpt: string;
+};
+
+export type PRCredit = {
+  mod: string;
+  mod_id: string;
+  role: string;
+  owner: string;
+  repo: string;
+  repo_url: string;
+  mod_url: string;
+  credit_form: string;
+  credit_note?: string;
+  prs: PRCreditPR[];
+};
+
+export type TesterCredit = Profile["curseforge"]["tester_credits"][number];
+
 export const mods = modsData as Mod[];
 export const bugs = bugsData as Bug[];
 export const profile = profileData as Profile;
+export const remoteMetrics = remoteMetricsData as unknown as RemoteMetrics;
+
+// PR-mode credits live alongside CurseForge tester credits. Each entry
+// points at a mod and lists merged PRs whose body explicitly credits
+// LUCK666DUCK as Tester. The PR live state (merged / closed / open)
+// is refreshed daily via `update-remote-metrics.mjs` and merged in
+// at read time so the surface never goes stale.
+type ProfileWithPRCredits = Profile & { pr_credits?: PRCredit[] };
+const staticPRCredits = (profile as ProfileWithPRCredits).pr_credits ?? [];
+
+const remotePRMap = (): Record<string, RemotePRCreditPR> => {
+  return remoteMetrics.pr_credits ?? {};
+};
+
+const prKey = (repo: string, number: number) => `${repo}#${number}`;
+
+export const prCredits = (): PRCredit[] => {
+  const remote = remotePRMap();
+  return staticPRCredits.map((credit) => ({
+    ...credit,
+    prs: credit.prs.map((pr) => {
+      const live = remote[prKey(credit.repo, pr.number)];
+      if (!live || live.status === "error") return pr;
+      return {
+        ...pr,
+        state: live.state,
+        merged: live.merged,
+        merged_at: live.merged_at,
+      };
+    }),
+  }));
+};
+
+export const prCreditsForMod = (modId: string): PRCredit | null => {
+  return prCredits().find((c) => c.mod_id === modId) ?? null;
+};
+
+// Total number of mods with a publicly verifiable Tester credit
+// (CurseForge member panel + merged-PR body, deduped by mod_id).
+export const hardCreditModCount = (): number => {
+  const modIds = new Set<string>();
+  for (const c of profile.curseforge.tester_credits) {
+    const key = c.mod.toLowerCase().replace(/[^a-z0-9]/g, "");
+    modIds.add(key);
+  }
+  for (const c of staticPRCredits) {
+    modIds.add(c.mod_id);
+  }
+  return modIds.size;
+};
+
+export const mergedPRCount = (): number =>
+  staticPRCredits.reduce(
+    (sum, c) => sum + c.prs.filter((p) => p.merged).length,
+    0
+  );
+
+const normalizeProjectName = (value: string): string =>
+  value.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+const CREDIT_PROJECT_KEYS: Record<string, string> = {
+  hotbath: "hotbath",
+  instantworldmirror: "instantworldmirror",
+};
+
+export const remoteProjectForCredit = (credit: TesterCredit): RemoteCurseForgeProject | null => {
+  const key = CREDIT_PROJECT_KEYS[normalizeProjectName(credit.mod)];
+  if (!key) return null;
+  return remoteMetrics.curseforge.projects[key] || null;
+};
+
+export const creditDownloads = (credit: TesterCredit): number => {
+  const remote = remoteProjectForCredit(credit);
+  if (remote && typeof remote.downloads === "number") return remote.downloads;
+  return credit.downloads_at_snapshot;
+};
+
+export const formatCompactNumber = (value: number): string => {
+  if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
+  if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
+  return value.toLocaleString("en-US");
+};
+
+export const creditDownloadsLabel = (credit: TesterCredit): string =>
+  `${creditDownloads(credit).toLocaleString("en-US")} DL`;
+
+export const creditDownloadsCompactLabel = (credit: TesterCredit): string =>
+  `${formatCompactNumber(creditDownloads(credit))} DL`;
+
+export const hotBathDownloadsCompactLabel = (): string => {
+  const credit = profile.curseforge.tester_credits.find(
+    (c) => CREDIT_PROJECT_KEYS[normalizeProjectName(c.mod)] === "hotbath"
+  );
+  return credit ? creditDownloadsCompactLabel(credit) : "1M+ DL";
+};
 
 const creditedSet = new Set(
   profile.curseforge.tester_credits.map((c) => c.mod.toLowerCase().replace(/\s+/g, ""))
@@ -266,16 +447,33 @@ export const teamForMod = (m: Mod): TeamMember[] => {
       };
     });
   }
+
+  // PR-credited mods (Alex's Caves / Mobs): start from the mcmod
+  // author list when available, then append LUCK666DUCK as tester
+  // so the case page reflects the public PR credit.
+  const prCredit = prCreditsForMod(m.id);
   const mcmod = getMcmodEntry(m);
+  let base: TeamMember[] = [];
   if (mcmod && mcmod.authors) {
-    return mcmod.authors.map((a) => ({
+    base = mcmod.authors.map((a) => ({
       name: a.name,
       role: ROLE_FROM_POSITION(a.position),
       isLuck: false,
       emoji: "👤",
     }));
   }
-  return [];
+  if (prCredit) {
+    const already = base.some((b) => b.name === "LUCK666DUCK");
+    if (!already) {
+      base.push({
+        name: "LUCK666DUCK",
+        role: "tester",
+        isLuck: true,
+        emoji: "🦆",
+      });
+    }
+  }
+  return base;
 };
 
 export const featuredBug = (m: Mod): Bug | null => {

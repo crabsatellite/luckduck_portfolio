@@ -4,7 +4,7 @@
 // generic monospace/system. SVG is self-contained.
 
 import { writeFile, mkdir } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -61,6 +61,25 @@ function escape(s) {
   );
 }
 
+function compactNumber(value) {
+  if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
+  if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
+  return String(value);
+}
+
+function loadHotBathDownloads() {
+  try {
+    const metricsPath = join(__dirname, "..", "data", "remote-metrics.json");
+    const metrics = JSON.parse(readFileSync(metricsPath, "utf8"));
+    const downloads = metrics?.curseforge?.projects?.hotbath?.downloads;
+    return typeof downloads === "number" ? `${compactNumber(downloads)} DL` : "1M+ DL";
+  } catch {
+    return "1M+ DL";
+  }
+}
+
+const hotBathDownloads = loadHotBathDownloads();
+
 const BADGES = {
   "mc-range.svg": badge2panel({
     leftBg: "#1c1d2a", leftFg: "#f9c47a", leftText: "MC",
@@ -70,9 +89,9 @@ const BADGES = {
     leftBg: "#1c1d2a", leftFg: "#a6e3a1", leftText: "5×",
     rightBg: "#a6e3a1", rightFg: "#1c1d2a", rightLine1: "regression", rightLine2: "rounds",
   }),
-  "hot-bath-1m-dl.svg": badge2panel({
+  "hot-bath-dl.svg": badge2panel({
     leftBg: "#e89c4d", leftFg: "#1c1d2a", leftText: "🛁", leftFontSize: 14,
-    rightBg: "#1c1d2a", rightFg: "#f9c47a", rightLine1: "Hot Bath", rightLine2: "1M+ DL",
+    rightBg: "#1c1d2a", rightFg: "#f9c47a", rightLine1: "Hot Bath", rightLine2: hotBathDownloads,
     leftWidth: 26,
   }),
   "verified-tester.svg": badge2panel({

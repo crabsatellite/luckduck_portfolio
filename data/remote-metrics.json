@@ -1,0 +1,105 @@
+{
+  "schema": 2,
+  "fetched_at": "2026-05-25T03:29:56.630Z",
+  "sources": {
+    "curseforge": {
+      "status": "ok",
+      "method": "cfwidget"
+    },
+    "github": {
+      "status": "ok",
+      "method": "search/issues",
+      "user": "LUCK666DUCK"
+    },
+    "pr_credits": {
+      "status": "ok",
+      "method": "repos/.../pulls/:number"
+    }
+  },
+  "curseforge": {
+    "projects": {
+      "hotbath": {
+        "key": "hotbath",
+        "id": 859412,
+        "slug": "hotbath",
+        "title": "Hot Bath",
+        "url": "https://www.curseforge.com/minecraft/mc-mods/hotbath",
+        "downloads": 2185945,
+        "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1659/486/256/256/639057238931792096.png",
+        "created_at": "2023-05-08T09:53:08.14Z",
+        "updated_at": null,
+        "status": "ok"
+      },
+      "instantworldmirror": {
+        "key": "instantworldmirror",
+        "id": 1449670,
+        "slug": "instantworldmirror",
+        "title": "InstantWorldMirror",
+        "url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
+        "downloads": 2047,
+        "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1652/813/256/256/639054207954809355.png",
+        "created_at": "2026-01-31T11:22:45.67Z",
+        "updated_at": null,
+        "status": "ok"
+      }
+    }
+  },
+  "github": {
+    "user": "LUCK666DUCK",
+    "prs": {
+      "total": 0,
+      "open": 0,
+      "merged": 0,
+      "closed_unmerged": 0,
+      "items": []
+    },
+    "issues": {
+      "total": 0,
+      "open": 0,
+      "closed": 0,
+      "items": []
+    },
+    "public_events": {
+      "count": 0,
+      "items": []
+    }
+  },
+  "pr_credits": {
+    "AlexModGuy/AlexsCaves#1693": {
+      "repo": "AlexModGuy/AlexsCaves",
+      "number": 1693,
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-01-10T17:02:44Z",
+      "updated_at": "2026-05-25T03:14:54Z",
+      "status": "ok"
+    },
+    "AlexModGuy/AlexsCaves#1698": {
+      "repo": "AlexModGuy/AlexsCaves",
+      "number": 1698,
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-02-04T17:39:29Z",
+      "updated_at": "2026-02-04T17:39:29Z",
+      "status": "ok"
+    },
+    "AlexModGuy/AlexsMobs#2315": {
+      "repo": "AlexModGuy/AlexsMobs",
+      "number": 2315,
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2025-12-29T18:04:25Z",
+      "updated_at": "2026-05-25T03:16:24Z",
+      "status": "ok"
+    },
+    "AlexModGuy/AlexsMobs#2317": {
+      "repo": "AlexModGuy/AlexsMobs",
+      "number": 2317,
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-01-07T17:25:32Z",
+      "updated_at": "2026-05-25T03:16:00Z",
+      "status": "ok"
+    }
+  }
+}

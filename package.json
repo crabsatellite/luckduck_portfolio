@@ -12,11 +12,14 @@
     "astro": "astro",
     "check": "astro check",
     "assets": "node scripts/build-assets.mjs",
+    "badges": "node scripts/gen-badges.mjs",
+    "update:remote-metrics": "node scripts/update-remote-metrics.mjs",
     "archive-v1": "node scripts/rewrite-v1-archive.mjs"
   },
   "dependencies": {
     "@fontsource-variable/ibm-plex-sans": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@fontsource/fusion-pixel-12px-proportional-sc": "^5.2.5",
     "@fontsource/ibm-plex-serif": "^5.2.7",
     "@fontsource/vt323": "^5.2.7",
     "astro": "^5.4.0",
