@@ -1,19 +1,44 @@
 ---
+// Editor's "drafts column" page. The site is light on long-form
+// content for now, so this page leans into that intentionally —
+// rendered as a curated drafts column with ETA tags and a clear
+// raw-data CTA, instead of pretending to be a published essay
+// index.
 import { t, type Lang } from "~/i18n/strings";
 import PageHead from "~/components/PageHead.astro";
+import MascotDuck from "~/components/MascotDuck.astro";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 
+const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const langPrefix = lang === "en" ? `${base}/en` : base;
+
 const cards = [
-  ["notes.card1_h", "notes.card1_p"],
-  ["notes.card2_h", "notes.card2_p"],
-  ["notes.card3_h", "notes.card3_p"],
-] as const;
-const statusLabel = lang === "en" ? "planned" : "计划中";
-const kicker = lang === "en" ? "notes · field log" : "notes · 现场笔记";
+  {
+    h: t(lang, "notes.card1_h"),
+    p: t(lang, "notes.card1_p"),
+    status: t(lang, "notes.status_outline"),
+    statusKey: "outline",
+    eta: t(lang, "notes.eta_next"),
+  },
+  {
+    h: t(lang, "notes.card2_h"),
+    p: t(lang, "notes.card2_p"),
+    status: t(lang, "notes.status_draft"),
+    statusKey: "draft",
+    eta: t(lang, "notes.eta_later"),
+  },
+  {
+    h: t(lang, "notes.card3_h"),
+    p: t(lang, "notes.card3_p"),
+    status: t(lang, "notes.status_research"),
+    statusKey: "research",
+    eta: t(lang, "notes.eta_later"),
+  },
+];
 ---
 
 <article class="notes">
@@ -21,84 +46,409 @@ const kicker = lang === "en" ? "notes · field log" : "notes · 现场笔记";
     <PageHead
       lang={lang}
       mark="04"
-      kicker={kicker}
+      kicker={t(lang, "notes.kicker")}
       title={t(lang, "notes.title")}
       sub={t(lang, "notes.subtitle")}
+      deck={t(lang, "notes.deck")}
     />
 
-    <div class="notes__grid">
-      {cards.map(([h, p], i) => (
-        <article class="notes__card">
-          <span class="notes__idx mono tnum">№{String(i + 1).padStart(2, "0")}</span>
-          <h2>{t(lang, h)}</h2>
-          <p>{t(lang, p)}</p>
-          <span class="notes__status mono">{statusLabel}</span>
-        </article>
+    <!-- ============= Lead: column intro + pull-quote ========== -->
+    <section class="notes__lead" data-reveal>
+      <div class="notes__lead-text">
+        <h2 class="notes__lead-h">{t(lang, "notes.column_h")}</h2>
+        <p class="notes__lead-p">{t(lang, "notes.column_p")}</p>
+      </div>
+      <figure class="notes__quote">
+        <blockquote class="pull-quote">
+          <span class="pull-quote__mark" aria-hidden="true">“</span>
+          {t(lang, "notes.quote")}
+          <span class="pull-quote__attr">{t(lang, "notes.quote_attr")}</span>
+        </blockquote>
+      </figure>
+    </section>
+
+    <!-- ============= Drafts column =========================== -->
+    <ol class="notes__column" data-reveal>
+      {cards.map((card, i) => (
+        <li class={`notes__row notes__row--${card.statusKey}`}>
+          <div class="notes__row-rail" aria-hidden="true">
+            <span class="notes__row-idx">№{String(i + 1).padStart(2, "0")}</span>
+            <span class={`notes__row-status notes__row-status--${card.statusKey}`}>
+              {card.status}
+            </span>
+          </div>
+          <div class="notes__row-body">
+            <h3 class="notes__row-h">{card.h}</h3>
+            <p class="notes__row-p">{card.p}</p>
+          </div>
+          <div class="notes__row-eta" aria-hidden="true">
+            <span class="notes__row-eta-label">{t(lang, "notes.eta_label")}</span>
+            <span class="notes__row-eta-val">{card.eta}</span>
+          </div>
+        </li>
       ))}
-    </div>
+    </ol>
+
+    <!-- ============= Raw-data CTA box ======================== -->
+    <section class="notes__cta" data-reveal>
+      <div class="notes__cta-text">
+        <p class="notes__cta-kicker dateline">
+          {lang === "en" ? "in the meantime" : "在那之前"}
+        </p>
+        <h2 class="notes__cta-h">{t(lang, "notes.cta_h")}</h2>
+        <p class="notes__cta-p">{t(lang, "notes.cta_p")}</p>
+        <div class="notes__cta-actions">
+          <a class="btn btn--accent notes__cta-btn" href={`${langPrefix}/cases`}>
+            {t(lang, "notes.cta_button")}
+            <span aria-hidden="true">→</span>
+          </a>
+          <a class="btn" href={`${langPrefix}/methodology`}>
+            {t(lang, "home.methods_link")}
+          </a>
+        </div>
+      </div>
+      <div class="notes__cta-mascot" aria-hidden="true">
+        <div class="notes__cta-aura"></div>
+        <MascotDuck size={120} alt="" />
+      </div>
+    </section>
   </div>
 </article>
 
 <style>
-  .notes { padding: 0 0 4rem 0; }
-  .notes__grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0;
-    border-top: 1px solid var(--rule);
-    border-left: 1px solid var(--rule);
+  .notes {
+    padding: 0 0 4rem 0;
   }
-  .notes__card {
+
+  /* ============== LEAD ==================================== */
+  .notes__lead {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: clamp(1.4rem, 3.4vw, 2.6rem);
+    align-items: start;
+    padding: clamp(1.4rem, 3vw, 2rem) 0;
+    margin: 0 0 clamp(1.6rem, 3.5vw, 2.2rem) 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+  .notes__lead-text { min-width: 0; }
+  .notes__lead-h {
+    margin: 0 0 0.7rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.35rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  :lang(zh) .notes__lead-h {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .notes__lead-p {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.72;
+    max-width: 60ch;
+  }
+  :lang(zh) .notes__lead-p {
+    font-family: var(--font-cjk);
+    line-height: 1.9;
+  }
+  .notes__quote {
+    margin: 0;
+    padding-left: clamp(0.8rem, 2vw, 1.4rem);
+    border-left: 1px dotted var(--rule);
+  }
+
+  /* ============== DRAFTS COLUMN ========================== */
+  .notes__column {
+    list-style: none;
+    margin: 0 0 clamp(2rem, 4vw, 3rem) 0;
+    padding: 0;
+    /* notebook-style ruled paper: subtle horizontal lines on the
+       cream paper background, with a left margin rule (like
+       legal paper). */
+    background:
+      linear-gradient(180deg, var(--paper) 0%, color-mix(in oklch, var(--paper) 92%, var(--ink)) 100%);
+    background-image:
+      repeating-linear-gradient(
+        180deg,
+        transparent 0,
+        transparent 47px,
+        color-mix(in oklch, var(--rule) 70%, transparent) 47px,
+        color-mix(in oklch, var(--rule) 70%, transparent) 48px
+      ),
+      linear-gradient(180deg, var(--paper) 0%, color-mix(in oklch, var(--paper) 92%, var(--ink)) 100%);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
     position: relative;
-    min-height: 14rem;
+  }
+  .notes__column::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 5rem;
+    width: 0;
+    border-left: 1.5px solid color-mix(in oklch, var(--alert) 40%, transparent);
+    pointer-events: none;
+  }
+  .notes__row {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr) auto;
+    gap: clamp(1rem, 2.5vw, 1.8rem);
+    align-items: start;
+    padding: clamp(1.3rem, 3vw, 1.7rem) clamp(1.2rem, 3vw, 1.6rem);
+    border-bottom: 1px dashed var(--rule);
+    position: relative;
+    transition: background 200ms ease;
+  }
+  .notes__row:last-child { border-bottom: 0; }
+  .notes__row:hover {
+    background: color-mix(in oklch, var(--accent) 7%, transparent);
+  }
+
+  .notes__row-rail {
     display: flex;
     flex-direction: column;
-    border-right: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    background: var(--bg-soft);
-    padding: 1.4rem 1.3rem 1.3rem 1.4rem;
+    align-items: flex-start;
+    gap: 0.45rem;
+    padding-right: 0.6rem;
   }
-  .notes__idx {
-    position: absolute;
-    top: 0.55rem;
-    right: 0.85rem;
+  .notes__row-idx {
     font-family: var(--font-stamp);
-    font-style: normal;
     color: var(--ink-mute);
-    font-size: 1.15rem;
-    letter-spacing: 0.04em;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
     line-height: 1;
   }
-  .notes__card h2 {
-    margin: 0 0 0.6rem 0;
-    color: var(--ink);
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: var(--fs-h3);
-    letter-spacing: -0.01em;
-    line-height: 1.25;
+  .notes__row-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.18rem 0.55rem;
+    font-family: var(--font-stamp);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+    background: var(--bg-soft);
+    color: var(--ink-mute);
   }
-  :lang(zh) .notes__card h2 { font-family: var(--font-cjk); letter-spacing: 0; }
-  .notes__card p {
-    margin: 0;
-    flex: 1;
-    color: var(--ink-soft);
-    font-family: var(--font-sans);
-    font-size: var(--fs-meta);
-    line-height: 1.68;
+  :lang(zh) .notes__row-status {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.04em;
+    text-transform: none;
+    font-size: 0.78rem;
   }
-  :lang(zh) .notes__card p { font-family: var(--font-cjk); line-height: 1.85; }
-  .notes__status {
-    align-self: flex-start;
-    margin-top: 1.2rem;
+  .notes__row-status--outline {
     color: var(--accent);
-    border: 1px solid var(--accent);
-    border-radius: var(--radius-pill);
-    padding: 0.16rem 0.55rem;
-    font-size: var(--fs-micro);
+    border-color: var(--accent);
+    background: color-mix(in oklch, var(--accent) 12%, var(--bg-soft));
   }
-  @media (max-width: 860px) {
-    .notes__grid { grid-template-columns: 1fr; }
-    .notes__card { min-height: 0; }
+  .notes__row-status--draft {
+    color: var(--accent-deep);
+    border-color: var(--accent-deep);
+    background: color-mix(in oklch, var(--accent-deep) 12%, var(--bg-soft));
+  }
+  .notes__row-status--research {
+    color: var(--steam-deep);
+    border-color: var(--steam);
+    background: color-mix(in oklch, var(--steam) 14%, var(--bg-soft));
+  }
+
+  .notes__row-body { min-width: 0; }
+  .notes__row-h {
+    margin: 0 0 0.5rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.32rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.22;
+  }
+  :lang(zh) .notes__row-h {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .notes__row-p {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    line-height: 1.72;
+    max-width: 64ch;
+  }
+  :lang(zh) .notes__row-p {
+    font-family: var(--font-cjk);
+    line-height: 1.9;
+  }
+
+  .notes__row-eta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+    text-align: right;
+    white-space: nowrap;
+    align-self: center;
+  }
+  .notes__row-eta-label {
+    font-family: var(--font-stamp);
+    color: var(--ink-mute);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  :lang(zh) .notes__row-eta-label {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.06em;
+    text-transform: none;
+  }
+  .notes__row-eta-val {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--ink);
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+  :lang(zh) .notes__row-eta-val {
+    font-family: var(--font-cjk);
+    font-style: normal;
+  }
+
+  /* ============== RAW-DATA CTA BOX ========================= */
+  .notes__cta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(140px, 160px);
+    gap: clamp(1.4rem, 3vw, 2.4rem);
+    align-items: center;
+    padding: clamp(1.6rem, 3.5vw, 2.4rem);
+    background:
+      linear-gradient(180deg,
+        color-mix(in oklch, var(--steam-deep) 88%, var(--bg)) 0%,
+        color-mix(in oklch, var(--steam-deep) 95%, var(--bg)) 100%);
+    border: 1px solid color-mix(in oklch, var(--steam) 35%, transparent);
+    border-radius: var(--radius-lg);
+    color: #f3ecd6;
+    position: relative;
+    overflow: hidden;
+  }
+  .notes__cta::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+  .notes__cta-text {
+    min-width: 0;
+    color: #f3ecd6;
+  }
+  .notes__cta-kicker {
+    margin: 0 0 0.55rem 0;
+    color: var(--accent);
+    font-size: 0.88rem;
+    letter-spacing: 0.18em;
+    line-height: 1;
+  }
+  :lang(zh) .notes__cta-kicker { letter-spacing: 0.06em; }
+  .notes__cta-h {
+    margin: 0 0 0.55rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(1.3rem, 2.6vw, 1.65rem);
+    color: #f3ecd6;
+    letter-spacing: -0.01em;
+    line-height: 1.18;
+  }
+  :lang(zh) .notes__cta-h {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.32;
+  }
+  .notes__cta-p {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: #c8d0d4;
+    font-size: 0.96rem;
+    line-height: 1.7;
+    max-width: 60ch;
+  }
+  :lang(zh) .notes__cta-p {
+    font-family: var(--font-cjk);
+    line-height: 1.9;
+  }
+  .notes__cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.1rem;
+  }
+  .notes__cta-mascot {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 0;
+    isolation: isolate;
+  }
+  .notes__cta-aura {
+    position: absolute;
+    inset: -10% -10% -5% -10%;
+    background:
+      radial-gradient(55% 55% at 50% 60%, color-mix(in oklch, var(--accent) 32%, transparent) 0%, transparent 70%);
+    filter: blur(2px);
+    z-index: -1;
+  }
+
+  /* ============== RESPONSIVE =============================== */
+  @media (max-width: 920px) {
+    .notes__lead { grid-template-columns: 1fr; }
+    .notes__quote {
+      padding-left: 0;
+      padding-top: 1rem;
+      border-left: none;
+      border-top: 1px dotted var(--rule);
+    }
+    .notes__column { background-image: none; background: var(--paper); }
+    .notes__column::before { display: none; }
+  }
+  @media (max-width: 720px) {
+    .notes__row {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .notes__row-rail {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .notes__row-eta {
+      align-items: flex-start;
+      text-align: left;
+    }
+    .notes__cta {
+      grid-template-columns: 1fr;
+      text-align: left;
+    }
+    .notes__cta-mascot { display: none; }
   }
 </style>
