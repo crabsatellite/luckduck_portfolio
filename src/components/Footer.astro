@@ -1,10 +1,16 @@
 ---
-// Compact site footer. Three rows: brand block + nav, hairline, then
-// legal + version. No imprint metadata, no oversized closing panel —
-// it is just a footer.
+// Compact site footer. Three rows: brand block + nav, hairline,
+// then legal + version. No imprint metadata, no oversized closing
+// panel — it is just a footer.
+//
+// Year and build date are computed at build time so the footer
+// never goes stale; the package version is read from package.json
+// so the archive line stays in sync with the actual release.
 import { t, type Lang } from "~/i18n/strings";
 import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
 import MascotDuck from "~/components/MascotDuck.astro";
+import pkg from "../../package.json";
+import { remoteMetrics } from "~/lib/data";
 
 interface Props {
   lang: Lang;
@@ -12,6 +18,22 @@ interface Props {
 const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 const langPrefix = lang === "en" ? `${base}/en` : base;
+
+const now = new Date();
+const buildYear = now.getUTCFullYear();
+const buildYM = `${buildYear}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+const version = `v${pkg.version}`;
+
+const copyTemplate = t(lang, "footer.copy");
+const copyText = copyTemplate.replace(/\{year\}/g, String(buildYear));
+const archiveText = t(lang, "footer.archived")
+  .replace(/\{version\}/g, version)
+  .replace(/\{ym\}/g, buildYM);
+
+const metricsDate = remoteMetrics.fetched_at
+  ? remoteMetrics.fetched_at.slice(0, 10)
+  : null;
+const dataLabel = lang === "en" ? "remote data" : "远程数据";
 ---
 
 <footer class="ftr" role="contentinfo">
@@ -61,8 +83,18 @@ const langPrefix = lang === "en" ? `${base}/en` : base;
   </div>
 
   <div class="container ftr__bottom">
-    <p class="ftr__copy">{t(lang, "footer.copy")}</p>
-    <p class="ftr__version mono tnum">{t(lang, "footer.archived")}</p>
+    <p class="ftr__copy">{copyText}</p>
+    <p class="ftr__version mono tnum">
+      <span>{archiveText}</span>
+      {metricsDate && (
+        <>
+          <span class="ftr__version-sep" aria-hidden="true">·</span>
+          <span class="ftr__data" title={`Last metrics refresh ${metricsDate}`}>
+            {dataLabel} {metricsDate}
+          </span>
+        </>
+      )}
+    </p>
   </div>
 </footer>
 
@@ -190,5 +222,14 @@ const langPrefix = lang === "en" ? `${base}/en` : base;
     color: var(--ink-mute);
     letter-spacing: 0.04em;
     margin: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    align-items: baseline;
+  }
+  .ftr__version-sep { opacity: 0.55; }
+  .ftr__data {
+    color: var(--accent);
+    opacity: 0.85;
   }
 </style>
