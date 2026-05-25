@@ -22,18 +22,23 @@ const all = [
   { url: `${URL_BASE}/methodology`, name: 'methodology-zh', wait: 800, locale: 'zh-CN' },
   { url: `${URL_BASE}/notes`, name: 'notes-zh', wait: 800, locale: 'zh-CN' },
   { url: `${URL_BASE}/about`, name: 'about-zh', wait: 800, locale: 'zh-CN' },
+  { url: `${URL_BASE}/en/about`, name: 'about-en', wait: 800, locale: 'en-US' },
+  { url: `${URL_BASE}/en/cases`, name: 'cases-en', wait: 1000, locale: 'en-US' },
+  { url: `${URL_BASE}/en/methodology`, name: 'methodology-en', wait: 800, locale: 'en-US' },
+  { url: `${URL_BASE}/en/notes`, name: 'notes-en', wait: 800, locale: 'en-US' },
   { url: `${URL_BASE}/cases/hotbath`, name: 'case-hotbath-zh', wait: 1000, locale: 'zh-CN' },
 ];
 
+const pickByName = (names) => names.map((n) => all.find((t) => t.name === n)).filter(Boolean);
 const targets =
-  wantedScope === 'home' ? all.slice(0, 2)
-  : wantedScope === 'home-zh' ? [all[0]]
-  : wantedScope === 'home-en' ? [all[1]]
-  : wantedScope === 'cases' ? [all[2]]
-  : wantedScope === 'methodology' ? [all[3]]
-  : wantedScope === 'notes' ? [all[4]]
-  : wantedScope === 'about' ? [all[5]]
-  : wantedScope === 'case-detail' ? [all[6]]
+  wantedScope === 'home' ? pickByName(['home-zh', 'home-en'])
+  : wantedScope === 'home-zh' ? pickByName(['home-zh'])
+  : wantedScope === 'home-en' ? pickByName(['home-en'])
+  : wantedScope === 'cases' ? pickByName(['cases-zh', 'cases-en'])
+  : wantedScope === 'methodology' ? pickByName(['methodology-zh', 'methodology-en'])
+  : wantedScope === 'notes' ? pickByName(['notes-zh', 'notes-en'])
+  : wantedScope === 'about' ? pickByName(['about-zh', 'about-en'])
+  : wantedScope === 'case-detail' ? pickByName(['case-hotbath-zh'])
   : all;
 
 const browser = await chromium.launch();

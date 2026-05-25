@@ -1,10 +1,12 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
-import { profile } from "~/lib/data";
+import {
+  creditDownloadsCompactLabel,
+  mods, profile, remoteMetrics, totalBugs, totalRounds,
+} from "~/lib/data";
 import MascotDuck from "~/components/MascotDuck.astro";
 import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
 import PageHead from "~/components/PageHead.astro";
-import MarqueeDivider from "~/components/MarqueeDivider.astro";
 
 interface Props {
   lang: Lang;
@@ -15,207 +17,519 @@ const offer = ["about.offer_1", "about.offer_2", "about.offer_3", "about.offer_4
 const deliver = ["about.deliver_1", "about.deliver_2", "about.deliver_3"] as const;
 const prepare = ["about.prepare_1", "about.prepare_2", "about.prepare_3"] as const;
 
-const kicker = lang === "en" ? "about · tester ledger" : "about · 测试员手记";
+const hotBathCredit = profile.curseforge.tester_credits.find(
+  (credit) => credit.mod.toLowerCase().replace(/\s+/g, "") === "hotbath"
+);
+const hotBathDownloads = hotBathCredit ? creditDownloadsCompactLabel(hotBathCredit) : "1M+ DL";
+const aboutProof = lang === "en"
+  ? `The ${mods.length} mods and ${totalBugs()} bug entries on this site come from public submissions and mod-author-direct correspondence. Two mods carry a publicly verifiable Tester credit: Hot Bath (${hotBathDownloads} CurseForge downloads) and Instant World Mirror, both under the CrabMods team.`
+  : `本站收录的 ${mods.length} 个 mod、${totalBugs()} 条 bug 来自公开提交记录或与 mod 作者私下沟通的整理稿。已公开署名的 Tester 项目两个：Hot Bath（CurseForge 下载量 ${hotBathDownloads}）与 Instant World Mirror，均隶属 CrabMods 团队。`;
+
+const githubStats = [
+  { label: lang === "en" ? "public PRs" : "公开 PR", value: remoteMetrics.github.prs.total },
+  { label: lang === "en" ? "public issues" : "公开 issue", value: remoteMetrics.github.issues.total },
+].filter((item) => item.value > 0);
+
+const facts = [
+  { label: t(lang, "about.fact_mods"), value: mods.length },
+  { label: t(lang, "about.fact_bugs"), value: totalBugs(), accent: true },
+  { label: t(lang, "about.fact_rounds"), value: totalRounds() },
+  { label: t(lang, "about.fact_credits"), value: profile.curseforge.tester_credits.length },
+];
+
+const sections = [
+  { kicker: t(lang, "about.offer_kicker"), title: t(lang, "about.offer_h"), items: offer },
+  { kicker: t(lang, "about.deliver_kicker"), title: t(lang, "about.deliver_h"), items: deliver },
+  { kicker: t(lang, "about.prepare_kicker"), title: t(lang, "about.prepare_h"), items: prepare },
+];
 ---
 
-<article class="about">
+<article class="about" data-reveal>
   <div class="container">
     <PageHead
       lang={lang}
       mark="01"
-      kicker={kicker}
+      kicker={t(lang, "about.kicker")}
       title={t(lang, "about.greeting")}
       sub={t(lang, "about.role")}
-    >
-      <div class="about__mascot-row">
-        <MascotDuck size={72} blink={true} alt="LUCK666DUCK mascot" />
-      </div>
-    </PageHead>
+      deck={t(lang, "about.deck")}
+    />
 
+    <!-- ============ LEAD: portrait + drop-cap body ============= -->
+    <section class="about__lead">
+      <aside class="about__portrait" aria-hidden="true">
+        <div class="about__portrait-aura"></div>
+        <MascotDuck size={220} blink={true} alt="LUCK666DUCK mascot" />
+        <p class="about__portrait-caption caption">{t(lang, "about.portrait_caption")}</p>
+      </aside>
+
+      <div class="about__body">
+        <p class="about__body-para drop-cap">{t(lang, "about.zh_para1")}</p>
+        <p class="about__body-para">{t(lang, "about.zh_para2")}</p>
+        <p class="about__body-para">{aboutProof}</p>
+        <p class="about__body-para about__body-para--lead">{t(lang, "about.zh_para4")}</p>
+      </div>
+    </section>
+
+    <!-- ============ PULL QUOTE ================================= -->
+    <figure class="about__quote" aria-label="house rule">
+      <blockquote class="pull-quote">
+        <span class="pull-quote__mark" aria-hidden="true">“</span>
+        {t(lang, "about.quote")}
+        <span class="pull-quote__attr">{t(lang, "about.quote_attr")}</span>
+      </blockquote>
+    </figure>
+
+    <!-- ============ FACT SHEET + SECTIONS LAYOUT ============== -->
     <div class="about__layout">
       <main class="about__main">
-        <div class="prose about__body">
-          <p>{t(lang, "about.zh_para1")}</p>
-          <p>{t(lang, "about.zh_para2")}</p>
-          <p>{t(lang, "about.zh_para3")}</p>
-          <p>{t(lang, "about.zh_para4")}</p>
-        </div>
+        <section class="about__fact" aria-label="by the numbers">
+          <h2 class="about__fact-h">{t(lang, "about.fact_h")}</h2>
+          <dl class="about__fact-list">
+            {facts.map((f) => (
+              <div class={`about__fact-row ${f.accent ? "about__fact-row--accent" : ""}`}>
+                <dt>{f.label}</dt>
+                <dd class="fancy-num mono tnum">{f.value}</dd>
+              </div>
+            ))}
+            <div class="about__fact-row about__fact-row--text">
+              <dt>{t(lang, "about.fact_coverage")}</dt>
+              <dd class="mono tnum">MC 1.14 → 1.21</dd>
+            </div>
+          </dl>
+        </section>
 
-        <section class="about__cards" aria-label="collaboration details">
-          <article class="about__card">
-            <span class="about__card-idx mono">01</span>
-            <h2>{t(lang, "about.offer_h")}</h2>
-            <ul>{offer.map((key) => <li>{t(lang, key)}</li>)}</ul>
-          </article>
-          <article class="about__card">
-            <span class="about__card-idx mono">02</span>
-            <h2>{t(lang, "about.deliver_h")}</h2>
-            <ul>{deliver.map((key) => <li>{t(lang, key)}</li>)}</ul>
-          </article>
-          <article class="about__card about__card--wide">
-            <span class="about__card-idx mono">03</span>
-            <h2>{t(lang, "about.prepare_h")}</h2>
-            <ul>{prepare.map((key) => <li>{t(lang, key)}</li>)}</ul>
-          </article>
+        {sections.map((s) => (
+          <section class="about__feature">
+            <header class="about__feature-head">
+              <span class="about__feature-kicker dateline">{s.kicker}</span>
+              <h2 class="about__feature-title">{s.title}</h2>
+            </header>
+            <ul class="about__feature-list">
+              {s.items.map((key) => <li>{t(lang, key)}</li>)}
+            </ul>
+          </section>
+        ))}
+
+        <!-- ============ NEXT ISSUE TEASER (in-page) ============= -->
+        <section class="about__teaser">
+          <p class="about__teaser-kicker dateline">{lang === "en" ? "in the next issue" : "下回预告"}</p>
+          <h3 class="about__teaser-h">{t(lang, "about.next_issue_h")}</h3>
+          <p class="about__teaser-body">{t(lang, "about.next_issue_body")}</p>
         </section>
       </main>
 
+      <!-- ============ SIDEBAR: credits + contact + activity ===== -->
       <aside class="about__side">
-        <section class="about__panel">
-          <h3 class="about__panel-h">{lang === "en" ? "Public credits" : "公开署名"}</h3>
-          <ul class="about__credits">
+        <section class="about__panel ledger-card">
+          <p class="about__panel-kicker dateline">{lang === "en" ? "public credits" : "公开 Tester 署名"}</p>
+          <ul class="about__panel-list">
             {profile.curseforge.tester_credits.map((c) => (
-              <li>
-                <a href={c.mod_url} rel="noopener" target="_blank">{c.mod}</a>
-                <span class="about__credit-meta mono"> · {c.role}</span>
+              <li class="about__panel-row">
+                <span class="about__panel-bullet" aria-hidden="true">◦</span>
+                <a href={c.mod_url} rel="noopener" target="_blank" class="about__panel-link">
+                  <span class="about__panel-name">{c.mod}</span>
+                  <span class="about__panel-meta caption">{c.role} · CrabMods</span>
+                </a>
               </li>
             ))}
           </ul>
         </section>
 
-        <section class="about__panel">
-          <h3 class="about__panel-h">{lang === "en" ? "Contact" : "联系"}</h3>
-          <ul class="about__links">
-            <li><a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank">curseforge / luck666duck ↗</a></li>
-            <li><a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">github / LUCK666DUCK ↗</a></li>
+        <section class="about__panel ledger-card">
+          <p class="about__panel-kicker dateline">{t(lang, "about.contact_panel_h")}</p>
+          <p class="about__panel-sub">{t(lang, "about.contact_panel_sub")}</p>
+          <ul class="about__panel-list">
+            <li class="about__panel-row">
+              <span class="about__panel-bullet" aria-hidden="true">◦</span>
+              <a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank" class="about__panel-link">
+                curseforge / luck666duck <span aria-hidden="true">↗</span>
+              </a>
+            </li>
+            <li class="about__panel-row">
+              <span class="about__panel-bullet" aria-hidden="true">◦</span>
+              <a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank" class="about__panel-link">
+                github / LUCK666DUCK <span aria-hidden="true">↗</span>
+              </a>
+            </li>
           </ul>
         </section>
 
-        <RetroBadgeStrip />
+        {githubStats.length > 0 && (
+          <section class="about__panel ledger-card">
+            <p class="about__panel-kicker dateline">{lang === "en" ? "github activity" : "GitHub 动态"}</p>
+            <ul class="about__panel-list about__panel-list--stats">
+              {githubStats.map((item) => (
+                <li class="about__panel-row about__panel-row--stat">
+                  <span class="about__panel-name">{item.label}</span>
+                  <span class="about__panel-stat mono tnum">{item.value.toLocaleString("en-US")}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <div class="about__badges">
+          <RetroBadgeStrip />
+        </div>
       </aside>
     </div>
   </div>
 </article>
 
-<MarqueeDivider
-  text={lang === "en" ? "ABOUT · COLLABORATION · LUCK666DUCK" : "关于 · 合作 · LUCK666DUCK"}
-  animated={true}
-  size="sm"
-/>
-
 <style>
-  .about { padding: 0 0 3rem 0; }
-  .about__mascot-row { margin-top: 0.4rem; }
-
-  .about__layout {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(280px, 0.85fr);
-    gap: clamp(2rem, 4vw, 3rem);
-    align-items: start;
+  .about {
+    padding: 0 0 3.5rem 0;
+    position: relative;
   }
-  .about__body { max-width: 70ch; }
 
-  .about__cards {
+  /* ============== LEAD ===================================== */
+  .about__lead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 0.55fr);
+    gap: clamp(1.8rem, 4vw, 3.2rem);
+    align-items: start;
+    padding: clamp(1.6rem, 3.5vw, 2.4rem) 0;
+    margin: 0 0 clamp(1.6rem, 3.5vw, 2.4rem) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .about__portrait {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0;
+    isolation: isolate;
+  }
+  .about__portrait-aura {
+    position: absolute;
+    inset: -8% -8% 6% -8%;
+    background:
+      radial-gradient(55% 55% at 50% 55%, color-mix(in oklch, var(--accent) 32%, transparent) 0%, transparent 70%);
+    filter: blur(2px);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .about__portrait-caption {
+    margin: 0.65rem 0 0 0;
+    text-align: center;
+    color: var(--ink-mute);
+    max-width: 24ch;
+  }
+
+  .about__body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.05rem;
+  }
+  .about__body-para {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 1.04rem;
+    line-height: 1.78;
+  }
+  :lang(zh) .about__body-para {
+    font-family: var(--font-cjk);
+    line-height: 1.95;
+  }
+  .about__body-para--lead {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .about__body-para::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+  /* ============== PULL QUOTE ============================== */
+  .about__quote {
+    margin: 0 0 clamp(1.8rem, 4vw, 2.6rem) 0;
+    padding: clamp(1.4rem, 3vw, 2rem) 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ============== FACT SHEET ============================== */
+  .about__fact {
+    margin: 0 0 clamp(2rem, 4vw, 2.8rem) 0;
+    border-top: 2px solid var(--ink);
+    padding-top: 1.2rem;
+  }
+  .about__fact-h {
+    margin: 0 0 1rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.32rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  :lang(zh) .about__fact-h {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .about__fact-list {
+    margin: 0;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0;
-    margin-top: 2rem;
-    border-top: 2px solid var(--ink);
+    border-top: 1px solid var(--rule);
     border-left: 1px solid var(--rule);
   }
-  .about__card {
-    position: relative;
+  .about__fact-row {
+    margin: 0;
+    padding: 1.05rem 1.2rem 1.1rem 1.2rem;
     border-right: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
     background: var(--bg-soft);
-    padding: 1.4rem 1.3rem 1.3rem 1.4rem;
-  }
-  .about__card--wide { grid-column: 1 / -1; }
-  .about__card-idx {
-    position: absolute;
-    top: 0.6rem;
-    right: 0.9rem;
-    font-family: var(--font-stamp);
-    font-style: normal;
-    color: var(--ink-mute);
-    font-size: 1.1rem;
-    letter-spacing: 0.04em;
-    line-height: 1;
-  }
-  .about__panel {
-    border: 1px solid var(--rule);
-    background: var(--bg-soft);
-    padding: 1.1rem 1.2rem;
-    border-radius: var(--radius);
-  }
-  .about__card h2 {
-    font-family: var(--font-serif);
-    font-size: var(--fs-h3);
-    color: var(--ink);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin: 0 0 0.8rem 0;
-  }
-  :lang(zh) .about__card h2 { font-family: var(--font-cjk); letter-spacing: 0; }
-  .about__panel-h {
-    font-family: var(--font-sans);
-    font-size: var(--fs-meta);
-    color: var(--ink);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin: 0 0 0.8rem 0;
-    font-weight: 700;
-  }
-  :lang(zh) .about__panel-h { font-family: var(--font-cjk); letter-spacing: 0; }
-
-  .about__card ul,
-  .about__credits,
-  .about__links {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .about__card li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
     position: relative;
-    padding-left: 1rem;
-    margin-bottom: 0.55rem;
-    color: var(--ink-soft);
-    font-family: var(--font-sans);
-    font-size: var(--fs-meta);
-    line-height: 1.65;
   }
-  .about__card li::before {
-    content: "";
+  .about__fact-row dt {
+    font-family: var(--font-stamp);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0;
+    order: 2;
+  }
+  :lang(zh) .about__fact-row dt {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.04em;
+    text-transform: none;
+    font-size: 0.86rem;
+  }
+  .about__fact-row dd {
+    margin: 0;
+    color: var(--ink);
+    font-size: 2.2rem;
+    line-height: 0.9;
+    order: 1;
+  }
+  .about__fact-row--accent dd { color: var(--accent); }
+  .about__fact-row--text {
+    grid-column: 1 / -1;
+    background: var(--bg);
+  }
+  .about__fact-row--text dd {
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 1rem;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  /* ============== LAYOUT: main + sidebar ================== */
+  .about__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2.1fr) minmax(280px, 0.85fr);
+    gap: clamp(2rem, 4vw, 3.2rem);
+    align-items: start;
+  }
+  .about__main {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.8rem, 4vw, 2.6rem);
+    min-width: 0;
+  }
+
+  /* ============== FEATURE SECTION (offer / deliver / prep) = */
+  .about__feature {
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+  }
+  .about__feature-head {
+    margin: 0 0 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .about__feature-kicker {
+    color: var(--accent);
+    letter-spacing: 0.16em;
+    font-size: 0.92rem;
+    margin: 0;
+  }
+  :lang(zh) .about__feature-kicker { letter-spacing: 0.06em; }
+  .about__feature-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  :lang(zh) .about__feature-title {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .about__feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .about__feature-list li {
+    position: relative;
+    padding-left: 1.4rem;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    line-height: 1.7;
+  }
+  :lang(zh) .about__feature-list li { font-family: var(--font-cjk); line-height: 1.9; }
+  .about__feature-list li::before {
+    content: "→";
     position: absolute;
     left: 0;
-    top: 0.72em;
-    width: 0.38rem;
-    height: 0.38rem;
-    background: var(--accent);
-    border-radius: 50%;
+    top: 0;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 700;
   }
-  :lang(zh) .about__card li { font-family: var(--font-cjk); line-height: 1.85; }
 
+  /* ============== NEXT-ISSUE TEASER ======================= */
+  .about__teaser {
+    margin-top: 1rem;
+    padding: 1.5rem 1.6rem 1.7rem 1.6rem;
+    border: 1px dashed var(--accent);
+    border-radius: var(--radius-lg);
+    background: color-mix(in oklch, var(--accent) 6%, transparent);
+    position: relative;
+  }
+  .about__teaser-kicker {
+    color: var(--accent);
+    margin: 0 0 0.55rem 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.18em;
+  }
+  :lang(zh) .about__teaser-kicker { letter-spacing: 0.06em; }
+  .about__teaser-h {
+    margin: 0 0 0.6rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  :lang(zh) .about__teaser-h {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .about__teaser-body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
+  :lang(zh) .about__teaser-body { font-family: var(--font-cjk); line-height: 1.9; }
+
+  /* ============== SIDEBAR ================================ */
   .about__side {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1.1rem;
+    min-width: 0;
   }
-  .about__credits li,
-  .about__links li {
-    margin-bottom: 0.55rem;
-    font-family: var(--font-sans);
-    font-size: var(--fs-meta);
+  .about__panel {
+    padding: 1.05rem 1.2rem 1.15rem 1.2rem;
+    border-radius: var(--radius-lg);
   }
-  :lang(zh) .about__credits li,
-  :lang(zh) .about__links li { font-family: var(--font-cjk); }
-  .about__credits a,
-  .about__links a {
-    color: var(--ink);
-    text-decoration: none;
-    border-bottom: 1px solid var(--rule);
-  }
-  .about__credits a:hover,
-  .about__links a:hover {
+  .about__panel-kicker {
+    margin: 0 0 0.75rem 0;
     color: var(--accent);
-    border-bottom-color: var(--accent);
+    font-size: 0.88rem;
+    letter-spacing: 0.18em;
+    line-height: 1;
   }
-  .about__credit-meta { color: var(--ink-mute); font-size: 0.8rem; }
+  :lang(zh) .about__panel-kicker { letter-spacing: 0.06em; }
+  .about__panel-sub {
+    margin: -0.3rem 0 0.75rem 0;
+    font-family: var(--font-sans);
+    color: var(--ink-mute);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  :lang(zh) .about__panel-sub { font-family: var(--font-cjk); line-height: 1.7; }
+  .about__panel-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .about__panel-row {
+    display: grid;
+    grid-template-columns: 0.8rem minmax(0, 1fr);
+    gap: 0.55rem;
+    align-items: baseline;
+    padding: 0.55rem 0;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .about__panel-row:last-child { border-bottom: 0; }
+  .about__panel-row--stat {
+    grid-template-columns: 1fr auto;
+  }
+  .about__panel-bullet {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    line-height: 1;
+  }
+  .about__panel-link {
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+    min-width: 0;
+    border-bottom: 1px solid transparent;
+    width: fit-content;
+  }
+  .about__panel-link:hover,
+  .about__panel-link:focus-visible { color: var(--accent); }
+  .about__panel-name {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+  :lang(zh) .about__panel-name { font-family: var(--font-cjk); font-weight: 500; }
+  .about__panel-meta { color: var(--ink-mute); }
+  .about__panel-stat {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  .about__badges :global(.badge-strip) {
+    background: var(--paper);
+    padding: 0.55rem;
+    border: 1px solid var(--rule);
+  }
 
-  @media (max-width: 900px) {
+  /* ============== RESPONSIVE ============================== */
+  @media (max-width: 980px) {
+    .about__lead { grid-template-columns: 1fr; }
+    .about__portrait { order: -1; }
     .about__layout { grid-template-columns: 1fr; }
   }
-  @media (max-width: 620px) {
-    .about__cards { grid-template-columns: 1fr; }
+  @media (max-width: 540px) {
+    .about__fact-list { grid-template-columns: 1fr; }
+    .about__fact-row dd { font-size: 1.8rem; }
   }
 </style>
