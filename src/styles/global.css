@@ -3,9 +3,9 @@
      Inter; long-standing OSS workhorse, less "AI landing page" tone.
    - IBM Plex Serif (static 400/600/700) — used selectively for display
      headings, gives weight without falling back on a generic geometric sans.
-   - LXGW WenKai Screen (GB subset, screen-optimized) — CJK body & headings.
-     Hand-tuned kaiti, beloved by Chinese OSS / indie community; instantly
-     removes the corporate "思源黑体 / Noto Sans" default look.
+   - Fusion Pixel 12px Proportional SC — MC-style CJK UI/display face.
+     Used on Chinese pages so headings, nav, buttons, labels, and body copy
+     all share the blocky game-readout texture. LXGW WenKai remains fallback.
    - JetBrains Mono (variable) — strictly DATA: versions, IDs, counts, dates.
    - VT323 — readable terminal/console pixel font, used as the site's
      "stamp" face for datelines, marquees, kickers, log numbers, badge
@@ -18,25 +18,35 @@
 @import "@fontsource/ibm-plex-serif/latin-700.css";
 @import "@fontsource-variable/jetbrains-mono/wght.css";
 @import "@fontsource/vt323";
+@import "@fontsource/fusion-pixel-12px-proportional-sc";
 @import "lxgw-wenkai-screen-webfont/lxgwwenkaigbscreen.css";
 
 :root {
-  /* dark soak-mode (default) — warm charcoal, no blue/purple tint */
-  --bg: #1d1a17;
-  --bg-soft: #25211d;
-  --bg-raised: #2e2924;
+  /* dark soak-mode (default) — warm charcoal, no blue/purple tint.
+     The bg→bg-soft→bg-raised→paper ladder gives us 4 stops of warm depth
+     so cards and panels actually float instead of bleeding into each other. */
+  --bg: #1a1714;
+  --bg-soft: #221e1a;
+  --bg-raised: #2a2520;
+  --paper: #322c25; /* the "field journal page" — for cards, key panels */
   --ink: #f2e9d4;
   --ink-soft: #c6bda8;
   --ink-mute: #8a8273;
+  --ink-faint: #5a5247;
   --accent: #f0b04a; /* duck-yolk, a touch more saturated than the
                               old #f9c47a so it stops reading as a generic
                               "soft warm AI accent". */
   --accent-deep: #c87420;
-  --steam: #a8c8d6;
+  --accent-soft: #f6c878; /* lighter wash for stamp/banner backgrounds */
+  --steam: #a8c8d6; /* pale blue, used sparingly for cooler accents */
+  --steam-deep: #6a92a8;
   --ok: #8fc97a;
+  --ok-deep: #5a9648;
   --warn: #f0b04a;
   --alert: #e07088;
+  --alert-deep: #b34d63;
   --rule: #3a342c;
+  --rule-soft: #2e2924;
 
   --font-sans:
     "IBM Plex Sans Variable", "IBM Plex Sans", system-ui, -apple-system,
@@ -48,15 +58,14 @@
     "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", "Menlo",
     "Consolas", monospace;
   --font-cjk:
-    "LXGW WenKai GB Screen", "LXGW WenKai Screen", "IBM Plex Sans Variable",
-    "PingFang SC", "Microsoft YaHei", sans-serif;
+    "Fusion Pixel 12px Proportional SC", "LXGW WenKai Screen",
+    "IBM Plex Sans Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-pixel: "JetBrains Mono Variable", ui-monospace, monospace;
   /* MC-flavor stamp face — VT323. Slightly larger natural metrics than
      Press Start 2P, far more readable at small sizes. Used for short
      latin strings only (datelines, marquees, kickers, log numbers). */
   --font-stamp:
-    "VT323", "JetBrains Mono Variable", ui-monospace, "Menlo",
-    monospace;
+    "VT323", "JetBrains Mono Variable", ui-monospace, "Menlo", monospace;
 
   --content-max: 1240px;
   --gutter: clamp(1.25rem, 4vw, 2.6rem);
@@ -73,12 +82,13 @@
   --fs-body-lg: 1.05rem; /* lead paragraphs */
   --fs-meta: 0.84rem; /* captions, meta */
   --fs-micro: 0.74rem; /* dateline, tags */
-  --fs-h1: clamp(1.7rem, 3.4vw, 2.4rem); /* page H1 (display) */
-  --fs-h2: clamp(1.3rem, 2.3vw, 1.7rem); /* section H2 */
-  --fs-h3: clamp(1.05rem, 1.5vw, 1.18rem); /* card / sub-section */
+  --fs-h1: clamp(1.85rem, 3.6vw, 2.6rem); /* page H1 (display) */
+  --fs-h2: clamp(1.35rem, 2.4vw, 1.85rem); /* section H2 */
+  --fs-h3: clamp(1.1rem, 1.6vw, 1.25rem); /* card / sub-section */
   --fs-h4: 0.98rem; /* small headers */
-  --fs-mega: clamp(2.4rem, 6.4vw, 4.4rem); /* hero display (reduced) */
-  --fs-counter: clamp(2rem, 4.4vw, 2.9rem); /* stat numerals */
+  --fs-mega: clamp(2.8rem, 7.6vw, 5.6rem); /* hero display */
+  --fs-counter: clamp(2.4rem, 5vw, 3.4rem); /* stat numerals */
+  --fs-stat: clamp(4rem, 12vw, 8rem); /* signature mega stat */
 
   --radius: 6px;
   --radius-lg: 10px;
@@ -98,18 +108,25 @@
     --bg: #f6ecd6;
     --bg-soft: #ede2c9;
     --bg-raised: #e3d6b9;
+    --paper: #faf3e1;
     --ink: #2a241a;
     --ink-soft: #5a5042;
     --ink-mute: #8b8170;
+    --ink-faint: #b2a890;
     --accent: #c87420;
     --accent-deep: #8f4d0e;
+    --accent-soft: #e6a45c;
     --steam: #608a9e;
+    --steam-deep: #3d6275;
     --ok: #3a8a4e;
+    --ok-deep: #28683a;
     --warn: #c87420;
     --alert: #a8334a;
+    --alert-deep: #7e2238;
     --rule: #d4c7a6;
+    --rule-soft: #e0d5b6;
     --shadow-soft: 0 2px 10px rgba(42, 36, 26, 0.1);
-    --shadow-warm: 0 4px 20px rgba(200, 116, 32, 0.16);
+    --shadow-warm: 0 6px 26px rgba(200, 116, 32, 0.18);
     color-scheme: light;
   }
 }
@@ -164,6 +181,32 @@ footer {
 :lang(zh-Hans-CN) {
   font-family: var(--font-cjk);
   line-height: var(--line-cjk);
+  font-synthesis-weight: none;
+}
+
+:lang(zh) :is(
+  .h-display,
+  .h-section,
+  .h-mega,
+  .btn,
+  .badge,
+  .eyebrow,
+  .pill,
+  .chip,
+  dt,
+  th,
+  strong,
+  [class*="__h"],
+  [class*="__label"],
+  [class*="__link"],
+  [class*="__title"],
+  [class*="__name"],
+  [class*="__role"]
+) {
+  font-family: var(--font-cjk) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
 }
 
 main {
@@ -221,9 +264,8 @@ a:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
-/* eyebrow uses MC-flavor stamp face for that F3-overlay/sign feel.
-   Strictly latin chars only; CJK contexts swap back to kaiti so the
-   pixel face doesn't try to render 中文 (which it can't). */
+/* eyebrow uses MC-flavor stamp face for Latin; Chinese swaps to the CJK
+   pixel face so labels stay game-like instead of falling back to kaiti. */
 .eyebrow {
   font-family: var(--font-stamp);
   font-size: 1rem;
@@ -361,7 +403,7 @@ a:focus-visible {
 }
 
 /* display headings — Latin uses Plex Serif for a printed, less-AI feel;
-   CJK stays on the warm kaiti via --font-cjk. All sizes flow from the
+   CJK uses the pixel face via --font-cjk. All sizes flow from the
    global --fs-* tokens so individual pages don't need to redeclare. */
 .h-display {
   font-family: var(--font-serif);
@@ -373,7 +415,7 @@ a:focus-visible {
 }
 :lang(zh) .h-display {
   font-family: var(--font-cjk);
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .h-section {
@@ -390,7 +432,7 @@ a:focus-visible {
 
 /* huge editorial display for hero — Plex Serif at oversized scale.
    Latin gets a tight, slightly negative tracking; CJK falls back to the
-   warm kaiti at a more conservative weight. Size lives in --fs-mega. */
+   pixel face at native weight. Size lives in --fs-mega. */
 .h-mega {
   font-family: var(--font-serif);
   font-weight: 700;
@@ -402,8 +444,8 @@ a:focus-visible {
 }
 :lang(zh) .h-mega {
   font-family: var(--font-cjk);
-  font-weight: 700;
-  letter-spacing: -0.005em;
+  font-weight: 400;
+  letter-spacing: 0;
   line-height: 1.08;
 }
 .h-mega em {
@@ -425,7 +467,7 @@ a:focus-visible {
 }
 :lang(zh) .dateline {
   /* keep stamp face on the latin parts of CJK datelines; the CJK chars
-     fall back to the kaiti automatically via the system stack. */
+     fall back to the Chinese pixel face automatically via the stack. */
   font-family: var(--font-stamp), var(--font-cjk);
   letter-spacing: 0.12em;
 }
@@ -543,8 +585,8 @@ a:focus-visible {
 :lang(zh) :is(.eyebrow, .pill, .chip, .badge, dt, th),
 :lang(zh) [class*="__label"],
 :lang(zh) [class*="__h"] {
-  text-transform: none;
-  letter-spacing: 0;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -555,4 +597,307 @@ a:focus-visible {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* ================================================================
+   redesign v3 — signature decoration layer
+   Adds atmospheric warmth, stamp/tape decorations, ledger ruling
+   and trading-card scale typography. Used by Hero, HomeSections,
+   ModCard and other home-page components.
+   ================================================================ */
+
+/* ---- atmospheric warm-bath steam glow -----------------------
+   A subtle radial wash placed behind hero / featured blocks.
+   It is purely decorative (pointer-events: none) and stays
+   pinned to the section, not the viewport, so it lights one
+   region rather than the whole page. */
+.steam-glow {
+  position: relative;
+  isolation: isolate;
+}
+.steam-glow::before {
+  content: "";
+  position: absolute;
+  inset: -8% -4% -4% -4%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      55% 60% at 78% 38%,
+      color-mix(in oklch, var(--accent) 22%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 70% at 12% 78%,
+      color-mix(in oklch, var(--steam) 10%, transparent) 0%,
+      transparent 70%
+    );
+  opacity: 0.95;
+}
+@media (prefers-color-scheme: light) {
+  .steam-glow::before {
+    background:
+      radial-gradient(
+        55% 60% at 78% 38%,
+        color-mix(in oklch, var(--accent) 18%, transparent) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        45% 70% at 12% 78%,
+        color-mix(in oklch, var(--steam) 14%, transparent) 0%,
+        transparent 70%
+      );
+    opacity: 0.6;
+  }
+}
+
+/* ---- "issue stamp" — small rotated badge -------------------- */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.35rem 0.7rem;
+  font-family: var(--font-stamp);
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  background: color-mix(in oklch, var(--accent) 10%, transparent);
+  border-radius: 2px;
+  line-height: 1;
+  transform: rotate(-1.4deg);
+  white-space: nowrap;
+}
+:lang(zh) .stamp {
+  font-family: var(--font-stamp), var(--font-cjk);
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+.stamp--ink { color: var(--ink); border-color: var(--ink); background: transparent; }
+.stamp--ok { color: var(--ok); border-color: var(--ok); background: color-mix(in oklch, var(--ok) 12%, transparent); }
+.stamp--alert { color: var(--alert); border-color: var(--alert); background: color-mix(in oklch, var(--alert) 12%, transparent); }
+
+/* ---- big diagonal "VERIFIED" overprint stamp ----------------
+   Sits over a card top-right with strong rotation and a faded
+   accent stroke. Less of a UI control, more of a stamped mark. */
+.overstamp {
+  position: absolute;
+  font-family: var(--font-stamp);
+  font-size: 1rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  padding: 0.32rem 0.6rem;
+  border-radius: 3px;
+  transform: rotate(-9deg);
+  pointer-events: none;
+  opacity: 0.85;
+  background: color-mix(in oklch, var(--bg) 60%, transparent);
+  line-height: 1;
+  z-index: 3;
+}
+:lang(zh) .overstamp {
+  font-family: var(--font-stamp), var(--font-cjk);
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+.overstamp--ok { color: var(--ok); border-color: var(--ok); }
+
+/* ---- ledger rule: heavy top + dotted bottom rail ------------
+   Used as the underline for editorial section heads. Gives
+   sections more presence than a single hairline. */
+.ledger-rule {
+  border-top: 2px solid var(--ink);
+  position: relative;
+  padding-top: 0.85rem;
+}
+.ledger-rule::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--rule);
+}
+
+/* ---- big serif italic "issue number" used in stat blocks --- */
+.fancy-num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.fancy-num--accent { color: var(--accent); }
+.fancy-num--ok { color: var(--ok); }
+.fancy-num--steam { color: var(--steam); }
+
+/* ---- editorial pull-quote rule used on hero stats column --- */
+.rule-thick {
+  height: 0;
+  border-top: 4px solid var(--ink);
+  margin: 0;
+}
+.rule-accent {
+  height: 0;
+  border-top: 4px solid var(--accent);
+  margin: 0;
+}
+
+/* ---- "torn ticket" separator — replaces the long marquees --
+   A two-row decorative band: a single line of running text in
+   the stamp face, sandwiched between two double-rules with a
+   center perforation dot pattern. Reads as the perforated edge
+   of a ticket stub, not as a placeholder marquee. */
+.torn-band {
+  position: relative;
+  padding: 0.65rem 0;
+  background: var(--bg-soft);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  overflow: hidden;
+}
+.torn-band::before,
+.torn-band::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background-image: radial-gradient(circle at 4px 50%, var(--bg) 1.5px, transparent 1.8px);
+  background-size: 16px 6px;
+  background-repeat: repeat-x;
+  opacity: 0.65;
+  pointer-events: none;
+}
+.torn-band::before { top: 0; }
+.torn-band::after { bottom: 0; }
+
+/* ---- accent banner — a tighter, more designed marquee ------
+   Used when we DO want a running label, but quieter and shorter
+   than the v2 marquees. */
+.runner {
+  background: var(--paper);
+  border-top: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding: 0.6rem 0;
+  overflow: hidden;
+  position: relative;
+}
+.runner__line {
+  font-family: var(--font-stamp);
+  font-size: 0.95rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+  display: flex;
+  gap: 2rem;
+}
+:lang(zh) .runner__line {
+  font-family: var(--font-stamp), var(--font-cjk);
+  letter-spacing: 0.1em;
+  text-transform: none;
+}
+
+/* ---- sticky-tape decorative element -------------------------
+   A small angled "tape" strip pinned to a card corner.
+   Pure CSS, low-key but signals "this is a pinned thing in
+   a binder". Used sparingly on key cards. */
+.tape {
+  position: absolute;
+  width: 80px;
+  height: 18px;
+  background: color-mix(in oklch, var(--accent-soft) 70%, transparent);
+  border: 1px solid color-mix(in oklch, var(--accent-deep) 30%, transparent);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  transform: rotate(-4deg);
+  top: -8px;
+  left: 24px;
+  z-index: 4;
+  pointer-events: none;
+}
+.tape--right { left: auto; right: 24px; transform: rotate(4deg); }
+
+/* ---- ledger-card surface ----------------------------------- */
+.ledger-card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 1px 0 color-mix(in oklch, var(--accent-deep) 16%, transparent),
+    0 18px 28px -22px rgba(0, 0, 0, 0.55),
+    0 2px 6px -2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+@media (prefers-color-scheme: light) {
+  .ledger-card {
+    box-shadow:
+      0 1px 0 color-mix(in oklch, var(--accent-deep) 20%, transparent),
+      0 16px 28px -22px rgba(80, 60, 30, 0.35),
+      0 2px 6px -2px rgba(80, 60, 30, 0.15);
+  }
+}
+
+/* ---- corner ticks: 4 tiny L-marks at the corners of a frame
+   (think: registration marks on a printed press sheet). */
+.cornered {
+  position: relative;
+}
+.cornered::before,
+.cornered::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--accent);
+  pointer-events: none;
+}
+.cornered::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+.cornered::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+/* ---- micro caption — small italic editorial pointer text --- */
+.caption {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.84rem;
+  color: var(--ink-mute);
+  line-height: 1.4;
+}
+:lang(zh) .caption {
+  font-family: var(--font-cjk);
+  font-style: normal;
+}
+
+/* ---- hairline "ledger column" — used as a thin marginal rail
+   that runs vertically beside a column of content. Two thin
+   lines a few pixels apart, like a checkbook column. */
+.col-rail {
+  position: relative;
+}
+.col-rail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 6px;
+  border-left: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  pointer-events: none;
 }

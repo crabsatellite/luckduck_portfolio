@@ -1,6 +1,7 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
 import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
+import MascotDuck from "~/components/MascotDuck.astro";
 
 interface Props {
   lang: Lang;
@@ -8,92 +9,187 @@ interface Props {
 const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 const langPrefix = lang === "en" ? `${base}/en` : base;
+
+const colophonLabel =
+  lang === "en" ? "COLOPHON · IMPRINT" : "版权 · 印记";
+const handshakeLabel =
+  lang === "en" ? "filed by hand · pixel by pixel" : "一格一格手工提交";
 ---
 
 <footer class="footer">
-  <div class="container">
-    <div class="footer__cols">
-      <div class="footer__col">
-        <p class="footer__handle">{t(lang, "footer.handle")}</p>
-        <p class="footer__tag">{t(lang, "footer.tagline")}</p>
-        <p class="footer__active mono tnum">{t(lang, "footer.active")}</p>
-        <div class="footer__badges"><RetroBadgeStrip /></div>
+  <div class="footer__top-band" role="presentation" aria-hidden="true">
+    <span class="footer__top-band-text">{colophonLabel}</span>
+  </div>
+
+  <div class="container footer__inner">
+    <section class="footer__brand">
+      <div class="footer__brand-head">
+        <span class="footer__mascot" aria-hidden="true">
+          <MascotDuck size={56} alt="" />
+        </span>
+        <div class="footer__brand-text">
+          <p class="footer__handle">{t(lang, "footer.handle")}</p>
+          <p class="footer__tag">{t(lang, "footer.tagline")}</p>
+        </div>
       </div>
-      <div class="footer__col">
-        <ul class="footer__links">
-          <li><a href={`${langPrefix}/cases`}>{t(lang, "nav.cases")}</a></li>
-          <li><a href={`${langPrefix}/methodology`}>{t(lang, "nav.methods")}</a></li>
-          <li><a href={`${langPrefix}/notes`}>{t(lang, "nav.notes")}</a></li>
-          <li>
-            <a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">
-              github / LUCK666DUCK <span aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank">
-              curseforge / luck666duck <span aria-hidden="true">↗</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <hr class="footer__rule" />
-    <div class="footer__meta">
-      <p class="footer__copy">{t(lang, "footer.copy")}</p>
-      <p class="footer__version mono">
-        {t(lang, "footer.archived")}
-      </p>
-    </div>
+      <p class="footer__active mono tnum">{t(lang, "footer.active")}</p>
+      <p class="footer__handshake caption">{handshakeLabel}</p>
+      <div class="footer__badges"><RetroBadgeStrip /></div>
+    </section>
+
+    <nav class="footer__nav" aria-label="footer navigation">
+      <p class="footer__nav-label dateline">on file</p>
+      <ul class="footer__links">
+        <li><a href={`${langPrefix}/cases`}>{t(lang, "nav.cases")}</a></li>
+        <li><a href={`${langPrefix}/methodology`}>{t(lang, "nav.methods")}</a></li>
+        <li><a href={`${langPrefix}/notes`}>{t(lang, "nav.notes")}</a></li>
+        <li><a href={`${langPrefix}/about`}>{t(lang, "nav.about")}</a></li>
+      </ul>
+
+      <p class="footer__nav-label dateline footer__nav-label--ext">off site</p>
+      <ul class="footer__links">
+        <li>
+          <a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">
+            github / LUCK666DUCK <span aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank">
+            curseforge / luck666duck <span aria-hidden="true">↗</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container footer__meta">
+    <p class="footer__copy">{t(lang, "footer.copy")}</p>
+    <p class="footer__version mono">
+      {t(lang, "footer.archived")}
+    </p>
   </div>
 </footer>
 
 <style>
   .footer {
-    margin-top: 5rem;
-    padding-top: 2.4rem;
+    margin-top: clamp(2.5rem, 6vw, 4.5rem);
     padding-bottom: 1.6rem;
-    border-top: 1px solid var(--rule);
+    background: var(--bg);
+    position: relative;
   }
-  .footer__cols {
+  .footer__top-band {
+    background: var(--bg-soft);
+    border-top: 2px solid var(--accent);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.6rem 0;
+    text-align: center;
+    position: relative;
+    margin-bottom: 2.2rem;
+  }
+  .footer__top-band::before,
+  .footer__top-band::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-image: radial-gradient(circle at 4px 50%, var(--bg) 1.4px, transparent 1.7px);
+    background-size: 14px 5px;
+    background-repeat: repeat-x;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  .footer__top-band::before { top: -2px; }
+  .footer__top-band::after { bottom: 0; }
+  .footer__top-band-text {
+    font-family: var(--font-stamp);
+    font-size: 0.85rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  :lang(zh) .footer__top-band-text {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.08em;
+    text-transform: none;
+  }
+
+  .footer__inner {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-    padding: 0 0 1.6rem 0;
+    grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.9fr);
+    gap: 2.4rem;
+    padding-top: 0.4rem;
+    padding-bottom: 2rem;
     align-items: start;
   }
-  @media (max-width: 720px) {
-    .footer__cols { grid-template-columns: 1fr; gap: 1.2rem; }
+  @media (max-width: 760px) {
+    .footer__inner { grid-template-columns: 1fr; gap: 1.6rem; }
   }
-  .footer__col p { margin: 0 0 0.4rem 0; }
+
+  .footer__brand-head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 0.7rem;
+  }
+  .footer__mascot {
+    line-height: 0;
+    padding: 6px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: color-mix(in oklch, var(--accent) 10%, var(--bg-soft));
+  }
+  .footer__brand-text { line-height: 1; }
   .footer__handle {
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.05rem;
     color: var(--ink);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
+    margin: 0 0 0.3rem 0;
   }
-  :lang(zh) .footer__handle { font-family: var(--font-cjk); }
+  :lang(zh) .footer__handle { font-family: var(--font-cjk); letter-spacing: 0; }
   .footer__tag {
     font-family: var(--font-sans);
-    color: var(--ink-mute);
-    font-size: 0.85rem;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    margin: 0;
   }
   :lang(zh) .footer__tag { font-family: var(--font-cjk); }
   .footer__active {
     font-size: 0.78rem;
     color: var(--ink-mute);
     letter-spacing: 0.04em;
+    margin: 0 0 0.45rem 0;
   }
-  .footer__badges {
-    margin-top: 1rem;
+  .footer__handshake {
+    margin: 0 0 1.1rem 0;
+    color: var(--accent);
+    font-size: 0.85rem;
   }
   .footer__badges :global(.badge-strip) {
-    background: transparent;
-    padding: 0;
-    border: 0;
+    background: var(--paper);
+    padding: 0.55rem;
+    border: 1px solid var(--rule);
   }
+
+  .footer__nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.6rem;
+    row-gap: 0.4rem;
+    align-content: start;
+  }
+  .footer__nav-label {
+    color: var(--ink-mute);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    grid-column: span 1;
+    margin: 0 0 0.4rem 0;
+  }
+  .footer__nav-label--ext { grid-column: 2 / 3; grid-row: 1 / 2; }
   .footer__links { list-style: none; padding: 0; margin: 0; }
-  .footer__links li { margin-bottom: 0.5rem; }
+  .footer__links li { margin-bottom: 0.55rem; }
   .footer__links a {
     font-family: var(--font-sans);
     font-size: 0.9rem;
@@ -102,22 +198,31 @@ const langPrefix = lang === "en" ? `${base}/en` : base;
     border-bottom: 1px solid var(--rule);
     padding-bottom: 1px;
   }
-  .footer__links a:hover, .footer__links a:focus-visible {
+  :lang(zh) .footer__links a { font-family: var(--font-cjk); }
+  .footer__links a:hover,
+  .footer__links a:focus-visible {
     color: var(--accent);
     border-bottom-color: var(--accent);
   }
-  .footer__rule {
-    border: 0;
-    border-top: 1px solid var(--rule);
-    margin: 0;
+  @media (max-width: 460px) {
+    .footer__nav {
+      grid-template-columns: 1fr;
+    }
+    .footer__nav-label--ext {
+      grid-column: 1 / 2;
+      grid-row: auto;
+      margin-top: 1rem;
+    }
   }
+
   .footer__meta {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.6rem 1.4rem;
     align-items: baseline;
-    padding-top: 1rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
   }
   .footer__copy {
     font-family: var(--font-sans);
@@ -136,5 +241,4 @@ const langPrefix = lang === "en" ? `${base}/en` : base;
   }
   .footer__version a { color: var(--accent); text-decoration: none; }
   .footer__version a:hover { text-decoration: underline; }
-  .footer__sep { margin: 0 0.4rem; opacity: 0.4; }
 </style>

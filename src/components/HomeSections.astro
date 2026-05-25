@@ -2,8 +2,7 @@
 import { t, type Lang } from "~/i18n/strings";
 import ModCard from "~/components/ModCard.astro";
 import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
-import MarqueeDivider from "~/components/MarqueeDivider.astro";
-import { featuredMods, profile } from "~/lib/data";
+import { creditDownloadsLabel, featuredMods, profile, remoteMetrics } from "~/lib/data";
 
 interface Props {
   lang: Lang;
@@ -13,69 +12,131 @@ const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 const langPrefix = lang === "en" ? `${base}/en` : base;
 const featured = featuredMods();
+const metricsDate = remoteMetrics.fetched_at
+  ? new Date(remoteMetrics.fetched_at).toISOString().slice(0, 10)
+  : null;
 
 const services = [
-  ["home.services_regression_h", "home.services_regression_p"],
-  ["home.services_compat_h", "home.services_compat_p"],
-  ["home.services_i18n_h", "home.services_i18n_p"],
-  ["home.services_report_h", "home.services_report_p"],
-] as const;
+  {
+    h: t(lang, "home.services_regression_h"),
+    p: t(lang, "home.services_regression_p"),
+    tag: lang === "en" ? "by version · by round" : "按版本 · 按轮次",
+    glyph: "▤",
+  },
+  {
+    h: t(lang, "home.services_compat_h"),
+    p: t(lang, "home.services_compat_p"),
+    tag: lang === "en" ? "mods · shaders · MP" : "MOD · shader · 多人",
+    glyph: "◆",
+  },
+  {
+    h: t(lang, "home.services_i18n_h"),
+    p: t(lang, "home.services_i18n_p"),
+    tag: lang === "en" ? "zh-CN · zh-HK · ja · en" : "简 · 繁 · 日 · 英",
+    glyph: "字",
+  },
+  {
+    h: t(lang, "home.services_report_h"),
+    p: t(lang, "home.services_report_p"),
+    tag: lang === "en" ? "ready for author triage" : "作者可直接处理",
+    glyph: "✎",
+  },
+];
 
 const noteCards = [
   ["notes.card1_h", "notes.card1_p"],
   ["notes.card2_h", "notes.card2_p"],
   ["notes.card3_h", "notes.card3_p"],
 ] as const;
+
+const sectionTags = {
+  authors: lang === "en" ? "section 01 · the offer" : "第一节 · 我能做什么",
+  proof: lang === "en" ? "section 02 · proof" : "第二节 · 证据层",
+  featured: lang === "en" ? "section 03 · case studies" : "第三节 · 案例选读",
+  notes: lang === "en" ? "section 04 · field notes" : "第四节 · 现场笔记",
+};
+
+const noteStatus = lang === "en" ? "draft · 计划中" : "计划中 · draft";
 ---
 
-<section class="home-block" aria-labelledby="authors-h">
+<section class="home-block home-block--authors" aria-labelledby="authors-h">
   <div class="container">
     <header class="home-head">
+      <p class="home-head__kicker dateline">{sectionTags.authors}</p>
       <h2 id="authors-h" class="home-head__title h-section">{t(lang, "home.for_authors_h")}</h2>
       <p class="home-head__sub">{t(lang, "home.for_authors_sub")}</p>
     </header>
-    <div class="service-grid">
-      {services.map(([h, p]) => (
-        <article class="service-card">
-          <h3>{t(lang, h)}</h3>
-          <p>{t(lang, p)}</p>
+
+    <div class="service-list">
+      {services.map((s, i) => (
+        <article class="service-row">
+          <div class="service-row__rail" aria-hidden="true">
+            <span class="service-row__num fancy-num fancy-num--accent">{String(i + 1).padStart(2, "0")}</span>
+            <span class="service-row__glyph">{s.glyph}</span>
+          </div>
+          <div class="service-row__body">
+            <h3 class="service-row__h">{s.h}</h3>
+            <p class="service-row__p">{s.p}</p>
+          </div>
+          <div class="service-row__tag dateline">{s.tag}</div>
         </article>
       ))}
     </div>
   </div>
 </section>
 
-<section class="home-block home-block--split" aria-labelledby="proof-h">
+<section class="home-block home-block--proof" aria-labelledby="proof-h">
   <div class="container proof-grid">
-    <div>
+    <div class="proof-main">
       <header class="home-head">
+        <p class="home-head__kicker dateline">{sectionTags.proof}</p>
         <h2 id="proof-h" class="home-head__title h-section">{t(lang, "home.proof_h")}</h2>
         <p class="home-head__sub">{t(lang, "home.proof_sub")}</p>
       </header>
-      <RetroBadgeStrip />
+      <div class="proof-badges">
+        <RetroBadgeStrip />
+      </div>
     </div>
-    <aside class="credit-panel">
-      <h3>{lang === "en" ? "Public tester credits" : "公开 Tester 署名"}</h3>
-      <ul>
+
+    <aside class="credit-panel ledger-card cornered">
+      <div class="credit-panel__head">
+        <h3 class="credit-panel__h">{lang === "en" ? "Public tester credits" : "公开 Tester 署名"}</h3>
+        <span class="stamp stamp--ok">{lang === "en" ? "verified" : "已核实"}</span>
+      </div>
+      <ul class="credit-panel__list">
         {profile.curseforge.tester_credits.map((credit) => (
-          <li>
-            <a href={credit.mod_url} rel="noopener" target="_blank">{credit.mod}</a>
-            <span class="mono tnum">{credit.downloads_at_snapshot.toLocaleString("en-US")} DL</span>
+          <li class="credit-panel__row">
+            <span class="credit-panel__row-bullet" aria-hidden="true">◦</span>
+            <a href={credit.mod_url} rel="noopener" target="_blank" class="credit-panel__link">
+              <span class="credit-panel__mod">{credit.mod}</span>
+              <span class="credit-panel__role caption">tester · CrabMods</span>
+            </a>
+            <span class="credit-panel__dl mono tnum">{creditDownloadsLabel(credit)}</span>
           </li>
         ))}
       </ul>
+      {metricsDate && (
+        <p class="credit-panel__meta">
+          <span class="caption">{lang === "en" ? "Remote snapshot" : "远程快照"}</span>
+          <span class="mono">{metricsDate}</span>
+        </p>
+      )}
     </aside>
   </div>
 </section>
 
-<section class="home-block" aria-labelledby="featured-h">
+<section class="home-block home-block--featured" aria-labelledby="featured-h">
   <div class="container">
     <header class="home-head home-head--row">
       <div>
+        <p class="home-head__kicker dateline">{sectionTags.featured}</p>
         <h2 id="featured-h" class="home-head__title h-section">{t(lang, "home.featured_h")}</h2>
         <p class="home-head__sub">{t(lang, "home.featured_sub")}</p>
       </div>
-      <a class="text-link" href={`${langPrefix}/cases`}>{t(lang, "home.all_cases_link")} →</a>
+      <a class="text-link" href={`${langPrefix}/cases`}>
+        <span>{t(lang, "home.all_cases_link")}</span>
+        <span class="text-link__arrow" aria-hidden="true">→</span>
+      </a>
     </header>
     <div class="cases-grid cases-grid--featured">
       {featured.map((m, i) => <ModCard mod={m} lang={lang} index={i + 1} />)}
@@ -83,11 +144,20 @@ const noteCards = [
   </div>
 </section>
 
-<MarqueeDivider text={lang === "en" ? "FEATURED · PUBLIC TESTER CREDITS · LUCK666DUCK" : "精选 · 公开署名 · LUCK666DUCK"} animated={true} size="sm" />
+<div class="torn-band" role="presentation" aria-hidden="true">
+  <div class="container torn-band__inner">
+    <span class="torn-band__line">
+      {lang === "en"
+        ? "TESTER LEDGER · 13 MODS ON FILE · 433 BUGS · 24 ROUNDS · LUCK666DUCK"
+        : "测试员账本 · 已收录 13 个 MOD · 433 条 bug · 24 轮回归 · LUCK666DUCK"}
+    </span>
+  </div>
+</div>
 
 <section class="home-block home-block--notes" aria-labelledby="notes-h">
   <div class="container notes-layout">
     <header class="home-head">
+      <p class="home-head__kicker dateline">{sectionTags.notes}</p>
       <h2 id="notes-h" class="home-head__title h-section">{t(lang, "home.notes_h")}</h2>
       <p class="home-head__sub">{t(lang, "home.notes_sub")}</p>
       <div class="note-actions">
@@ -96,10 +166,14 @@ const noteCards = [
       </div>
     </header>
     <div class="note-cards">
-      {noteCards.map(([h, p]) => (
-        <article class="note-card">
-          <h3>{t(lang, h)}</h3>
-          <p>{t(lang, p)}</p>
+      {noteCards.map(([h, p], i) => (
+        <article class="note-card ledger-card">
+          <div class="note-card__head">
+            <span class="note-card__idx mono tnum">№{String(i + 1).padStart(2, "0")}</span>
+            <span class="note-card__pill pill">{noteStatus}</span>
+          </div>
+          <h3 class="note-card__h">{t(lang, h)}</h3>
+          <p class="note-card__p">{t(lang, p)}</p>
         </article>
       ))}
     </div>
@@ -108,172 +182,372 @@ const noteCards = [
 
 <style>
   .home-block {
-    padding: clamp(2.2rem, 5vw, 3.5rem) 0;
+    padding: clamp(2.4rem, 5.5vw, 4rem) 0;
     border-top: 1px solid var(--rule);
+    position: relative;
   }
-  .home-block--split {
-    background: color-mix(in oklch, var(--bg-soft) 45%, transparent);
+  .home-block--proof {
+    background:
+      linear-gradient(180deg, var(--bg) 0%, color-mix(in oklch, var(--bg-soft) 70%, transparent) 100%);
     border-top: 3px solid var(--ink);
   }
-  .home-block--notes {
-    padding-bottom: 4rem;
+  .home-block--featured {
+    background: color-mix(in oklch, var(--bg-soft) 30%, transparent);
   }
+  .home-block--notes {
+    padding-bottom: 4.5rem;
+  }
+
+  /* ---- editorial section head -------------------------------- */
   .home-head {
     max-width: 70ch;
-    margin-bottom: 1.6rem;
+    margin-bottom: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
   .home-head--row {
     max-width: none;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto;
     gap: 1.4rem;
     align-items: end;
   }
+  .home-head--row > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 60ch;
+  }
+  .home-head__kicker {
+    color: var(--accent);
+    margin: 0;
+    font-size: 0.92rem;
+    letter-spacing: 0.18em;
+  }
+  :lang(zh) .home-head__kicker { letter-spacing: 0.08em; }
   .home-head__title {
     color: var(--ink);
     margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
+  :lang(zh) .home-head__title { font-family: var(--font-cjk); font-weight: 400; letter-spacing: 0; }
   .home-head__sub {
-    margin: 0.55rem 0 0 0;
+    margin: 0;
     font-family: var(--font-sans);
     color: var(--ink-soft);
-    font-size: 1rem;
+    font-size: 1.02rem;
     line-height: 1.7;
   }
   :lang(zh) .home-head__sub { font-family: var(--font-cjk); line-height: 1.85; }
-  .service-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0;
+
+  /* ---- service list (numbered ledger entries) ---------------- */
+  .service-list {
     border-top: 2px solid var(--ink);
-    border-left: 1px solid var(--rule);
-  }
-  .service-card {
-    border-right: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
-    background: var(--bg-soft);
-    padding: 1.3rem 1.2rem;
+  }
+  .service-row {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr) auto;
+    gap: clamp(1.2rem, 2.5vw, 2.2rem);
+    align-items: start;
+    padding: 1.5rem 0.4rem;
+    border-bottom: 1px dashed var(--rule);
     position: relative;
   }
-  .service-card::before {
-    content: counter(svc, decimal-leading-zero);
-    counter-increment: svc;
+  .service-row:last-child { border-bottom: 0; }
+  .service-row::before {
+    content: "";
     position: absolute;
-    top: 0.7rem;
-    right: 0.9rem;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background 200ms ease;
+  }
+  .service-row:hover::before {
+    background: var(--accent);
+  }
+  .service-row__rail {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    padding-left: 0.6rem;
+  }
+  .service-row__num {
+    font-size: clamp(2.4rem, 4.4vw, 3.1rem);
+    line-height: 0.85;
+  }
+  .service-row__glyph {
     font-family: var(--font-serif);
     font-style: italic;
     color: var(--ink-mute);
-    font-size: 0.95rem;
+    font-size: 1.4rem;
+    line-height: 1;
   }
-  .service-grid { counter-reset: svc; }
+  :lang(zh) .service-row__glyph {
+    font-family: var(--font-cjk);
+    font-style: normal;
+  }
+  .service-row__body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .service-row__h {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.32rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  :lang(zh) .service-row__h { font-family: var(--font-cjk); letter-spacing: 0; font-weight: 400; }
+  .service-row__p {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 0.96rem;
+    line-height: 1.65;
+    max-width: 56ch;
+  }
+  :lang(zh) .service-row__p { font-family: var(--font-cjk); line-height: 1.85; }
+  .service-row__tag {
+    color: var(--ink-mute);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    text-align: right;
+    align-self: center;
+  }
+  :lang(zh) .service-row__tag { letter-spacing: 0.04em; }
 
-  .note-card,
-  .credit-panel {
-    border: 1px solid var(--rule);
-    background: var(--bg-soft);
-    border-radius: var(--radius);
-    padding: 1.1rem 1.2rem;
+  /* ---- proof section: main + credits panel ------------------- */
+  .proof-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.85fr);
+    gap: 2.4rem;
+    align-items: start;
   }
-  .service-card h3 {
-    margin: 0 0 0.6rem 0;
+  .proof-main { min-width: 0; }
+  .proof-badges {
+    margin-top: 1.6rem;
+  }
+  .credit-panel {
+    padding: 1.4rem 1.5rem 1.6rem 1.5rem;
+    position: relative;
+  }
+  .credit-panel__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .credit-panel__h {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.08rem;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  :lang(zh) .credit-panel__h { font-family: var(--font-cjk); font-weight: 400; letter-spacing: 0; }
+  .credit-panel__list { list-style: none; padding: 0; margin: 0; }
+  .credit-panel__row {
+    display: grid;
+    grid-template-columns: 0.8rem 1fr auto;
+    gap: 0.6rem;
+    align-items: baseline;
+    padding: 0.65rem 0;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .credit-panel__row:last-child { border-bottom: 0; }
+  .credit-panel__row-bullet {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    line-height: 1;
+  }
+  .credit-panel__link {
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+    border-bottom: 1px solid transparent;
+    width: fit-content;
+  }
+  .credit-panel__link:hover,
+  .credit-panel__link:focus-visible {
+    color: var(--accent);
+  }
+  .credit-panel__mod {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.96rem;
+  }
+  :lang(zh) .credit-panel__mod { font-family: var(--font-sans); }
+  .credit-panel__role { color: var(--ink-mute); }
+  .credit-panel__dl {
+    color: var(--accent);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  .credit-panel__meta {
+    margin: 0.95rem 0 0 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.6rem;
+    font-size: 0.74rem;
+    color: var(--ink-mute);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* ---- featured cases grid ----------------------------------- */
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-sans);
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+  }
+  :lang(zh) .text-link { font-family: var(--font-cjk); }
+  .text-link__arrow { transition: transform 160ms ease; }
+  .text-link:hover { color: var(--accent-deep); }
+  .text-link:hover .text-link__arrow { transform: translateX(3px); }
+
+  /* ---- torn-band runner (inside torn-band container) --------- */
+  .torn-band {
+    margin-top: -1px;
+  }
+  .torn-band__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  .torn-band__line {
+    font-family: var(--font-stamp);
+    font-size: 0.95rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  :lang(zh) .torn-band__line {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.08em;
+    text-transform: none;
+  }
+
+  /* ---- notes section ----------------------------------------- */
+  .note-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.4rem;
+  }
+  .notes-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+    gap: 2.4rem;
+    align-items: start;
+  }
+  .note-cards {
+    display: grid;
+    gap: 1rem;
+  }
+  .note-card {
+    padding: 1.15rem 1.3rem 1.25rem 1.3rem;
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .note-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    opacity: 0.7;
+  }
+  .note-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.55rem;
+  }
+  .note-card__idx {
+    font-family: var(--font-stamp);
+    color: var(--ink-mute);
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+  }
+  .note-card__h {
+    margin: 0 0 0.45rem 0;
     font-family: var(--font-serif);
     font-weight: 700;
     font-size: 1.1rem;
     color: var(--ink);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.005em;
   }
-  :lang(zh) .service-card h3 { font-family: var(--font-cjk); letter-spacing: 0; }
-  .note-card h3,
-  .credit-panel h3 {
-    margin: 0 0 0.55rem 0;
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    color: var(--ink);
-  }
-  :lang(zh) .note-card h3,
-  :lang(zh) .credit-panel h3 { font-family: var(--font-cjk); }
-  .service-card p,
-  .note-card p {
+  :lang(zh) .note-card__h { font-family: var(--font-cjk); font-weight: 400; letter-spacing: 0; }
+  .note-card__p {
     margin: 0;
     font-family: var(--font-sans);
     color: var(--ink-soft);
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     line-height: 1.65;
   }
-  :lang(zh) .service-card p,
-  :lang(zh) .note-card p { font-family: var(--font-cjk); line-height: 1.8; }
-  .proof-grid,
-  .notes-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.85fr);
-    gap: 2rem;
-    align-items: start;
-  }
-  .credit-panel ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .credit-panel li {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.55rem 0;
-    border-bottom: 1px dotted var(--rule);
-    font-family: var(--font-sans);
-    font-size: 0.92rem;
-  }
-  .credit-panel li:last-child { border-bottom: 0; }
-  .credit-panel a {
-    color: var(--ink);
-    text-decoration: none;
-    border-bottom: 1px solid var(--rule);
-  }
-  .credit-panel a:hover,
-  .credit-panel a:focus-visible {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-  .credit-panel .mono {
-    color: var(--ink-mute);
-    font-size: 0.78rem;
-    white-space: nowrap;
-  }
-  .cases-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-  }
-  .text-link {
-    font-family: var(--font-sans);
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid currentColor;
-    white-space: nowrap;
-    margin-bottom: 0.2rem;
-  }
-  :lang(zh) .text-link { font-family: var(--font-cjk); }
-  .text-link:hover { color: var(--accent-deep); }
-  .note-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.7rem;
-    margin-top: 1.2rem;
-  }
-  .note-cards {
-    display: grid;
-    gap: 0.85rem;
-  }
+  :lang(zh) .note-card__p { font-family: var(--font-cjk); line-height: 1.85; }
+
+  /* ---- responsive ------------------------------------------- */
   @media (max-width: 980px) {
-    .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .cases-grid { grid-template-columns: 1fr; }
     .proof-grid,
-    .notes-layout { grid-template-columns: 1fr; }
+    .notes-layout {
+      grid-template-columns: 1fr;
+    }
+    .cases-grid {
+      grid-template-columns: 1fr;
+    }
   }
-  @media (max-width: 680px) {
-    .home-head--row { display: block; }
-    .text-link { display: inline-block; margin-top: 1rem; }
-    .service-grid { grid-template-columns: 1fr; }
+  @media (max-width: 720px) {
+    .service-row {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+      padding: 1.3rem 0.4rem;
+    }
+    .service-row__rail { padding-left: 0; }
+    .service-row__tag {
+      text-align: left;
+      align-self: start;
+    }
+    .home-head--row {
+      grid-template-columns: 1fr;
+    }
+    .text-link { margin-top: 0.6rem; }
   }
 </style>

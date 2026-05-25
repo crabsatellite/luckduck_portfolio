@@ -1,9 +1,7 @@
 ---
 import { t, type Lang } from "~/i18n/strings";
 import MascotDuck from "~/components/MascotDuck.astro";
-import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
 import ModLogo from "~/components/ModLogo.astro";
-import MarqueeDivider from "~/components/MarqueeDivider.astro";
 import { activeMods, profile, totalBugs, totalRounds, mods } from "~/lib/data";
 
 interface Props {
@@ -16,125 +14,226 @@ const langPrefix = lang === "en" ? `${base}/en` : base;
 const focusMods = activeMods();
 
 const headlineBugs = totalBugs();
-const headlineLabel =
-  lang === "en" ? "bugs filed · public ledger" : "条 bug · 公开账本";
-
 const stats = [
-  { value: mods.length, label: t(lang, "hero.stat_mods") },
-  { value: totalRounds(), label: t(lang, "hero.stat_rounds") },
-  { value: profile.curseforge.tester_credits.length, label: t(lang, "hero.stat_credits") },
+  { value: mods.length, label: t(lang, "hero.stat_mods"), tint: "ink" as const },
+  { value: totalRounds(), label: t(lang, "hero.stat_rounds"), tint: "accent" as const },
+  { value: profile.curseforge.tester_credits.length, label: t(lang, "hero.stat_credits"), tint: "ok" as const },
 ];
 
 const issueDate = new Date().toISOString().slice(0, 10);
-const dateline =
-  lang === "en"
-    ? `LUCK666DUCK · TESTER LEDGER · ISSUE №${mods.length} · ${issueDate}`
-    : `LUCK666DUCK · 测试员账本 · 第 №${mods.length} 期 · ${issueDate}`;
+const issueNo = String(mods.length).padStart(2, "0");
 
-const marqueeText =
+const issueStampPrimary =
   lang === "en"
-    ? "MOD QA · REGRESSION · COMPAT · LOCALIZATION · LUCK666DUCK"
-    : "MOD 测试 · 回归 · 兼容 · 本地化 · LUCK666DUCK";
+    ? `FIELD JOURNAL · ISSUE №${issueNo}`
+    : `测试员手记 · 第 №${issueNo} 期`;
+const issueStampSecondary = `SOAK MODE · ${issueDate}`;
+
+const counterLabelTop =
+  lang === "en" ? "bugs filed · public ledger" : "条 bug · 公开账本";
+const counterLabelSub =
+  lang === "en" ? "across 13 mods · 24 rounds" : "覆盖 13 个 MOD · 24 轮回归";
+
+const benchLabel =
+  lang === "en" ? "currently on the bench" : "正在测试台上";
+const benchSubLabel =
+  lang === "en"
+    ? "active rotation · click for the full tester log"
+    : "重点经验 · 点击查看完整测试日志";
+
+const headlineParts = (() => {
+  if (lang === "en") {
+    return {
+      lead: "Reproducible QA runs",
+      mid: "for",
+      em: "mod authors",
+      tail: "who care.",
+    };
+  }
+  return {
+    lead: "给 MOD 作者",
+    mid: "跑",
+    em: "可复现",
+    tail: "的测试。",
+  };
+})();
+
+const mascotCaption =
+  lang === "en" ? "— say hi to the duck" : "— 一只测试用的鸭子";
 ---
 
-<section class="hero" aria-labelledby="hero-title">
-  <div class="container">
-    <p class="hero__dateline dateline">{dateline}</p>
+<section class="hero steam-glow" aria-labelledby="hero-title">
+  <div class="container hero__container">
+    <div class="hero__topline">
+      <span class="hero__stamp stamp">{issueStampPrimary}</span>
+      <span class="hero__stamp-sub dateline">{issueStampSecondary}</span>
+    </div>
 
-    <div class="hero__grid">
+    <div class="hero__layout">
       <div class="hero__copy">
-        <p class="hero__role">{t(lang, "hero.role")}</p>
-        <h1 id="hero-title" class="hero__title h-mega">{t(lang, "hero.title")}</h1>
+        <p class="hero__role">
+          <span class="hero__role-mark" aria-hidden="true">¶</span>
+          {t(lang, "hero.role")}
+        </p>
+
+        <h1 id="hero-title" class="hero__title h-mega">
+          {headlineParts.lead}
+          <span class="hero__title-mid"> {headlineParts.mid} </span>
+          <em>{headlineParts.em}</em>
+          <span class="hero__title-tail">{headlineParts.tail}</span>
+        </h1>
+
         <p class="hero__subtitle">{t(lang, "hero.subtitle")}</p>
 
         <div class="hero__actions" aria-label="primary actions">
-          <a href={`${langPrefix}/about`} class="btn btn--accent">{t(lang, "hero.cta_primary")}</a>
+          <a href={`${langPrefix}/about`} class="btn btn--accent">
+            {t(lang, "hero.cta_primary")}
+            <span aria-hidden="true" class="hero__cta-arrow">→</span>
+          </a>
           <a href={`${langPrefix}/cases/hotbath`} class="btn">{t(lang, "hero.cta_secondary")}</a>
         </div>
       </div>
 
-      <aside class="hero__counter" aria-label="public ledger headline">
-        <div class="hero__counter-frame">
-          <span class="hero__counter-num mono tnum">{headlineBugs}</span>
-          <span class="hero__counter-label">{headlineLabel}</span>
+      <aside class="hero__sidebar" aria-label="public ledger headline">
+        <div class="hero__counter">
+          <span class="hero__counter-eyebrow dateline">filed · 已记录</span>
+          <span class="hero__counter-num fancy-num fancy-num--accent mono tnum">{headlineBugs}</span>
+          <div class="hero__counter-bar">
+            <span class="hero__counter-label">{counterLabelTop}</span>
+            <span class="hero__counter-sub">{counterLabelSub}</span>
+          </div>
         </div>
-        <div class="hero__mascot">
-          <MascotDuck size={132} blink={true} alt="LUCK666DUCK mascot" />
+
+        <div class="hero__mascot-wrap">
+          <div class="hero__mascot-aura" aria-hidden="true"></div>
+          <MascotDuck size={172} blink={true} alt="LUCK666DUCK mascot" />
+          <p class="hero__mascot-caption caption">{mascotCaption}</p>
         </div>
       </aside>
     </div>
 
     <dl class="hero__stats">
-      {stats.map((s) => (
-        <div class="hero__stat">
-          <dt>{s.label}</dt>
-          <dd class="mono tnum">{s.value}</dd>
+      {stats.map((s, i) => (
+        <div class={`hero__stat hero__stat--${s.tint}`}>
+          <span class="hero__stat-idx mono tnum">0{i + 1}</span>
+          <dd class={`hero__stat-num fancy-num fancy-num--${s.tint} mono tnum`}>{s.value}</dd>
+          <dt class="hero__stat-label">{s.label}</dt>
         </div>
       ))}
     </dl>
 
-    <section class="hero__proof" aria-labelledby="proof-label">
-      <header class="hero__proof-head">
-        <h2 id="proof-label" class="hero__proof-label">{t(lang, "hero.active_label")}</h2>
-        <span class="hero__proof-meta dateline">currently on bench</span>
+    <section class="hero__bench" aria-labelledby="bench-label">
+      <header class="hero__bench-head">
+        <div>
+          <p class="hero__bench-kicker dateline">currently on bench</p>
+          <h2 id="bench-label" class="hero__bench-label">{benchLabel}</h2>
+        </div>
+        <p class="hero__bench-meta caption">{benchSubLabel}</p>
       </header>
       <div class="hero__mods">
         {focusMods.map((mod, i) => (
           <a href={`${langPrefix}/cases/${mod.id}`} class="hero__mod">
             <span class="hero__mod-idx mono tnum">{String(i + 1).padStart(2, "0")}</span>
-            <ModLogo mod={mod} size={44} />
-            <span class="hero__mod-name">{mod.name_en}</span>
+            <span class="hero__mod-logo">
+              <ModLogo mod={mod} size={48} />
+            </span>
+            <span class="hero__mod-text">
+              <span class="hero__mod-name">{mod.name_en}</span>
+              <span class="hero__mod-bugs mono tnum">{mod.total_bugs} bugs · {mod.rounds.length} rounds</span>
+            </span>
             <span class="hero__mod-arrow" aria-hidden="true">→</span>
           </a>
         ))}
       </div>
-      <RetroBadgeStrip />
     </section>
   </div>
 </section>
 
-<MarqueeDivider text={marqueeText} animated={true} size="md" />
-
 <style>
   .hero {
-    padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(2rem, 5vw, 3rem) 0;
-    border-top: 3px solid var(--ink);
+    padding: clamp(1.5rem, 3.6vw, 2.8rem) 0 clamp(2.2rem, 5vw, 3.6rem) 0;
+    position: relative;
   }
-  .hero__dateline {
-    margin: 0 0 clamp(1rem, 2.5vw, 1.6rem) 0;
-    display: block;
+  .hero__container { position: relative; }
+
+  /* ---- top issue stamp line ---------------------------------- */
+  .hero__topline {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: clamp(1.5rem, 3vw, 2.2rem);
+  }
+  .hero__stamp { box-shadow: 2px 2px 0 var(--accent-deep); }
+  .hero__stamp-sub {
+    color: var(--ink-mute);
+    letter-spacing: 0.14em;
+    font-size: 0.85rem;
   }
 
-  /* asymmetric headline grid: copy gets ~2/3, oversized stat counter ~1/3 */
-  .hero__grid {
+  /* ---- main 2-column layout: title vs counter/mascot --------- */
+  .hero__layout {
     display: grid;
     grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.95fr);
     gap: clamp(1.6rem, 4.5vw, 3.2rem);
-    align-items: end;
-    padding-bottom: clamp(1.6rem, 4vw, 2.6rem);
-    border-bottom: 1px solid var(--rule);
+    align-items: stretch;
+    padding-bottom: clamp(1.6rem, 4vw, 2.4rem);
+    border-bottom: 2px solid var(--ink);
   }
   .hero__copy {
     display: flex;
     flex-direction: column;
     min-width: 0;
+    align-self: center;
   }
   .hero__role {
-    margin: 0 0 0.85rem 0;
+    margin: 0 0 1.1rem 0;
     font-family: var(--font-sans);
     color: var(--accent);
     font-weight: 700;
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   :lang(zh) .hero__role { font-family: var(--font-cjk); letter-spacing: 0; }
+  .hero__role-mark {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--accent-deep);
+    font-size: 1.1rem;
+  }
 
   .hero__title {
-    max-width: 14ch;
     color: var(--ink);
+    max-width: 17ch;
   }
-  :lang(en) .hero__title { max-width: 14ch; }
-  :lang(zh) .hero__title { max-width: 11ch; }
+  :lang(zh) .hero__title { max-width: 14ch; }
+  .hero__title-mid {
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+  .hero__title em {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 700;
+    position: relative;
+    padding: 0 0.05em;
+  }
+  .hero__title em::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.06em;
+    height: 0.18em;
+    background: color-mix(in oklch, var(--accent) 32%, transparent);
+    z-index: -1;
+    border-radius: 2px;
+  }
+  :lang(zh) .hero__title em { font-style: normal; }
+  .hero__title-tail { color: var(--ink); }
 
   .hero__subtitle {
     max-width: 56ch;
@@ -149,112 +248,181 @@ const marqueeText =
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
-    margin-top: 1.6rem;
+    margin-top: 1.8rem;
   }
+  .hero__cta-arrow {
+    transition: transform 160ms ease;
+  }
+  .btn:hover .hero__cta-arrow,
+  .btn:focus-visible .hero__cta-arrow { transform: translateX(3px); }
 
-  /* headline counter: a single oversized number framed by a heavy rule
-     with a hard-shadow offset in accent, plus the mascot beneath. */
+  /* ---- right column: oversized counter + mascot composition -- */
+  .hero__sidebar {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 1rem;
+    min-width: 0;
+  }
   .hero__counter {
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-top: 4px solid var(--accent);
+    padding: 1.1rem 1.3rem 1.2rem 1.3rem;
+    position: relative;
+    box-shadow:
+      8px 8px 0 color-mix(in oklch, var(--accent) 70%, transparent),
+      0 0 0 1px color-mix(in oklch, var(--ink) 30%, transparent);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 0.9rem;
+    row-gap: 0.4rem;
+  }
+  .hero__counter-eyebrow {
+    grid-column: 1 / -1;
+    color: var(--ink-mute);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+  }
+  .hero__counter-num {
+    font-size: var(--fs-stat);
+    align-self: center;
+    line-height: 0.82;
+  }
+  .hero__counter-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+    padding-left: 0.4rem;
+    border-left: 2px solid var(--ink);
+  }
+  .hero__counter-label {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--ink);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  :lang(zh) .hero__counter-label { font-family: var(--font-cjk); }
+  .hero__counter-sub {
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    color: var(--ink-mute);
+    line-height: 1.35;
+  }
+  :lang(zh) .hero__counter-sub { font-family: var(--font-cjk); }
+
+  /* ---- mascot composition ------------------------------------ */
+  .hero__mascot-wrap {
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: 0.9rem;
-    min-width: 0;
+    align-items: center;
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+    min-height: 200px;
   }
-  .hero__counter-frame {
-    width: 100%;
-    border: 2px solid var(--ink);
-    background: var(--bg-soft);
-    padding: 1rem 1.2rem 1.1rem 1.2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.3rem;
-    box-shadow: 6px 6px 0 var(--accent);
+  .hero__mascot-aura {
+    position: absolute;
+    inset: -10% -8% 6% -8%;
+    background:
+      radial-gradient(60% 55% at 50% 60%, color-mix(in oklch, var(--accent) 36%, transparent) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(2px);
   }
-  .hero__counter-num {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: clamp(2.6rem, 6.5vw, 4.6rem);
-    line-height: 0.92;
-    letter-spacing: -0.04em;
-    color: var(--ink);
-    font-variant-numeric: tabular-nums;
+  .hero__mascot-wrap :global(.mascot) {
+    position: relative;
+    z-index: 1;
   }
-  .hero__counter-label {
-    font-family: var(--font-stamp);
-    font-size: 0.95rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+  .hero__mascot-caption {
+    margin: 0.55rem 0 0 0;
+    text-align: center;
     color: var(--ink-mute);
-    line-height: 1;
-  }
-  :lang(zh) .hero__counter-label {
-    font-family: var(--font-stamp), var(--font-cjk);
-    text-transform: none;
-    letter-spacing: 0.06em;
-  }
-  .hero__mascot {
-    line-height: 0;
-    align-self: flex-end;
-    margin-right: -0.2rem;
+    position: relative;
+    z-index: 1;
   }
 
+  /* ---- stat strip: 3 big serif numerals with index ----------- */
   .hero__stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0;
     margin: 0;
-    border-bottom: 1px solid var(--rule);
   }
   .hero__stat {
     margin: 0;
-    padding: 1rem 1.1rem;
+    padding: 1.3rem 1.2rem 1.4rem 1.2rem;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    row-gap: 0.5rem;
+    position: relative;
     border-right: 1px solid var(--rule);
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
   }
   .hero__stat:last-child { border-right: none; }
-  .hero__stat dt {
+  .hero__stat::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--rule);
+  }
+  .hero__stat--ink::before { background: var(--ink); }
+  .hero__stat--accent::before { background: var(--accent); }
+  .hero__stat--ok::before { background: var(--ok); }
+  .hero__stat-idx {
+    font-family: var(--font-stamp);
+    color: var(--ink-mute);
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  :lang(zh) .hero__stat-idx { letter-spacing: 0.06em; text-transform: none; }
+  .hero__stat-num {
+    font-size: var(--fs-counter);
+    line-height: 0.88;
+    margin: 0;
+  }
+  .hero__stat-label {
     font-family: var(--font-stamp);
     color: var(--ink-mute);
     font-size: 0.95rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin: 0;
-    order: 2;
-    line-height: 1;
+    line-height: 1.2;
   }
-  :lang(zh) .hero__stat dt {
+  :lang(zh) .hero__stat-label {
     font-family: var(--font-stamp), var(--font-cjk);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     text-transform: none;
-  }
-  .hero__stat dd {
-    color: var(--ink);
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: var(--fs-counter);
-    line-height: 1;
-    margin: 0;
-    order: 1;
-    letter-spacing: -0.02em;
+    font-size: 0.92rem;
   }
 
-  .hero__proof {
-    padding-top: clamp(1.6rem, 4vw, 2.4rem);
+  /* ---- bench section: numbered mod ledger -------------------- */
+  .hero__bench {
+    padding-top: clamp(1.4rem, 3.5vw, 2rem);
+    border-top: 1px solid var(--rule);
   }
-  .hero__proof-head {
+  .hero__bench-head {
     display: flex;
-    align-items: baseline;
+    align-items: flex-end;
     justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    gap: 1.2rem;
     flex-wrap: wrap;
+    margin-bottom: 1rem;
   }
-  .hero__proof-label {
+  .hero__bench-kicker {
+    color: var(--accent);
+    margin: 0 0 0.4rem 0;
+    font-size: 0.92rem;
+    letter-spacing: 0.18em;
+  }
+  .hero__bench-label {
     margin: 0;
     font-family: var(--font-serif);
     color: var(--ink);
@@ -262,52 +430,80 @@ const marqueeText =
     font-size: var(--fs-h2);
     letter-spacing: -0.01em;
   }
-  :lang(zh) .hero__proof-label {
+  :lang(zh) .hero__bench-label {
     font-family: var(--font-cjk);
     letter-spacing: 0;
   }
-  .hero__proof-meta { white-space: nowrap; }
+  .hero__bench-meta { margin: 0; }
 
   .hero__mods {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 0;
-    border-top: 1px solid var(--rule);
-    margin-bottom: 1.2rem;
+    border-top: 2px solid var(--ink);
   }
   .hero__mod {
     display: grid;
-    grid-template-columns: 2.4rem 44px 1fr auto;
+    grid-template-columns: 2.2rem 48px 1fr auto;
     gap: 0.9rem;
     align-items: center;
-    padding: 0.85rem 0.6rem;
+    padding: 0.95rem 0.7rem;
     border-bottom: 1px solid var(--rule);
     color: var(--ink);
     text-decoration: none;
     font-family: var(--font-sans);
-    transition: background 120ms ease, color 120ms ease, padding-left 120ms ease;
+    position: relative;
+    transition: background 160ms ease, color 160ms ease, padding-left 160ms ease;
+  }
+  .hero__mod::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    background: transparent;
+    transition: background 160ms ease;
   }
   .hero__mod:hover,
   .hero__mod:focus-visible {
-    background: var(--bg-soft);
-    color: var(--accent);
+    background: color-mix(in oklch, var(--accent) 8%, transparent);
+    color: var(--ink);
     padding-left: 1rem;
   }
+  .hero__mod:hover::before,
+  .hero__mod:focus-visible::before { background: var(--accent); }
   .hero__mod-idx {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     color: var(--ink-mute);
     letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+  .hero__mod-logo { line-height: 0; }
+  .hero__mod-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
   }
   .hero__mod-name {
-    font-weight: 600;
-    font-size: 0.98rem;
+    font-weight: 700;
+    font-size: 1rem;
     letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+  :lang(zh) .hero__mod-name { font-family: var(--font-sans); }
+  .hero__mod-bugs {
+    font-size: 0.74rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.02em;
   }
   .hero__mod-arrow {
     font-family: var(--font-mono);
     color: var(--ink-mute);
-    transition: transform 140ms ease, color 140ms ease;
+    font-size: 1.1rem;
+    transition: transform 160ms ease, color 160ms ease;
   }
   .hero__mod:hover .hero__mod-arrow,
   .hero__mod:focus-visible .hero__mod-arrow {
@@ -315,20 +511,42 @@ const marqueeText =
     transform: translateX(4px);
   }
 
-  @media (max-width: 900px) {
-    .hero__grid { grid-template-columns: 1fr; align-items: stretch; }
-    .hero__counter { align-items: stretch; }
-    .hero__mascot { align-self: flex-start; margin-right: 0; }
+  /* ---- responsive ------------------------------------------- */
+  @media (max-width: 960px) {
+    .hero__layout {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .hero__sidebar {
+      grid-template-columns: minmax(0, 1.4fr) minmax(160px, 0.9fr);
+      grid-template-rows: auto;
+      gap: 1.2rem;
+      align-items: center;
+    }
+    .hero__mascot-wrap { min-height: 0; padding-top: 0; }
   }
   @media (max-width: 620px) {
     .hero__title { max-width: none; }
-    .hero__counter-frame { box-shadow: 4px 4px 0 var(--accent); }
+    .hero__counter { box-shadow: 5px 5px 0 color-mix(in oklch, var(--accent) 70%, transparent); }
+    .hero__sidebar { grid-template-columns: 1fr; }
+    .hero__mascot-wrap { padding-top: 1rem; }
   }
   @media (max-width: 460px) {
     .hero__stats { grid-template-columns: 1fr; }
     .hero__stat { border-right: none; border-bottom: 1px solid var(--rule); }
     .hero__stat:last-child { border-bottom: none; }
     .hero__actions .btn { width: 100%; justify-content: center; }
-    .hero__mod { grid-template-columns: 2rem 36px 1fr auto; gap: 0.6rem; }
+    .hero__mod { grid-template-columns: 1.8rem 40px 1fr auto; gap: 0.6rem; }
+    .hero__counter {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .hero__counter-bar {
+      border-left: none;
+      border-top: 1px solid var(--ink);
+      padding-left: 0;
+      padding-top: 0.45rem;
+      text-align: left;
+    }
   }
 </style>
