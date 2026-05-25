@@ -2,6 +2,7 @@
 import { t, type Lang } from "~/i18n/strings";
 import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
 import MascotDuck from "~/components/MascotDuck.astro";
+import { mods, totalBugs, totalRounds } from "~/lib/data";
 
 interface Props {
   lang: Lang;
@@ -10,84 +11,284 @@ const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 const langPrefix = lang === "en" ? `${base}/en` : base;
 
-const colophonLabel =
-  lang === "en" ? "COLOPHON · IMPRINT" : "版权 · 印记";
-const handshakeLabel =
-  lang === "en" ? "filed by hand · pixel by pixel" : "一格一格手工提交";
+const totals = {
+  mods: mods.length,
+  bugs: totalBugs(),
+  rounds: totalRounds(),
+};
+const issueDate = new Date().toISOString().slice(0, 10);
 ---
 
-<footer class="footer">
-  <div class="footer__top-band" role="presentation" aria-hidden="true">
-    <span class="footer__top-band-text">{colophonLabel}</span>
+<footer class="ftr" role="contentinfo">
+  <!-- Closing-of-issue band: editorial sign-off above the colophon ------- -->
+  <section class="ftr__closing panel--steam">
+    <div class="container ftr__closing-inner">
+      <div class="ftr__closing-text">
+        <p class="ftr__closing-kicker">{t(lang, "footer.closing_kicker")}</p>
+        <h2 class="ftr__closing-title">{t(lang, "footer.closing_title")}</h2>
+        <p class="ftr__closing-body">{t(lang, "footer.closing_body")}</p>
+        <a href={`${langPrefix}/about`} class="ftr__closing-cta">
+          {t(lang, "footer.subscribe_cta")}
+          <span aria-hidden="true">→</span>
+        </a>
+        <p class="ftr__closing-hint caption">{t(lang, "footer.subscribe_hint")}</p>
+      </div>
+      <aside class="ftr__closing-mascot" aria-hidden="true">
+        <div class="ftr__closing-aura"></div>
+        <MascotDuck size={140} alt="" />
+        <p class="ftr__closing-caption caption">{t(lang, "footer.signoff_caption")}</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Imprint / colophon band: heavy editorial separator -------------------- -->
+  <div class="ftr__imprint-band" aria-hidden="true">
+    <span class="ftr__imprint-band-text">{t(lang, "footer.imprint_kicker")}</span>
   </div>
 
-  <div class="container footer__inner">
-    <section class="footer__brand">
-      <div class="footer__brand-head">
-        <span class="footer__mascot" aria-hidden="true">
-          <MascotDuck size={56} alt="" />
+  <!-- Main back-cover content: brand block, in-issue index, off-site list -- -->
+  <div class="container ftr__main">
+    <section class="ftr__brand">
+      <div class="ftr__brand-head">
+        <span class="ftr__brand-mark" aria-hidden="true">
+          <MascotDuck size={48} alt="" />
         </span>
-        <div class="footer__brand-text">
-          <p class="footer__handle">{t(lang, "footer.handle")}</p>
-          <p class="footer__tag">{t(lang, "footer.tagline")}</p>
+        <div class="ftr__brand-text">
+          <p class="ftr__handle">{t(lang, "footer.handle")}</p>
+          <p class="ftr__tag">{t(lang, "footer.tagline")}</p>
         </div>
       </div>
-      <p class="footer__active mono tnum">{t(lang, "footer.active")}</p>
-      <p class="footer__handshake caption">{handshakeLabel}</p>
-      <div class="footer__badges"><RetroBadgeStrip /></div>
+
+      <dl class="ftr__counts" aria-label="issue totals">
+        <div class="ftr__count">
+          <dt>{lang === "en" ? "mods" : "MOD"}</dt>
+          <dd class="mono tnum">{totals.mods}</dd>
+        </div>
+        <div class="ftr__count ftr__count--accent">
+          <dt>{lang === "en" ? "bugs" : "bug"}</dt>
+          <dd class="mono tnum">{totals.bugs}</dd>
+        </div>
+        <div class="ftr__count">
+          <dt>{lang === "en" ? "rounds" : "轮次"}</dt>
+          <dd class="mono tnum">{totals.rounds}</dd>
+        </div>
+      </dl>
+
+      <div class="ftr__badges"><RetroBadgeStrip /></div>
     </section>
 
-    <nav class="footer__nav" aria-label="footer navigation">
-      <p class="footer__nav-label dateline">on file</p>
-      <ul class="footer__links">
-        <li><a href={`${langPrefix}/cases`}>{t(lang, "nav.cases")}</a></li>
-        <li><a href={`${langPrefix}/methodology`}>{t(lang, "nav.methods")}</a></li>
-        <li><a href={`${langPrefix}/notes`}>{t(lang, "nav.notes")}</a></li>
-        <li><a href={`${langPrefix}/about`}>{t(lang, "nav.about")}</a></li>
-      </ul>
+    <nav class="ftr__nav" aria-label="footer navigation">
+      <div class="ftr__nav-col">
+        <p class="ftr__nav-label dateline">{t(lang, "footer.section_on_file")}</p>
+        <ul class="ftr__links">
+          <li><a href={`${langPrefix}/`}>{t(lang, "nav.home")}</a></li>
+          <li><a href={`${langPrefix}/cases`}>{t(lang, "nav.cases")}</a></li>
+          <li><a href={`${langPrefix}/methodology`}>{t(lang, "nav.methods")}</a></li>
+          <li><a href={`${langPrefix}/notes`}>{t(lang, "nav.notes")}</a></li>
+          <li><a href={`${langPrefix}/about`}>{t(lang, "nav.about")}</a></li>
+        </ul>
+      </div>
 
-      <p class="footer__nav-label dateline footer__nav-label--ext">off site</p>
-      <ul class="footer__links">
-        <li>
-          <a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">
-            github / LUCK666DUCK <span aria-hidden="true">↗</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank">
-            curseforge / luck666duck <span aria-hidden="true">↗</span>
-          </a>
-        </li>
-      </ul>
+      <div class="ftr__nav-col">
+        <p class="ftr__nav-label dateline">{t(lang, "footer.section_off_site")}</p>
+        <ul class="ftr__links">
+          <li>
+            <a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">
+              github / LUCK666DUCK <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank">
+              curseforge / luck666duck <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </nav>
   </div>
 
-  <div class="container footer__meta">
-    <p class="footer__copy">{t(lang, "footer.copy")}</p>
-    <p class="footer__version mono">
-      {t(lang, "footer.archived")}
+  <!-- Editorial imprint: typeset / press metadata, plus active version line - -->
+  <div class="container ftr__imprint">
+    <dl class="ftr__imprint-dl">
+      <div class="ftr__imprint-row">
+        <dt>{t(lang, "footer.imprint_typeset_label")}</dt>
+        <dd>{t(lang, "footer.imprint_typeset")}</dd>
+      </div>
+      <div class="ftr__imprint-row">
+        <dt>{t(lang, "footer.imprint_engine_label")}</dt>
+        <dd>{t(lang, "footer.imprint_engine")}</dd>
+      </div>
+      <div class="ftr__imprint-row">
+        <dt>{lang === "en" ? "coverage" : "覆盖"}</dt>
+        <dd class="mono tnum">{t(lang, "footer.active")}</dd>
+      </div>
+      <div class="ftr__imprint-row">
+        <dt>{lang === "en" ? "filed by" : "编辑"}</dt>
+        <dd>{t(lang, "footer.imprint_published")}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- Bottom legal/version strip -------------------------------------------- -->
+  <div class="container ftr__bottom">
+    <p class="ftr__copy">{t(lang, "footer.copy")}</p>
+    <p class="ftr__version mono tnum">
+      <span>{t(lang, "footer.archived")}</span>
+      <span aria-hidden="true" class="ftr__version-sep">·</span>
+      <span>{issueDate}</span>
     </p>
   </div>
 </footer>
 
 <style>
-  .footer {
+  .ftr {
     margin-top: clamp(2.5rem, 6vw, 4.5rem);
-    padding-bottom: 1.6rem;
     background: var(--bg);
     position: relative;
   }
-  .footer__top-band {
-    background: var(--bg-soft);
+
+  /* ---------- closing-of-issue panel (steam-blue) ------------- */
+  .ftr__closing {
+    /* full-bleed: escape the container by reaching the viewport edges */
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: clamp(2.4rem, 5vw, 3.6rem) 0;
+    border-top: 2px solid var(--accent);
+    position: relative;
+  }
+  /* tiny perforation along the top edge */
+  .ftr__closing::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2px;
+    height: 5px;
+    background-image: radial-gradient(circle at 4px 50%, var(--bg) 1.4px, transparent 1.7px);
+    background-size: 14px 5px;
+    background-repeat: repeat-x;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  .ftr__closing-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(180px, 280px);
+    gap: clamp(1.6rem, 4vw, 3rem);
+    align-items: center;
+  }
+  .ftr__closing-text { max-width: 60ch; min-width: 0; }
+  .ftr__closing-kicker {
+    margin: 0 0 0.7rem 0;
+    font-family: var(--font-stamp);
+    font-size: 0.92rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    line-height: 1;
+  }
+  :lang(zh) .ftr__closing-kicker {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.1em;
+    text-transform: none;
+  }
+  .ftr__closing-title {
+    margin: 0 0 1rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.6vw, 2.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  :lang(zh) .ftr__closing-title {
+    font-family: var(--font-cjk);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.32;
+  }
+  .ftr__closing-body {
+    margin: 0 0 1.4rem 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 1.02rem;
+    line-height: 1.7;
+  }
+  :lang(zh) .ftr__closing-body {
+    font-family: var(--font-cjk);
+    line-height: 1.9;
+  }
+  .ftr__closing-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.85rem 1.4rem;
+    font-family: var(--font-sans);
+    font-size: 0.98rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--bg);
+    background: var(--accent);
+    border: 1.5px solid var(--accent);
+    border-radius: var(--radius);
+    transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    box-shadow: 4px 4px 0 color-mix(in oklch, var(--accent-deep) 70%, transparent);
+  }
+  :lang(zh) .ftr__closing-cta { font-family: var(--font-cjk); }
+  .ftr__closing-cta span { transition: transform 160ms ease; }
+  .ftr__closing-cta:hover,
+  .ftr__closing-cta:focus-visible {
+    background: var(--accent-deep);
+    color: var(--bg);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 color-mix(in oklch, var(--accent-deep) 80%, transparent);
+  }
+  .ftr__closing-cta:hover span,
+  .ftr__closing-cta:focus-visible span { transform: translateX(3px); }
+  .ftr__closing-hint {
+    margin: 0.95rem 0 0 0;
+    color: var(--ink-mute);
+    font-size: 0.86rem;
+  }
+
+  .ftr__closing-mascot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    isolation: isolate;
+    line-height: 0;
+  }
+  .ftr__closing-aura {
+    position: absolute;
+    inset: -20% -10% 0% -10%;
+    background:
+      radial-gradient(55% 55% at 50% 55%, color-mix(in oklch, var(--accent) 32%, transparent) 0%, transparent 70%);
+    filter: blur(2px);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .ftr__closing-caption {
+    margin: 0.7rem 0 0 0;
+    color: var(--ink-mute);
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  /* ---------- imprint band: ticket-stub divider --------------- */
+  .ftr__imprint-band {
+    background: var(--paper);
     border-top: 2px solid var(--accent);
     border-bottom: 1px solid var(--rule);
-    padding: 0.6rem 0;
+    padding: 0.62rem 0;
     text-align: center;
     position: relative;
-    margin-bottom: 2.2rem;
   }
-  .footer__top-band::before,
-  .footer__top-band::after {
+  .ftr__imprint-band::before,
+  .ftr__imprint-band::after {
     content: "";
     position: absolute;
     left: 0;
@@ -97,134 +298,210 @@ const handshakeLabel =
     background-size: 14px 5px;
     background-repeat: repeat-x;
     pointer-events: none;
-    opacity: 0.55;
+    opacity: 0.65;
   }
-  .footer__top-band::before { top: -2px; }
-  .footer__top-band::after { bottom: 0; }
-  .footer__top-band-text {
+  .ftr__imprint-band::before { top: -2px; }
+  .ftr__imprint-band::after { bottom: 0; }
+  .ftr__imprint-band-text {
     font-family: var(--font-stamp);
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     letter-spacing: 0.24em;
     text-transform: uppercase;
     color: var(--accent);
   }
-  :lang(zh) .footer__top-band-text {
+  :lang(zh) .ftr__imprint-band-text {
     font-family: var(--font-stamp), var(--font-cjk);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: none;
   }
 
-  .footer__inner {
+  /* ---------- main back-cover: brand + nav -------------------- */
+  .ftr__main {
     display: grid;
     grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.9fr);
-    gap: 2.4rem;
-    padding-top: 0.4rem;
-    padding-bottom: 2rem;
+    gap: clamp(2rem, 4vw, 3rem);
+    padding-top: clamp(2rem, 4vw, 3rem);
+    padding-bottom: clamp(1.6rem, 3.5vw, 2.4rem);
     align-items: start;
   }
-  @media (max-width: 760px) {
-    .footer__inner { grid-template-columns: 1fr; gap: 1.6rem; }
-  }
-
-  .footer__brand-head {
+  .ftr__brand-head {
     display: flex;
     align-items: center;
-    gap: 0.9rem;
-    margin-bottom: 0.7rem;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
   }
-  .footer__mascot {
+  .ftr__brand-mark {
     line-height: 0;
-    padding: 6px;
+    padding: 5px;
     border: 1px solid var(--rule);
     border-radius: 4px;
-    background: color-mix(in oklch, var(--accent) 10%, var(--bg-soft));
+    background: color-mix(in oklch, var(--accent) 12%, var(--bg-soft));
+    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--accent) 22%, transparent);
   }
-  .footer__brand-text { line-height: 1; }
-  .footer__handle {
+  .ftr__brand-text { line-height: 1; }
+  .ftr__handle {
     font-family: var(--font-sans);
     font-weight: 700;
     font-size: 1.05rem;
     color: var(--ink);
+    margin: 0 0 0.32rem 0;
     letter-spacing: 0.01em;
-    margin: 0 0 0.3rem 0;
   }
-  :lang(zh) .footer__handle { font-family: var(--font-cjk); letter-spacing: 0; }
-  .footer__tag {
+  :lang(zh) .ftr__handle { font-family: var(--font-cjk); letter-spacing: 0; }
+  .ftr__tag {
     font-family: var(--font-sans);
-    color: var(--ink-soft);
     font-size: 0.88rem;
+    color: var(--ink-soft);
     margin: 0;
   }
-  :lang(zh) .footer__tag { font-family: var(--font-cjk); }
-  .footer__active {
-    font-size: 0.78rem;
+  :lang(zh) .ftr__tag { font-family: var(--font-cjk); }
+
+  .ftr__counts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0 0 1.4rem 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+  .ftr__count {
+    padding: 0.8rem 1rem 0.85rem 1rem;
+    border-right: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    position: relative;
+  }
+  .ftr__count:last-child { border-right: none; }
+  .ftr__count::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--rule);
+  }
+  .ftr__count--accent::before { background: var(--accent); }
+  .ftr__count dt {
+    font-family: var(--font-stamp);
     color: var(--ink-mute);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0;
+    order: 2;
+  }
+  :lang(zh) .ftr__count dt {
+    font-family: var(--font-stamp), var(--font-cjk);
     letter-spacing: 0.04em;
-    margin: 0 0 0.45rem 0;
+    text-transform: none;
   }
-  .footer__handshake {
-    margin: 0 0 1.1rem 0;
-    color: var(--accent);
-    font-size: 0.85rem;
+  .ftr__count dd {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.55rem;
+    color: var(--ink);
+    line-height: 1;
+    margin: 0;
+    order: 1;
+    letter-spacing: -0.02em;
   }
-  .footer__badges :global(.badge-strip) {
+  .ftr__count--accent dd { color: var(--accent); }
+
+  .ftr__badges :global(.badge-strip) {
     background: var(--paper);
     padding: 0.55rem;
     border: 1px solid var(--rule);
   }
 
-  .footer__nav {
+  .ftr__nav {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 1.6rem;
     row-gap: 0.4rem;
     align-content: start;
   }
-  .footer__nav-label {
+  .ftr__nav-col { min-width: 0; }
+  .ftr__nav-label {
     color: var(--ink-mute);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     letter-spacing: 0.14em;
-    grid-column: span 1;
-    margin: 0 0 0.4rem 0;
+    margin: 0 0 0.7rem 0;
+    line-height: 1;
   }
-  .footer__nav-label--ext { grid-column: 2 / 3; grid-row: 1 / 2; }
-  .footer__links { list-style: none; padding: 0; margin: 0; }
-  .footer__links li { margin-bottom: 0.55rem; }
-  .footer__links a {
+  :lang(zh) .ftr__nav-label { letter-spacing: 0.06em; }
+  .ftr__links { list-style: none; padding: 0; margin: 0; }
+  .ftr__links li { margin-bottom: 0.55rem; }
+  .ftr__links a {
     font-family: var(--font-sans);
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     color: var(--ink);
     text-decoration: none;
     border-bottom: 1px solid var(--rule);
     padding-bottom: 1px;
+    transition: color 140ms ease, border-color 140ms ease;
   }
-  :lang(zh) .footer__links a { font-family: var(--font-cjk); }
-  .footer__links a:hover,
-  .footer__links a:focus-visible {
+  :lang(zh) .ftr__links a { font-family: var(--font-cjk); }
+  .ftr__links a:hover,
+  .ftr__links a:focus-visible {
     color: var(--accent);
     border-bottom-color: var(--accent);
   }
-  @media (max-width: 460px) {
-    .footer__nav {
-      grid-template-columns: 1fr;
-    }
-    .footer__nav-label--ext {
-      grid-column: 1 / 2;
-      grid-row: auto;
-      margin-top: 1rem;
-    }
-  }
 
-  .footer__meta {
+  /* ---------- imprint metadata block (typeset / press) -------- */
+  .ftr__imprint {
+    padding: 1.2rem 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .ftr__imprint-dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem 1.8rem;
+  }
+  .ftr__imprint-row {
+    display: grid;
+    grid-template-columns: 5.2rem minmax(0, 1fr);
+    gap: 0.65rem;
+    align-items: baseline;
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .ftr__imprint-row dt {
+    font-family: var(--font-stamp);
+    color: var(--ink-mute);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0;
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+  :lang(zh) .ftr__imprint-row dt {
+    font-family: var(--font-stamp), var(--font-cjk);
+    letter-spacing: 0.06em;
+    text-transform: none;
+    font-size: 0.78rem;
+  }
+  .ftr__imprint-row dd {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--font-sans);
+  }
+  :lang(zh) .ftr__imprint-row dd { font-family: var(--font-cjk); }
+  .ftr__imprint-row dd.mono { font-family: var(--font-mono); }
+
+  /* ---------- bottom: legal + version -------------------------- */
+  .ftr__bottom {
+    padding: 1.1rem 0 1.5rem 0;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.6rem 1.4rem;
     align-items: baseline;
-    padding-top: 1.1rem;
-    border-top: 1px solid var(--rule);
   }
-  .footer__copy {
+  .ftr__copy {
     font-family: var(--font-sans);
     font-size: 0.78rem;
     color: var(--ink-mute);
@@ -232,13 +509,32 @@ const handshakeLabel =
     max-width: 60ch;
     margin: 0;
   }
-  :lang(zh) .footer__copy { font-family: var(--font-cjk); line-height: 1.75; }
-  .footer__version {
+  :lang(zh) .ftr__copy { font-family: var(--font-cjk); line-height: 1.75; }
+  .ftr__version {
     font-size: 0.78rem;
     color: var(--ink-mute);
     letter-spacing: 0.04em;
     margin: 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
   }
-  .footer__version a { color: var(--accent); text-decoration: none; }
-  .footer__version a:hover { text-decoration: underline; }
+  .ftr__version-sep { opacity: 0.55; }
+
+  /* ---------- responsive --------------------------------------- */
+  @media (max-width: 920px) {
+    .ftr__closing-inner {
+      grid-template-columns: 1fr;
+      gap: 1.6rem;
+    }
+    .ftr__closing-mascot { order: -1; }
+    .ftr__main { grid-template-columns: 1fr; gap: 1.4rem; }
+  }
+  @media (max-width: 580px) {
+    .ftr__imprint-dl { grid-template-columns: 1fr; gap: 0.5rem; }
+    .ftr__nav { grid-template-columns: 1fr; gap: 1rem; }
+    .ftr__counts { grid-template-columns: 1fr; }
+    .ftr__count { border-right: none; border-bottom: 1px solid var(--rule); }
+    .ftr__count:last-child { border-bottom: none; }
+  }
 </style>
