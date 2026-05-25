@@ -112,10 +112,12 @@ const mascotCaption =
           </div>
         </div>
 
-        <div class="hero__mascot duck-stage" data-reveal>
-          <div class="duck-stage__aura"></div>
-          <MascotDuck size={232} blink={true} alt="LUCK666DUCK mascot" />
-          <div class="duck-stage__pedestal"></div>
+        <div class="hero__mascot" data-reveal>
+          <div class="duck-stage">
+            <div class="duck-stage__aura"></div>
+            <MascotDuck size={232} blink={true} alt="LUCK666DUCK mascot" />
+            <div class="duck-stage__pedestal"></div>
+          </div>
           <p class="hero__mascot-caption caption">{mascotCaption}</p>
         </div>
       </aside>
@@ -364,16 +366,30 @@ const mascotCaption =
   }
   :lang(zh) .hero__counter-sub { font-family: var(--font-cjk); }
 
-  /* ---- mascot stage in the cover ----------------------------- */
+  /* ---- mascot stage in the cover -----------------------------
+     Wrapper lays out the duck-stage and its caption in a column
+     so the caption doesn't collide with the absolute pedestal
+     bar at the bottom of the stage. */
   .hero__mascot {
     min-height: 260px;
     padding-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    gap: 0.9rem;
+  }
+  .hero__mascot .duck-stage {
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 232px;
   }
   .hero__mascot-caption {
-    margin: 0.6rem 0 0 0;
+    margin: 0;
     text-align: center;
     color: var(--ink-mute);
     font-size: 0.85rem;
+    line-height: 1.4;
     position: relative;
     z-index: 1;
   }
