@@ -50,13 +50,12 @@ const langPrefix = `${base}/en`;
       {scene && (
         <figure class="case__scene">
           <img
-            src={`${base}/scenes/${scene}`}
+            src={`${base}/scenes/${scene.file}`}
             alt={`${mod.name_en} ${t(lang, "case.scene_label")}`}
             width="1280"
             height="400"
             loading="eager"
           />
-          <figcaption>{t(lang, "case.scene_placeholder")}</figcaption>
         </figure>
       )}
 

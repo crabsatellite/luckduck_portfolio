@@ -404,15 +404,32 @@ export const allMcVersionRange = (): { min: string; max: string } | null => {
   return minMaxVersion(all);
 };
 
-export const SCENE_MAP: Record<string, string> = {
-  hotbath: "hot-bath-scene.png",
-  shower_core: "shower-scene.png",
-  alex_caves: "caves-scene.png",
-  alex_mobs: "mobs-scene.png",
-  pelagic_prehistory: "prehistoric-scene.png",
+/**
+ * Each mod can declare a scene preview image. Set `real: true` only
+ * when an actual gameplay screenshot has been captured and dropped
+ * into `public/scenes/<file>`. The case page renders the scene
+ * figure only for entries flagged `real: true` — placeholder
+ * stand-ins stay hidden so the page never advertises art that
+ * isn't really there.
+ */
+export interface SceneInfo {
+  file: string;
+  real: boolean;
+}
+
+export const SCENE_MAP: Record<string, SceneInfo> = {
+  hotbath: { file: "hot-bath-scene.png", real: false },
+  shower_core: { file: "shower-scene.png", real: false },
+  alex_caves: { file: "caves-scene.png", real: false },
+  alex_mobs: { file: "mobs-scene.png", real: false },
+  pelagic_prehistory: { file: "prehistoric-scene.png", real: false },
 };
 
-export const sceneForMod = (m: Mod): string | null => SCENE_MAP[m.id] ?? null;
+export const sceneForMod = (m: Mod): SceneInfo | null => {
+  const info = SCENE_MAP[m.id];
+  if (!info || !info.real) return null;
+  return info;
+};
 
 export type TeamMember = {
   name: string;
