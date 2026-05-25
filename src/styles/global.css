@@ -86,9 +86,11 @@
   --fs-h2: clamp(1.35rem, 2.4vw, 1.85rem); /* section H2 */
   --fs-h3: clamp(1.1rem, 1.6vw, 1.25rem); /* card / sub-section */
   --fs-h4: 0.98rem; /* small headers */
-  --fs-mega: clamp(2.8rem, 7.6vw, 5.6rem); /* hero display */
+  /* hero display — sized so Latin and CJK can share the same
+     token without one feeling enormous next to the other. */
+  --fs-mega: clamp(2.4rem, 6vw, 4.4rem);
   --fs-counter: clamp(2.4rem, 5vw, 3.4rem); /* stat numerals */
-  --fs-stat: clamp(4rem, 12vw, 8rem); /* signature mega stat */
+  --fs-stat: clamp(3.4rem, 10vw, 6.5rem); /* signature mega stat */
 
   --radius: 6px;
   --radius-lg: 10px;
