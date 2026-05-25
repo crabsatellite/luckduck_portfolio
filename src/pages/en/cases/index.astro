@@ -3,78 +3,163 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 import Filters from "~/components/Filters.astro";
 import ModCard from "~/components/ModCard.astro";
 import PageHead from "~/components/PageHead.astro";
-import MarqueeDivider from "~/components/MarqueeDivider.astro";
-import { sortedMods } from "~/lib/data";
+import { mods, profile, sortedMods, totalBugs, totalRounds } from "~/lib/data";
 import { t } from "~/i18n/strings";
 
 const lang = "en" as const;
 const list = sortedMods();
 const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
 const langPrefix = `${base}/en`;
+
+const indexStats = [
+  { label: t(lang, "cases.index_total"), value: mods.length },
+  { label: t(lang, "cases.index_bugs"), value: totalBugs(), accent: true },
+  { label: t(lang, "cases.index_rounds"), value: totalRounds() },
+  { label: t(lang, "cases.index_credits"), value: profile.curseforge.tester_credits.length },
+];
 ---
 
 <BaseLayout title={t(lang, "cases.title")} lang={lang}>
-  <section class="cases-page">
+  <article class="cases-page">
     <div class="container">
       <PageHead
         lang={lang}
         mark="02"
-        kicker="cases · tester ledger"
+        kicker={t(lang, "cases.kicker")}
         title={t(lang, "cases.title")}
         sub={t(lang, "cases.subtitle")}
-      >
-        <p class="cases-page__note">
-          If you are a mod author looking for help, start with the public-credit and regression cases, then read the
-          <a href={`${langPrefix}/about`}>collaboration notes</a>.
-        </p>
-      </PageHead>
+        deck={t(lang, "cases.deck")}
+      />
+
+      <section class="cases-index" aria-label="department totals" data-reveal>
+        <header class="cases-index__head">
+          <h2 class="cases-index__h">{t(lang, "cases.index_h")}</h2>
+          <a class="cases-index__note-link" href={`${langPrefix}/about`}>
+            {t(lang, "cases.note_link")}
+          </a>
+        </header>
+        <dl class="cases-index__stats">
+          {indexStats.map((s) => (
+            <div class={`cases-index__stat ${s.accent ? "cases-index__stat--accent" : ""}`}>
+              <dt>{s.label}</dt>
+              <dd class="fancy-num mono tnum">{s.value}</dd>
+            </div>
+          ))}
+        </dl>
+        <p class="cases-index__note">{t(lang, "cases.note_p")}</p>
+      </section>
+
       <Filters lang={lang} />
-      <div class="cases-grid">
+
+      <div class="cases-grid" data-reveal>
         {list.map((m, i) => <ModCard mod={m} lang={lang} index={i + 1} />)}
       </div>
     </div>
-  </section>
-  <MarqueeDivider text={`LEDGER · ${list.length} MODS ON FILE · LUCK666DUCK · TESTER LEDGER`} animated={true} />
+  </article>
 </BaseLayout>
 
 <style>
-  .cases-page { padding: 0 0 2rem 0; }
-  .cases-page__note {
-    color: var(--ink-soft);
-    font-size: 0.92rem;
-    line-height: 1.7;
-    margin: 0.4rem 0 0 0;
-    padding: 0.7rem 0 0 0;
-    border-top: 1px dotted var(--rule);
-    max-width: 56ch;
+  .cases-page { padding: 0 0 3rem 0; }
+  .cases-index {
+    margin: 0 0 clamp(1.4rem, 3vw, 2rem) 0;
+    padding: clamp(1.4rem, 3vw, 2rem) 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
   }
-  .cases-page__note a {
+  .cases-index__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.1rem;
+  }
+  .cases-index__h {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .cases-index__note-link {
+    font-family: var(--font-sans);
     color: var(--accent);
     text-decoration: none;
     border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    white-space: nowrap;
   }
-  .cases-grid {
+  .cases-index__note-link:hover { color: var(--accent-deep); }
+  .cases-index__stats {
+    margin: 0 0 1rem 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0;
-    padding-top: 1rem;
     border-top: 1px solid var(--rule);
     border-left: 1px solid var(--rule);
   }
-  .cases-grid > :global(.card) {
-    border-radius: 0;
-    border-left: none;
-    border-top: none;
+  .cases-index__stat {
+    margin: 0;
+    padding: 1rem 1.1rem 1.1rem 1.1rem;
     border-right: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
+    background: var(--bg-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    position: relative;
   }
-  .cases-grid > :global(.card:hover) {
-    transform: none;
-    box-shadow: none;
-    z-index: 2;
-    border-color: var(--ink);
+  .cases-index__stat::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--rule);
+  }
+  .cases-index__stat--accent::before { background: var(--accent); }
+  .cases-index__stat dt {
+    font-family: var(--font-stamp);
+    color: var(--ink-mute);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0;
+    order: 2;
+  }
+  .cases-index__stat dd {
+    margin: 0;
+    color: var(--ink);
+    font-size: 2rem;
+    line-height: 0.9;
+    order: 1;
+  }
+  .cases-index__stat--accent dd { color: var(--accent); }
+  .cases-index__note {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+    line-height: 1.7;
+    max-width: 64ch;
+  }
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1rem;
+    padding-top: clamp(0.6rem, 1.5vw, 1rem);
   }
   @media (max-width: 540px) {
     .cases-grid { grid-template-columns: 1fr; }
+    .cases-index__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 380px) {
+    .cases-index__stats { grid-template-columns: 1fr; }
   }
 </style>
