@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "fetched_at": "2026-07-24T00:52:02.165Z",
+  "fetched_at": "2026-07-25T00:55:29.815Z",
   "sources": {
     "curseforge": {
       "status": "ok",
@@ -28,7 +28,7 @@
         "slug": "hotbath",
         "title": "Hot Bath",
         "url": "https://www.curseforge.com/minecraft/mc-mods/hotbath",
-        "downloads": 2375271,
+        "downloads": 2386925,
         "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1659/486/256/256/639057238931792096.png",
         "created_at": "2023-05-08T09:53:08.14Z",
         "updated_at": null,
@@ -40,7 +40,7 @@
         "slug": "instantworldmirror",
         "title": "InstantWorldMirror",
         "url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
-        "downloads": 2629,
+        "downloads": 2642,
         "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1652/813/256/256/639054207954809355.png",
         "created_at": "2026-01-31T11:22:45.67Z",
         "updated_at": null,
@@ -270,7 +270,7 @@
       "snapshot_url": "https://web.archive.org/web/20260406152638/https://www.curseforge.com/minecraft/mc-mods/hotbath",
       "snapshot_at": "2026-04-06T15:26:38Z",
       "status": "ok",
-      "checked_at": "2026-07-24T00:52:08.517Z"
+      "checked_at": "2026-07-25T00:55:37.182Z"
     },
     "instantworldmirror": {
       "mod_url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
@@ -281,7 +281,7 @@
       "snapshot_url": "https://web.archive.org/web/20260406152700/https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
       "snapshot_at": "2026-04-06T15:27:00Z",
       "status": "ok",
-      "checked_at": "2026-07-24T00:52:17.159Z"
+      "checked_at": "2026-07-25T00:55:40.846Z"
     }
   }
 }
