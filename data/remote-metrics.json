@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "fetched_at": "2026-08-08T00:32:47.815Z",
+  "fetched_at": "2026-08-09T00:33:42.999Z",
   "sources": {
     "curseforge": {
       "status": "ok",
@@ -16,7 +16,7 @@
       "method": "repos/.../pulls/:number"
     },
     "tester_credits_live": {
-      "status": "stale",
+      "status": "ok",
       "method": "wayback"
     }
   },
@@ -28,7 +28,7 @@
         "slug": "hotbath",
         "title": "Hot Bath",
         "url": "https://www.curseforge.com/minecraft/mc-mods/hotbath",
-        "downloads": 2465738,
+        "downloads": 2470743,
         "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1659/486/256/256/639057238931792096.png",
         "created_at": "2023-05-08T09:53:08.14Z",
         "updated_at": null,
@@ -40,7 +40,7 @@
         "slug": "instantworldmirror",
         "title": "InstantWorldMirror",
         "url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
-        "downloads": 2793,
+        "downloads": 2801,
         "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1652/813/256/256/639054207954809355.png",
         "created_at": "2026-01-31T11:22:45.67Z",
         "updated_at": null,
@@ -256,18 +256,18 @@
       "snapshot_url": "https://web.archive.org/web/20260406152638/https://www.curseforge.com/minecraft/mc-mods/hotbath",
       "snapshot_at": "2026-04-06T15:26:38Z",
       "status": "ok",
-      "checked_at": "2026-08-08T00:32:53.681Z"
+      "checked_at": "2026-08-09T00:33:49.256Z"
     },
     "instantworldmirror": {
       "mod_url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
       "mod": "InstantWorldMirror",
-      "verified": false,
-      "verified_role": null,
-      "basis": null,
-      "snapshot_url": null,
-      "snapshot_at": null,
-      "status": "missing",
-      "checked_at": "2026-08-08T00:32:58.247Z"
+      "verified": true,
+      "verified_role": "Tester",
+      "basis": "id+role",
+      "snapshot_url": "https://web.archive.org/web/20260406152700/https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
+      "snapshot_at": "2026-04-06T15:27:00Z",
+      "status": "ok",
+      "checked_at": "2026-08-09T00:33:51.918Z"
     }
   }
 }
