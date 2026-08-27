@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "fetched_at": "2026-08-26T00:28:55.858Z",
+  "fetched_at": "2026-08-27T02:00:56.270Z",
   "sources": {
     "curseforge": {
       "status": "ok",
@@ -16,7 +16,7 @@
       "method": "repos/.../pulls/:number"
     },
     "tester_credits_live": {
-      "status": "ok",
+      "status": "stale",
       "method": "wayback"
     }
   },
@@ -28,7 +28,7 @@
         "slug": "hotbath",
         "title": "Hot Bath",
         "url": "https://www.curseforge.com/minecraft/mc-mods/hotbath",
-        "downloads": 2548373,
+        "downloads": 2554107,
         "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1659/486/256/256/639057238931792096.png",
         "created_at": "2023-05-08T09:53:08.14Z",
         "updated_at": null,
@@ -40,7 +40,7 @@
         "slug": "instantworldmirror",
         "title": "InstantWorldMirror",
         "url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
-        "downloads": 2922,
+        "downloads": 2930,
         "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1652/813/256/256/639054207954809355.png",
         "created_at": "2026-01-31T11:22:45.67Z",
         "updated_at": null,
@@ -62,6 +62,50 @@
       "open": 5,
       "closed": 5,
       "items": [
+        {
+          "repo": "crabsatellite/ShowerCore",
+          "number": 12,
+          "title": "[1.21.1 neoforge] 小黄鸭位置bug",
+          "state": "open",
+          "url": "https://github.com/crabsatellite/ShowerCore/issues/12",
+          "created_at": "2026-06-21T15:21:41Z",
+          "updated_at": "2026-08-26T07:02:43Z",
+          "closed_at": null,
+          "merged_at": null
+        },
+        {
+          "repo": "crabsatellite/ShowerCore",
+          "number": 9,
+          "title": "[1.20.1 forge] 小黄鸭位置bug",
+          "state": "open",
+          "url": "https://github.com/crabsatellite/ShowerCore/issues/9",
+          "created_at": "2026-06-21T12:27:16Z",
+          "updated_at": "2026-08-26T07:02:40Z",
+          "closed_at": null,
+          "merged_at": null
+        },
+        {
+          "repo": "crabsatellite/ShowerCore",
+          "number": 7,
+          "title": "[1.20.1 forge] 环境光bug",
+          "state": "open",
+          "url": "https://github.com/crabsatellite/ShowerCore/issues/7",
+          "created_at": "2026-06-21T12:25:41Z",
+          "updated_at": "2026-08-26T07:02:39Z",
+          "closed_at": null,
+          "merged_at": null
+        },
+        {
+          "repo": "crabsatellite/ShowerCore",
+          "number": 4,
+          "title": "[1.20.1 forge] 爪足浴缸水龙头出水位置bug",
+          "state": "open",
+          "url": "https://github.com/crabsatellite/ShowerCore/issues/4",
+          "created_at": "2026-06-21T12:21:28Z",
+          "updated_at": "2026-08-26T07:02:38Z",
+          "closed_at": null,
+          "merged_at": null
+        },
         {
           "repo": "crabsatellite/ShowerCore",
           "number": 13,
@@ -119,63 +163,19 @@
         },
         {
           "repo": "crabsatellite/ShowerCore",
-          "number": 4,
-          "title": "[1.20.1 forge] 爪足浴缸水龙头出水位置bug",
-          "state": "open",
-          "url": "https://github.com/crabsatellite/ShowerCore/issues/4",
-          "created_at": "2026-06-21T12:21:28Z",
-          "updated_at": "2026-06-22T14:34:21Z",
-          "closed_at": null,
-          "merged_at": null
-        },
-        {
-          "repo": "crabsatellite/ShowerCore",
           "number": 11,
           "title": "[1.21.1 neoforge] 爪足浴缸水龙头开关触发bug",
           "state": "open",
           "url": "https://github.com/crabsatellite/ShowerCore/issues/11",
           "created_at": "2026-06-21T15:20:24Z",
-          "updated_at": "2026-06-22T14:26:21Z",
-          "closed_at": null,
-          "merged_at": null
-        },
-        {
-          "repo": "crabsatellite/ShowerCore",
-          "number": 12,
-          "title": "[1.21.1 neoforge] 小黄鸭位置bug",
-          "state": "open",
-          "url": "https://github.com/crabsatellite/ShowerCore/issues/12",
-          "created_at": "2026-06-21T15:21:41Z",
-          "updated_at": "2026-06-21T15:21:41Z",
-          "closed_at": null,
-          "merged_at": null
-        },
-        {
-          "repo": "crabsatellite/ShowerCore",
-          "number": 9,
-          "title": "[1.20.1 forge] 小黄鸭位置bug",
-          "state": "open",
-          "url": "https://github.com/crabsatellite/ShowerCore/issues/9",
-          "created_at": "2026-06-21T12:27:16Z",
-          "updated_at": "2026-06-21T12:27:16Z",
-          "closed_at": null,
-          "merged_at": null
-        },
-        {
-          "repo": "crabsatellite/ShowerCore",
-          "number": 7,
-          "title": "[1.20.1 forge] 环境光bug",
-          "state": "open",
-          "url": "https://github.com/crabsatellite/ShowerCore/issues/7",
-          "created_at": "2026-06-21T12:25:41Z",
-          "updated_at": "2026-06-21T12:25:41Z",
+          "updated_at": "2026-08-26T07:02:42Z",
           "closed_at": null,
           "merged_at": null
         }
       ]
     },
     "public_events": {
-      "count": 2,
+      "count": 1,
       "items": [
         {
           "type": "IssueCommentEvent",
@@ -183,13 +183,6 @@
           "created_at": "2026-08-03T14:57:49Z",
           "action": "created",
           "url": "https://github.com/crabsatellite/hotBath/issues/33"
-        },
-        {
-          "type": "IssueCommentEvent",
-          "repo": "crabsatellite/hotBath",
-          "created_at": "2026-07-27T15:19:41Z",
-          "action": "created",
-          "url": "https://github.com/crabsatellite/hotBath/issues/34"
         }
       ]
     }
@@ -241,8 +234,12 @@
       "basis": "id+role",
       "snapshot_url": "https://web.archive.org/web/20260406152638/https://www.curseforge.com/minecraft/mc-mods/hotbath",
       "snapshot_at": "2026-04-06T15:26:38Z",
-      "status": "ok",
-      "checked_at": "2026-08-26T00:29:02.305Z"
+      "status": "stale",
+      "checked_at": "2026-08-27T02:01:02.442Z",
+      "error": {
+        "message": "fetch failed",
+        "at": "2026-08-27T02:02:15.121Z"
+      }
     },
     "instantworldmirror": {
       "mod_url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
@@ -252,8 +249,12 @@
       "basis": "id+role",
       "snapshot_url": "https://web.archive.org/web/20260406152700/https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
       "snapshot_at": "2026-04-06T15:27:00Z",
-      "status": "ok",
-      "checked_at": "2026-08-26T00:29:09.578Z"
+      "status": "stale",
+      "checked_at": "2026-08-27T02:02:16.622Z",
+      "error": {
+        "message": "fetch failed",
+        "at": "2026-08-27T02:02:18.897Z"
+      }
     }
   }
 }
