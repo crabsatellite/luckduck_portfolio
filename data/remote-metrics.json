@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "fetched_at": "2026-09-02T01:00:14.590Z",
+  "fetched_at": "2026-09-03T01:01:29.700Z",
   "sources": {
     "curseforge": {
       "status": "ok",
@@ -28,7 +28,7 @@
         "slug": "hotbath",
         "title": "Hot Bath",
         "url": "https://www.curseforge.com/minecraft/mc-mods/hotbath",
-        "downloads": 2578687,
+        "downloads": 2581575,
         "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1659/486/256/256/639057238931792096.png",
         "created_at": "2023-05-08T09:53:08.14Z",
         "updated_at": null,
@@ -40,7 +40,7 @@
         "slug": "instantworldmirror",
         "title": "InstantWorldMirror",
         "url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
-        "downloads": 2995,
+        "downloads": 3002,
         "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1652/813/256/256/639054207954809355.png",
         "created_at": "2026-01-31T11:22:45.67Z",
         "updated_at": null,
@@ -175,16 +175,8 @@
       ]
     },
     "public_events": {
-      "count": 1,
-      "items": [
-        {
-          "type": "IssueCommentEvent",
-          "repo": "crabsatellite/hotBath",
-          "created_at": "2026-08-03T14:57:49Z",
-          "action": "created",
-          "url": "https://github.com/crabsatellite/hotBath/issues/33"
-        }
-      ]
+      "count": 0,
+      "items": []
     }
   },
   "pr_credits": {
@@ -235,7 +227,7 @@
       "snapshot_url": "https://web.archive.org/web/20260406152638/https://www.curseforge.com/minecraft/mc-mods/hotbath",
       "snapshot_at": "2026-04-06T15:26:38Z",
       "status": "ok",
-      "checked_at": "2026-09-02T01:00:21.178Z"
+      "checked_at": "2026-09-03T01:01:36.161Z"
     },
     "instantworldmirror": {
       "mod_url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
@@ -246,7 +238,7 @@
       "snapshot_url": "https://web.archive.org/web/20260406152700/https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
       "snapshot_at": "2026-04-06T15:27:00Z",
       "status": "ok",
-      "checked_at": "2026-09-02T01:00:28.189Z"
+      "checked_at": "2026-09-03T01:01:38.662Z"
     }
   }
 }
