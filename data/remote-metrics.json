@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "fetched_at": "2026-09-16T01:00:17.133Z",
+  "fetched_at": "2026-09-17T01:00:31.345Z",
   "sources": {
     "curseforge": {
       "status": "ok",
@@ -16,7 +16,7 @@
       "method": "repos/.../pulls/:number"
     },
     "tester_credits_live": {
-      "status": "ok",
+      "status": "stale",
       "method": "wayback"
     }
   },
@@ -28,7 +28,7 @@
         "slug": "hotbath",
         "title": "Hot Bath",
         "url": "https://www.curseforge.com/minecraft/mc-mods/hotbath",
-        "downloads": 2622281,
+        "downloads": 2625005,
         "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1659/486/256/256/639057238931792096.png",
         "created_at": "2023-05-08T09:53:08.14Z",
         "updated_at": null,
@@ -40,7 +40,7 @@
         "slug": "instantworldmirror",
         "title": "InstantWorldMirror",
         "url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
-        "downloads": 3112,
+        "downloads": 3116,
         "thumbnail": "https://media.forgecdn.net/avatars/thumbnails/1652/813/256/256/639054207954809355.png",
         "created_at": "2026-01-31T11:22:45.67Z",
         "updated_at": null,
@@ -226,8 +226,12 @@
       "basis": "id+role",
       "snapshot_url": "https://web.archive.org/web/20260406152638/https://www.curseforge.com/minecraft/mc-mods/hotbath",
       "snapshot_at": "2026-04-06T15:26:38Z",
-      "status": "ok",
-      "checked_at": "2026-09-16T01:00:22.464Z"
+      "status": "stale",
+      "checked_at": "2026-09-17T01:00:36.711Z",
+      "error": {
+        "message": "HTTP 429: <html><body><h1>429 Too Many Requests</h1>\nYou have sent too many requests in a given amount of time.\n</body></html>\n",
+        "at": "2026-09-17T01:00:36.940Z"
+      }
     },
     "instantworldmirror": {
       "mod_url": "https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
@@ -237,8 +241,12 @@
       "basis": "id+role",
       "snapshot_url": "https://web.archive.org/web/20260406152700/https://www.curseforge.com/minecraft/mc-mods/instantworldmirror",
       "snapshot_at": "2026-04-06T15:27:00Z",
-      "status": "ok",
-      "checked_at": "2026-09-16T01:00:26.707Z"
+      "status": "stale",
+      "checked_at": "2026-09-17T01:00:38.441Z",
+      "error": {
+        "message": "HTTP 429: <html><body><h1>429 Too Many Requests</h1>\nYou have sent too many requests in a given amount of time.\n</body></html>\n",
+        "at": "2026-09-17T01:00:38.503Z"
+      }
     }
   }
 }
