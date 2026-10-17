@@ -1,0 +1,155 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import PageHead from "~/components/PageHead.astro";
+import ModSlot from "~/components/ModSlot.astro";
+import ModList from "~/components/ModList.astro";
+import { t, tf, type Lang } from "~/i18n/strings";
+import { modName, mods, sortedMods, totalBugs, totalRounds } from "~/lib/data";
+import { href } from "~/lib/paths";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const list = sortedMods();
+const empty = Math.ceil(list.length / 9) * 9 - list.length;
+const filters = [
+  { id: "all", key: "cases.filter_all" as const },
+  { id: "credited", key: "cases.filter_credited" as const },
+  { id: "retest", key: "cases.filter_retest" as const },
+];
+---
+
+<BaseLayout lang={lang} title={t(lang, "cases.title")}>
+  <PageHead
+    slot="head"
+    lang={lang}
+    title={t(lang, "cases.title")}
+    lead={tf(lang, "cases.lead", { mods: mods.length, rounds: totalRounds(), entries: totalBugs() })}
+  />
+
+  <div class="wrap">
+    <div class="inv gui">
+      <p class="ui inv__title">{t(lang, "mods.h")}</p>
+      <ul class="inv__grid">
+        {list.map((m) => (
+          <li class="inv__cell">
+            <a class="inv__slot" href={href(lang, `/cases/${m.id}`)} aria-label={`${modName(m, lang)} · ${tf(lang, "case.round_entries", { n: m.total_bugs })}`}>
+              <ModSlot mod={m} count={m.total_bugs || undefined} />
+              <span class="tooltip inv__tip" aria-hidden="true">
+                <span class="ui tooltip__name">{modName(m, lang)}</span>
+                <span class="ui tooltip__lore">{m.versions.join(" · ")}</span>
+                <span class="ui tooltip__lore">{tf(lang, "mods.rounds", { n: m.rounds.length })} · {m.total_bugs > 0 ? tf(lang, "case.round_entries", { n: m.total_bugs }) : t(lang, "mods.clean")}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+        {Array.from({ length: empty }).map(() => <li class="inv__cell" aria-hidden="true"><span class="slot"></span></li>)}
+      </ul>
+    </div>
+
+    <div class="filter" role="group" aria-label={t(lang, "cases.filter_label")}>
+      {filters.map((f, i) => (
+        <button type="button" class="ui filter__btn" data-filter={f.id} aria-pressed={i === 0 ? "true" : "false"}>
+          {t(lang, f.key)}
+        </button>
+      ))}
+      <span class="filter__count" data-count data-template={t(lang, "cases.showing")} data-total={mods.length} aria-live="polite">
+        {tf(lang, "cases.showing", { n: mods.length, total: mods.length })}
+      </span>
+    </div>
+
+    <ModList lang={lang} />
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    var buttons = document.querySelectorAll("[data-filter]");
+    var items = document.querySelectorAll("[data-mod]");
+    var count = document.querySelector("[data-count]");
+    function apply(mode) {
+      var n = 0;
+      items.forEach(function (el) {
+        var show = mode === "all" || (mode === "credited" && el.dataset.credited === "1") || (mode === "retest" && el.dataset.retest === "1");
+        el.hidden = !show;
+        if (show) n++;
+      });
+      buttons.forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.filter === mode ? "true" : "false"); });
+      if (count) count.textContent = count.dataset.template.replace("{n}", n).replace("{total}", count.dataset.total);
+    }
+    buttons.forEach(function (b) { b.addEventListener("click", function () { apply(b.dataset.filter); }); });
+  })();
+</script>
+
+<style>
+  /* the inventory is drawn one GUI scale larger than the rest of the page */
+  .inv {
+    --u: 3px;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 56px;
+    padding: 14px 16px 18px;
+  }
+  .inv__title { margin: 0 0 8px 2px; color: var(--gui-ink); }
+  .inv__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(9, 54px);
+  }
+  .inv__cell { position: relative; }
+  .inv__slot { display: block; position: relative; text-decoration: none; }
+  .inv__slot:hover :global(.slot)::after,
+  .inv__slot:focus-visible :global(.slot)::after {
+    content: "";
+    position: absolute;
+    inset: var(--u);
+    background: rgba(255, 255, 255, 0.5);
+  }
+  .inv__tip {
+    display: none;
+    position: absolute;
+    z-index: 5;
+    left: 44px;
+    bottom: 44px;
+    width: max-content;
+    max-width: 260px;
+  }
+  .inv__tip > span { display: block; }
+  .inv__cell:nth-child(9n + 6) .inv__tip,
+  .inv__cell:nth-child(9n + 7) .inv__tip,
+  .inv__cell:nth-child(9n + 8) .inv__tip,
+  .inv__cell:nth-child(9n) .inv__tip { left: auto; right: 44px; }
+  .inv__slot:hover .inv__tip,
+  .inv__slot:focus-visible .inv__tip { display: block; }
+
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .filter__btn {
+    padding: 4px 12px;
+    color: var(--text-2);
+    background: transparent;
+    border: 0;
+    box-shadow: inset 0 0 0 var(--u) var(--line);
+    cursor: pointer;
+  }
+  .filter__btn:hover { color: var(--text); box-shadow: inset 0 0 0 var(--u) #3a3f4b; }
+  .filter__btn[aria-pressed="true"] { color: var(--gold-ink); background: var(--gold); box-shadow: none; }
+  .filter__count { margin-left: auto; font-size: 14px; color: var(--text-3); }
+
+  @media (max-width: 600px) {
+    .inv { --u: 2px; padding: 12px 12px 14px; }
+    .inv__grid { grid-template-columns: repeat(9, 36px); }
+    .inv :global(.slot__count) { font-size: 0; }
+  }
+  @media (max-width: 380px) {
+    .inv__grid { grid-template-columns: repeat(8, 36px); }
+  }
+</style>

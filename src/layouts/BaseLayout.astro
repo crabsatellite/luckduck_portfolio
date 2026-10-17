@@ -1,106 +1,100 @@
 ---
 import "~/styles/global.css";
-import Nav from "~/components/Nav.astro";
 import Footer from "~/components/Footer.astro";
-import { langFromPath, t, type Lang } from "~/i18n/strings";
+import { t, pathForLang, type Lang } from "~/i18n/strings";
+import { asset, base } from "~/lib/paths";
 
 interface Props {
-  title: string;
+  lang: Lang;
+  title?: string;
   description?: string;
-  lang?: Lang;
 }
 
-const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
-const detected = langFromPath(Astro.url.pathname.replace(base, "") || "/");
-const { title, description, lang = detected } = Astro.props;
-
-const fullTitle = title === "LUCK666DUCK"
-  ? "LUCK666DUCK · Minecraft mod QA tester"
-  : `${title} · LUCK666DUCK`;
-
+const { lang, title, description } = Astro.props;
+const fullTitle = title ? `${title} · LUCK666DUCK` : t(lang, "site.title");
+const desc = description ?? t(lang, "site.description");
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
-const htmlLang = lang === "en" ? "en" : "zh-Hans-CN";
+const ogImage = new URL(asset("og.png"), Astro.site).toString();
 
-const fallbackDescription =
-  lang === "en"
-    ? "LUCK666DUCK helps Minecraft mod authors with regression, compatibility, localization, and reproducible bug reports."
-    : "LUCK666DUCK 为 Minecraft MOD 作者提供回归、兼容、本地化和可复现 bug 报告。";
-
-const ogPath = `${base}/og.png`;
+const artVars = [
+  `--img-stars:url("${asset("art/stars.png")}")`,
+  `--img-icons:url("${asset("art/icons.png")}")`,
+  `--img-ground:url("${asset("art/ground.png")}")`,
+  `--img-edge:url("${asset("art/edge.png")}")`,
+].join(";");
 ---
 
 <!doctype html>
-<html lang={htmlLang}>
+<html lang={lang === "en" ? "en" : "zh-Hans"}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/x-icon" href={`${base}/favicon.ico`} sizes="any" />
-    <link rel="icon" type="image/png" href={`${base}/favicon-32.png`} sizes="32x32" />
-    <link rel="apple-touch-icon" href={`${base}/apple-touch-icon.png`} sizes="180x180" />
-    <link rel="canonical" href={canonical} />
-
     <title>{fullTitle}</title>
-    <meta name="description" content={description || fallbackDescription} />
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="zh-Hans" href={new URL(pathForLang(Astro.url.pathname, "zh", base), Astro.site).toString()} />
+    <link rel="alternate" hreflang="en" href={new URL(pathForLang(Astro.url.pathname, "en", base), Astro.site).toString()} />
+    <link rel="icon" type="image/x-icon" href={asset("favicon.ico")} sizes="any" />
+    <link rel="icon" type="image/png" href={asset("favicon-32.png")} sizes="32x32" />
+    <link rel="apple-touch-icon" href={asset("apple-touch-icon.png")} sizes="180x180" />
+    <meta name="theme-color" content="#0b0e1a" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description || fallbackDescription} />
+    <meta property="og:description" content={desc} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(ogPath, Astro.site).toString()} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="theme-color" content="#1d1a17" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f6ecd6" media="(prefers-color-scheme: light)" />
+    <style is:inline set:html={`:root{${artVars}}`}></style>
 
-    <script is:inline define:vars={{ siteBase: base || "" }}>
-      // Browser-language preference: redirect first-time visitors to the language
-      // they're most likely reading. Subsequent navigation via the lang toggle
-      // overrides this — saved to localStorage so the choice sticks across sessions.
+    <script is:inline define:vars={{ siteBase: base }}>
+      // First visit in a session: send readers to the language their browser
+      // prefers. An explicit choice on the language toggle is remembered.
       (function () {
         try {
           var KEY = "luckduck.lang";
           var SESSION_KEY = "luckduck.lang.checked";
           if (sessionStorage.getItem(SESSION_KEY)) return;
           sessionStorage.setItem(SESSION_KEY, "1");
-
           var pref = localStorage.getItem(KEY);
           var path = location.pathname;
-          var basePrefix = siteBase || "";
-          var rest = basePrefix && path.indexOf(basePrefix) === 0
-            ? path.slice(basePrefix.length) : path;
+          var rest = siteBase && path.indexOf(siteBase) === 0 ? path.slice(siteBase.length) : path;
           if (!rest || rest.charAt(0) !== "/") rest = "/" + rest;
           var isOnEn = /^\/en(\/|$)/.test(rest);
-
           if (!pref) {
-            var langs = navigator.languages && navigator.languages.length
-              ? navigator.languages : [navigator.language || "en"];
-            var prefersZh = langs.some(function (l) {
-              return l && l.toLowerCase().indexOf("zh") === 0;
-            });
+            var langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+            var prefersZh = langs.some(function (l) { return l && l.toLowerCase().indexOf("zh") === 0; });
             pref = prefersZh ? "zh" : "en";
             localStorage.setItem(KEY, pref);
           }
-
           var target = null;
-          if (pref === "zh" && isOnEn) {
-            target = rest.replace(/^\/en(\/|$)/, "/");
-          } else if (pref === "en" && !isOnEn) {
-            target = rest === "/" ? "/en/" : "/en" + rest;
-          }
-          if (target) {
-            location.replace(basePrefix + target + location.search + location.hash);
-          }
-        } catch (e) { /* no storage / private mode → no-op */ }
+          if (pref === "zh" && isOnEn) target = rest.replace(/^\/en(\/|$)/, "/");
+          else if (pref === "en" && !isOnEn) target = rest === "/" ? "/en/" : "/en" + rest;
+          if (target) location.replace(siteBase + target + location.search + location.hash);
+        } catch (e) { /* storage unavailable: stay on this page */ }
       })();
     </script>
   </head>
   <body>
-    <a href="#main" class="skip-link">{t(lang, "nav.skip")}</a>
-    <Nav lang={lang} />
+    <a href="#main" class="skip">{t(lang, "nav.skip")}</a>
+    <slot name="head" />
     <main id="main">
       <slot />
     </main>
     <Footer lang={lang} />
+    <script is:inline>
+      document.addEventListener("click", function (e) {
+        var el = e.target && e.target.closest && e.target.closest("[data-lang-toggle]");
+        if (!el) return;
+        try {
+          localStorage.setItem("luckduck.lang", el.getAttribute("data-lang-toggle"));
+          sessionStorage.setItem("luckduck.lang.checked", "1");
+        } catch (_) {}
+      });
+    </script>
   </body>
 </html>

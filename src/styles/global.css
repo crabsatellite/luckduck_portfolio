@@ -1,1279 +1,412 @@
-/* fonts:
-   - IBM Plex Sans (variable) — Latin body & UI. More humanist character than
-     Inter; long-standing OSS workhorse, less "AI landing page" tone.
-   - IBM Plex Serif (static 400/600/700) — used selectively for display
-     headings, gives weight without falling back on a generic geometric sans.
-   - Fusion Pixel 12px Proportional SC — MC-style CJK UI/display face.
-     Used on Chinese pages so headings, nav, buttons, labels, and body copy
-     all share the blocky game-readout texture. LXGW WenKai remains fallback.
-   - JetBrains Mono (variable) — strictly DATA: versions, IDs, counts, dates.
-   - VT323 — readable terminal/console pixel font, used as the site's
-     "stamp" face for datelines, marquees, kickers, log numbers, badge
-     labels. Reads as a Minecraft debug overlay / F3 readout, signaling
-     the domain without sacrificing legibility. Used sparingly so it never
-     competes with body copy. */
-@import "@fontsource-variable/ibm-plex-sans";
-@import "@fontsource/ibm-plex-serif/latin-400.css";
-@import "@fontsource/ibm-plex-serif/latin-600.css";
-@import "@fontsource/ibm-plex-serif/latin-700.css";
-@import "@fontsource-variable/jetbrains-mono/wght.css";
-@import "@fontsource/vt323";
-@import "@fontsource/fusion-pixel-12px-proportional-sc";
-@import "lxgw-wenkai-screen-webfont/lxgwwenkaigbscreen.css";
+/* LUCK666DUCK — global styles
+ *
+ * One design pixel is 2 CSS px (--u). Pixel type is only ever set at
+ * whole multiples of its grid (10px face at 20px, 12px face at 24/36/48px)
+ * so glyph pixels stay square. Pixel images use `image-rendering: pixelated`
+ * and integer scales. Everything else is plain system type for reading.
+ */
+
+@font-face {
+  font-family: "LD Pixel 12";
+  src: url("../fonts/ld-pixel-12.woff2") format("woff2");
+  font-display: swap;
+}
+@font-face {
+  font-family: "LD Pixel 10";
+  src: url("../fonts/ld-pixel-10.woff2") format("woff2");
+  font-display: swap;
+}
 
 :root {
-  /* dark soak-mode (default) — warm charcoal, no blue/purple tint.
-     The bg→bg-soft→bg-raised→paper ladder gives us 4 stops of warm depth
-     so cards and panels actually float instead of bleeding into each other. */
-  --bg: #1a1714;
-  --bg-soft: #221e1a;
-  --bg-raised: #2a2520;
-  --paper: #322c25; /* the "field journal page" — for cards, key panels */
-  --ink: #f2e9d4;
-  --ink-soft: #c6bda8;
-  --ink-mute: #8a8273;
-  --ink-faint: #5a5247;
-  --accent: #f0b04a; /* duck-yolk, a touch more saturated than the
-                              old #f9c47a so it stops reading as a generic
-                              "soft warm AI accent". */
-  --accent-deep: #c87420;
-  --accent-soft: #f6c878; /* lighter wash for stamp/banner backgrounds */
-  --steam: #a8c8d6; /* pale blue, used sparingly for cooler accents */
-  --steam-deep: #6a92a8;
-  --ok: #8fc97a;
-  --ok-deep: #5a9648;
-  --warn: #f0b04a;
-  --alert: #e07088;
-  --alert-deep: #b34d63;
-  --rule: #3a342c;
-  --rule-soft: #2e2924;
-
-  --font-sans:
-    "IBM Plex Sans Variable", "IBM Plex Sans", system-ui, -apple-system,
-    "Segoe UI", "Helvetica Neue", sans-serif;
-  --font-serif:
-    "IBM Plex Serif", "Iowan Old Style", "Source Serif Pro", Georgia,
-    "Times New Roman", serif;
-  --font-mono:
-    "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", "Menlo",
-    "Consolas", monospace;
-  --font-cjk:
-    "Fusion Pixel 12px Proportional SC", "LXGW WenKai Screen",
-    "IBM Plex Sans Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-pixel: "JetBrains Mono Variable", ui-monospace, monospace;
-  /* MC-flavor stamp face — VT323. Slightly larger natural metrics than
-     Press Start 2P, far more readable at small sizes. Used for short
-     latin strings only (datelines, marquees, kickers, log numbers). */
-  --font-stamp:
-    "VT323", "JetBrains Mono Variable", ui-monospace, "Menlo", monospace;
-
-  --content-max: 1240px;
-  --gutter: clamp(1.25rem, 4vw, 2.6rem);
-
-  --line-latin: 1.6;
-  --line-cjk: 1.78;
-
-  /* type scale — single source of truth, all pages read from these.
-     Each token uses clamp(min, fluid, max) so it scales with viewport
-     without ever blowing past a sensible ceiling. Tweak here and the
-     whole site rebalances. */
-  --fs-base: 16px; /* root font-size */
-  --fs-body: 0.98rem; /* default body copy */
-  --fs-body-lg: 1.05rem; /* lead paragraphs */
-  --fs-meta: 0.84rem; /* captions, meta */
-  --fs-micro: 0.74rem; /* dateline, tags */
-  --fs-h1: clamp(1.85rem, 3.6vw, 2.6rem); /* page H1 (display) */
-  --fs-h2: clamp(1.35rem, 2.4vw, 1.85rem); /* section H2 */
-  --fs-h3: clamp(1.1rem, 1.6vw, 1.25rem); /* card / sub-section */
-  --fs-h4: 0.98rem; /* small headers */
-  /* hero display — sized so Latin and CJK can share the same
-     token without one feeling enormous next to the other. */
-  --fs-mega: clamp(2.4rem, 6vw, 4.4rem);
-  --fs-counter: clamp(2.4rem, 5vw, 3.4rem); /* stat numerals */
-  --fs-stat: clamp(3.4rem, 10vw, 6.5rem); /* signature mega stat */
-
-  --radius: 6px;
-  --radius-lg: 10px;
-  --radius-pill: 999px;
-
-  --rule-width: 1px;
-
-  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.22);
-  --shadow-warm: 0 4px 24px rgba(240, 176, 74, 0.12);
-
   color-scheme: dark;
+
+  /* night sky bands, shared with scripts/build-assets.mjs */
+  --sky-0: #0b0e1a;
+  --sky-1: #0e1221;
+  --sky-2: #111729;
+  --sky-3: #151c33;
+  --sky-4: #19213b;
+
+  /* underground */
+  --bg: #0b0c10;
+  --panel: #14161c;
+  --panel-2: #1a1d25;
+  --panel-hi: #2a2e39;
+  --panel-lo: #050608;
+  --line: #242832;
+
+  --text: #ece8e1;
+  --text-2: #b6b1a8;
+  --text-3: #817c74;
+
+  /* lantern light */
+  --gold: #f3c35a;
+  --gold-hi: #ffe29a;
+  --gold-lo: #b0802a;
+  --gold-ink: #2b1b05;
+
+  /* status */
+  --fail: #ff7a6b;
+  --ok: #7fd88f;
+  --note: #8fb8ff;
+
+  /* game GUI colours */
+  --gui: #c6c6c6;
+  --gui-hi: #ffffff;
+  --gui-lo: #555555;
+  --gui-ink: #404040;
+  --slot: #8b8b8b;
+  --slot-lo: #373737;
+  --tt-bg: rgba(16, 0, 16, 0.94);
+  --tt-edge-a: rgba(80, 0, 255, 0.42);
+  --tt-edge-b: rgba(40, 0, 127, 0.42);
+  --mc-aqua: #55ffff;
+  --mc-gold: #ffaa00;
+  --mc-yellow: #ffff55;
+  --mc-gray: #aaaaaa;
+  --mc-dgray: #6d6d6d;
+
+  --u: 2px;
+  --gutter: 20px;
+  --wrap: 1160px;
+
+  --font-px: "LD Pixel 12", "LD Pixel 10", ui-monospace, monospace;
+  --font-ui: "LD Pixel 10", "LD Pixel 12", ui-monospace, monospace;
+  --font-body: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC", sans-serif;
+
+  --notch: polygon(
+    var(--u) 0, calc(100% - var(--u)) 0, 100% var(--u), 100% calc(100% - var(--u)),
+    calc(100% - var(--u)) 100%, var(--u) 100%, 0 calc(100% - var(--u)), 0 var(--u)
+  );
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    /* paper-mode — warm cream, no green tint */
-    --bg: #f6ecd6;
-    --bg-soft: #ede2c9;
-    --bg-raised: #e3d6b9;
-    --paper: #faf3e1;
-    --ink: #2a241a;
-    --ink-soft: #5a5042;
-    --ink-mute: #8b8170;
-    --ink-faint: #b2a890;
-    --accent: #c87420;
-    --accent-deep: #8f4d0e;
-    --accent-soft: #e6a45c;
-    --steam: #608a9e;
-    --steam-deep: #3d6275;
-    --ok: #3a8a4e;
-    --ok-deep: #28683a;
-    --warn: #c87420;
-    --alert: #a8334a;
-    --alert-deep: #7e2238;
-    --rule: #d4c7a6;
-    --rule-soft: #e0d5b6;
-    --shadow-soft: 0 2px 10px rgba(42, 36, 26, 0.1);
-    --shadow-warm: 0 6px 26px rgba(200, 116, 32, 0.18);
-    color-scheme: light;
-  }
+@media (max-width: 640px) {
+  :root { --gutter: 16px; }
 }
 
-* {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 html {
   background: var(--bg);
-  color: var(--ink);
-  font-size: var(--fs-base);
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 24px;
 }
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
-  font-size: var(--fs-body);
-  line-height: var(--line-latin);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  position: relative;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
 }
 
-/* paper grain — breaks the flat-plastic AI surface. Encoded as a tiny
-   inline SVG fractal noise; very low opacity, fixed so it doesn't scroll. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.045;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-@media (prefers-color-scheme: light) {
-  body::before {
-    opacity: 0.06;
-    mix-blend-mode: multiply;
-  }
-}
-main,
-header,
-footer {
-  position: relative;
-  z-index: 1;
-}
+img { max-width: 100%; }
+a { color: inherit; }
 
-:lang(zh),
-:lang(zh-Hans),
-:lang(zh-Hans-CN) {
-  font-family: var(--font-cjk);
-  line-height: var(--line-cjk);
-  font-synthesis-weight: none;
-}
-
-:lang(zh) :is(
-  .h-display,
-  .h-section,
-  .h-mega,
-  .btn,
-  .badge,
-  .eyebrow,
-  .pill,
-  .chip,
-  dt,
-  th,
-  strong,
-  [class*="__h"],
-  [class*="__label"],
-  [class*="__link"],
-  [class*="__title"],
-  [class*="__name"],
-  [class*="__role"]
-) {
-  font-family: var(--font-cjk) !important;
-  font-weight: 400 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-}
-
-main {
-  display: block;
-}
-
-a {
-  color: var(--ink);
-  text-underline-offset: 0.2em;
-  text-decoration-thickness: 1px;
-  transition: color 120ms ease;
-}
-a:hover,
-a:focus-visible {
-  color: var(--accent);
-}
+::selection { background: var(--gold); color: var(--gold-ink); }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 3px;
+  outline: var(--u) solid var(--gold);
+  outline-offset: var(--u);
 }
 
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  background: var(--accent);
-  color: var(--bg);
-  padding: 0.6rem 1rem;
-  font-family: var(--font-sans);
-  font-size: 0.92rem;
-  font-weight: 600;
-  z-index: 100;
-  border-radius: var(--radius);
-}
-.skip-link:focus {
-  left: 1rem;
-  top: 1rem;
-}
-
-.container {
-  max-width: var(--content-max);
+.wrap {
+  width: 100%;
+  max-width: calc(var(--wrap) + var(--gutter) * 2);
   margin: 0 auto;
-  padding-left: var(--gutter);
-  padding-right: var(--gutter);
+  padding: 0 var(--gutter);
 }
 
-/* utility classes — `.mono` is now DATA-ONLY: versions, IDs, counts, dates */
-.mono {
-  font-family: var(--font-mono);
-  font-feature-settings: "tnum" 1;
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: -100px;
+  z-index: 10;
+  padding: 8px 14px;
+  background: var(--gold);
+  color: var(--gold-ink);
+  font-family: var(--font-ui);
+  font-size: 20px;
+  line-height: 28px;
+  text-decoration: none;
 }
-.tnum {
-  font-variant-numeric: tabular-nums;
+.skip:focus { top: 12px; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
-/* eyebrow uses MC-flavor stamp face for Latin; Chinese swaps to the CJK
-   pixel face so labels stay game-like instead of falling back to kaiti. */
-.eyebrow {
-  font-family: var(--font-stamp);
-  font-size: 1rem;
+/* ---- pixel type ------------------------------------------------------ */
+
+.px, .ui {
   font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  line-height: 1;
-}
-:lang(zh) .eyebrow {
-  font-family: var(--font-cjk);
   letter-spacing: 0;
-  text-transform: none;
-  font-size: 0.85rem;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  font-synthesis: none;
 }
-.eyebrow strong {
-  color: var(--accent);
-  font-weight: 600;
+.px { font-family: var(--font-px); }
+.ui { font-family: var(--font-ui); font-size: 20px; line-height: 28px; }
+
+.px-24 { font-size: 24px; line-height: 32px; }
+.px-36 { font-size: 36px; line-height: 48px; }
+.px-48 { font-size: 48px; line-height: 64px; }
+
+/* Text shadow one glyph pixel down-right, like in-game text. */
+.shadow { text-shadow: var(--u) var(--u) 0 rgba(0, 0, 0, 0.55); }
+.px-36.shadow { text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.55); }
+.px-48.shadow { text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.55); }
+
+.pixelated { image-rendering: pixelated; image-rendering: crisp-edges; }
+@supports (image-rendering: pixelated) { .pixelated { image-rendering: pixelated; } }
+
+/* ---- sky ---------------------------------------------------------------- */
+
+.sky {
+  position: relative;
+  background-color: var(--sky-2);
+  background-image:
+    var(--img-stars),
+    linear-gradient(
+      to bottom,
+      var(--sky-0) 0 18%,
+      var(--sky-1) 18% 36%,
+      var(--sky-2) 36% 54%,
+      var(--sky-3) 54% 72%,
+      var(--sky-4) 72% 100%
+    );
+  background-size: 192px 192px, 100% 100%;
+  background-repeat: repeat, no-repeat;
+  image-rendering: pixelated;
 }
 
-/* status pill — rounded */
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  padding: 0.22rem 0.65rem;
-  border: 1px solid var(--rule);
-  font-family: var(--font-sans);
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--ink-soft);
-  background: var(--bg-soft);
-  border-radius: var(--radius-pill);
-  white-space: nowrap;
+/* A second star layer that blinks in steps, behind the page content. */
+.sky { isolation: isolate; }
+.sky::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--img-stars) 61px 37px / 192px 192px repeat;
+  image-rendering: pixelated;
+  opacity: 0;
+  pointer-events: none;
 }
-:lang(zh) .pill {
-  font-family: var(--font-cjk);
-  letter-spacing: 0;
+@media (prefers-reduced-motion: no-preference) {
+  .sky::before { animation: twinkle 7s steps(1) infinite; }
 }
-
-.pill[data-status="open"] {
-  color: var(--ink-mute);
-}
-.pill[data-status="unfixed"] {
-  color: var(--accent-deep);
-  border-color: var(--accent);
-  background: color-mix(in oklch, var(--accent) 14%, var(--bg-soft));
-}
-.pill[data-status="fixed"] {
-  color: var(--ok);
-  border-color: var(--ok);
-  background: color-mix(in oklch, var(--ok) 14%, var(--bg-soft));
-}
-.pill[data-status="noted-not-bug"] {
-  color: var(--ink-mute);
+@keyframes twinkle {
+  0%, 100% { opacity: 0; }
+  30% { opacity: 0.8; }
+  44% { opacity: 0.25; }
+  70% { opacity: 0.7; }
 }
 
-/* category chip */
-.chip {
-  display: inline-block;
-  padding: 0.16rem 0.55rem;
-  border: 1px solid var(--rule);
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  letter-spacing: 0.02em;
-  color: var(--ink-mute);
-  background: var(--bg-soft);
-  margin: 0.16rem 0.2rem 0.16rem 0;
-  white-space: nowrap;
-  border-radius: var(--radius);
-}
-:lang(zh) .chip {
-  font-family: var(--font-cjk);
-  letter-spacing: 0;
+/* ---- panels ------------------------------------------------------------- */
+
+/* A recessed slab with a one-pixel bevel and notched corners. */
+.slab {
+  background: var(--panel);
+  border: var(--u) solid #000;
+  box-shadow: inset var(--u) var(--u) 0 var(--panel-hi), inset calc(var(--u) * -1) calc(var(--u) * -1) 0 var(--panel-lo);
+  clip-path: var(--notch);
 }
 
-.chip[data-cat="crash"] {
-  color: var(--alert);
-  border-color: var(--alert);
-  background: color-mix(in oklch, var(--alert) 12%, var(--bg-soft));
+/* The light-grey game GUI window. */
+.gui {
+  background: var(--gui);
+  color: var(--gui-ink);
+  border: var(--u) solid #000;
+  box-shadow: inset var(--u) var(--u) 0 var(--gui-hi), inset calc(var(--u) * -1) calc(var(--u) * -1) 0 var(--gui-lo);
+  clip-path: var(--notch);
 }
 
-/* verified-tester / 1M-DL etc badge */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35em;
-  padding: 0.22rem 0.65rem;
-  font-family: var(--font-sans);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--bg);
-  background: var(--accent);
-  border-radius: var(--radius);
-  white-space: nowrap;
+/* Item slot: dark well with light lower-right edge. */
+.slot {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: calc(18 * var(--u));
+  height: calc(18 * var(--u));
+  background: var(--slot);
+  box-shadow: inset var(--u) var(--u) 0 var(--slot-lo), inset calc(var(--u) * -1) calc(var(--u) * -1) 0 #fff;
 }
+.slot > img { width: calc(16 * var(--u)); height: calc(16 * var(--u)); display: block; }
+.slot--lg { width: calc(26 * var(--u)); height: calc(26 * var(--u)); }
+.slot--lg > img { width: calc(24 * var(--u)); height: calc(24 * var(--u)); }
+.slot--dark { background: #23262e; box-shadow: inset var(--u) var(--u) 0 #0a0b0e, inset calc(var(--u) * -1) calc(var(--u) * -1) 0 #3b404c; }
+.slot__mono { font-family: var(--font-px); font-size: 24px; line-height: 32px; color: #fff; text-shadow: var(--u) var(--u) 0 #3f3f3f; }
 
-/* primary/secondary buttons — rounded, warm */
+/* ---- buttons --------------------------------------------------------------- */
+
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.6em;
-  padding: 0.7rem 1.25rem;
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  border: 1px solid var(--ink);
-  color: var(--ink);
+  gap: 10px;
+  padding: 10px 18px;
+  font-family: var(--font-ui);
+  font-size: 20px;
+  line-height: 28px;
+  -webkit-font-smoothing: none;
+  color: #fff;
   text-decoration: none;
-  background: transparent;
-  border-radius: var(--radius);
-  transition: all 140ms ease;
+  text-shadow: var(--u) var(--u) 0 #3f3f3f;
+  background: #70737b;
+  border: var(--u) solid #000;
+  box-shadow: inset var(--u) var(--u) 0 #a9acb4, inset calc(var(--u) * -1) calc(var(--u) * -1) 0 #3c3e44;
+  clip-path: var(--notch);
+  cursor: pointer;
 }
-:lang(zh) .btn {
-  font-family: var(--font-cjk);
+.btn:hover { background: #7f8bb8; box-shadow: inset var(--u) var(--u) 0 #b7c0e6, inset calc(var(--u) * -1) calc(var(--u) * -1) 0 #444c70; }
+.btn:active { box-shadow: inset var(--u) var(--u) 0 #3c3e44, inset calc(var(--u) * -1) calc(var(--u) * -1) 0 #a9acb4; }
+.btn--gold {
+  color: var(--gold-ink);
+  text-shadow: var(--u) var(--u) 0 rgba(255, 240, 200, 0.45);
+  background: var(--gold);
+  box-shadow: inset var(--u) var(--u) 0 var(--gold-hi), inset calc(var(--u) * -1) calc(var(--u) * -1) 0 var(--gold-lo);
 }
-.btn:hover,
-.btn:focus-visible {
-  color: var(--bg);
-  background: var(--ink);
-}
-.btn--accent {
-  border-color: var(--accent);
-  color: var(--bg);
-  background: var(--accent);
-}
-.btn--accent:hover,
-.btn--accent:focus-visible {
-  background: var(--accent-deep);
-  border-color: var(--accent-deep);
-  color: var(--bg);
-}
+.btn--gold:hover { background: #ffd27a; box-shadow: inset var(--u) var(--u) 0 #fff1c8, inset calc(var(--u) * -1) calc(var(--u) * -1) 0 var(--gold-lo); }
+.btn--gold:active { box-shadow: inset var(--u) var(--u) 0 var(--gold-lo), inset calc(var(--u) * -1) calc(var(--u) * -1) 0 var(--gold-hi); }
 
-/* display headings — Latin uses Plex Serif for a printed, less-AI feel;
-   CJK uses the pixel face via --font-cjk. All sizes flow from the
-   global --fs-* tokens so individual pages don't need to redeclare. */
-.h-display {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  letter-spacing: -0.005em;
-  line-height: 1.14;
-  font-size: var(--fs-h1);
-  margin: 0;
-}
-:lang(zh) .h-display {
-  font-family: var(--font-cjk);
-  font-weight: 400;
-}
+/* ---- tooltip (the game's item hover box) ------------------------------------ */
 
-.h-section {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1.22;
-  margin: 0;
-  font-size: var(--fs-h2);
+.tooltip {
+  position: relative;
+  background: var(--tt-bg);
+  padding: calc(6 * var(--u)) calc(8 * var(--u)) calc(7 * var(--u));
+  clip-path: var(--notch);
 }
-:lang(zh) .h-section {
-  font-family: var(--font-cjk);
+.tooltip::before {
+  content: "";
+  position: absolute;
+  inset: var(--u);
+  border: var(--u) solid transparent;
+  border-image: linear-gradient(to bottom, var(--tt-edge-a), var(--tt-edge-b)) 1;
+  pointer-events: none;
 }
+.tooltip__name { color: var(--mc-aqua); }
+.tooltip__lore { color: var(--mc-gray); }
 
-/* huge editorial display for hero — Plex Serif at oversized scale.
-   Latin gets a tight, slightly negative tracking; CJK falls back to the
-   pixel face at native weight. Size lives in --fs-mega. */
-.h-mega {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  font-size: var(--fs-mega);
-  line-height: 0.98;
-  letter-spacing: -0.022em;
-  margin: 0;
-  color: var(--ink);
-}
-:lang(zh) .h-mega {
-  font-family: var(--font-cjk);
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1.08;
-}
-.h-mega em {
-  font-style: italic;
-  color: var(--accent);
-  font-weight: 700;
-}
+/* ---- section heads ---------------------------------------------------------- */
 
-/* "issue dateline" — small all-caps stamp line used to anchor pages and
-   sections as if they were printed editions. Uses the MC-flavor stamp
-   face (VT323) for that F3-overlay feel. */
-.dateline {
-  font-family: var(--font-stamp);
-  font-size: 0.95rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  line-height: 1;
-}
-:lang(zh) .dateline {
-  /* keep stamp face on the latin parts of CJK datelines; the CJK chars
-     fall back to the Chinese pixel face automatically via the stack. */
-  font-family: var(--font-stamp), var(--font-cjk);
-  letter-spacing: 0.12em;
-}
+.section { padding: 96px 0 0; }
+@media (max-width: 640px) { .section { padding-top: 72px; } }
 
-/* full-bleed accent band — punctuates sections with a confident color
-   block instead of just a 1px rule. Drop in as a sibling between <section>s. */
-.band {
-  height: 6px;
-  background: var(--accent);
-  width: 100%;
-}
-.band--ink {
-  background: var(--ink);
-  height: 3px;
-}
-
-/* ---------------------------------------------------------------- */
-/* .prose — single global article style. Any long-form copy block on
-   any page wraps its paragraphs in <div class="prose">…</div> (or just
-   gets `class="prose"` on the parent) and inherits these. No page-
-   level p/h overrides should be necessary. */
-.prose {
-  font-family: var(--font-sans);
-  font-size: var(--fs-body);
-  line-height: 1.72;
-  color: var(--ink-soft);
-  max-width: 68ch;
-}
-:lang(zh) .prose {
-  font-family: var(--font-cjk);
-  line-height: 1.88;
-}
-.prose > * + * {
-  margin-top: 1rem;
-}
-.prose p {
-  margin: 0;
-}
-.prose p strong {
-  color: var(--ink);
-  font-weight: 600;
-}
-.prose a {
-  color: var(--accent);
+.head { display: grid; gap: 12px; margin-bottom: 32px; }
+.head__title { margin: 0; color: var(--text); }
+.head__sub { margin: 0; color: var(--text-2); max-width: 46em; }
+.head__more {
+  justify-self: start;
+  color: var(--gold);
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in oklch, var(--accent) 50%, transparent);
 }
-.prose a:hover {
-  border-bottom-color: var(--accent);
-}
+.head__more:hover { color: var(--gold-hi); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: var(--u); }
+.head__more::after { content: " →"; }
 
-.prose h2 {
-  font-family: var(--font-sans);
-  font-size: var(--fs-h2);
-  color: var(--ink);
-  font-weight: 600;
-  line-height: 1.22;
-  margin: 2rem 0 0.5rem 0;
-}
-:lang(zh) .prose h2 {
-  font-family: var(--font-cjk);
-}
-
-.prose h3 {
-  font-family: var(--font-sans);
-  font-size: var(--fs-h3);
-  color: var(--ink);
-  font-weight: 600;
-  margin: 1.5rem 0 0.4rem 0;
-}
-:lang(zh) .prose h3 {
-  font-family: var(--font-cjk);
-}
-
-.prose ul,
-.prose ol {
-  margin: 0;
-  padding-left: 1.2rem;
-}
-.prose li + li {
-  margin-top: 0.35rem;
-}
-.prose li {
-  color: var(--ink-soft);
-}
-
-.prose blockquote {
-  margin: 0;
-  padding: 0.4rem 0 0.4rem 1rem;
-  border-left: 3px solid var(--accent);
-  color: var(--ink);
-  font-style: italic;
-}
-
-/* page-head subtitle — used by all PageHead instances + ad-hoc heads. */
-.page-sub {
-  font-family: var(--font-sans);
-  font-size: var(--fs-body);
-  color: var(--ink-soft);
-  line-height: 1.7;
-  margin: 0;
-  max-width: 60ch;
-}
-:lang(zh) .page-sub {
-  font-family: var(--font-cjk);
-  line-height: 1.85;
-}
-
-/* ---------------------------------------------------------------- */
-
-/* Global de-AI overrides: kaiti reads poorly when tracked-out or upper-cased,
-   and uppercase + wide tracking is the single biggest "SaaS landing page"
-   tell. Strip it from CJK contexts site-wide so component-level
-   text-transform / letter-spacing rules don't disfigure 中文. */
-:lang(zh) :is(.eyebrow, .pill, .chip, .badge, dt, th),
-:lang(zh) [class*="__label"],
-:lang(zh) [class*="__h"] {
-  text-transform: none !important;
-  letter-spacing: 0 !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-}
-
-/* ================================================================
-   redesign v3 — signature decoration layer
-   Adds atmospheric warmth, stamp/tape decorations, ledger ruling
-   and trading-card scale typography. Used by Hero, HomeSections,
-   ModCard and other home-page components.
-   ================================================================ */
-
-/* ---- atmospheric warm-bath steam glow -----------------------
-   A subtle radial wash placed behind hero / featured blocks.
-   It is purely decorative (pointer-events: none) and stays
-   pinned to the section, not the viewport, so it lights one
-   region rather than the whole page. */
-.steam-glow {
-  position: relative;
-  isolation: isolate;
-}
-.steam-glow::before {
-  content: "";
-  position: absolute;
-  inset: -8% -4% -4% -4%;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      55% 60% at 78% 38%,
-      color-mix(in oklch, var(--accent) 22%, transparent) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      45% 70% at 12% 78%,
-      color-mix(in oklch, var(--steam) 10%, transparent) 0%,
-      transparent 70%
-    );
-  opacity: 0.95;
-}
-@media (prefers-color-scheme: light) {
-  .steam-glow::before {
-    background:
-      radial-gradient(
-        55% 60% at 78% 38%,
-        color-mix(in oklch, var(--accent) 18%, transparent) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        45% 70% at 12% 78%,
-        color-mix(in oklch, var(--steam) 14%, transparent) 0%,
-        transparent 70%
-      );
-    opacity: 0.6;
-  }
-}
-
-/* ---- "issue stamp" — small rotated badge -------------------- */
-.stamp {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45em;
-  padding: 0.35rem 0.7rem;
-  font-family: var(--font-stamp);
-  font-size: 0.82rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1.5px solid var(--accent);
-  background: color-mix(in oklch, var(--accent) 10%, transparent);
-  border-radius: 2px;
-  line-height: 1;
-  transform: rotate(-1.4deg);
-  white-space: nowrap;
-}
-:lang(zh) .stamp {
-  font-family: var(--font-stamp), var(--font-cjk);
-  letter-spacing: 0.06em;
-  text-transform: none;
-}
-.stamp--ink { color: var(--ink); border-color: var(--ink); background: transparent; }
-.stamp--ok { color: var(--ok); border-color: var(--ok); background: color-mix(in oklch, var(--ok) 12%, transparent); }
-.stamp--alert { color: var(--alert); border-color: var(--alert); background: color-mix(in oklch, var(--alert) 12%, transparent); }
-
-/* ---- big diagonal "VERIFIED" overprint stamp ----------------
-   Sits over a card top-right with strong rotation and a faded
-   accent stroke. Less of a UI control, more of a stamped mark. */
-.overstamp {
-  position: absolute;
-  font-family: var(--font-stamp);
-  font-size: 1rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 2px solid var(--accent);
-  padding: 0.32rem 0.6rem;
-  border-radius: 3px;
-  transform: rotate(-9deg);
-  pointer-events: none;
-  opacity: 0.85;
-  background: color-mix(in oklch, var(--bg) 60%, transparent);
-  line-height: 1;
-  z-index: 3;
-}
-:lang(zh) .overstamp {
-  font-family: var(--font-stamp), var(--font-cjk);
-  letter-spacing: 0.08em;
-  text-transform: none;
-}
-.overstamp--ok { color: var(--ok); border-color: var(--ok); }
-
-/* ---- ledger rule: heavy top + dotted bottom rail ------------
-   Used as the underline for editorial section heads. Gives
-   sections more presence than a single hairline. */
-.ledger-rule {
-  border-top: 2px solid var(--ink);
-  position: relative;
-  padding-top: 0.85rem;
-}
-.ledger-rule::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 0;
-  right: 0;
-  border-top: 1px solid var(--rule);
-}
-
-/* ---- big serif italic "issue number" used in stat blocks --- */
-.fancy-num {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  line-height: 0.88;
-  letter-spacing: -0.03em;
-  color: var(--ink);
-}
-.fancy-num--accent { color: var(--accent); }
-.fancy-num--ok { color: var(--ok); }
-.fancy-num--steam { color: var(--steam); }
-
-/* ---- editorial pull-quote rule used on hero stats column --- */
-.rule-thick {
-  height: 0;
-  border-top: 4px solid var(--ink);
-  margin: 0;
-}
-.rule-accent {
-  height: 0;
-  border-top: 4px solid var(--accent);
-  margin: 0;
-}
-
-/* ---- "torn ticket" separator — replaces the long marquees --
-   A two-row decorative band: a single line of running text in
-   the stamp face, sandwiched between two double-rules with a
-   center perforation dot pattern. Reads as the perforated edge
-   of a ticket stub, not as a placeholder marquee. */
-.torn-band {
-  position: relative;
-  padding: 0.65rem 0;
-  background: var(--bg-soft);
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-  overflow: hidden;
-}
-.torn-band::before,
-.torn-band::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background-image: radial-gradient(circle at 4px 50%, var(--bg) 1.5px, transparent 1.8px);
-  background-size: 16px 6px;
-  background-repeat: repeat-x;
-  opacity: 0.65;
-  pointer-events: none;
-}
-.torn-band::before { top: 0; }
-.torn-band::after { bottom: 0; }
-
-/* ---- accent banner — a tighter, more designed marquee ------
-   Used when we DO want a running label, but quieter and shorter
-   than the v2 marquees. */
-.runner {
-  background: var(--paper);
-  border-top: 2px solid var(--accent);
-  border-bottom: 2px solid var(--accent);
-  padding: 0.6rem 0;
-  overflow: hidden;
-  position: relative;
-}
-.runner__line {
-  font-family: var(--font-stamp);
-  font-size: 0.95rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-  white-space: nowrap;
-  display: flex;
-  gap: 2rem;
-}
-:lang(zh) .runner__line {
-  font-family: var(--font-stamp), var(--font-cjk);
-  letter-spacing: 0.1em;
-  text-transform: none;
-}
-
-/* ---- sticky-tape decorative element -------------------------
-   A small angled "tape" strip pinned to a card corner.
-   Pure CSS, low-key but signals "this is a pinned thing in
-   a binder". Used sparingly on key cards. */
-.tape {
-  position: absolute;
-  width: 80px;
-  height: 18px;
-  background: color-mix(in oklch, var(--accent-soft) 70%, transparent);
-  border: 1px solid color-mix(in oklch, var(--accent-deep) 30%, transparent);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
-  transform: rotate(-4deg);
-  top: -8px;
-  left: 24px;
-  z-index: 4;
-  pointer-events: none;
-}
-.tape--right { left: auto; right: 24px; transform: rotate(4deg); }
-
-/* ---- ledger-card surface ----------------------------------- */
-.ledger-card {
-  background: var(--paper);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-lg);
-  box-shadow:
-    0 1px 0 color-mix(in oklch, var(--accent-deep) 16%, transparent),
-    0 18px 28px -22px rgba(0, 0, 0, 0.55),
-    0 2px 6px -2px rgba(0, 0, 0, 0.2);
-  position: relative;
-  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
-}
-@media (prefers-color-scheme: light) {
-  .ledger-card {
-    box-shadow:
-      0 1px 0 color-mix(in oklch, var(--accent-deep) 20%, transparent),
-      0 16px 28px -22px rgba(80, 60, 30, 0.35),
-      0 2px 6px -2px rgba(80, 60, 30, 0.15);
-  }
-}
-
-/* ---- corner ticks: 4 tiny L-marks at the corners of a frame
-   (think: registration marks on a printed press sheet). */
-.cornered {
-  position: relative;
-}
-.cornered::before,
-.cornered::after {
-  content: "";
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border: 1.5px solid var(--accent);
-  pointer-events: none;
-}
-.cornered::before {
-  top: -1px;
-  left: -1px;
-  border-right: none;
-  border-bottom: none;
-}
-.cornered::after {
-  bottom: -1px;
-  right: -1px;
-  border-left: none;
-  border-top: none;
-}
-
-/* ---- micro caption — small italic editorial pointer text --- */
-.caption {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 0.84rem;
-  color: var(--ink-mute);
-  line-height: 1.4;
-}
-:lang(zh) .caption {
-  font-family: var(--font-cjk);
-  font-style: normal;
-}
-
-/* ---- hairline "ledger column" — used as a thin marginal rail
-   that runs vertically beside a column of content. Two thin
-   lines a few pixels apart, like a checkbook column. */
-.col-rail {
-  position: relative;
-}
-.col-rail::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 6px;
-  border-left: 1px solid var(--rule);
-  border-right: 1px solid var(--rule);
-  pointer-events: none;
-}
-
-/* ================================================================
-   redesign v4 — magazine-issue art-direction layer
-   Drop-cap, pull-quote, big section numerals, colored panels,
-   scroll reveal animation, mascot-stage frames, masthead, etc.
-   ================================================================ */
-
-/* ---- drop cap for editorial body openings -------------------
-   Latin first letter receives a tall serif initial. Chinese
-   gets a tall character variant that doesn't crash the line
-   metric (line-height kept normal; floats around a 2-line cap). */
-.drop-cap::first-letter {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  font-style: italic;
-  float: left;
-  font-size: 4.6em;
-  line-height: 0.85;
-  margin: 0.08em 0.12em 0 -0.04em;
-  color: var(--accent);
-  padding: 0.04em 0.06em 0 0;
-}
-:lang(zh) .drop-cap::first-letter {
-  font-family: var(--font-cjk);
-  font-weight: 400;
-  font-style: normal;
-  float: left;
-  font-size: 3.8em;
-  line-height: 0.88;
-  margin: 0.04em 0.18em 0 0;
-  color: var(--accent);
-  background:
-    linear-gradient(180deg, transparent 0%, transparent 60%, color-mix(in oklch, var(--accent) 18%, transparent) 60%, color-mix(in oklch, var(--accent) 18%, transparent) 100%);
-  padding: 0 0.06em;
-}
-
-/* ---- pull-quote: massive italic serif declaration ----------- */
-.pull-quote {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 700;
-  font-size: clamp(1.5rem, 3.4vw, 2.4rem);
-  line-height: 1.18;
-  letter-spacing: -0.015em;
-  color: var(--ink);
-  position: relative;
-  padding-left: 0;
-  max-width: 28ch;
-}
-:lang(zh) .pull-quote {
-  font-family: var(--font-cjk);
-  font-style: normal;
-  font-weight: 400;
-  font-size: clamp(1.35rem, 2.8vw, 1.95rem);
-  line-height: 1.55;
-  letter-spacing: 0;
-  max-width: 22ch;
-}
-.pull-quote__mark {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 700;
-  font-size: 1.8em;
-  line-height: 0.6;
-  color: var(--accent);
-  display: block;
-  margin-bottom: -0.4em;
-}
-:lang(zh) .pull-quote__mark { font-family: var(--font-serif); }
-.pull-quote em {
-  color: var(--accent);
-  font-style: italic;
-  background: color-mix(in oklch, var(--accent) 18%, transparent);
-  padding: 0 0.05em;
-}
-:lang(zh) .pull-quote em { font-style: normal; }
-.pull-quote__attr {
-  display: block;
-  margin-top: 1rem;
-  font-family: var(--font-stamp);
-  font-style: normal;
-  font-weight: 400;
-  font-size: 0.85rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  line-height: 1;
-}
-:lang(zh) .pull-quote__attr {
-  font-family: var(--font-stamp), var(--font-cjk);
-  letter-spacing: 0.06em;
-  text-transform: none;
-}
-
-/* ---- BIG italic section numeral, used as a watermark or
-   left-side "page marker" inside section panels ---------- */
-.mega-mark {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 700;
-  font-size: clamp(7rem, 16vw, 13rem);
-  line-height: 0.78;
-  letter-spacing: -0.04em;
-  color: color-mix(in oklch, var(--accent) 75%, transparent);
-  -webkit-text-stroke: 0;
-  pointer-events: none;
-  user-select: none;
-}
-.mega-mark--outline {
-  color: transparent;
-  -webkit-text-stroke: 2px color-mix(in oklch, var(--accent) 55%, transparent);
-}
-
-/* ---- colored magazine panel backgrounds --------------------
-   Full-bleed dark/light panels that interrupt the warm-dark
-   base flow. Each panel sets its own --bg-context so child
-   elements (typography, pills) read against the new ground. */
-.panel {
-  position: relative;
-  isolation: isolate;
-  --bg-context: var(--bg);
-}
-.panel--paper {
-  background: var(--paper);
-  --bg-context: var(--paper);
-  color: var(--ink);
-}
-/* Deep warm coffee panel. Used to mark a section as 'denser /
-   archival' inside the warm-dark flow without breaking the warm
-   palette. Reads as the same paper page as everything else, just
-   pressed darker — like a stack of tester logs in shadow. */
-.panel--coffee {
-  background:
-    linear-gradient(180deg,
-      #14100c 0%,
-      #1a140f 100%);
-  color: var(--ink);
-  --bg-context: #14100c;
-  --rule: color-mix(in oklch, var(--accent) 14%, #2a2118);
-}
-.panel--cream {
-  background: linear-gradient(180deg, #f6ecd6 0%, #ede2c9 100%);
-  color: #2a241a;
-  --ink: #2a241a;
-  --ink-soft: #5a5042;
-  --ink-mute: #8b8170;
-  --rule: #d4c7a6;
-  --paper: #fffaf0;
-  --bg-context: #f6ecd6;
-}
-@media (prefers-color-scheme: light) {
-  /* in light mode, paper IS the base — make the dark inversion explicit
-     so we always get section contrast against the default cream page. */
-  .panel--paper { background: #ffffff; }
-  .panel--coffee {
-    background: linear-gradient(180deg, #2a1f15 0%, #1f1610 100%);
-    color: #f3ecd6;
-    --ink: #f3ecd6;
-    --ink-soft: #d8cdb5;
-    --ink-mute: #a59880;
-    --rule: color-mix(in oklch, var(--accent) 20%, #4a3a28);
-  }
-  .panel--cream {
-    background: linear-gradient(180deg, #fff8e3 0%, #f3e8c8 100%);
-    --ink: #2a241a;
-    --ink-soft: #5a5042;
-    --ink-mute: #8b8170;
-    --rule: #d4c7a6;
-  }
-}
-
-/* ---- masthead: the "publication name" treatment ------------
-   Used at the very top of the hero. Big italic serif for the
-   title, small caps for the tagline. Lives in its own row. */
-.masthead {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: 1.2rem;
-  padding-bottom: 1.2rem;
-  border-bottom: 2px solid var(--ink);
-  margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
-}
-.masthead__title {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 700;
-  font-size: clamp(2rem, 4.6vw, 3.4rem);
-  line-height: 0.9;
-  letter-spacing: -0.025em;
-  color: var(--ink);
-}
-:lang(zh) .masthead__title {
-  font-family: var(--font-cjk);
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1;
-}
-.masthead__tag {
-  margin: 0.55rem 0 0 0;
-  font-family: var(--font-stamp);
-  font-size: 0.95rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  line-height: 1;
-}
-:lang(zh) .masthead__tag {
-  font-family: var(--font-stamp), var(--font-cjk);
-  letter-spacing: 0.08em;
-  text-transform: none;
-}
-.masthead__meta {
-  text-align: right;
-  font-family: var(--font-stamp);
-  font-size: 0.9rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  line-height: 1.4;
-  white-space: nowrap;
-}
-:lang(zh) .masthead__meta {
-  font-family: var(--font-stamp), var(--font-cjk);
-  letter-spacing: 0.08em;
-  text-transform: none;
-}
-.masthead__meta strong {
-  color: var(--accent);
-  font-weight: 700;
-  display: block;
-}
 @media (max-width: 640px) {
-  .masthead { grid-template-columns: 1fr; }
-  .masthead__meta { text-align: left; }
+  .head__title.px-36 { font-size: 24px; line-height: 32px; text-shadow: var(--u) var(--u) 0 rgba(0, 0, 0, 0.55); }
 }
 
-/* ---- mascot stage: a deliberate "frame" the duck stands inside
-   Used to give the mascot a real presence rather than a decoration.
-   Pinned aura + scribed pedestal. */
-.duck-stage {
+/* ---- small parts --------------------------------------------------------------- */
+
+.icon {
+  display: inline-block;
+  flex: none;
+  width: calc(16 * var(--u));
+  height: calc(16 * var(--u));
+  background-image: var(--img-icons);
+  background-size: calc(16 * 13 * var(--u)) calc(16 * var(--u));
+  background-position: calc(var(--i) * -16 * var(--u)) 0;
+  image-rendering: pixelated;
+  vertical-align: middle;
+}
+.icon--lg {
+  width: 48px;
+  height: 48px;
+  background-size: calc(48px * 13) 48px;
+  background-position: calc(var(--i) * -48px) 0;
+}
+.icon--sm {
+  width: 16px;
+  height: 16px;
+  background-size: calc(16px * 13) 16px;
+  background-position: calc(var(--i) * -16px) 0;
+}
+
+/* Lantern-gold meter with a lit top row of pixels. */
+.meter {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  isolation: isolate;
+  height: calc(5 * var(--u));
+  background: #0a0b0e;
+  box-shadow: inset 0 0 0 var(--u) #000;
 }
-.duck-stage__aura {
+.meter > span {
   position: absolute;
-  inset: -6% -6% 12% -6%;
-  background:
-    radial-gradient(50% 50% at 50% 60%, color-mix(in oklch, var(--accent) 36%, transparent) 0%, transparent 70%);
-  filter: blur(2px);
-  pointer-events: none;
-  z-index: -1;
-}
-.duck-stage__pedestal {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70%;
-  height: 8px;
-  background:
-    radial-gradient(50% 100% at 50% 0%, color-mix(in oklch, var(--ink) 60%, transparent) 0%, transparent 80%);
-  pointer-events: none;
+  inset: var(--u) auto var(--u) var(--u);
+  width: calc(var(--v) * (100% - 2 * var(--u)));
+  min-width: var(--u);
+  background: var(--gold);
+  box-shadow: inset 0 var(--u) 0 var(--gold-hi), inset 0 calc(var(--u) * -1) 0 var(--gold-lo);
 }
 
-/* ---- "section page marker" — full-bleed big italic numeral
-   pinned to the corner of a section panel. Reads as the page
-   number in a print magazine. */
-.section-marker {
-  display: flex;
-  align-items: baseline;
-  gap: 0.65rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.4rem;
-}
-.section-marker__num {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 700;
-  font-size: clamp(3rem, 6vw, 4.6rem);
-  line-height: 0.8;
-  letter-spacing: -0.02em;
-  color: var(--accent);
-}
-.section-marker__kicker {
-  font-family: var(--font-stamp);
-  font-size: 0.95rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  line-height: 1;
-}
-:lang(zh) .section-marker__kicker {
-  font-family: var(--font-stamp), var(--font-cjk);
-  letter-spacing: 0.06em;
-  text-transform: none;
-  font-size: 0.92rem;
-}
-
-/* ---- scroll reveal: subtle additive entry animation ---------
-   Elements remain fully visible by default (so no-JS and screen
-   readers see content). When the IntersectionObserver tags an
-   element with `data-revealed`, it gets a gentle one-off entry
-   animation. This stays a progressive enhancement and never
-   blocks legibility. */
-@keyframes reveal-rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-[data-reveal][data-revealed] {
-  animation: reveal-rise 700ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal][data-revealed] { animation: none; }
-}
-
-/* ---- duck signoff stamp ------------------------------------- */
-.signoff {
+.tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
-  margin-top: 1.4rem;
-  font-family: var(--font-serif);
-  font-style: italic;
-  color: var(--ink);
-  font-size: 1rem;
-}
-:lang(zh) .signoff { font-family: var(--font-cjk); font-style: normal; }
-.signoff__mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border: 2px solid var(--accent);
-  border-radius: 50%;
-  font-family: var(--font-stamp);
-  font-size: 0.78rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-  transform: rotate(-8deg);
-  background: color-mix(in oklch, var(--accent) 8%, transparent);
-}
-:lang(zh) .signoff__mark {
-  font-family: var(--font-stamp), var(--font-cjk);
-  letter-spacing: 0;
-  text-transform: none;
-  font-size: 0.78rem;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--text-2);
+  white-space: nowrap;
 }
 
-/* ---- diagonal stripes panel (a deliberate texture for breaks) */
-.candy-band {
-  height: 14px;
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--accent) 0 8px,
-    var(--ink) 8px 16px
-  );
-  opacity: 0.85;
+.status {
+  display: inline-block;
+  padding: 0 8px;
+  font-size: 13px;
+  line-height: 22px;
+  border: var(--u) solid currentColor;
+  white-space: nowrap;
+}
+.status--unfixed { color: var(--fail); }
+.status--fixed { color: var(--ok); }
+.status--noted-not-bug { color: var(--note); }
+
+.zh-quote { font-size: 16px; line-height: 1.8; white-space: pre-line; overflow-wrap: anywhere; }
+.translation { color: var(--text-2); }
+
+.muted { color: var(--text-3); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Reveal nothing on load; motion is limited to hover and focus. */
+@media (prefers-reduced-motion: no-preference) {
+  .btn, .head__more { transition: background-color 80ms steps(2), color 80ms steps(2); }
+}
+
+/* Chinese UI text uses the 12 px face: CJK glyphs need the extra rows to
+   stay legible. Latin UI text keeps the narrower 10 px face. */
+:lang(zh) .ui,
+:lang(zh) .btn,
+:lang(zh) .skip {
+  font-family: var(--font-px);
+  font-size: 24px;
+  line-height: 32px;
+}
+:lang(zh) .btn { padding: 8px 16px; }
+/* Lore lines in Chinese read better in the body face. */
+:lang(zh) .tooltip__lore.ui { font-family: var(--font-body); font-size: 14px; line-height: 24px; }
+
+/* Digits and version numbers: always the 10 px face at 2x. */
+.digits {
+  font-family: var(--font-ui);
+  font-size: 20px;
+  line-height: 28px;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: none;
 }

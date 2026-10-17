@@ -1,0 +1,18 @@
+---
+// One icon from public/art/icons.png. The order matches CATEGORY_ORDER in
+// scripts/pixel/icons.mjs.
+const ORDER = [
+  "crash", "multiplayer", "mod-compat", "mechanic", "achievement", "loot-drops", "recipe",
+  "entity-behavior", "spec-mismatch", "animation", "shader", "visual", "i18n",
+];
+
+interface Props {
+  cat: string;
+  small?: boolean;
+  large?: boolean;
+}
+const { cat, small = false, large = false } = Astro.props;
+const i = Math.max(0, ORDER.indexOf(cat));
+---
+
+<span class:list={["icon", { "icon--sm": small, "icon--lg": large }]} style={`--i:${i}`} aria-hidden="true"></span>

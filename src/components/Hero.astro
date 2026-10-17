@@ -1,602 +1,275 @@
 ---
-import { t, type Lang } from "~/i18n/strings";
-import MascotDuck from "~/components/MascotDuck.astro";
-import ModLogo from "~/components/ModLogo.astro";
-import { activeMods, hardCreditModCount, totalBugs, totalRounds, mods } from "~/lib/data";
+import SiteHeader from "~/components/SiteHeader.astro";
+import { t, tf, type Lang } from "~/i18n/strings";
+import { asset, href } from "~/lib/paths";
+import { HIGHLIGHTS } from "~/i18n/highlights";
+import {
+  findEntry, mods, modName, totalBugs, totalRounds, totalRegressionRounds, testedVersions, profile, mergedPRCount,
+} from "~/lib/data";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 
-const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
-const langPrefix = lang === "en" ? `${base}/en` : base;
-const focusMods = activeMods();
-
-const headlineBugs = totalBugs();
-const stats = [
-  { value: mods.length, label: t(lang, "hero.stat_mods"), tint: "ink" as const },
-  { value: totalRounds(), label: t(lang, "hero.stat_rounds"), tint: "accent" as const },
-  { value: hardCreditModCount(), label: t(lang, "hero.stat_credits"), tint: "ok" as const },
+const versions = testedVersions().join(" / ");
+const f3 = [
+  tf(lang, "f3.versions", { versions }),
+  tf(lang, "f3.mods", { n: mods.length }),
+  tf(lang, "f3.entries", { n: totalBugs() }),
+  tf(lang, "f3.rounds", { n: totalRounds(), r: totalRegressionRounds() }),
+  tf(lang, "f3.credits", { cf: profile.curseforge.tester_credits.length, pr: mergedPRCount() }),
 ];
 
-const issueDate = new Date().toISOString().slice(0, 10);
-
-const counterLabelTop =
-  lang === "en" ? "bugs filed · on the public ledger" : "条 bug · 全部公开账";
-const counterLabelSub =
-  lang === "en" ? "across 13 mods · 24 test rounds" : "覆盖 13 个 MOD · 24 轮回归";
-
-const benchLabel =
-  lang === "en" ? "currently on the bench" : "正在测试台上";
-const benchSubLabel =
-  lang === "en"
-    ? "active rotation · click for the full tester log"
-    : "重点经验 · 点击查看完整测试日志";
-
-const headlineParts = (() => {
-  if (lang === "en") {
-    return {
-      lead: "Reproducible",
-      em: "QA",
-      mid: "for",
-      em2: "mod authors.",
-      tail: "",
-    };
-  }
-  return {
-    lead: "给",
-    em: "MOD 作者",
-    mid: "跑",
-    em2: "可复现",
-    tail: "的测试。",
-  };
-})();
-
-const mascotCaption =
-  lang === "en" ? "↑ The editor. Likes warm water." : "↑ 本志主编。喜欢热水。";
+// In-game chat lines, cycled over the scene: the quoted log entries.
+const chat = HIGHLIGHTS.map((h) => {
+  const { mod, bug } = findEntry(h.ref);
+  return { tag: `${modName(mod, lang)} ${bug.version}`, text: lang === "en" ? h.en : bug.text_zh };
+});
 ---
 
-<section class="hero" aria-labelledby="hero-title">
-  <div class="container hero__container">
-    <p class="hero__dateline dateline">
-      <span>LUCK666DUCK</span>
-      <span aria-hidden="true" class="hero__dateline-sep">·</span>
-      <span>{t(lang, "masthead.tagline")}</span>
-      <span aria-hidden="true" class="hero__dateline-sep">·</span>
-      <span class="mono tnum">{issueDate}</span>
-    </p>
-
-    <p class="hero__coverline">{t(lang, "masthead.coverline")}</p>
-
-    <div class="hero__cover">
-      <div class="hero__copy" data-reveal>
-        <p class="hero__role">
-          <span class="hero__role-mark" aria-hidden="true">¶</span>
-          {t(lang, "hero.role")}
-        </p>
-
-        <h1 id="hero-title" class="hero__title h-mega">
-          <span class="hero__title-line">
-            {headlineParts.lead}
-            <em>{headlineParts.em}</em>
-          </span>
-          <span class="hero__title-line">
-            <span class="hero__title-mid">{headlineParts.mid} </span>
-            <em class="hero__title-em2">{headlineParts.em2}</em>
-            <span class="hero__title-tail">{headlineParts.tail}</span>
-          </span>
-        </h1>
-
-        <p class="hero__subtitle">{t(lang, "hero.subtitle")}</p>
-
-        <div class="hero__actions" aria-label="primary actions">
-          <a href={`${langPrefix}/about`} class="btn btn--accent">
-            {t(lang, "hero.cta_primary")}
-            <span aria-hidden="true" class="hero__cta-arrow">→</span>
-          </a>
-          <a href={`${langPrefix}/cases/hotbath`} class="btn">{t(lang, "hero.cta_secondary")}</a>
-        </div>
-
+<section class="hero sky" aria-labelledby="hero-title">
+  <img class="hero__moon pixelated" src={asset("art/moon.png")} width="64" height="64" alt="" />
+  <SiteHeader lang={lang} />
+  <div class="wrap hero__body">
+    <div class="hero__copy">
+      <h1 id="hero-title" class="px px-48 shadow hero__title">
+        <span>{t(lang, "hero.title_1")}</span>
+        <span>{t(lang, "hero.title_2")}</span>
+      </h1>
+      <p class="hero__lead">
+        {tf(lang, "hero.lead", { mods: mods.length, entries: totalBugs(), versions })}
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--gold" href="#contact">{t(lang, "hero.cta_contact")}</a>
+        <a class="btn" href={href(lang, "/cases")}>{t(lang, "hero.cta_logs")}</a>
       </div>
-
-      <aside class="hero__feature" aria-label="cover counter">
-        <div class="hero__counter ledger-card" data-reveal>
-          <div class="hero__counter-tag">
-            <span class="dateline">{lang === "en" ? "filed · public ledger" : "已记录 · 公开账本"}</span>
-          </div>
-          <span class="hero__counter-num fancy-num fancy-num--accent mono tnum">{headlineBugs}</span>
-          <div class="hero__counter-bar">
-            <span class="hero__counter-label">{counterLabelTop}</span>
-            <span class="hero__counter-sub">{counterLabelSub}</span>
-          </div>
-        </div>
-
-        <div class="hero__mascot" data-reveal>
-          <div class="duck-stage">
-            <div class="duck-stage__aura"></div>
-            <MascotDuck size={232} blink={true} alt="LUCK666DUCK mascot" />
-            <div class="duck-stage__pedestal"></div>
-          </div>
-          <p class="hero__mascot-caption caption">{mascotCaption}</p>
-        </div>
-      </aside>
     </div>
-
-    <dl class="hero__stats" data-reveal>
-      {stats.map((s, i) => (
-        <div class={`hero__stat hero__stat--${s.tint}`}>
-          <span class="hero__stat-idx mono tnum">№0{i + 1}</span>
-          <dd class={`hero__stat-num fancy-num fancy-num--${s.tint} mono tnum`}>{s.value}</dd>
-          <dt class="hero__stat-label">{s.label}</dt>
-        </div>
-      ))}
-    </dl>
-
-    <section class="hero__bench" aria-labelledby="bench-label" data-reveal>
-      <header class="hero__bench-head">
-        <div>
-          <p class="hero__bench-kicker dateline">currently on bench</p>
-          <h2 id="bench-label" class="hero__bench-label">{benchLabel}</h2>
-        </div>
-        <p class="hero__bench-meta caption">{benchSubLabel}</p>
-      </header>
-      <div class="hero__mods">
-        {focusMods.map((mod, i) => (
-          <a href={`${langPrefix}/cases/${mod.id}`} class="hero__mod">
-            <span class="hero__mod-idx mono tnum">{String(i + 1).padStart(2, "0")}</span>
-            <span class="hero__mod-logo">
-              <ModLogo mod={mod} size={48} />
-            </span>
-            <span class="hero__mod-text">
-              <span class="hero__mod-name">{mod.name_en}</span>
-              <span class="hero__mod-bugs mono tnum">{mod.total_bugs} bugs · {mod.rounds.length} rounds</span>
-            </span>
-            <span class="hero__mod-arrow" aria-hidden="true">→</span>
-          </a>
-        ))}
-      </div>
-    </section>
+    <ul class="f3" aria-label="Stats">
+      {f3.map((line) => <li class="ui">{line}</li>)}
+    </ul>
+  </div>
+  <div class="hero__ground pixelated" role="img" aria-label={t(lang, "hero.art_alt")}>
+    <span class="glow glow--lantern" aria-hidden="true"></span>
+    <span class="glow glow--torch" aria-hidden="true"></span>
+    <span class="steam" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <ol class="chat" aria-hidden="true" data-chat={JSON.stringify(chat)}></ol>
   </div>
 </section>
 
+<script is:inline>
+  // Chat lines arrive one at a time and fade, as they do in game.
+  (function () {
+    var box = document.querySelector(".chat[data-chat]");
+    if (!box) return;
+    var lines = JSON.parse(box.getAttribute("data-chat"));
+    var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function add(item) {
+      var li = document.createElement("li");
+      var who = document.createElement("span");
+      who.className = "chat__who";
+      who.textContent = "<LUCK666DUCK> ";
+      var tag = document.createElement("span");
+      tag.className = "chat__tag";
+      tag.textContent = "[" + item.tag + "] ";
+      li.appendChild(who);
+      li.appendChild(tag);
+      li.appendChild(document.createTextNode(item.text));
+      box.appendChild(li);
+      while (box.children.length > 3) box.removeChild(box.firstChild);
+    }
+    if (still) { add(lines[0]); add(lines[1]); return; }
+    var i = 0;
+    function next() { add(lines[i % lines.length]); i++; }
+    setTimeout(function () { next(); setInterval(next, 4200); }, 1400);
+  })();
+</script>
+
 <style>
-  .hero {
-    padding: clamp(1.4rem, 3vw, 2.4rem) 0 clamp(2.2rem, 5vw, 3.6rem) 0;
-    position: relative;
-    background:
-      radial-gradient(
-        60% 55% at 85% 22%,
-        color-mix(in oklch, var(--accent) 22%, transparent) 0%,
-        transparent 70%
-      );
-  }
-  .hero__container { position: relative; }
-
-  /* ---- top dateline: handle · tagline · date ---------------- */
-  .hero__dateline {
-    margin: 0 0 clamp(1.2rem, 2.6vw, 1.8rem) 0;
-    color: var(--ink-mute);
-    letter-spacing: 0.14em;
-    font-size: 0.86rem;
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    align-items: baseline;
-  }
-  :lang(zh) .hero__dateline { letter-spacing: 0.06em; font-size: 0.9rem; }
-  .hero__dateline-sep {
-    color: var(--accent);
-    opacity: 0.7;
-  }
-
-  /* ---- cover line: italic accent-rule lead-in --------------- */
-  .hero__coverline {
-    margin: 0 0 clamp(1.4rem, 3vw, 2rem) 0;
-    font-family: var(--font-serif);
-    font-style: italic;
-    color: var(--ink-soft);
-    font-size: clamp(0.98rem, 1.4vw, 1.12rem);
-    line-height: 1.4;
-    max-width: 64ch;
-    position: relative;
-    padding-left: 1.1rem;
-    border-left: 3px solid var(--accent);
-  }
-  :lang(zh) .hero__coverline {
-    font-family: var(--font-cjk);
-    font-style: normal;
-    line-height: 1.7;
-  }
-
-  /* ---- cover: copy left, feature right ------------------------ */
-  .hero__cover {
-    display: grid;
-    grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr);
-    gap: clamp(2rem, 5vw, 3.6rem);
-    align-items: stretch;
-    padding-bottom: clamp(1.6rem, 4vw, 2.4rem);
-    border-bottom: 2px solid var(--ink);
-  }
-  .hero__copy {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    align-self: stretch;
-    justify-content: center;
-  }
-  .hero__role {
-    margin: 0 0 1.1rem 0;
-    font-family: var(--font-sans);
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.02em;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  :lang(zh) .hero__role { font-family: var(--font-cjk); letter-spacing: 0; }
-  .hero__role-mark {
-    font-family: var(--font-serif);
-    font-style: italic;
-    color: var(--accent-deep);
-    font-size: 1.1rem;
-  }
-
-  .hero__title {
-    color: var(--ink);
-    display: flex;
-    flex-direction: column;
-    gap: 0.04em;
-    max-width: 18ch;
-  }
-  :lang(zh) .hero__title {
-    max-width: none;
-    word-break: keep-all;
-    line-height: 1.18;
-  }
-  .hero__title-line {
-    display: block;
-  }
-  :lang(zh) .hero__title-line {
-    white-space: nowrap;
-  }
-  .hero__title-mid {
-    color: var(--ink-soft);
-    font-weight: 400;
-  }
-  .hero__title em {
-    color: var(--accent);
-    font-style: italic;
-    font-weight: 700;
-    position: relative;
-    padding: 0 0.05em;
-  }
-  .hero__title em::after {
-    content: "";
+  .hero { overflow: hidden; }
+  .hero__moon {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0.08em;
-    height: 0.18em;
-    background: color-mix(in oklch, var(--accent) 32%, transparent);
-    z-index: -1;
-    border-radius: 2px;
+    top: 104px;
+    right: max(var(--gutter), calc(50% - 560px));
+    opacity: 0.92;
   }
-  :lang(zh) .hero__title em { font-style: normal; }
-  .hero__title-tail { color: var(--ink); }
-
-  .hero__subtitle {
-    max-width: 56ch;
-    margin: 1.4rem 0 0 0;
-    font-family: var(--font-sans);
-    color: var(--ink-soft);
-    font-size: var(--fs-body-lg);
-    line-height: 1.72;
-  }
-  :lang(zh) .hero__subtitle { font-family: var(--font-cjk); line-height: 1.85; }
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    margin-top: 1.8rem;
-  }
-  .hero__cta-arrow { transition: transform 160ms ease; }
-  .btn:hover .hero__cta-arrow,
-  .btn:focus-visible .hero__cta-arrow { transform: translateX(3px); }
-
-  /* ---- feature column: counter card + mascot stage ------------ */
-  .hero__feature {
-    position: relative;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    gap: 1.2rem;
-    min-width: 0;
-  }
-  .hero__counter {
-    padding: 1.2rem 1.4rem 1.3rem 1.4rem;
-    border-top: 4px solid var(--accent);
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto auto;
-    column-gap: 0.95rem;
-    row-gap: 0.55rem;
-    position: relative;
-  }
-  .hero__counter-tag {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-  }
-  .hero__counter-tag .dateline {
-    color: var(--ink-mute);
-    font-size: 0.78rem;
-    letter-spacing: 0.16em;
-  }
-  .hero__counter-num {
-    font-size: var(--fs-stat);
-    align-self: center;
-    line-height: 0.82;
-  }
-  .hero__counter-bar {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.3rem;
-    padding-left: 0.6rem;
-    border-left: 2px solid var(--ink);
-  }
-  .hero__counter-label {
-    font-family: var(--font-sans);
-    font-size: 0.88rem;
-    color: var(--ink);
-    font-weight: 700;
-    line-height: 1.25;
-  }
-  :lang(zh) .hero__counter-label { font-family: var(--font-cjk); }
-  .hero__counter-sub {
-    font-family: var(--font-sans);
-    font-size: 0.76rem;
-    color: var(--ink-mute);
-    line-height: 1.4;
-  }
-  :lang(zh) .hero__counter-sub { font-family: var(--font-cjk); }
-
-  /* ---- mascot stage in the cover -----------------------------
-     Wrapper lays out the duck-stage and its caption in a column
-     so the caption doesn't collide with the absolute pedestal
-     bar at the bottom of the stage. */
-  .hero__mascot {
-    min-height: 260px;
-    padding-top: 0.4rem;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-end;
-    gap: 0.9rem;
-  }
-  .hero__mascot .duck-stage {
-    width: 100%;
-    flex: 1 1 auto;
-    min-height: 232px;
-  }
-  .hero__mascot-caption {
-    margin: 0;
-    text-align: center;
-    color: var(--ink-mute);
-    font-size: 0.85rem;
-    line-height: 1.4;
+  .hero__body {
     position: relative;
     z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 40px;
+    padding-top: 72px;
+    padding-bottom: 24px;
+  }
+  .hero__title { margin: 0; color: #fff; }
+  .hero__title span { display: block; }
+  .hero__title span + span { color: var(--gold); }
+  .hero__lead {
+    margin: 24px 0 0;
+    max-width: 37em;
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--text-2);
+  }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+  /* The debug-overlay look: right-aligned lines, each on its own grey box. */
+  .f3 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    justify-items: end;
+    gap: 2px;
+  }
+  .f3 li {
+    padding: 0 6px;
+    color: #e0e0e0;
+    background: rgba(80, 80, 80, 0.56);
+    text-shadow: var(--u) var(--u) 0 #383838;
+    white-space: nowrap;
   }
 
-  /* ---- 3-stat strip ----------------------------------------- */
-  .hero__stats {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0;
-    margin: 0;
+  /* 1600 x 272 source pixels, shown at 2x (3x on very wide screens) */
+  .hero__ground {
+    --s: 2;
+    height: calc(272px * var(--s));
+    margin-top: -16px;
+    /* the ground fades into the page colour, not into the sky */
+    background:
+      var(--img-ground) 50% 0 / calc(1600px * var(--s)) auto no-repeat,
+      linear-gradient(to bottom, transparent 0 calc(88px * var(--s)), var(--bg) calc(88px * var(--s)));
   }
-  .hero__stat {
-    margin: 0;
-    padding: 1.3rem 1.2rem 1.4rem 1.2rem;
-    display: grid;
-    grid-template-rows: auto auto auto;
-    row-gap: 0.5rem;
-    position: relative;
-    border-right: 1px solid var(--rule);
+  @media (min-width: 1900px) {
+    .hero__ground { --s: 3; margin-top: 0; }
   }
-  .hero__stat:last-child { border-right: none; }
-  .hero__stat::before {
-    content: "";
+
+  /* Live bits of the scene, placed in source-pixel coordinates of
+     ground.png (1600 px wide, centred): x' = 50% + (x - 800) * s. */
+  .hero__ground { position: relative; }
+  .glow {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--rule);
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background: radial-gradient(closest-side, rgba(255, 196, 120, 0.2) 0 34%, rgba(255, 196, 120, 0.1) 34% 67%, rgba(255, 196, 120, 0.04) 67% 100%);
   }
-  .hero__stat--ink::before { background: var(--ink); }
-  .hero__stat--accent::before { background: var(--accent); }
-  .hero__stat--ok::before { background: var(--ok); }
-  .hero__stat-idx {
-    font-family: var(--font-stamp);
-    color: var(--ink-mute);
-    font-size: 0.85rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    line-height: 1;
+  .glow--lantern {
+    left: calc(50% + 8px * var(--s));
+    top: calc(152px * var(--s));
+    width: calc(64px * var(--s));
+    height: calc(64px * var(--s));
+    transform: translate(-50%, -50%);
   }
-  :lang(zh) .hero__stat-idx { letter-spacing: 0.06em; text-transform: none; }
-  .hero__stat-num {
-    font-size: var(--fs-counter);
-    line-height: 0.88;
-    margin: 0;
+  .glow--torch {
+    opacity: 0.5;
+    left: calc(50% - 24px * var(--s));
+    top: calc(70px * var(--s));
+    width: calc(28px * var(--s));
+    height: calc(28px * var(--s));
+    transform: translate(-50%, -50%);
   }
-  .hero__stat-label {
-    font-family: var(--font-stamp);
-    color: var(--ink-mute);
-    font-size: 0.95rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    line-height: 1.2;
-  }
-  :lang(zh) .hero__stat-label {
-    font-family: var(--font-stamp), var(--font-cjk);
-    letter-spacing: 0.04em;
-    text-transform: none;
-    font-size: 0.92rem;
-  }
-
-  /* ---- bench section: numbered mod ledger --------------------- */
-  .hero__bench {
-    padding-top: clamp(1.4rem, 3.5vw, 2rem);
-    border-top: 1px solid var(--rule);
-  }
-  .hero__bench-head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1.2rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-  }
-  .hero__bench-kicker {
-    color: var(--accent);
-    margin: 0 0 0.4rem 0;
-    font-size: 0.92rem;
-    letter-spacing: 0.18em;
-  }
-  .hero__bench-label {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-style: italic;
-    color: var(--ink);
-    font-weight: 700;
-    font-size: var(--fs-h2);
-    letter-spacing: -0.01em;
-  }
-  :lang(zh) .hero__bench-label {
-    font-family: var(--font-cjk);
-    font-style: normal;
-    letter-spacing: 0;
-    font-weight: 400;
-  }
-  .hero__bench-meta { margin: 0; }
-
-  .hero__mods {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 0;
-    border-top: 2px solid var(--ink);
-  }
-  .hero__mod {
-    display: grid;
-    grid-template-columns: 2.2rem 48px 1fr auto;
-    gap: 0.9rem;
-    align-items: center;
-    padding: 0.95rem 0.7rem;
-    border-bottom: 1px solid var(--rule);
-    color: var(--ink);
-    text-decoration: none;
-    font-family: var(--font-sans);
-    position: relative;
-    transition: background 160ms ease, color 160ms ease, padding-left 160ms ease;
-  }
-  .hero__mod::before {
-    content: "";
+  .steam {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 3px;
-    background: transparent;
-    transition: background 160ms ease;
+    left: calc(50% - 24px * var(--s));
+    top: calc(176px * var(--s));
   }
-  .hero__mod:hover,
-  .hero__mod:focus-visible {
-    background: color-mix(in oklch, var(--accent) 8%, transparent);
-    color: var(--ink);
-    padding-left: 1rem;
+  .steam i {
+    position: absolute;
+    width: calc(1px * var(--s));
+    height: calc(1px * var(--s));
+    background: rgba(240, 246, 248, 0.7);
+    opacity: 0;
   }
-  .hero__mod:hover::before,
-  .hero__mod:focus-visible::before { background: var(--accent); }
-  .hero__mod-idx {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.04em;
-    font-weight: 600;
+  .steam i:nth-child(2) { left: calc(3px * var(--s)); }
+  .steam i:nth-child(3) { left: calc(-3px * var(--s)); }
+  .steam i:nth-child(4) { left: calc(1px * var(--s)); }
+
+  .chat {
+    position: absolute;
+    left: max(var(--gutter), calc(50% - 580px));
+    bottom: calc(40px * var(--s));
+    width: min(520px, 40%);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 2px;
+    font-size: 14px;
+    line-height: 22px;
   }
-  .hero__mod-logo { line-height: 0; }
-  .hero__mod-text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    min-width: 0;
+  .chat :global(li) {
+    padding: 2px 8px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 0 #3f3f3f;
+    animation: chat-life 12.6s steps(12) forwards;
   }
-  .hero__mod-name {
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: -0.005em;
-    color: var(--ink);
+  .chat :global(.chat__tag) { color: var(--mc-aqua); }
+
+  @keyframes chat-life {
+    0%, 75% { opacity: 1; }
+    100% { opacity: 0; }
   }
-  .hero__mod-bugs {
-    font-size: 0.74rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.02em;
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    9% { opacity: 0.72; }
+    12% { opacity: 1; }
+    47% { opacity: 0.86; }
+    50% { opacity: 1; }
+    78% { opacity: 0.64; }
+    80% { opacity: 0.9; }
   }
-  .hero__mod-arrow {
-    font-family: var(--font-mono);
-    color: var(--ink-mute);
-    font-size: 1.1rem;
-    transition: transform 160ms ease, color 160ms ease;
+  @keyframes flicker-dim {
+    0%, 100% { opacity: 0.5; }
+    30% { opacity: 0.35; }
+    34% { opacity: 0.5; }
+    70% { opacity: 0.4; }
   }
-  .hero__mod:hover .hero__mod-arrow,
-  .hero__mod:focus-visible .hero__mod-arrow {
-    color: var(--accent);
-    transform: translateX(4px);
+  @keyframes rise {
+    0% { opacity: 0; transform: translate(0, 0); }
+    15% { opacity: 1; }
+    100% { opacity: 0; transform: translate(calc(2px * var(--s)), calc(-28px * var(--s))); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .glow--lantern { animation: flicker 3.2s steps(1) infinite; }
+    .glow--torch { animation: flicker-dim 2.6s steps(1) infinite; }
+    .steam i { animation: rise 2.8s steps(14) infinite; }
+    .steam i:nth-child(2) { animation-delay: 0.7s; }
+    .steam i:nth-child(3) { animation-delay: 1.4s; }
+    .steam i:nth-child(4) { animation-delay: 2.1s; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .chat :global(li) { animation: none; }
+  }
+  @media (max-width: 860px) {
+    .chat { display: none; }
   }
 
-  /* ---- responsive ------------------------------------------- */
-  @media (max-width: 960px) {
-    .hero__cover {
-      grid-template-columns: 1fr;
-      gap: 2.4rem;
-    }
-    .hero__feature {
-      grid-template-columns: minmax(0, 1.4fr) minmax(180px, 0.95fr);
-      grid-template-rows: auto;
-      gap: 1.3rem;
-      align-items: center;
-    }
-    .hero__mascot { min-height: 0; }
+  @media (max-width: 1000px) {
+    .hero__title { font-size: 36px; line-height: 48px; text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.55); }
+  }
+  @media (max-width: 860px) {
+    .hero__body { grid-template-columns: minmax(0, 1fr); padding-top: 48px; gap: 32px; }
+    .f3 { justify-items: start; }
+    .hero__moon { top: 140px; width: 48px; height: 48px; }
   }
   @media (max-width: 640px) {
-    .hero__title { max-width: none; }
-    .hero__feature { grid-template-columns: 1fr; }
-    .hero__mascot { padding-top: 1rem; }
-  }
-  @media (max-width: 460px) {
-    .hero__stats { grid-template-columns: 1fr; }
-    .hero__stat { border-right: none; border-bottom: 1px solid var(--rule); }
-    .hero__stat:last-child { border-bottom: none; }
-    .hero__actions .btn { width: 100%; justify-content: center; }
-    .hero__mod { grid-template-columns: 1.8rem 40px 1fr auto; gap: 0.6rem; }
-    .hero__counter {
-      grid-template-columns: 1fr;
-      text-align: center;
+    .hero__lead { font-size: 16px; }
+    .f3 li { white-space: normal; }
+    /* narrow screens only see the workshop: drop the empty sky rows above it */
+    .hero__ground {
+      height: calc(176px * var(--s));
+      margin-top: 0;
+      background:
+        var(--img-ground) 50% calc(-48px * var(--s)) / calc(1600px * var(--s)) auto no-repeat,
+        linear-gradient(to bottom, transparent 0 calc(40px * var(--s)), var(--bg) calc(40px * var(--s)));
     }
-    .hero__counter-bar {
-      border-left: none;
-      border-top: 1px solid var(--ink);
-      padding-left: 0;
-      padding-top: 0.45rem;
-      text-align: left;
-    }
+    .glow--lantern { top: calc(104px * var(--s)); }
+    .glow--torch { top: calc(22px * var(--s)); }
+    .steam { top: calc(128px * var(--s)); }
+    .hero__moon { display: none; }
   }
 </style>

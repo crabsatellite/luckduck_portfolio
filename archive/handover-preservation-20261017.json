@@ -1,0 +1,431 @@
+{
+  "prepared_at_utc": "2026-10-17T03:31:52.9349294Z",
+  "canonical_root": "E:\\Dev\\OpenExecution\\research-line\\academic-papers\\collaborations\\luckduck_portfolio",
+  "baseline_head": "dd3b7757363196e9cdf4681b975a6e2b5953fefb",
+  "upstream_head": "beffd79d704ff5530ef4d8a3b75072cc91e117a7",
+  "upstream_ahead_commits": 145,
+  "upstream_difference_paths": [
+    "data/remote-metrics.json",
+    "public/badges/hot-bath-dl.svg"
+  ],
+  "initial_working_tree_clean": true,
+  "archived_documents": [
+    {
+      "original": "README.md",
+      "archive": "archive/README-before-handover-20261017.md",
+      "sha256": "CFF1BD0A067ED3F62DADB26ABA655DF51A85A2D466D005B0A1AB5A99F8FDE6C3"
+    },
+    {
+      "original": "_design/audit.md",
+      "archive": "archive/design-audit-before-handover-20261017.md",
+      "sha256": "584E5F71188B6AFB98F42ECA86C45FFCF241D5D4CE3E19CB929B652AA57F1B22"
+    },
+    {
+      "original": "_design/concept-v2.md",
+      "archive": "archive/design-concept-v2-before-handover-20261017.md",
+      "sha256": "9C430F5CE0DCD3839DF87A4858D9396892F2D555C668302D52BEC7E3236E15A8"
+    },
+    {
+      "original": "_design/concept.md",
+      "archive": "archive/design-concept-before-handover-20261017.md",
+      "sha256": "1677B89E421E1DEE76C20E44AE8ABD03F675C38DD1F908230E2413D809655B66"
+    },
+    {
+      "original": "_design/research.md",
+      "archive": "archive/design-research-before-handover-20261017.md",
+      "sha256": "6D18533AB311882050E913DE7FD4E815956D0269E5D5DE00F542434B2EF44304"
+    },
+    {
+      "original": "data/STATS.md",
+      "archive": "archive/STATS-before-handover-20261017.md",
+      "sha256": "57178A6E1F63EBC937035CD05152014A89B588707C4114E7F3E385B1A686E1A1"
+    }
+  ],
+  "preserved_tracked_sources": [
+    {
+      "path": ".github/workflows/deploy.yml",
+      "sha256": "09D3310B7A932C0EF4963CAC86BFB957C98850A433C40875E33CDF712C54879D"
+    },
+    {
+      "path": ".github/workflows/update-remote-metrics.yml",
+      "sha256": "712361589010FDC0D45BE248A63F777E34B4CE6D0AC45C46A93155F7E735EBC2"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "3F65CBAA9A6F169C29A154A7CE488E440443BD2C03ADFAC2EA41A28E95B5ACFF"
+    },
+    {
+      "path": "_design/mascot/variant_1.png",
+      "sha256": "5640E43852CFFDD6C91FE5BD10924A9F585A3A9CA3F9E038E2780573194EBBBC"
+    },
+    {
+      "path": "_design/mascot/variant_2.png",
+      "sha256": "32281AE4C553D4C7632542DD1B86DD48134A4C8C77F7A7467EE343A17FC63C2A"
+    },
+    {
+      "path": "_design/mascot/variant_3.png",
+      "sha256": "0BB4819EAB6A7D2FAFB3D3A4179E80033BCF3E2CEC5447451DFE65664EADA107"
+    },
+    {
+      "path": "astro.config.mjs",
+      "sha256": "DD3F9323FE79366EBD4E7B2F99C12D2BFD76196083492E3A811A21B7865FB687"
+    },
+    {
+      "path": "data/bugs.json",
+      "sha256": "800990FBE9BD7E3CE06F677B73FDFA8E4A0C157B763EEE02F1279D947EB84574"
+    },
+    {
+      "path": "data/methodology.json",
+      "sha256": "180E4A041A4011A865AE8194F8A107BF14A327E7A4F69AD37D9E3AA9CC56E460"
+    },
+    {
+      "path": "data/mods.json",
+      "sha256": "60E18601F3F5AB2DDC8653A995D5BE7100E763959AAF5D1005B38B0F8FA52769"
+    },
+    {
+      "path": "data/profile.json",
+      "sha256": "8C846D7581CDAC769BE77DCFB9112780E7DE7906D23E5979ABE7D9EFEEC4AC6F"
+    },
+    {
+      "path": "data/remote-metrics.json",
+      "sha256": "913AA140B713D78C19C5E44345952DC7495A781DBA051E022890766923F99A18"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "135F712ED5A93B54F43B3DD5BD1C7B915D98D62F9021DE51D672420973FFF9AE"
+    },
+    {
+      "path": "package.json",
+      "sha256": "8159BEACECE407DCB0363B250449ECF3CE4BC9A19ED6CA0614B1EC8722F53B20"
+    },
+    {
+      "path": "public/apple-touch-icon.png",
+      "sha256": "4C5BBFBFC719834C95805EC1ECA514A2FBCAD0BCE00C06145062277A474E11CB"
+    },
+    {
+      "path": "public/badges/bilingual-zh-en.svg",
+      "sha256": "C021811663CB912B867EBEB64218BD11CCC2DF4782A938A43803FC026B1BD58B"
+    },
+    {
+      "path": "public/badges/hot-bath-dl.svg",
+      "sha256": "61DCE0385E47CD6308765899C8961577CE2387108E98231062EB7F6D2827153B"
+    },
+    {
+      "path": "public/badges/mc-range.svg",
+      "sha256": "0AF374691659E3EC8C4828FAAE56A410F4DFDA3FF4474F0E0D50E7860158DD85"
+    },
+    {
+      "path": "public/badges/powered-by-duck.svg",
+      "sha256": "1750A07817060543947765B5AFF226D9207BFC86BC6BF1F8951F4260924D73F7"
+    },
+    {
+      "path": "public/badges/regression-rounds.svg",
+      "sha256": "002DC79DE290D69F5C48EB69BFFF7828B391C9703C820B003A414C396440051E"
+    },
+    {
+      "path": "public/badges/verified-tester.svg",
+      "sha256": "EFC1426DBD85CD22B0AA7BB2845F55A41E6B1183CA107C99D0B2C404F7DE2105"
+    },
+    {
+      "path": "public/favicon-32.png",
+      "sha256": "3163E4B98D57496A7BCA72B4152436CCA6F0265211CB9759A1F5C68EEECE4C46"
+    },
+    {
+      "path": "public/favicon.ico",
+      "sha256": "5C0CE8F5C0A85A0755A2BC1C4024FF79D1D25A88AB8A206B5DB55F39EF314663"
+    },
+    {
+      "path": "public/mascot-180.png",
+      "sha256": "F6D7BF599EC4863D740FACCF32DB167268258F567E9F805CDFE42CBC494E551C"
+    },
+    {
+      "path": "public/mascot-32.png",
+      "sha256": "F7867FB790887D3273CE506461B06FBEAF8314994B278BEDEFD727BD3F1E01E8"
+    },
+    {
+      "path": "public/mascot-blink.png",
+      "sha256": "A330EE00C2998214C568AF430D1AFF463A91A134BD9A64079C0B997726F5F4ED"
+    },
+    {
+      "path": "public/mascot.png",
+      "sha256": "32281AE4C553D4C7632542DD1B86DD48134A4C8C77F7A7467EE343A17FC63C2A"
+    },
+    {
+      "path": "public/mods/alex_caves.png",
+      "sha256": "969683F5D8992307EAF08B1BB102F601DEB335611D506C1564162140F34C8E8A"
+    },
+    {
+      "path": "public/mods/alex_mobs.jpeg",
+      "sha256": "26633DFBF508AF709851E432E8F914139227D190BE9840A100572148F60026F2"
+    },
+    {
+      "path": "public/mods/construction_wand.webp",
+      "sha256": "A275A02CE2229B6535EE1C3FC8C134C765EBC943621F8394EDCDCE915E80E3D8"
+    },
+    {
+      "path": "public/mods/hotbath.png",
+      "sha256": "A39388EE2EAE0060A5CD8455662A4E2229B34642D10C57B046B57537CD6376A5"
+    },
+    {
+      "path": "public/mods/instant_world_mirror.png",
+      "sha256": "4A4C76A7E542D776FD9A9F8882F0D8DAABD2A0E0AF56CD209D18F722CD8A0AE2"
+    },
+    {
+      "path": "public/mods/ok_orefinder.png",
+      "sha256": "ACB6D2C8C5DFD65EEB3EBA3A23975E1DAB7252ECBF2C5749F1E563FD7D7FA8DC"
+    },
+    {
+      "path": "public/mods/pelagic_prehistory.png",
+      "sha256": "E52D904BDC7459257E399E6AD1D0A66F4FFAE1F0960812ABF461B3AE8EEA632C"
+    },
+    {
+      "path": "public/mods/ping_system.png",
+      "sha256": "051B8A882EAD2BD3C097F3E1A282FF9CE11B48CF95FF454F40434B74577F8715"
+    },
+    {
+      "path": "public/mods/radios.webp",
+      "sha256": "F426A4D138B35164673F8454B8BFE6BC2EE12A0E59EF97A740405C27447B3252"
+    },
+    {
+      "path": "public/mods/sakura.png",
+      "sha256": "FDEEEE92186F6905B13C21FE34BB464AC8FA583310B8728E6010DCB214963DE7"
+    },
+    {
+      "path": "public/mods/shower_core.png",
+      "sha256": "F0FD7F6912D93E0A5A706137764F8A675CC1DA7C40A30BBCBB18D6773E5EAC6F"
+    },
+    {
+      "path": "public/mods/villager_tourism.webp",
+      "sha256": "69DDE2E5CBEC4039139CF20A2392B367D9E83FF9D7A7288503CC68D66705D01D"
+    },
+    {
+      "path": "public/og.png",
+      "sha256": "8A0AF3541DEF17EEF143A83DAEFB143B9F68493C39B9A391CC5C6D62CB43E71E"
+    },
+    {
+      "path": "public/scenes/caves-scene.png",
+      "sha256": "55C76C279D40F7BB45B072079F3C0CC56D2FA85D2C464E7C1C6192364DBCCFE2"
+    },
+    {
+      "path": "public/scenes/hot-bath-scene.png",
+      "sha256": "D330D48041358CE4315DE26BA694CC9A05E8B0321A6DC5969513D33EFEA802EF"
+    },
+    {
+      "path": "public/scenes/mobs-scene.png",
+      "sha256": "8D1674CECAD6DCE0B4DC4CF5FAFF0BD659E6744EEEF45D0ECFD8CAAAC69ACE59"
+    },
+    {
+      "path": "public/scenes/prehistoric-scene.png",
+      "sha256": "F47E66B080860C295236067C0BDA0A49A6D3FF3FE892EE195544A8B49C0FF823"
+    },
+    {
+      "path": "public/scenes/shower-scene.png",
+      "sha256": "5CA5A3B065A4E57C2D35E54FF61CAD480AF6D1C855D07358255AD3D46F6588FE"
+    },
+    {
+      "path": "scripts/build-assets.mjs",
+      "sha256": "0D95A59EF37A599B5C8ECDA75841B21D5FCCD9B981A4620B4ABBC99D88F24BC0"
+    },
+    {
+      "path": "scripts/dev-screenshot.mjs",
+      "sha256": "D0DF127C7C532A7A10F3A42755902667E819A4265C7F59B61BEA9504041F845F"
+    },
+    {
+      "path": "scripts/gen-badges.mjs",
+      "sha256": "19FE56B4AAB39E4F687E2276F32CBFEC5EE3D3DC29666C5D35A7BAD644C3177E"
+    },
+    {
+      "path": "scripts/gen-mascot.mjs",
+      "sha256": "B3A6CF43074D7AA07D2E20B0D046E10829CD70EFB3B7A19F05A7D91060BFADCC"
+    },
+    {
+      "path": "scripts/gen-scenes.mjs",
+      "sha256": "CE4A7D589D5CC5A7598DCE8CB4A5D0B0E16F338D20AC213A21C5B9AE42DC2503"
+    },
+    {
+      "path": "scripts/rewrite-v1-archive.mjs",
+      "sha256": "D4CC09955815E1B2017DA2346F583D0E3F5A1D67F482FBA4D7E47F402B5A5F5C"
+    },
+    {
+      "path": "scripts/update-remote-metrics.mjs",
+      "sha256": "9387D26CAADC518F363A515FF8917086880F53C7987F4661B3EC027F72ACDDE9"
+    },
+    {
+      "path": "src/components/AboutContent.astro",
+      "sha256": "D97EBE087AEB5A44757239739658E66BE744965591CADE7BDF439C06EA55774D"
+    },
+    {
+      "path": "src/components/ActivityFeed.astro",
+      "sha256": "B4C2DB7F0062C18DC5151C2E0ADF2F16191A576CCC5F6AB1324459E779485DE0"
+    },
+    {
+      "path": "src/components/BugLedger.astro",
+      "sha256": "30FA557E273145193D6CBE95F2C946DD78A36938FB11B45085669E333A0E00C0"
+    },
+    {
+      "path": "src/components/EditorLetter.astro",
+      "sha256": "E31EE240D64625EC140D191503CC1D58E1A81B06322ADF896B8EBB1104EE82E9"
+    },
+    {
+      "path": "src/components/Filters.astro",
+      "sha256": "F41B7DD7C0FF04C814C321E0474CBADD7A7C2F66550148A0CB56CA53F70DC301"
+    },
+    {
+      "path": "src/components/Footer.astro",
+      "sha256": "73706763B3E6B0463355AE290D297993C9CBB377CCD0D2F1FF78B31E03209B63"
+    },
+    {
+      "path": "src/components/Hero.astro",
+      "sha256": "45B0E290EC48ACAA91351053D7C43520D94C4A05FEED9AAC0C5DCC1B5D985AE2"
+    },
+    {
+      "path": "src/components/HomeSections.astro",
+      "sha256": "E520C92C151866263AFAE3CD54256201DF5D403B785D2C2EF708A589D62B0D73"
+    },
+    {
+      "path": "src/components/MarqueeDivider.astro",
+      "sha256": "DB3022F6DC9112A48A7B25B270D072FBAFC2041C085BDE0B21C41F6E2EFDCD7F"
+    },
+    {
+      "path": "src/components/MascotDuck.astro",
+      "sha256": "D89FB20AA71BAA1111E2014386DC9226F14F0DD8C03661B00EF39BAE1C291980"
+    },
+    {
+      "path": "src/components/MembersPanel.astro",
+      "sha256": "6001DB33DF06EFA198454F2AAF1A0CEDFF80EDB1891E50F15713CD2542DE796E"
+    },
+    {
+      "path": "src/components/MethodologyTable.astro",
+      "sha256": "CBA0B48FD831069C377D982D39871C2F83AEA2FE77FC27BFDF09DF42284D4D99"
+    },
+    {
+      "path": "src/components/ModCard.astro",
+      "sha256": "47F6C0798253FAED4851C54025AABA72D7A4A4D4058382320EFC308AF7AD013E"
+    },
+    {
+      "path": "src/components/ModLogo.astro",
+      "sha256": "662430653978B0BB638854A2772F216C19DAC9A15FEB6332D559EDD6F24A1EED"
+    },
+    {
+      "path": "src/components/Nav.astro",
+      "sha256": "C68BB8D8D3AEBEC7E9C8CA2DB93AE0FAB5A75BEDD55A8B37053B57390828EE4A"
+    },
+    {
+      "path": "src/components/NotesIndex.astro",
+      "sha256": "22B45155B6E058F5127860F87DFC3AE1BAC37A8F5AA63294816663C60A015898"
+    },
+    {
+      "path": "src/components/PageHead.astro",
+      "sha256": "F6A9D445ECDC4A3D168D39D6125F8D525B3A74477DA8D4201C27DDF6E7FA613F"
+    },
+    {
+      "path": "src/components/RetroBadge.astro",
+      "sha256": "32CA8B5987B7891B315125659707A569E9D6D6929D397CB69E49CB767E0A6507"
+    },
+    {
+      "path": "src/components/RetroBadgeStrip.astro",
+      "sha256": "6C00F1EB3F5DC345E2052F1C0B6CE3E412F58BFD5FC96B3282475DC181A17769"
+    },
+    {
+      "path": "src/components/StatusPill.astro",
+      "sha256": "5E3C5578860203D84C05D46C043F67D0856E092A1FC4B042B933DE97EF5328FB"
+    },
+    {
+      "path": "src/components/SteamDivider.astro",
+      "sha256": "E6BF3DFC5330C73759C9D2B735C0C0A7D20929CFF0E03E5AF5A0689959E07A80"
+    },
+    {
+      "path": "src/components/TestLog.astro",
+      "sha256": "D7A6EB6220FFD69F0D28FE232E7735AA38E4686168556FC410ADB29D067819CA"
+    },
+    {
+      "path": "src/components/TestLogHeader.astro",
+      "sha256": "349881A3B0562B3E1DE12ABA4443B4C65E5D7F7A5A762CE3BEABC0EE409006ED"
+    },
+    {
+      "path": "src/i18n/strings.ts",
+      "sha256": "AC26FD47CCDEADE26C683C4C2B9CD9762831124F237837DE631272ABED644798"
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "sha256": "845404F5F8384F1ECEB05829D67E6D23076069F4E8D03B04E2D43C1745DC7FC1"
+    },
+    {
+      "path": "src/lib/data.ts",
+      "sha256": "EAEE0C00E8305C5EEE84AAC12637DB42852634DC823A6C0DBD7140FE3557B586"
+    },
+    {
+      "path": "src/pages/about.astro",
+      "sha256": "DC112D3FE93DD70E2E9ACF44B177FFE94268D123982932E41C98D39844339C0D"
+    },
+    {
+      "path": "src/pages/cases/[slug].astro",
+      "sha256": "251DCC6A6ECE9A60B596B1C4A6DFBA13036E3261697B49E3A4FDFFD6EE53B188"
+    },
+    {
+      "path": "src/pages/cases/index.astro",
+      "sha256": "79E5A97C27DCED232122307F7308DD654BD67D94DCD07A52A77CD78B1D785A9A"
+    },
+    {
+      "path": "src/pages/en/about.astro",
+      "sha256": "95097365D296D1F1B8C1555FB8BE6B31128ADDAD395454AB40A9A37AE6B6226D"
+    },
+    {
+      "path": "src/pages/en/cases/[slug].astro",
+      "sha256": "4101EFD56C5FA6A584B948F9BD11926081EA517625E9005798D3B82AF376C0AF"
+    },
+    {
+      "path": "src/pages/en/cases/index.astro",
+      "sha256": "AFC32380D60E37222EFD4473E029DC7F008B695DF9C23553275340035BC238A0"
+    },
+    {
+      "path": "src/pages/en/index.astro",
+      "sha256": "64B85962CB3FCD0DC143C72A0566B44600544D1AE18744B997DD8D53BB7730FB"
+    },
+    {
+      "path": "src/pages/en/methodology.astro",
+      "sha256": "C4B4656A2BEBB330D28637CEE7ED4745EC8435F6B72F01C52CBE031A0FA7F585"
+    },
+    {
+      "path": "src/pages/en/notes/index.astro",
+      "sha256": "B6065C15A813235522A11FEE1032CEBC11716E3A1E17BC0DB56348DEF4AE936F"
+    },
+    {
+      "path": "src/pages/index.astro",
+      "sha256": "B9FEFEC690FBF160CB29B1FE38E2EA6C180A1B84754B9BF222D785F3FF0F0F5E"
+    },
+    {
+      "path": "src/pages/methodology.astro",
+      "sha256": "DF7457CC1CB94F92460B746FA7005931E382F7E88723C36352F9C75D2D8F8481"
+    },
+    {
+      "path": "src/pages/notes/index.astro",
+      "sha256": "B583340AB913F4AB49F3F1C8C81E7AAD054A20B927361868CCFAC21208880C95"
+    },
+    {
+      "path": "src/styles/global.css",
+      "sha256": "3E7298B76F8EFCEC6EE249E24F4DAB9E4525D74344D86BF7CFECF07C7E566D43"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "418115DA503B8DF0ACD12012AFF8BA9BBFEC9156288F80307A01946753824591"
+    }
+  ],
+  "committed": false,
+  "pushed": false,
+  "deployed": false,
+  "verified_at_utc": "2026-10-17T03:33:42.5856792Z",
+  "verification": {
+    "archived_documents_hash_identical": 6,
+    "preserved_sources_hash_identical": 92,
+    "head_unchanged": true,
+    "staged_files": 0,
+    "new_document_paths": [
+      "AGENTS.md",
+      "README.md",
+      "HANDOVER.md"
+    ],
+    "build_run": false,
+    "preview_started": false
+  }
+}

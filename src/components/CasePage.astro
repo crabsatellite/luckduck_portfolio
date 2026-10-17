@@ -1,0 +1,372 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import PageHead from "~/components/PageHead.astro";
+import ModSlot from "~/components/ModSlot.astro";
+import CatIcon from "~/components/CatIcon.astro";
+import StatusLabel from "~/components/StatusLabel.astro";
+import { t, tf, type Lang, type StringKey } from "~/i18n/strings";
+import {
+  creditFor, curseforgeTeam, isoDay, methodName, modAltName, modCategoryBreakdown, modName,
+  roundsOf, sceneForMod, signalLabel, sortedMods, versionInfo, type Mod,
+} from "~/lib/data";
+import { asset, href } from "~/lib/paths";
+
+interface Props {
+  mod: Mod;
+  lang: Lang;
+}
+const { mod, lang } = Astro.props;
+
+const rounds = roundsOf(mod);
+const credit = creditFor(mod);
+const team = curseforgeTeam(mod);
+const breakdown = modCategoryBreakdown(mod.id);
+const versions = versionInfo(mod, lang);
+const scene = sceneForMod(mod);
+const alt = modAltName(mod, lang);
+const order = sortedMods();
+const at = order.findIndex((m) => m.id === mod.id);
+const prev = at > 0 ? order[at - 1] : null;
+const next = at < order.length - 1 ? order[at + 1] : null;
+const retests = mod.rounds.filter((r) => r.label === "regression").length;
+
+const links: Array<{ label: string; url: string }> = [];
+if (credit?.kind === "curseforge") links.push({ label: t(lang, "case.curseforge"), url: credit.credit.mod_url });
+if (credit?.kind === "pr") {
+  links.push({ label: t(lang, "case.curseforge"), url: credit.credit.mod_url });
+  links.push({ label: t(lang, "case.repo"), url: credit.credit.repo_url });
+}
+if (mod.mcmod_url) links.push({ label: t(lang, "case.mcmod"), url: mod.mcmod_url });
+
+const roleKey = (r: string) => `role.${r}` as StringKey;
+const roundTitle = (label: string) => (label === "regression" ? t(lang, "case.round_retest") : t(lang, "case.round_initial"));
+---
+
+<BaseLayout lang={lang} title={mod.name_en} description={`${modName(mod, lang)} · ${tf(lang, "case.round_entries", { n: mod.total_bugs })}`}>
+  <PageHead slot="head" lang={lang} title={modName(mod, lang)}>
+    <a slot="before" class="crumb" href={href(lang, "/cases")}>← {t(lang, "case.back")}</a>
+    <div class="facts">
+      <ModSlot mod={mod} size="lg" />
+      <dl class="facts__list">
+        {alt && <div class="facts__alt">{alt}</div>}
+        <div><dt>{t(lang, "case.tested")}</dt><dd class="digits">{versions.tested.join(" · ")}</dd></div>
+        <div><dt>{t(lang, "case.rounds")}</dt><dd class="digits">{mod.rounds.length}{retests > 0 && <span class="facts__sub"> ({tf(lang, "mods.retests", { n: retests })})</span>}</dd></div>
+        <div><dt>{t(lang, "case.entries")}</dt><dd class="digits">{mod.total_bugs}</dd></div>
+      </dl>
+    </div>
+  </PageHead>
+
+  <div class="wrap case">
+    <div class="case__main">
+      {rounds.length > 1 && (
+        <nav class="timeline" aria-label={t(lang, "case.timeline")}>
+          <ol>
+            {rounds.map((g) => (
+              <li>
+                <a href={`#${g.anchor}`} class:list={["timeline__item", { "is-retest": g.round.label === "regression" }]}>
+                  <span class="digits timeline__n">{g.n}</span>
+                  <span class="timeline__label">{roundTitle(g.round.label)}</span>
+                  <span class="timeline__meta num">{g.round.version}{g.round.date ? ` · ${g.round.date}` : ""}</span>
+                  <span class="digits timeline__count">{g.round.bug_count}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+
+      {mod.total_bugs > 0 && breakdown.length > 1 && (
+        <div class="catfilter" role="group" aria-label={t(lang, "case.categories")}>
+          <button type="button" class="catfilter__btn" data-cat="all" aria-pressed="true">{t(lang, "case.filter_all")} <span class="num">{mod.total_bugs}</span></button>
+          {breakdown.map(({ cat, count }) => (
+            <button type="button" class="catfilter__btn" data-cat={cat} aria-pressed="false">
+              <CatIcon cat={cat} small />{methodName(cat, lang)} <span class="num">{count}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {lang === "en" && mod.total_bugs > 0 && <p class="note">{t(lang, "case.ledger_note")} {t(lang, "case.translate_note")}</p>}
+
+      {rounds.map((g) => (
+        <section class="round" id={g.anchor} data-round>
+          <header class="round__head">
+            <h2 class="round__title">
+              <span class="ui">{tf(lang, "case.round_n", { n: g.n })}</span>
+              <span class="round__kind">{roundTitle(g.round.label)}</span>
+              {g.round.label === "regression" && g.entries.every((e) => e.status === "unfixed") && (
+                <StatusLabel status="unfixed" lang={lang} date={g.round.date} />
+              )}
+            </h2>
+            <p class="round__meta num">
+              {g.round.version} · {g.round.date ?? t(lang, "case.no_date")} · {tf(lang, "case.round_entries", { n: g.round.bug_count })}
+            </p>
+            <p class="round__src">{tf(lang, "case.source", { file: g.round.file })}</p>
+          </header>
+          {g.entries.length === 0 ? (
+            <div class="clean slab">
+              <p class="ui clean__h">{t(lang, "case.clean_h")}</p>
+              <p>{t(lang, "case.clean_p")}</p>
+            </div>
+          ) : (
+            <ol class="entries">
+              {g.entries.map((b) => {
+                const id = `${g.anchor}-${b.index}`;
+                const roundStatus = g.round.label === "regression" && b.status === "unfixed";
+                return (
+                  <li class="entry" id={id} data-cats={b.categories.join(",")}>
+                    <a class="digits entry__no" href={`#${id}`} aria-label={`#${b.index}`}>{b.index}</a>
+                    <div class="entry__main">
+                      <p class="zh-quote entry__text" lang="zh-Hans">{b.text_zh}</p>
+                      <p class="entry__meta">
+                        {b.categories.map((c) => <span class="tag"><CatIcon cat={c} small />{methodName(c, lang)}</span>)}
+                        {!roundStatus && <StatusLabel status={b.status} lang={lang} date={b.round_date} />}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
+        </section>
+      ))}
+
+      {mod.total_bugs > 0 && (
+        <aside class="legend">
+          <p class="ui legend__h">{t(lang, "case.legend_h")}</p>
+          <ul>
+            <li><StatusLabel status="unfixed" lang={lang} /> {t(lang, "case.legend_unfixed")}</li>
+            <li><StatusLabel status="fixed" lang={lang} /> {t(lang, "case.legend_fixed")}</li>
+            <li><StatusLabel status="noted-not-bug" lang={lang} /> {t(lang, "case.legend_noted")}</li>
+          </ul>
+          <p class="muted">{t(lang, "case.legend_none")}</p>
+        </aside>
+      )}
+
+      <nav class="pager">
+        {prev ? <a class="pager__link" href={href(lang, `/cases/${prev.id}`)}><span class="muted">← {t(lang, "case.prev")}</span><span class="ui">{modName(prev, lang)}</span></a> : <span />}
+        {next && <a class="pager__link pager__link--next" href={href(lang, `/cases/${next.id}`)}><span class="muted">{t(lang, "case.next")} →</span><span class="ui">{modName(next, lang)}</span></a>}
+      </nav>
+    </div>
+
+    <aside class="case__side">
+      {credit && (
+        <section class="side side--credit slab">
+          <h2 class="ui side__h">{t(lang, "case.credit_h")}</h2>
+          {credit.kind === "curseforge" ? (
+            <>
+              <p class="side__kind">{t(lang, "credits.cf_kind")}</p>
+              <p class="side__line">{tf(lang, "credits.role", { role: credit.credit.role })}</p>
+              {credit.live?.verified && credit.live.snapshot_url && (
+                <p class="side__line"><a href={credit.live.snapshot_url} rel="noopener">{tf(lang, "credits.snapshot", { day: isoDay(credit.live.snapshot_at) ?? "" })} ↗</a></p>
+              )}
+              {team.length > 0 && (
+                <>
+                  <p class="side__kind side__kind--sub">{t(lang, "case.team")}</p>
+                  <ul class="team">
+                    {team.map((m) => (
+                      <li class:list={{ "is-luck": m.isLuck }}><span>{m.name}</span><span class="muted">{t(lang, roleKey(m.role))}</span></li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <p class="side__kind">{t(lang, "credits.pr_kind")}</p>
+              <ul class="prs">
+                {credit.credit.prs.map((pr) => (
+                  <li>
+                    <a href={pr.url} rel="noopener">#{pr.number} {pr.title} ↗</a>
+                    {pr.merged && <span class="muted num">{tf(lang, "credits.merged", { day: isoDay(pr.merged_at) ?? "" })}</span>}
+                  </li>
+                ))}
+              </ul>
+              <p class="side__line muted">{tf(lang, "credits.pr_by", { author: credit.credit.prs[0]?.author ?? "" })}</p>
+            </>
+          )}
+        </section>
+      )}
+
+      <section class="side slab">
+        <h2 class="ui side__h">{t(lang, "case.tested")}</h2>
+        <p class="side__line">{versions.tested.join(" · ")}</p>
+        {versions.supported && (
+          <p class="side__line muted">
+            {t(lang, "case.supported")}: {versions.supported.min === versions.supported.max ? versions.supported.min : `${versions.supported.min} – ${versions.supported.max}`}
+          </p>
+        )}
+        {versions.beyond && (
+          <p class="side__line muted">{tf(lang, "case.beyond", { v: versions.tested[versions.tested.length - 1], q: versions.beyond })}</p>
+        )}
+      </section>
+
+      {mod.depth_signals.length > 0 && (
+        <section class="side slab">
+          <h2 class="ui side__h">{t(lang, "case.coverage")}</h2>
+          <ul class="signals">{mod.depth_signals.map((s) => <li>{signalLabel(s, lang)}</li>)}</ul>
+        </section>
+      )}
+
+      {links.length > 0 && (
+        <section class="side slab">
+          <h2 class="ui side__h">{t(lang, "case.links")}</h2>
+          <ul class="links">{links.map((l) => <li><a href={l.url} rel="noopener">{l.label} ↗</a></li>)}</ul>
+        </section>
+      )}
+
+      {scene && (
+        <figure class="side">
+          <img src={asset(`scenes/${scene.file}`)} alt={modName(mod, lang)} loading="lazy" />
+        </figure>
+      )}
+    </aside>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    var buttons = document.querySelectorAll(".catfilter__btn");
+    if (!buttons.length) return;
+    var entries = document.querySelectorAll(".entry");
+    var rounds = document.querySelectorAll("[data-round]");
+    buttons.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var cat = b.dataset.cat;
+        buttons.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        entries.forEach(function (e) {
+          e.hidden = cat !== "all" && (e.dataset.cats || "").split(",").indexOf(cat) === -1;
+        });
+        rounds.forEach(function (r) {
+          var any = r.querySelector(".entry:not([hidden])") || !r.querySelector(".entry");
+          r.hidden = cat !== "all" && !any;
+        });
+      });
+    });
+  })();
+</script>
+
+<style>
+  .crumb { display: inline-block; margin-bottom: 16px; color: var(--text-2); text-decoration: none; font-size: 15px; }
+  .crumb:hover { color: var(--gold); }
+  .facts { display: flex; gap: 20px; align-items: center; margin-top: 24px; }
+  .facts__list { margin: 0; display: flex; flex-wrap: wrap; gap: 8px 32px; align-items: baseline; }
+  .facts__list > div { display: grid; }
+  .facts__alt { width: 100%; color: var(--text-2); font-size: 15px; }
+  .facts dt { font-size: 13px; color: var(--text-3); }
+  .facts dd { margin: 0; color: var(--text); }
+  .facts__sub { color: var(--text-3); font-family: var(--font-body); font-size: 14px; }
+
+  .case {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 48px;
+    align-items: start;
+    padding-top: 24px;
+  }
+  .case__main { min-width: 0; }
+  .case__side { display: grid; gap: 16px; position: sticky; top: 24px; }
+
+  .timeline ol { list-style: none; margin: 0 0 32px; padding: 0; display: grid; gap: 6px; }
+  .timeline__item {
+    display: grid;
+    grid-template-columns: 32px minmax(4em, auto) 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 8px 14px;
+    color: var(--text);
+    text-decoration: none;
+    background: var(--panel);
+    box-shadow: inset var(--u) 0 0 var(--gold);
+  }
+  .timeline__item.is-retest { box-shadow: inset var(--u) 0 0 var(--fail); }
+  .timeline__item:hover { background: var(--panel-2); }
+  .timeline__n { color: var(--text-3); }
+  .timeline__meta { color: var(--text-2); font-size: 14px; }
+  .timeline__count { color: var(--text); }
+
+  .catfilter { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+  .catfilter__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    font: inherit;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-2);
+    background: transparent;
+    border: 0;
+    box-shadow: inset 0 0 0 var(--u) var(--line);
+    cursor: pointer;
+  }
+  .catfilter__btn .num { color: var(--text-3); }
+  .catfilter__btn:hover { color: var(--text); }
+  .catfilter__btn[aria-pressed="true"] { color: var(--gold-ink); background: var(--gold); box-shadow: none; }
+  .catfilter__btn[aria-pressed="true"] .num { color: var(--gold-ink); }
+
+  .note { margin: 0 0 24px; font-size: 14px; color: var(--text-3); }
+
+  .round { margin-bottom: 48px; }
+  .round__head { margin-bottom: 12px; padding-bottom: 12px; box-shadow: inset 0 calc(var(--u) * -1) 0 var(--line); }
+  .round__title { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: inherit; font-weight: 400; }
+  .round__kind { color: var(--text-2); }
+  .round__meta { margin: 4px 0 0; color: var(--text-2); font-size: 14px; }
+  .round__src { margin: 0; color: var(--text-3); font-size: 13px; overflow-wrap: anywhere; }
+
+  .entries { list-style: none; margin: 0; padding: 0; }
+  .entry {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px 8px;
+    box-shadow: inset 0 calc(var(--u) * -1) 0 #15181e;
+  }
+  .entry:target { background: rgba(243, 195, 90, 0.08); box-shadow: inset var(--u) 0 0 var(--gold); }
+  .entry__no { color: var(--text-3); text-decoration: none; text-align: right; }
+  .entry__no::before { content: "#"; }
+  .entry__no:hover { color: var(--gold); }
+  .entry__text { margin: 0; color: var(--text); }
+  .entry__meta { margin: 6px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+
+  .clean { padding: 20px 24px; }
+  .clean__h { margin: 0; color: var(--ok); }
+  .clean p:last-child { margin: 4px 0 0; color: var(--text-2); }
+
+  .legend { margin: 8px 0 40px; padding: 20px 0 0; box-shadow: inset 0 var(--u) 0 var(--line); font-size: 14px; color: var(--text-2); }
+  .legend__h { margin: 0 0 10px; color: var(--text); }
+  .legend ul { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 8px; }
+  .legend li { display: flex; gap: 12px; align-items: center; }
+
+  .pager { display: flex; justify-content: space-between; gap: 16px; }
+  .pager__link { display: grid; gap: 2px; padding: 14px 18px; color: var(--text); text-decoration: none; background: var(--panel); font-size: 14px; }
+  .pager__link:hover { background: var(--panel-2); color: var(--gold); }
+  .pager__link--next { text-align: right; }
+
+  .side { margin: 0; padding: 18px 20px; display: grid; gap: 6px; font-size: 14px; }
+  .side__h { margin: 0 0 4px; color: var(--text); }
+  .side__kind { margin: 0; color: var(--gold); font-size: 13px; }
+  .side__kind--sub { margin-top: 10px; color: var(--text-3); }
+  .side__line { margin: 0; color: var(--text-2); }
+  .side a { color: var(--text); text-underline-offset: 4px; }
+  .side a:hover { color: var(--gold); }
+  .team, .prs, .signals, .links { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; color: var(--text-2); }
+  .team li { display: flex; justify-content: space-between; gap: 12px; }
+  .team li.is-luck { color: var(--gold); }
+  .prs li { display: grid; }
+  .signals li::before { content: "▪ "; color: var(--gold); }
+
+  @media (max-width: 980px) {
+    .case { grid-template-columns: 1fr; gap: 32px; }
+    /* credit first, then the log, then the reference panels */
+    .case__side { display: contents; }
+    .case__main { order: 1; }
+    .side { order: 2; }
+    .side--credit { order: 0; }
+  }
+  @media (max-width: 640px) {
+    .facts { align-items: flex-start; }
+    .entry { grid-template-columns: 36px minmax(0, 1fr); gap: 8px; padding: 12px 0; }
+    .timeline__item { grid-template-columns: 24px auto 1fr auto; gap: 10px; padding: 8px 10px; }
+  }
+</style>

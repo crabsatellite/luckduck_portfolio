@@ -1,28 +1,5 @@
 ---
-import BaseLayout from "~/layouts/BaseLayout.astro";
-import MethodologyTable from "~/components/MethodologyTable.astro";
-import PageHead from "~/components/PageHead.astro";
-import { t } from "~/i18n/strings";
-
-const lang = "zh" as const;
+import MethodsPage from "~/components/MethodsPage.astro";
 ---
 
-<BaseLayout title={t(lang, "methods.title")} lang={lang}>
-  <article class="page">
-    <div class="container">
-      <PageHead
-        lang={lang}
-        mark="03"
-        kicker={t(lang, "methods.kicker")}
-        title={t(lang, "methods.title")}
-        sub={t(lang, "methods.subtitle")}
-        deck={t(lang, "methods.deck")}
-      />
-      <MethodologyTable lang={lang} />
-    </div>
-  </article>
-</BaseLayout>
-
-<style>
-  .page { padding: 0 0 2.4rem 0; }
-</style>
+<MethodsPage lang="zh" />

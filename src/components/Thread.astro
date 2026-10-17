@@ -1,0 +1,108 @@
+---
+// One issue followed through the first round and two dated retests.
+import { t, type Lang } from "~/i18n/strings";
+import { THREAD, trailingRemark } from "~/i18n/highlights";
+import { entryAnchor, findEntry, modName, roundOf } from "~/lib/data";
+import { href } from "~/lib/paths";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const steps = THREAD.map((s) => {
+  const main = findEntry(s.ref);
+  const note = s.note ? findEntry(s.note.ref) : null;
+  const { round } = roundOf(main.mod, main.bug);
+  return {
+    label: round.label === "regression" ? t(lang, "thread.step_retest") : t(lang, "thread.step_initial"),
+    date: round.date,
+    version: main.bug.version,
+    index: main.bug.index,
+    noteText: note ? trailingRemark(note.bug.text_zh) : null,
+    noteEn: s.note?.en ?? null,
+    zh: main.bug.text_zh,
+    en: s.en,
+    link: `${href(lang, `/cases/${main.mod.id}`)}#${entryAnchor(main.mod, main.bug)}`,
+  };
+});
+const mod = findEntry(THREAD[0].ref).mod;
+---
+
+<article class="thread slab">
+  <header class="thread__head">
+    <h3 class="px px-24 shadow thread__title">{t(lang, "thread.h")}</h3>
+    <p class="thread__sub">{t(lang, "thread.sub")}</p>
+  </header>
+  <ol class="thread__steps">
+    {steps.map((s, i) => (
+      <li class="thread__step">
+        <p class="ui thread__label">
+          <span class="thread__n">{i + 1}</span>
+          {s.label}
+          <span class="thread__meta">{s.date ?? s.version}</span>
+        </p>
+        <div class="tooltip thread__card">
+          <p class="ui tooltip__name thread__name">{modName(mod, lang)}</p>
+          <p class="ui tooltip__lore thread__lore">{s.version} · #{s.index}</p>
+          {lang === "en" ? (
+            <>
+              {s.noteEn && <p class="thread__note">{s.noteEn}</p>}
+              <p class="thread__en">{s.en}</p>
+              {s.noteText && <p class="thread__orig thread__orig--note" lang="zh-Hans">{s.noteText}</p>}
+              <p class="zh-quote thread__orig" lang="zh-Hans">{s.zh}</p>
+            </>
+          ) : (
+            <>
+              {s.noteText && <p class="thread__note" lang="zh-Hans">{s.noteText}</p>}
+              <p class="zh-quote thread__zh" lang="zh-Hans">{s.zh}</p>
+            </>
+          )}
+          <a class="thread__link" href={s.link}>{t(lang, "logs.open")} →</a>
+        </div>
+      </li>
+    ))}
+  </ol>
+</article>
+
+<style>
+  .thread { padding: 28px; margin-bottom: 24px; }
+  .thread__head { display: grid; gap: 8px; margin-bottom: 24px; }
+  .thread__title { margin: 0; color: var(--gold); }
+  .thread__sub { margin: 0; color: var(--text-2); max-width: 60em; }
+  .thread__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .thread__step { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .thread__label { margin: 0; color: var(--text); display: flex; gap: 10px; align-items: center; }
+  .thread__n {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    color: var(--gold-ink);
+    background: var(--gold);
+    box-shadow: inset var(--u) var(--u) 0 var(--gold-hi), inset calc(var(--u) * -1) calc(var(--u) * -1) 0 var(--gold-lo);
+  }
+  .thread__meta { color: var(--text-3); }
+  .thread__card { flex: 1; display: flex; flex-direction: column; }
+  .thread__name, .thread__lore { margin: 0; }
+  .thread__lore { margin-bottom: 12px; }
+  .thread__note { margin: 0 0 8px; color: var(--mc-yellow); font-size: 14px; line-height: 1.6; }
+  .thread__zh { margin: 0; color: #f2f2f2; }
+  .thread__en { margin: 0; color: #f2f2f2; line-height: 1.6; }
+  .thread__orig { margin: 10px 0 0; color: var(--mc-gray); font-size: 14px; }
+  .thread__orig--note + .thread__orig { margin-top: 2px; }
+  .thread__link { margin-top: auto; padding-top: 14px; align-self: flex-end; font-size: 13px; color: var(--mc-gray); text-decoration: none; }
+  .thread__link:hover { color: #fff; text-decoration: underline; }
+
+  @media (max-width: 900px) {
+    .thread { padding: 20px; }
+    .thread__steps { grid-template-columns: 1fr; }
+  }
+</style>

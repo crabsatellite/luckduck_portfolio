@@ -1,235 +1,70 @@
 ---
-// Compact site footer. Three rows: brand block + nav, hairline,
-// then legal + version. No imprint metadata, no oversized closing
-// panel — it is just a footer.
-//
-// Year and build date are computed at build time so the footer
-// never goes stale; the package version is read from package.json
-// so the archive line stays in sync with the actual release.
-import { t, type Lang } from "~/i18n/strings";
-import RetroBadgeStrip from "~/components/RetroBadgeStrip.astro";
-import MascotDuck from "~/components/MascotDuck.astro";
-import pkg from "../../package.json";
-import { remoteMetrics } from "~/lib/data";
+import { t, tf, type Lang } from "~/i18n/strings";
+import { asset, href } from "~/lib/paths";
+import { metricsDay, profile } from "~/lib/data";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
-const langPrefix = lang === "en" ? `${base}/en` : base;
-
-const now = new Date();
-const buildYear = now.getUTCFullYear();
-const buildYM = `${buildYear}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
-const version = `v${pkg.version}`;
-
-const copyTemplate = t(lang, "footer.copy");
-const copyText = copyTemplate.replace(/\{year\}/g, String(buildYear));
-const archiveText = t(lang, "footer.archived")
-  .replace(/\{version\}/g, version)
-  .replace(/\{ym\}/g, buildYM);
-
-const metricsDate = remoteMetrics.fetched_at
-  ? remoteMetrics.fetched_at.slice(0, 10)
-  : null;
-const dataLabel = lang === "en" ? "remote data" : "远程数据";
+const day = metricsDay() ?? "—";
 ---
 
-<footer class="ftr" role="contentinfo">
-  <div class="container ftr__inner">
-    <section class="ftr__brand">
-      <div class="ftr__brand-head">
-        <span class="ftr__brand-mark" aria-hidden="true">
-          <MascotDuck size={36} alt="" />
-        </span>
-        <div class="ftr__brand-text">
-          <p class="ftr__handle">{t(lang, "footer.handle")}</p>
-          <p class="ftr__tag">{t(lang, "footer.tagline")}</p>
-        </div>
+<footer class="foot">
+  <div class="wrap foot__grid">
+    <div class="foot__id">
+      <img class="pixelated" src={asset("art/duck-large.png")} width="48" height="44" alt="" />
+      <div>
+        <p class="ui foot__name">LUCK666DUCK</p>
+        <p class="foot__line">{t(lang, "footer.line")}</p>
       </div>
-      <p class="ftr__active mono tnum">{t(lang, "footer.active")}</p>
-      <div class="ftr__badges"><RetroBadgeStrip /></div>
-    </section>
-
-    <nav class="ftr__nav" aria-label="footer navigation">
-      <div class="ftr__nav-col">
-        <p class="ftr__nav-label dateline">{t(lang, "footer.section_on_file")}</p>
-        <ul class="ftr__links">
-          <li><a href={`${langPrefix}/`}>{t(lang, "nav.home")}</a></li>
-          <li><a href={`${langPrefix}/cases`}>{t(lang, "nav.cases")}</a></li>
-          <li><a href={`${langPrefix}/methodology`}>{t(lang, "nav.methods")}</a></li>
-          <li><a href={`${langPrefix}/notes`}>{t(lang, "nav.notes")}</a></li>
-          <li><a href={`${langPrefix}/about`}>{t(lang, "nav.about")}</a></li>
-        </ul>
-      </div>
-
-      <div class="ftr__nav-col">
-        <p class="ftr__nav-label dateline">{t(lang, "footer.section_off_site")}</p>
-        <ul class="ftr__links">
-          <li>
-            <a href="https://github.com/LUCK666DUCK" rel="noopener" target="_blank">
-              github / LUCK666DUCK <span aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://www.curseforge.com/members/luck666duck" rel="noopener" target="_blank">
-              curseforge / luck666duck <span aria-hidden="true">↗</span>
-            </a>
-          </li>
-        </ul>
-      </div>
+    </div>
+    <nav class="foot__links" aria-label="Footer">
+      <a href={href(lang, "/cases")}>{t(lang, "nav.cases")}</a>
+      <a href={href(lang, "/methodology")}>{t(lang, "nav.methods")}</a>
+      <a href={href(lang, "/about")}>{t(lang, "nav.about")}</a>
+      <a href={profile.curseforge.profile_url} rel="noopener">CurseForge ↗</a>
+      <a href={profile.github.url} rel="noopener">GitHub ↗</a>
     </nav>
-  </div>
-
-  <div class="container ftr__bottom">
-    <p class="ftr__copy">{copyText}</p>
-    <p class="ftr__version mono tnum">
-      <span>{archiveText}</span>
-      {metricsDate && (
-        <>
-          <span class="ftr__version-sep" aria-hidden="true">·</span>
-          <span class="ftr__data" title={`Last metrics refresh ${metricsDate}`}>
-            {dataLabel} {metricsDate}
-          </span>
-        </>
-      )}
-    </p>
+    <div class="foot__notes">
+      <p>{tf(lang, "footer.data", { day })}</p>
+      <p>{t(lang, "footer.art")}</p>
+      <p>
+        <a href={asset("fonts/OFL.txt")}>{t(lang, "footer.font")}</a>
+        <span aria-hidden="true"> · </span>
+        <a href="https://github.com/crabsatellite/luckduck_portfolio" rel="noopener">{t(lang, "footer.source")}</a>
+      </p>
+    </div>
   </div>
 </footer>
 
 <style>
-  .ftr {
-    margin-top: clamp(2.5rem, 5vw, 3.5rem);
-    background: var(--bg);
-    border-top: 1px solid var(--rule);
+  .foot {
+    margin-top: 120px;
+    padding: 40px 0 48px;
+    background: #08090c;
+    box-shadow: inset 0 var(--u) 0 #1b1e25;
+    font-size: 14px;
+    color: var(--text-3);
   }
-
-  /* ---- main row: brand on the left, nav on the right ------- */
-  .ftr__inner {
+  .foot__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.9fr);
-    gap: clamp(1.8rem, 4vw, 3rem);
-    padding-top: clamp(1.6rem, 3vw, 2.2rem);
-    padding-bottom: clamp(1.2rem, 2.5vw, 1.6rem);
+    grid-template-columns: auto 1fr;
+    gap: 24px 48px;
     align-items: start;
   }
-  @media (max-width: 760px) {
-    .ftr__inner { grid-template-columns: 1fr; gap: 1.4rem; }
-  }
-
-  .ftr__brand-head {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.8rem;
-  }
-  .ftr__brand-mark {
-    line-height: 0;
-    padding: 4px;
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    background: color-mix(in oklch, var(--accent) 12%, var(--bg-soft));
-  }
-  .ftr__brand-text { line-height: 1.1; }
-  .ftr__handle {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--ink);
-    margin: 0 0 0.25rem 0;
-    letter-spacing: 0.01em;
-  }
-  :lang(zh) .ftr__handle { font-family: var(--font-cjk); letter-spacing: 0; }
-  .ftr__tag {
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
-    color: var(--ink-soft);
-    margin: 0;
-  }
-  :lang(zh) .ftr__tag { font-family: var(--font-cjk); }
-  .ftr__active {
-    margin: 0 0 0.9rem 0;
-    font-size: 0.78rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.04em;
-  }
-  .ftr__badges :global(.badge-strip) {
-    background: transparent;
-    padding: 0;
-    border: 0;
-  }
-
-  /* ---- nav: two columns ------------------------------------ */
-  .ftr__nav {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 1.6rem;
-    row-gap: 0.4rem;
-    align-content: start;
-  }
-  .ftr__nav-col { min-width: 0; }
-  .ftr__nav-label {
-    color: var(--ink-mute);
-    font-size: 0.78rem;
-    letter-spacing: 0.14em;
-    margin: 0 0 0.6rem 0;
-    line-height: 1;
-  }
-  :lang(zh) .ftr__nav-label { letter-spacing: 0.06em; }
-  .ftr__links { list-style: none; padding: 0; margin: 0; }
-  .ftr__links li { margin-bottom: 0.45rem; }
-  .ftr__links a {
-    font-family: var(--font-sans);
-    font-size: 0.88rem;
-    color: var(--ink);
-    text-decoration: none;
-    border-bottom: 1px solid var(--rule);
-    padding-bottom: 1px;
-    transition: color 140ms ease, border-color 140ms ease;
-  }
-  :lang(zh) .ftr__links a { font-family: var(--font-cjk); }
-  .ftr__links a:hover,
-  .ftr__links a:focus-visible {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-  @media (max-width: 460px) {
-    .ftr__nav { grid-template-columns: 1fr; gap: 1rem; }
-  }
-
-  /* ---- bottom: legal + version ----------------------------- */
-  .ftr__bottom {
-    padding: 0.9rem 0 1.2rem 0;
-    border-top: 1px solid var(--rule);
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.4rem;
-    align-items: baseline;
-  }
-  .ftr__copy {
-    font-family: var(--font-sans);
-    font-size: 0.76rem;
-    color: var(--ink-mute);
-    line-height: 1.5;
-    max-width: 60ch;
-    margin: 0;
-  }
-  :lang(zh) .ftr__copy { font-family: var(--font-cjk); line-height: 1.7; }
-  .ftr__version {
-    font-size: 0.76rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.04em;
-    margin: 0;
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    align-items: baseline;
-  }
-  .ftr__version-sep { opacity: 0.55; }
-  .ftr__data {
-    color: var(--accent);
-    opacity: 0.85;
+  .foot__id { display: flex; gap: 16px; align-items: center; }
+  .foot__id img { display: block; }
+  .foot__name { margin: 0; color: var(--text); }
+  .foot__line { margin: 0; }
+  .foot__links { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: flex-end; padding-top: 10px; }
+  .foot__links a { color: var(--text-2); text-decoration: none; }
+  .foot__links a:hover { color: var(--gold); }
+  .foot__notes { grid-column: 1 / -1; display: grid; gap: 2px; padding-top: 20px; box-shadow: inset 0 var(--u) 0 #15181e; }
+  .foot__notes p { margin: 0; }
+  .foot__notes a { color: var(--text-2); }
+  @media (max-width: 720px) {
+    .foot__grid { grid-template-columns: 1fr; }
+    .foot__links { justify-content: flex-start; padding-top: 0; }
   }
 </style>

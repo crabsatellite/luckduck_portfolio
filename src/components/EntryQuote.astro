@@ -1,0 +1,69 @@
+---
+// A log entry shown the way the game shows an item: a dark tooltip with
+// the mod as the item name and the version and round as grey lore lines.
+import CatIcon from "~/components/CatIcon.astro";
+import StatusLabel from "~/components/StatusLabel.astro";
+import { t, type Lang } from "~/i18n/strings";
+import { entryAnchor, methodName, modName, roundOf, type Bug, type Mod } from "~/lib/data";
+import { href } from "~/lib/paths";
+
+interface Props {
+  mod: Mod;
+  bug: Bug;
+  lang: Lang;
+  en?: string;
+  note?: string;
+}
+const { mod, bug, lang, en, note } = Astro.props;
+const { round } = roundOf(mod, bug);
+const roundLabel =
+  round.label === "regression"
+    ? `${t(lang, "case.round_retest")} ${round.date ?? ""}`.trim()
+    : t(lang, "case.round_initial");
+const link = `${href(lang, `/cases/${mod.id}`)}#${entryAnchor(mod, bug)}`;
+---
+
+<article class="tooltip quote">
+  <p class="ui tooltip__name quote__name">{modName(mod, lang)}</p>
+  <p class="ui tooltip__lore quote__lore">{bug.version} · {roundLabel} · #{bug.index}</p>
+  {lang === "en" && en ? (
+    <>
+      <p class="quote__en">{en}</p>
+      <p class="zh-quote quote__orig" lang="zh-Hans">{bug.text_zh}</p>
+    </>
+  ) : (
+    <p class="zh-quote quote__zh" lang="zh-Hans">{bug.text_zh}</p>
+  )}
+  {note && <p class="quote__note">{note}</p>}
+  <footer class="quote__foot">
+    <span class="quote__cats">
+      {bug.categories.slice(0, 3).map((c) => (
+        <span class="tag"><CatIcon cat={c} small />{methodName(c, lang)}</span>
+      ))}
+    </span>
+    <StatusLabel status={bug.status} lang={lang} date={bug.round_date} />
+    <a class="quote__link" href={link}>{t(lang, "logs.open")} →</a>
+  </footer>
+</article>
+
+<style>
+  .quote { display: flex; flex-direction: column; min-width: 0; }
+  .quote__name, .quote__lore { margin: 0; }
+  .quote__lore { margin-bottom: 14px; color: var(--mc-gray); }
+  .quote__zh { margin: 0; color: #f2f2f2; font-size: 17px; }
+  .quote__en { margin: 0; color: #f2f2f2; font-size: 17px; line-height: 1.6; }
+  .quote__orig { margin: 12px 0 0; color: var(--mc-gray); font-size: 14px; line-height: 1.7; }
+  .quote__note { margin: 10px 0 0; color: var(--mc-yellow); font-size: 14px; }
+  .quote__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    margin-top: auto;
+    padding-top: 18px;
+  }
+  .quote__cats { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+  .quote__cats .tag { color: var(--mc-gray); }
+  .quote__link { margin-left: auto; font-size: 13px; color: var(--mc-gray); text-decoration: none; white-space: nowrap; }
+  .quote__link:hover { color: #fff; text-decoration: underline; }
+</style>

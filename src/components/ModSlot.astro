@@ -1,0 +1,42 @@
+---
+import { modMonogram, type Mod } from "~/lib/data";
+import { modThumb } from "~/lib/paths";
+
+interface Props {
+  mod: Mod;
+  size?: "md" | "lg";
+  dark?: boolean;
+  count?: number;
+}
+const { mod, size = "md", dark = false, count } = Astro.props;
+const px = size === "lg" ? 48 : 32;
+const pixelArt = ["alex_caves", "ping_system", "ok_orefinder"].includes(mod.id);
+---
+
+<span class:list={["slot", { "slot--lg": size === "lg", "slot--dark": dark }]}>
+  {mod.logo_local ? (
+    <img
+      class:list={{ pixelated: pixelArt }}
+      src={modThumb(mod.id)}
+      width={px}
+      height={px}
+      alt=""
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    <span class="slot__mono" aria-hidden="true">{modMonogram(mod)}</span>
+  )}
+  {count !== undefined && <span class="slot__count digits" aria-hidden="true">{count}</span>}
+</span>
+
+<style>
+  .slot__count {
+    position: absolute;
+    right: 1px;
+    bottom: -3px;
+    color: #fff;
+    text-shadow: var(--u) var(--u) 0 #3f3f3f;
+    pointer-events: none;
+  }
+</style>

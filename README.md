@@ -1,91 +1,95 @@
-# luckduck_portfolio
+# Luck Duck tester portfolio
 
-Static Astro site for LUCK666DUCK — Minecraft mod tester. Lives at <https://crabsatellite.github.io/luckduck_portfolio>.
+Website for **LUCK666DUCK / Luck Duck**, a Minecraft mod tester.
 
-## stack
+- Handover for the 2026-10 redesign: [HANDOVER.md](HANDOVER.md).
+- Canonical local project:
+  `E:\Dev\OpenExecution\research-line\academic-papers\collaborations\luckduck_portfolio`
+- Repository: [crabsatellite/luckduck_portfolio](https://github.com/crabsatellite/luckduck_portfolio)
+- Website: [crabsatellite.github.io/luckduck_portfolio](https://crabsatellite.github.io/luckduck_portfolio/)
 
-- Astro 5, static output
-- Inter Variable + Noto Sans SC + JetBrains Mono Variable, self-hosted via `@fontsource-variable/*`
-- Vanilla CSS with custom properties, per-component scoped styles
-- Client-side language auto-detect (browser pref → `/` or `/en/`)
-- Live GitHub activity feed on the home page (client-side fetch from `api.github.com`)
-- Scheduled remote metric snapshots for CurseForge downloads, LUCK666DUCK GitHub activity, and the merge-state of PR-mode tester credits
-- GitHub Pages deploy via `.github/workflows/deploy.yml` on push to `main`
+Astro, static output, Chinese at the base path and English under `/en`.
+Data lives in `data/`, pages and components in `src/`, generated art in
+`public/art/`.
 
-## local development
+## Design
 
-```bash
-npm install
-npm run dev      # dev server
-npm run build    # production bundle → dist/
-npm run preview  # serve dist/ locally
-npm run check    # astro + ts type check
+The site is a night-time cross-section of a blocky world. The home page
+opens on a moonlit surface over the tester's underground workshop, lit
+the way such games light things: every source has a level from 0 to 15
+that drops by one per block, so the lantern's light falls off in visible
+steps. Log entries are shown as in-game item tooltips, the headline
+numbers as a debug-overlay readout, and the mods as an inventory.
+
+- One design pixel is 2 CSS px. Pixel type is only set at whole multiples
+  of its grid: the 12 px face at 24/36/48 px, the 10 px face at 20 px.
+  Chinese UI text uses the 12 px face; reading text uses system fonts.
+- Pixel images are drawn at integer scales with `image-rendering: pixelated`.
+- The pixel scenes are illustrations drawn for the site. They are not
+  game screenshots, and the footer and About page say so.
+
+## Content rules
+
+- The 433 entries are quoted verbatim from the original reports. English
+  pages translate only the quoted home-page entries
+  (`src/i18n/highlights.ts`), labelled as the site's translations.
+- A null status means the report records no follow-up; it is never shown
+  as "open". `unfixed` is shown as "failed retest" with its retest date.
+- Credits are shown only with their source: CurseForge member lists
+  (Hot Bath, Instant World Mirror) and merged PR descriptions (Alex's
+  Caves, Alex's Mobs). Download counts carry their fetch date.
+
+## Generated assets
+
+`npm run build` runs `prebuild` → `scripts/build-assets.mjs`, which is
+deterministic and writes:
+
+| Output | Source |
+| --- | --- |
+| `public/art/ground.png`, `edge.png` | `scripts/pixel/scene.mjs` (world layout, light propagation, rendering) |
+| block textures | `scripts/pixel/textures.mjs` |
+| duck, lantern, props, moon | `scripts/pixel/sprites.mjs` |
+| `public/art/icons.png` | `scripts/pixel/icons.mjs` (13 category icons) |
+| `public/art/mods/*.png` | 96 px thumbnails of `public/mods/*` |
+| favicons, `public/og.png` | duck sprite and the scene; OG lettering from `scripts/pixel/glyphs-12.json` |
+
+It also runs `scripts/gen-badges.mjs` for the metric badges in
+`public/badges/`, which the metrics workflow commits. `gen-mascot.mjs`,
+`gen-scenes.mjs`, `public/mascot*.png` and `public/scenes/` belong to the
+previous design and are no longer used by the pages; `SCENE_MAP` in
+`src/lib/data.ts` still only shows a scene marked `real: true`.
+
+### Pixel font
+
+The pixel face is [Fusion Pixel](https://github.com/TakWolf/fusion-pixel-font)
+(OFL-1.1), subset to the characters the site uses. After changing text
+that is set in the pixel face, regenerate the subsets from an unzipped
+release (`*-otf.woff2` zips for 12px and 10px proportional, plus `OFL.txt`
+and `LICENSES/`):
+
+```powershell
+python -I scripts/fonts/build-pixel-fonts.py <release-dir>
 ```
 
-## data layer
+This writes `src/fonts/ld-pixel-{12,10}.woff2`, `public/fonts/` licences
+and the OG glyph bitmaps. Missing glyphs fall back to the system font.
 
-| file | purpose |
-|---|---|
-| `data/mods.json` | 13 mods tested, with rounds metadata + supported-version provenance |
-| `data/bugs.json` | 433 bug entries, each with `categories[]` (13-method tags) + `severity` (S0–S3) + `status` (author response, nullable) |
-| `data/methodology.json` | 13 test methods — definition, what-i-do checklist, judgement standard |
-| `data/notes.json` | long-form notes index |
-| `data/deliverables.json` | placeholder cards for the per-mod tester-log repos shown on home |
-| `data/profile.json` | GitHub / CurseForge / mcmod.cn account metadata |
-| `data/remote-metrics.json` | scheduled snapshot of CurseForge downloads, LUCK666DUCK GitHub PR/issue counts, and per-PR merge state for PR-mode tester credits |
-| `data/STATS.md` | top-line counts |
+## Commands
 
-## scripts
+The GitHub workflow uses Node.js 22.
 
-```bash
-npm run recategorize    # rebuild bugs.json categories + severities from text_zh
-npm run deliverables    # regenerate ../luckduck-deliverables/<repo>/ trees
-npm run assets          # rebuild favicons + OG card (auto-runs before build)
-npm run badges          # rebuild retro badges from current data/remote-metrics.json
-npm run update:remote-metrics # refresh remote metrics snapshot
+```powershell
+npm ci --no-audit --no-fund
+npm run dev
+npm run check
+npm run build
+npm run preview
 ```
 
-The recategorize and deliverables scripts are idempotent — re-run any time the source data changes.
+## Publication and history
 
-## routes
+A push to `main` triggers GitHub Pages deployment. The daily metrics
+workflow also commits updated metrics and deploys Pages.
 
-| path | content |
-|---|---|
-| `/` | minimal hero + live GitHub activity feed + deliverables archive |
-| `/methodology/` | 13 test methods, severity rubric, tools & process |
-| `/cases/` | filterable grid of all 13 tested mods |
-| `/cases/<slug>/` | per-mod test log with severity-aware ledger |
-| `/notes/` | long-form essays |
-| `/notes/<slug>/` | individual essay |
-| `/about/` | bio + credits + contact |
-| `/en/*` | English mirror of all routes |
-
-## credit verification
-
-The "public credits" panel on home + about lists tester credits in two
-verification modes:
-
-- **CurseForge member panel** — `LUCK666DUCK` is listed as "Tester" in the
-  Members section on the mod's CurseForge page. Source: scraped from the
-  mod's Next.js payload (`profile.curseforge.tester_credits`). Currently:
-  Hot Bath, Instant World Mirror.
-- **Merged PR body** — a PR opened against the mod's upstream GitHub
-  repo whose description explicitly credits the tester by GitHub URL.
-  Source: hand-listed in `profile.pr_credits`; each PR's live state
-  (open / closed / merged + merged_at) is refreshed daily by the
-  `update-remote-metrics.mjs` script and merged into the JSON at read
-  time, so an unmerged or reverted PR will surface accurately on the
-  site. Currently: Alex's Caves (#1693, #1698), Alex's Mobs (#2315,
-  #2317), all merged by AlexModGuy.
-
-`teamForMod()` in `src/lib/data.ts` appends LUCK666DUCK as a Tester to
-the mcmod.cn author list for any mod with a PR-mode credit, so the
-per-mod case page member panel reflects the credit too.
-
-## sister project
-
-The deliverable tester-log repos that the home page links to are generated into a sibling directory at `../luckduck-deliverables/`. See [`../luckduck-deliverables/CONVENTIONS.md`](../luckduck-deliverables/CONVENTIONS.md) for the per-repo format spec and [`../luckduck-deliverables/HANDOFF.md`](../luckduck-deliverables/HANDOFF.md) for push instructions.
-
-## deploy
-
-Push to `main`. GitHub Actions runs `npm install` + `npm run build` and uploads `dist/` to GitHub Pages. `.github/workflows/update-remote-metrics.yml` also runs daily, commits refreshed `data/remote-metrics.json`, rebuilds, and deploys the refreshed Pages artifact directly.
+The previous README, design documents, audit and statistics narrative are
+preserved in `archive/`.

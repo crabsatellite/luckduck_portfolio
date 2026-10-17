@@ -1,0 +1,69 @@
+---
+import { t, type Lang } from "~/i18n/strings";
+import { profile } from "~/lib/data";
+import { asset } from "~/lib/paths";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const send = ["contact.send_1", "contact.send_2", "contact.send_3", "contact.send_4"] as const;
+const get = ["contact.get_1", "contact.get_2", "contact.get_3"] as const;
+---
+
+<div class="contact gui">
+  <div class="contact__intro">
+    <h2 id="contact-title" class="px px-36 contact__title">{t(lang, "contact.h")}</h2>
+    <p class="contact__lead">{t(lang, "contact.lead")}</p>
+    <div class="contact__actions">
+      <a class="btn btn--gold" href={profile.curseforge.profile_url} rel="noopener">{t(lang, "contact.cf")} ↗</a>
+      <a class="btn" href={profile.github.url} rel="noopener">{t(lang, "contact.gh")} ↗</a>
+    </div>
+  </div>
+  <div class="contact__lists">
+    <div>
+      <h3 class="ui contact__h">{t(lang, "contact.send_h")}</h3>
+      <ul>{send.map((k) => <li>{t(lang, k)}</li>)}</ul>
+    </div>
+    <div>
+      <h3 class="ui contact__h">{t(lang, "contact.get_h")}</h3>
+      <ul>{get.map((k) => <li>{t(lang, k)}</li>)}</ul>
+    </div>
+  </div>
+  <img class="contact__duck pixelated" src={asset("art/duck-large.png")} width="96" height="88" alt="" />
+</div>
+
+<style>
+  .contact {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 40px;
+    padding: 40px;
+  }
+  .contact__title { margin: 0; color: var(--gui-ink); text-shadow: 3px 3px 0 rgba(255, 255, 255, 0.6); }
+  .contact__lead { margin: 16px 0 0; color: #2f2f2f; font-size: 17px; }
+  .contact__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .contact__lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+  .contact__h { margin: 0 0 10px; color: var(--gui-ink); }
+  .contact ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; color: #2f2f2f; font-size: 15px; line-height: 1.6; }
+  .contact li { position: relative; padding-left: 20px; }
+  .contact li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 8px;
+    height: 8px;
+    background: var(--gui-ink);
+    box-shadow: inset -2px -2px 0 #000;
+  }
+  .contact__duck { position: absolute; right: 28px; bottom: -2px; }
+  @media (max-width: 900px) {
+    .contact { grid-template-columns: 1fr; padding: 28px 24px 96px; }
+  }
+  @media (max-width: 560px) {
+    .contact__lists { grid-template-columns: 1fr; }
+    .contact__title { font-size: 24px; line-height: 32px; text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.6); }
+  }
+</style>

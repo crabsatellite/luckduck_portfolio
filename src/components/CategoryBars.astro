@@ -1,0 +1,54 @@
+---
+import CatIcon from "~/components/CatIcon.astro";
+import type { Lang } from "~/i18n/strings";
+import { methodsByCount } from "~/lib/data";
+import { href } from "~/lib/paths";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const list = methodsByCount();
+const max = list[0]?.count ?? 1;
+---
+
+<ol class="cats" style={`--rows:${Math.ceil(list.length / 2)}`}>
+  {list.map((m) => (
+    <li>
+      <a class="cats__row" href={`${href(lang, "/methodology")}#${m.id}`}>
+        <CatIcon cat={m.category_id} />
+        <span class="cats__name">{lang === "zh" ? m.name_zh : m.name_en}</span>
+        <span class="meter cats__meter"><span style={`--v:${m.count / max}`}></span></span>
+        <span class="digits cats__n">{m.count}</span>
+      </a>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .cats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(var(--rows), auto);
+    grid-auto-flow: column;
+    gap: 4px 48px;
+  }
+  .cats__row {
+    display: grid;
+    grid-template-columns: 32px minmax(7em, 11em) minmax(0, 1fr) 44px;
+    gap: 14px;
+    align-items: center;
+    padding: 8px 0;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .cats__row:hover .cats__name { color: var(--gold); }
+  .cats__name { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cats__n { text-align: right; }
+  @media (max-width: 860px) {
+    .cats { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; }
+  }
+</style>

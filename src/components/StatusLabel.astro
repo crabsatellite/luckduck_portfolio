@@ -1,0 +1,18 @@
+---
+// Shown only when the original report records a follow-up status.
+import { t, type Lang } from "~/i18n/strings";
+import type { Bug } from "~/lib/data";
+
+interface Props {
+  status: Bug["status"];
+  lang: Lang;
+  date?: string | null;
+}
+const { status, lang, date } = Astro.props;
+---
+
+{status && (
+  <span class={`status status--${status}`}>
+    {t(lang, `status.${status}`)}{status === "unfixed" && date ? ` · ${date}` : ""}
+  </span>
+)}

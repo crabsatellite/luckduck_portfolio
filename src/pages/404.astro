@@ -1,0 +1,19 @@
+---
+// GitHub Pages serves this for any missing path, in either language.
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import PageHead from "~/components/PageHead.astro";
+import { href } from "~/lib/paths";
+---
+
+<BaseLayout lang="zh" title="404">
+  <PageHead slot="head" lang="zh" title="404" lead="这个区块还没有生成。 · This chunk hasn't been generated yet.">
+    <div class="lost">
+      <a class="btn btn--gold" href={href("zh", "/")}>回到首页</a>
+      <a class="btn" href={href("en", "/")} lang="en">Back to the start</a>
+    </div>
+  </PageHead>
+</BaseLayout>
+
+<style>
+  .lost { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+</style>

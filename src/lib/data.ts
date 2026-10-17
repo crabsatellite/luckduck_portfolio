@@ -3,6 +3,7 @@ import bugsData from "../../data/bugs.json";
 import profileData from "../../data/profile.json";
 import methodologyData from "../../data/methodology.json";
 import remoteMetricsData from "../../data/remote-metrics.json";
+import type { Lang } from "~/i18n/strings";
 
 export type Round = {
   version: string;
@@ -30,6 +31,9 @@ export type Mod = {
 
 export type Severity = "S0" | "S1" | "S2" | "S3";
 
+// One line of an original report. `status` is an annotation taken from
+// the report itself; null means the report records no follow-up, which is
+// not the same as "still open".
 export type Bug = {
   mod_id: string;
   version: string;
@@ -84,33 +88,16 @@ export type RemoteMetrics = {
   };
   github: {
     user: string;
-    prs: {
-      total: number;
-      open: number;
-      merged: number;
-      closed_unmerged: number;
-      items: Array<Record<string, unknown>>;
-    };
-    issues: {
-      total: number;
-      open: number;
-      closed: number;
-      items: Array<Record<string, unknown>>;
-    };
-    public_events: {
-      count: number;
-      items: Array<Record<string, unknown>>;
-    };
+    prs: { total: number; open: number; merged: number; closed_unmerged: number; items: Array<Record<string, unknown>> };
+    issues: { total: number; open: number; closed: number; items: Array<Record<string, unknown>> };
+    public_events: { count: number; items: Array<Record<string, unknown>> };
   };
   pr_credits?: Record<string, RemotePRCreditPR>;
   tester_credits_live?: Record<string, RemoteTesterLive>;
 };
 
-// Daily Wayback verification for a single CurseForge tester credit.
-// Written by scripts/update-remote-metrics.mjs after probing
-// archive.org for the closest snapshot of the mod page and checking
-// that the user's id + Tester role still co-occur in the rendered
-// member panel payload.
+// Daily Wayback verification for a single CurseForge tester credit,
+// written by scripts/update-remote-metrics.mjs.
 export type RemoteTesterLive = {
   mod_url: string | null;
   mod: string | null;
@@ -167,69 +154,50 @@ export const bugs = bugsData as Bug[];
 export const profile = profileData as Profile;
 export const remoteMetrics = remoteMetricsData as unknown as RemoteMetrics;
 
-// PR-mode credits live alongside CurseForge tester credits. Each entry
-// points at a mod and lists merged PRs whose body explicitly credits
-// LUCK666DUCK as Tester. The PR live state (merged / closed / open)
-// is refreshed daily via `update-remote-metrics.mjs` and merged in
-// at read time so the surface never goes stale.
+// ---- dates -------------------------------------------------------------
+
+export const isoDay = (iso: string | null | undefined): string | null => {
+  if (!iso) return null;
+  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[1]}-${m[2]}-${m[3]}` : null;
+};
+
+/** Day the remote metrics (downloads, PR states, Wayback checks) were fetched. */
+export const metricsDay = (): string | null => isoDay(remoteMetrics.fetched_at);
+
+// ---- PR-body credits -----------------------------------------------------
+// PR live state (merged / closed / open) is refreshed by the metrics
+// workflow and merged in at read time.
+
 type ProfileWithPRCredits = Profile & { pr_credits?: PRCredit[] };
 const staticPRCredits = (profile as ProfileWithPRCredits).pr_credits ?? [];
-
-const remotePRMap = (): Record<string, RemotePRCreditPR> => {
-  return remoteMetrics.pr_credits ?? {};
-};
 
 const prKey = (repo: string, number: number) => `${repo}#${number}`;
 
 export const prCredits = (): PRCredit[] => {
-  const remote = remotePRMap();
+  const remote = remoteMetrics.pr_credits ?? {};
   return staticPRCredits.map((credit) => ({
     ...credit,
     prs: credit.prs.map((pr) => {
       const live = remote[prKey(credit.repo, pr.number)];
       if (!live || live.status === "error") return pr;
-      return {
-        ...pr,
-        state: live.state,
-        merged: live.merged,
-        merged_at: live.merged_at,
-      };
+      return { ...pr, state: live.state, merged: live.merged, merged_at: live.merged_at };
     }),
   }));
 };
 
-export const prCreditsForMod = (modId: string): PRCredit | null => {
-  return prCredits().find((c) => c.mod_id === modId) ?? null;
-};
-
-// Total number of mods with a publicly verifiable Tester credit
-// (CurseForge member panel + merged-PR body, deduped by mod_id).
-export const hardCreditModCount = (): number => {
-  const modIds = new Set<string>();
-  for (const c of profile.curseforge.tester_credits) {
-    const key = c.mod.toLowerCase().replace(/[^a-z0-9]/g, "");
-    modIds.add(key);
-  }
-  for (const c of staticPRCredits) {
-    modIds.add(c.mod_id);
-  }
-  return modIds.size;
-};
+export const prCreditsForMod = (modId: string): PRCredit | null =>
+  prCredits().find((c) => c.mod_id === modId) ?? null;
 
 export const mergedPRCount = (): number =>
-  staticPRCredits.reduce(
-    (sum, c) => sum + c.prs.filter((p) => p.merged).length,
-    0
-  );
+  prCredits().reduce((sum, c) => sum + c.prs.filter((p) => p.merged).length, 0);
 
-const normalizeProjectName = (value: string): string =>
-  value.toLowerCase().replace(/[^a-z0-9]/g, "");
+// ---- CurseForge member-list credits ---------------------------------------
 
-// Pull the CurseForge slug out of a mod URL like
-// `https://www.curseforge.com/minecraft/mc-mods/<slug>`. This is the
-// same key the daily refresh script uses when writing remote-metrics,
-// so any new tester credit added to profile.json resolves
-// automatically as long as it has a valid mod_url.
+const normalizeProjectName = (value: string): string => value.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+// `https://www.curseforge.com/minecraft/mc-mods/<slug>` -> normalised slug,
+// the same key the metrics refresh script writes.
 const curseforgeKeyFromUrl = (url: string | null | undefined): string | null => {
   if (!url) return null;
   const match = url.match(/curseforge\.com\/minecraft\/mc-mods\/([^/?#]+)/i);
@@ -245,75 +213,42 @@ export const remoteProjectForCredit = (credit: TesterCredit): RemoteCurseForgePr
   return null;
 };
 
-export const creditDownloads = (credit: TesterCredit): number => {
+/** Downloads from the latest metrics fetch, else the profile snapshot. */
+export const creditDownloads = (credit: TesterCredit): { value: number; day: string | null } => {
   const remote = remoteProjectForCredit(credit);
-  if (remote && typeof remote.downloads === "number") return remote.downloads;
-  return credit.downloads_at_snapshot;
+  if (remote && typeof remote.downloads === "number") return { value: remote.downloads, day: metricsDay() };
+  return { value: credit.downloads_at_snapshot, day: null };
 };
-
-export const formatCompactNumber = (value: number): string => {
-  if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
-  if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
-  return value.toLocaleString("en-US");
-};
-
-export const creditDownloadsLabel = (credit: TesterCredit): string =>
-  `${creditDownloads(credit).toLocaleString("en-US")} DL`;
-
-export const creditDownloadsCompactLabel = (credit: TesterCredit): string =>
-  `${formatCompactNumber(creditDownloads(credit))} DL`;
-
-export const hotBathDownloadsCompactLabel = (): string => {
-  const credit = profile.curseforge.tester_credits.find(
-    (c) => curseforgeKeyFromUrl(c.mod_url) === "hotbath"
-  );
-  return credit ? creditDownloadsCompactLabel(credit) : "1M+ DL";
-};
-
-const creditedSet = new Set(
-  profile.curseforge.tester_credits.map((c) => c.mod.toLowerCase().replace(/\s+/g, ""))
-);
-
-const modNameKeys = (m: Mod) =>
-  [m.name_en, m.name_zh.split("/").map((s) => s.trim()).pop() || ""].map((s) =>
-    s.toLowerCase().replace(/\s+/g, "")
-  );
-
-export const isCredited = (m: Mod): boolean =>
-  modNameKeys(m).some((k) => creditedSet.has(k));
-
-// Wayback live-verification helpers. The case page can use these to
-// render "verified · YYYY-MM-DD" alongside the static badge so the
-// reader sees a real, dated proof rather than a months-old curation.
-const liveTesterMap = (): Record<string, RemoteTesterLive> =>
-  remoteMetrics.tester_credits_live ?? {};
 
 export const liveTesterForCredit = (credit: TesterCredit): RemoteTesterLive | null => {
   const key = curseforgeKeyFromUrl(credit.mod_url);
   if (!key) return null;
-  return liveTesterMap()[key] ?? null;
+  return remoteMetrics.tester_credits_live?.[key] ?? null;
 };
 
-const creditsForMod = (mod: Mod): TesterCredit[] => {
-  const keys = new Set(modNameKeys(mod));
-  return profile.curseforge.tester_credits.filter((c) =>
-    keys.has(c.mod.toLowerCase().replace(/\s+/g, ""))
-  );
+const modNameKeys = (m: Mod) =>
+  [m.name_en, m.name_zh.split("/").map((s) => s.trim()).pop() || ""].map((s) => s.toLowerCase().replace(/\s+/g, ""));
+
+export const curseforgeCreditForMod = (m: Mod): TesterCredit | null => {
+  const keys = new Set(modNameKeys(m));
+  return profile.curseforge.tester_credits.find((c) => keys.has(c.mod.toLowerCase().replace(/\s+/g, ""))) ?? null;
 };
 
-export const liveTesterForMod = (mod: Mod): RemoteTesterLive | null => {
-  for (const credit of creditsForMod(mod)) {
-    const live = liveTesterForCredit(credit);
-    if (live) return live;
-  }
+export type ModCredit =
+  | { kind: "curseforge"; credit: TesterCredit; live: RemoteTesterLive | null }
+  | { kind: "pr"; credit: PRCredit };
+
+/** The public tester credit recorded for a mod, if any. */
+export const creditFor = (m: Mod): ModCredit | null => {
+  const cf = curseforgeCreditForMod(m);
+  if (cf) return { kind: "curseforge", credit: cf, live: liveTesterForCredit(cf) };
+  const pr = prCreditsForMod(m.id);
+  if (pr) return { kind: "pr", credit: pr };
   return null;
 };
 
-export const formatVerifiedDate = (iso: string | null | undefined): string | null => {
-  if (!iso) return null;
-  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/);
-  return m ? `${m[1]}-${m[2]}-${m[3]}` : null;
-};
+/** Mods with a recorded public credit (CurseForge member list or PR body). */
+export const creditedModCount = (): number => mods.filter((m) => creditFor(m)).length;
 
 export const getMcmodEntry = (m: Mod) => {
   const slugMap: Record<string, string> = {
@@ -326,154 +261,208 @@ export const getMcmodEntry = (m: Mod) => {
   return profile.mcmod_cn.mods.find((x) => x.slug === target) || null;
 };
 
-export const sortedMods = (): Mod[] => {
-  return [...mods].sort((a, b) => {
-    const ac = isCredited(a) ? 1 : 0;
-    const bc = isCredited(b) ? 1 : 0;
-    if (ac !== bc) return bc - ac;
-    return b.total_bugs - a.total_bugs;
-  });
+// ---- team listing (case pages) ------------------------------------------------
+
+export type TeamMember = {
+  name: string;
+  role: "owner" | "dev" | "art" | "design" | "tester" | "other";
+  isLuck: boolean;
 };
 
-export const activeMods = (): Mod[] => {
-  const wanted = ["hotbath", "shower_core", "alex_caves", "alex_mobs"];
-  return wanted
-    .map((id) => mods.find((m) => m.id === id))
-    .filter((m): m is Mod => Boolean(m));
+const ROLE_FROM_POSITION = (pos: string): TeamMember["role"] => {
+  if (/owner|所有者/i.test(pos)) return "owner";
+  if (/程序|dev|prog/i.test(pos)) return "dev";
+  if (/美术|art/i.test(pos)) return "art";
+  if (/策划|design|plan/i.test(pos)) return "design";
+  if (/test|测试|qa/i.test(pos)) return "tester";
+  return "other";
 };
 
-export const bugsForMod = (modId: string): Bug[] => {
-  return bugs.filter((b) => b.mod_id === modId);
+/** Members listed on the CurseForge page that carries the tester credit. */
+export const curseforgeTeam = (m: Mod): TeamMember[] => {
+  const credit = curseforgeCreditForMod(m);
+  if (!credit) return [];
+  return credit.all_team_members_on_mod.map((entry) => ({
+    name: entry.name,
+    role: ROLE_FROM_POSITION(entry.role),
+    isLuck: entry.id === 136751338 || entry.name === "LUCK666DUCK",
+  }));
 };
 
+// ---- totals ------------------------------------------------------------------
+
+export const bugsForMod = (modId: string): Bug[] => bugs.filter((b) => b.mod_id === modId);
 export const totalRounds = (): number => mods.reduce((sum, m) => sum + m.rounds.length, 0);
-
 export const totalRegressionRounds = (): number =>
   mods.reduce((sum, m) => sum + m.rounds.filter((r) => r.label === "regression").length, 0);
-
 export const totalBugs = (): number => mods.reduce((sum, m) => sum + m.total_bugs, 0);
+export const hasRegression = (m: Mod): boolean => m.rounds.some((r) => r.label === "regression");
+export const hasNoIssues = (m: Mod): boolean => m.total_bugs === 0;
+export const testedVersions = (): string[] => [...new Set(mods.flatMap((m) => m.versions))].sort(compareVersion);
 
-export const hasRegression = (m: Mod): boolean =>
-  m.rounds.some((r) => r.label === "regression");
+/** Mods ordered by number of logged entries. */
+export const sortedMods = (): Mod[] => [...mods].sort((a, b) => b.total_bugs - a.total_bugs || a.name_en.localeCompare(b.name_en));
 
-export const hasNoIssues = (m: Mod): boolean =>
-  m.total_bugs === 0;
+export const modMonogram = (m: Mod): string => m.name_en.trim().charAt(0).toUpperCase() || "?";
 
-export const logNumber = (m: Mod): string => {
-  const ordered = sortedMods();
-  const idx = ordered.findIndex((x) => x.id === m.id);
-  return String(idx + 1).padStart(2, "0");
+/** Display name: the Chinese name on Chinese pages, the English name otherwise. */
+export const modName = (m: Mod, lang: Lang): string =>
+  lang === "zh" ? m.name_zh.split(" / ")[0].trim() : m.name_en;
+
+/** The other-language name, when it differs. */
+export const modAltName = (m: Mod, lang: Lang): string | null => {
+  const alt = lang === "zh" ? m.name_en : m.name_zh.split(" / ")[0].trim();
+  return alt === modName(m, lang) ? null : alt;
 };
 
-export const allBugCategories = (): string[] => {
-  const set = new Set<string>();
-  for (const b of bugs) for (const c of b.categories) set.add(c);
-  return Array.from(set).sort();
+// ---- rounds -----------------------------------------------------------------------
+
+export type RoundGroup = { round: Round; n: number; entries: Bug[]; anchor: string };
+
+/** A mod's entries grouped by the report they came from, in round order. */
+export const roundsOf = (m: Mod): RoundGroup[] =>
+  m.rounds.map((round, i) => ({
+    round,
+    n: i + 1,
+    anchor: `r${i + 1}`,
+    entries: bugs.filter((b) => b.mod_id === m.id && b.round_file === round.file).sort((a, b) => a.index - b.index),
+  }));
+
+export const entryAnchor = (m: Mod, b: Bug): string => {
+  const i = m.rounds.findIndex((r) => r.file === b.round_file);
+  return `r${i + 1}-${b.index}`;
 };
 
-// Monogram fallback letter (first char of name_en, uppercase) for mods
-// that have no raster logo. Used by ModCard.
-export const modMonogram = (m: Mod): string => {
-  const c = m.name_en.trim().charAt(0).toUpperCase();
-  return c || "?";
+// ---- categories --------------------------------------------------------------------
+
+export const categoryCounts = (): Record<string, number> => {
+  const m: Record<string, number> = {};
+  for (const b of bugs) for (const c of b.categories) m[c] = (m[c] || 0) + 1;
+  return m;
 };
 
-// Semver-ish ordering for MC version strings like "1.20.1", "1.21.3", "1.16.5".
-const versionKey = (v: string): number[] => {
-  return v.split(".").map((n) => {
+export const methodFor = (catId: string): Method | undefined => methods.find((m) => m.category_id === catId);
+
+export const methodName = (catId: string, lang: Lang): string => {
+  const m = methodFor(catId);
+  return m ? (lang === "zh" ? m.name_zh : m.name_en) : catId;
+};
+
+export const methodsByCount = (): Array<Method & { count: number }> => {
+  const counts = categoryCounts();
+  return methods.map((m) => ({ ...m, count: counts[m.category_id] ?? 0 })).sort((a, b) => b.count - a.count);
+};
+
+export const bugsByCategory = (cat: string): Bug[] => bugs.filter((b) => b.categories.includes(cat));
+
+/** Short, single-line entries for a category, one from each of the mods with the most. */
+export const examplesFor = (cat: string, n = 2): Bug[] => {
+  const pool = bugsByCategory(cat).filter(
+    (b) => b.status !== "noted-not-bug" && !b.text_zh.includes("\n") && b.text_zh.length >= 16 && b.text_zh.length <= 72
+  );
+  const byMod = new Map<string, Bug[]>();
+  for (const b of pool) byMod.set(b.mod_id, [...(byMod.get(b.mod_id) ?? []), b]);
+  return [...byMod.values()]
+    .sort((x, y) => y.length - x.length)
+    .slice(0, n)
+    .map((list) => list.find((b) => b.categories[0] === cat) ?? list[0]);
+};
+
+export const modCountsForCategory = (cat: string): Array<{ mod: Mod; count: number }> =>
+  mods
+    .map((mod) => ({ mod, count: bugsForMod(mod.id).filter((b) => b.categories.includes(cat)).length }))
+    .filter((x) => x.count > 0)
+    .sort((a, b) => b.count - a.count);
+
+export const modCategoryBreakdown = (modId: string): Array<{ cat: string; count: number }> => {
+  const counts: Record<string, number> = {};
+  for (const b of bugsForMod(modId)) for (const c of b.categories) counts[c] = (counts[c] || 0) + 1;
+  return Object.entries(counts)
+    .map(([cat, count]) => ({ cat, count }))
+    .sort((a, b) => b.count - a.count);
+};
+
+// ---- coverage signals ----------------------------------------------------------------
+
+const COMPAT_NAMES: Record<string, string> = {
+  carryon: "Carry On",
+  "serene-seasons": "Serene Seasons",
+  "cold-sweat": "Cold Sweat",
+  toughasnails: "Tough As Nails",
+  "legendary-survival-overhaul": "Legendary Survival Overhaul",
+};
+
+export const signalLabel = (signal: string, lang: Lang): string => {
+  const zh = lang === "zh";
+  if (signal.startsWith("mod-compat:")) {
+    const name = COMPAT_NAMES[signal.slice(11)] ?? signal.slice(11);
+    return zh ? `兼容：${name}` : `With ${name}`;
+  }
+  const map: Record<string, [string, string]> = {
+    "multi-version": ["1.20.1 与 1.21.1 对照", "1.20.1 vs 1.21.1"],
+    "shader-tested": ["光影下测试", "Tested under shaders"],
+    "cross-mod-with-alex-mods": ["兼容：Alex 系列", "With Alex's mods"],
+    "regression-rounds": ["修复后复测", "Retested after fixes"],
+    "i18n-zh-hk": ["繁中（香港）文本", "zh-HK text"],
+    "i18n-zh-tw": ["繁中（台湾）文本", "zh-TW text"],
+    "i18n-ja": ["日文文本", "Japanese text"],
+    "no-issues-found": ["未发现问题", "No issues found"],
+  };
+  const pair = map[signal];
+  return pair ? pair[zh ? 0 : 1] : signal;
+};
+
+// ---- versions -------------------------------------------------------------------------
+
+const versionKey = (v: string): number[] =>
+  v.split(".").map((n) => {
     const num = parseInt(n, 10);
     return Number.isFinite(num) ? num : 0;
   });
-};
-const compareVersion = (a: string, b: string): number => {
+function compareVersion(a: string, b: string): number {
   const ak = versionKey(a), bk = versionKey(b);
   for (let i = 0; i < Math.max(ak.length, bk.length); i++) {
     const av = ak[i] ?? 0, bv = bk[i] ?? 0;
     if (av !== bv) return av - bv;
   }
   return 0;
-};
+}
 const minMaxVersion = (vs: string[]): { min: string; max: string } | null => {
   if (vs.length === 0) return null;
   const sorted = [...vs].sort(compareVersion);
   return { min: sorted[0], max: sorted[sorted.length - 1] };
 };
 
-// Per-mod qualifier text when tested goes beyond canonical supported max.
-const TESTED_QUALIFIER: Record<string, string> = {
-  alex_caves: "unofficial port",
-  alex_mobs: "community port",
-  sakura: "private build",
-  villager_tourism: "private build",
-  ping_system: "private build",
-  construction_wand: "KOTS fork",
+// How a tested version beyond the canonical release was obtained.
+const TESTED_QUALIFIER: Record<string, [string, string]> = {
+  alex_caves: ["非官方移植", "unofficial port"],
+  alex_mobs: ["社区移植", "community port"],
+  sakura: ["私有构建", "private build"],
+  villager_tourism: ["私有构建", "private build"],
+  ping_system: ["私有构建", "private build"],
+  construction_wand: ["KOTS 分支", "KOTS fork"],
 };
 
-// Render the version meta line for a mod card or case header.
-//
-// Rules:
-// - supported empty → "tested X / Y"
-// - tested_max > supported_max → "MC {min} → {max} (canonical) · tested X / Y ({qualifier})"
-// - else → "MC {min} → {max} · tested X / Y"
-export const modVersionMeta = (m: Mod): string => {
-  const tested = m.versions;
-  const supported = m.mod_supported_versions;
-  if (supported.length === 0) {
-    return `tested ${tested.join(" / ")}`;
-  }
-  const sRange = minMaxVersion(supported)!;
-  const tMax = minMaxVersion(tested)?.max;
-  const beyond = tMax !== undefined && compareVersion(tMax, sRange.max) > 0;
-
-  if (beyond) {
-    const q = TESTED_QUALIFIER[m.id] ?? "community port";
-    return `MC ${sRange.min} → ${sRange.max} (canonical) · tested ${tested.join(" / ")} (${q})`;
-  }
-  return `MC ${sRange.min} → ${sRange.max} · tested ${tested.join(" / ")}`;
+export type VersionInfo = {
+  tested: string[];
+  supported: { min: string; max: string } | null;
+  /** Set when a tested version is newer than the canonical release supports. */
+  beyond: string | null;
 };
 
-// Same data, zh-styled separator.
-export const modVersionMetaZh = (m: Mod): string => {
-  const tested = m.versions;
-  const supported = m.mod_supported_versions;
-  if (supported.length === 0) {
-    return `测试 ${tested.join(" / ")}`;
-  }
-  const sRange = minMaxVersion(supported)!;
-  const tMax = minMaxVersion(tested)?.max;
-  const beyond = tMax !== undefined && compareVersion(tMax, sRange.max) > 0;
-  const QUAL_ZH: Record<string, string> = {
-    alex_caves: "非官方移植",
-    alex_mobs: "社区移植",
-    sakura: "私有构建",
-    villager_tourism: "私有构建",
-    ping_system: "私有构建",
-    construction_wand: "KOTS 分支",
-  };
-  if (beyond) {
-    const q = QUAL_ZH[m.id] ?? "社区移植";
-    return `MC ${sRange.min} → ${sRange.max} (官方) · 测试 ${tested.join(" / ")} (${q})`;
-  }
-  return `MC ${sRange.min} → ${sRange.max} · 测试 ${tested.join(" / ")}`;
-};
-
-// Aggregate min/max across ALL mods for the about + footer "version-agnostic" copy.
-export const allMcVersionRange = (): { min: string; max: string } | null => {
-  const all: string[] = [];
-  for (const m of mods) {
-    all.push(...m.mod_supported_versions);
-    all.push(...m.versions);
-  }
-  return minMaxVersion(all);
+export const versionInfo = (m: Mod, lang: Lang): VersionInfo => {
+  const supported = minMaxVersion(m.mod_supported_versions);
+  const tMax = minMaxVersion(m.versions)?.max;
+  const beyondCanon = supported && tMax !== undefined && compareVersion(tMax, supported.max) > 0;
+  const q = TESTED_QUALIFIER[m.id] ?? ["社区移植", "community port"];
+  return { tested: m.versions, supported, beyond: beyondCanon ? q[lang === "zh" ? 0 : 1] : null };
 };
 
 /**
- * Each mod can declare a scene preview image. Set `real: true` only
- * when an actual gameplay screenshot has been captured and dropped
- * into `public/scenes/<file>`. The case page renders the scene
- * figure only for entries flagged `real: true` — placeholder
- * stand-ins stay hidden so the page never advertises art that
- * isn't really there.
+ * Scene previews. Set `real: true` only when an actual gameplay
+ * screenshot has been captured and dropped into `public/scenes/<file>`.
+ * The case page renders the figure only for `real: true` entries, so
+ * generated stand-ins are never presented as captures.
  */
 export interface SceneInfo {
   file: string;
@@ -494,108 +483,18 @@ export const sceneForMod = (m: Mod): SceneInfo | null => {
   return info;
 };
 
-export type TeamMember = {
-  name: string;
-  role: "owner" | "dev" | "art" | "design" | "tester" | "other";
-  isLuck: boolean;
-  emoji: string;
+// ---- curated excerpts ----------------------------------------------------------------
+
+export type EntryRef = { mod: string; file: string; index: number };
+
+export const findEntry = (ref: EntryRef): { mod: Mod; bug: Bug } => {
+  const mod = mods.find((m) => m.id === ref.mod);
+  const bug = bugs.find((b) => b.mod_id === ref.mod && b.round_file === ref.file && b.index === ref.index);
+  if (!mod || !bug) throw new Error(`Curated entry not found: ${ref.mod} / ${ref.file} #${ref.index}`);
+  return { mod, bug };
 };
 
-const ROLE_FROM_POSITION = (pos: string): TeamMember["role"] => {
-  if (/owner|所有者/i.test(pos)) return "owner";
-  if (/程序|dev|prog/i.test(pos)) return "dev";
-  if (/美术|art/i.test(pos)) return "art";
-  if (/策划|design|plan/i.test(pos)) return "design";
-  if (/test|测试|qa/i.test(pos)) return "tester";
-  return "other";
-};
-
-export const teamForMod = (m: Mod): TeamMember[] => {
-  const credit = profile.curseforge.tester_credits.find((c) => {
-    const k = c.mod.toLowerCase().replace(/\s+/g, "");
-    return modNameKeys(m).includes(k);
-  });
-  if (credit) {
-    return credit.all_team_members_on_mod.map((entry) => {
-      const role = ROLE_FROM_POSITION(entry.role);
-      const isLuck = entry.id === 136751338 || entry.name === "LUCK666DUCK";
-      return {
-        name: entry.name,
-        role,
-        isLuck,
-        emoji: isLuck ? "🦆" : "👤",
-      };
-    });
-  }
-
-  // PR-credited mods (Alex's Caves / Mobs): start from the mcmod
-  // author list when available, then append LUCK666DUCK as tester
-  // so the case page reflects the public PR credit.
-  const prCredit = prCreditsForMod(m.id);
-  const mcmod = getMcmodEntry(m);
-  let base: TeamMember[] = [];
-  if (mcmod && mcmod.authors) {
-    base = mcmod.authors.map((a) => ({
-      name: a.name,
-      role: ROLE_FROM_POSITION(a.position),
-      isLuck: false,
-      emoji: "👤",
-    }));
-  }
-  if (prCredit) {
-    const already = base.some((b) => b.name === "LUCK666DUCK");
-    if (!already) {
-      base.push({
-        name: "LUCK666DUCK",
-        role: "tester",
-        isLuck: true,
-        emoji: "🦆",
-      });
-    }
-  }
-  return base;
-};
-
-export const featuredBug = (m: Mod): Bug | null => {
-  const all = bugsForMod(m.id).filter((b) => b.status !== "noted-not-bug");
-  if (all.length === 0) return null;
-  const crash = all.find((b) => b.categories.includes("crash"));
-  return crash ?? all[0];
-};
-
-export const isUnfixedAcrossRounds = (m: Mod): number => {
-  return bugsForMod(m.id).filter((b) => b.status === "unfixed").length;
-};
-
-// ---- methodology / category aggregation ------------------------------------
-
-export const bugsByCategory = (cat: string): Bug[] =>
-  bugs.filter((b) => b.categories.includes(cat));
-
-export const categoryCounts = (): Record<string, number> => {
-  const m: Record<string, number> = {};
-  for (const b of bugs) for (const c of b.categories) m[c] = (m[c] || 0) + 1;
-  return m;
-};
-
-export const methodFor = (catId: string): Method | undefined =>
-  methods.find((m) => m.category_id === catId);
-
-// Per-mod category breakdown used in case page sidebar.
-export const modCategoryBreakdown = (modId: string): Array<{ cat: string; count: number }> => {
-  const counts: Record<string, number> = {};
-  for (const b of bugsForMod(modId)) {
-    for (const c of b.categories) counts[c] = (counts[c] || 0) + 1;
-  }
-  return Object.entries(counts)
-    .map(([cat, count]) => ({ cat, count }))
-    .sort((a, b) => b.count - a.count);
-};
-
-// Featured cases for home page — manually curated to highlight depth.
-export const featuredMods = (): Mod[] => {
-  const wanted = ["hotbath", "alex_caves", "shower_core"];
-  return wanted
-    .map((id) => mods.find((m) => m.id === id))
-    .filter((m): m is Mod => Boolean(m));
+export const roundOf = (m: Mod, b: Bug): { round: Round; n: number } => {
+  const i = m.rounds.findIndex((r) => r.file === b.round_file);
+  return { round: m.rounds[i], n: i + 1 };
 };

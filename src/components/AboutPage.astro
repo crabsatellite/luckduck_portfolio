@@ -1,0 +1,89 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import PageHead from "~/components/PageHead.astro";
+import { t, tf, type Lang } from "~/i18n/strings";
+import { metricsDay, mods, profile, totalBugs } from "~/lib/data";
+import { asset } from "~/lib/paths";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const day = metricsDay() ?? "—";
+const reportFiles = new Set(mods.flatMap((m) => m.rounds.map((r) => r.file))).size;
+const what = ["about.what_1", "about.what_2", "about.what_3", "about.what_4"] as const;
+---
+
+<BaseLayout lang={lang} title={t(lang, "about.title")}>
+  <PageHead slot="head" lang={lang} title={t(lang, "about.title")} lead={t(lang, "about.lead")}>
+    <div class="ids">
+      <a class="btn btn--gold" href={profile.curseforge.profile_url} rel="noopener">CurseForge · luck666duck ↗</a>
+      <a class="btn" href={profile.github.url} rel="noopener">GitHub · LUCK666DUCK ↗</a>
+    </div>
+  </PageHead>
+
+  <div class="wrap about">
+    <section class="block">
+      <h2 class="px px-24 shadow block__h">{t(lang, "about.what_h")}</h2>
+      <ol class="what">
+        {what.map((k, i) => (
+          <li><span class="digits what__n">{i + 1}</span><p>{t(lang, k)}</p></li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="block">
+      <h2 class="px px-24 shadow block__h">{t(lang, "about.credits_h")}</h2>
+      <div class="prose">
+        <p>{tf(lang, "about.credits_cf", { id: profile.curseforge.user_id, day })}</p>
+        <p>{t(lang, "about.credits_pr")}</p>
+        <p class="muted">{t(lang, "about.credits_not")}</p>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="px px-24 shadow block__h">{t(lang, "about.data_h")}</h2>
+      <div class="prose">
+        <p>{tf(lang, "about.data_1", { files: reportFiles, entries: totalBugs() })}</p>
+        <p>{t(lang, "about.data_2")}</p>
+        <p>{tf(lang, "about.data_3", { day })}</p>
+        <p>{t(lang, "about.data_4")}</p>
+      </div>
+    </section>
+
+    <img class="about__duck pixelated" src={asset("art/duck-large.png")} width="144" height="132" alt="" />
+  </div>
+</BaseLayout>
+
+<style>
+  .ids { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .about { position: relative; }
+  .block {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 40px;
+    padding: 40px 0;
+    box-shadow: inset 0 calc(var(--u) * -1) 0 var(--line);
+  }
+  .block:first-child { padding-top: 16px; }
+  .block__h { margin: 0; color: var(--text); }
+  .what { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+  .what li { display: grid; grid-template-columns: 32px 1fr; gap: 16px; align-items: start; }
+  .what p { margin: 2px 0 0; color: var(--text-2); max-width: 42em; }
+  .what__n {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    color: var(--gold-ink);
+    background: var(--gold);
+    box-shadow: inset var(--u) var(--u) 0 var(--gold-hi), inset calc(var(--u) * -1) calc(var(--u) * -1) 0 var(--gold-lo);
+  }
+  .prose { max-width: 44em; color: var(--text-2); }
+  .prose p { margin: 0 0 14px; }
+  .prose p:last-child { margin-bottom: 0; }
+  .about__duck { display: block; margin: 56px auto 0; }
+  @media (max-width: 860px) {
+    .block { grid-template-columns: 1fr; gap: 16px; }
+  }
+</style>

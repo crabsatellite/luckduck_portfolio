@@ -1,0 +1,102 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import PageHead from "~/components/PageHead.astro";
+import CatIcon from "~/components/CatIcon.astro";
+import EntryQuote from "~/components/EntryQuote.astro";
+import { t, tf, type Lang } from "~/i18n/strings";
+import { examplesFor, methods, methodsByCount, modCountsForCategory, modName, mods, totalBugs } from "~/lib/data";
+import { href } from "~/lib/paths";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const list = methodsByCount();
+const byId = (id: string) => mods.find((m) => m.id === id)!;
+---
+
+<BaseLayout lang={lang} title={t(lang, "methods.title")}>
+  <PageHead
+    slot="head"
+    lang={lang}
+    title={t(lang, "methods.title")}
+    lead={tf(lang, "methods.lead", { entries: totalBugs(), cats: methods.length })}
+  >
+    {lang === "en" && <p class="note">{t(lang, "case.ledger_note")}</p>}
+    <ul class="jump">
+      {list.map((m) => (
+        <li><a href={`#${m.id}`}><CatIcon cat={m.category_id} small />{lang === "zh" ? m.name_zh : m.name_en}</a></li>
+      ))}
+    </ul>
+  </PageHead>
+
+  <div class="wrap">
+    {list.map((m) => {
+      const dist = modCountsForCategory(m.category_id);
+      const examples = examplesFor(m.category_id);
+      return (
+        <section class="cat" id={m.id} aria-labelledby={`${m.id}-h`}>
+          <header class="cat__head">
+            <CatIcon cat={m.category_id} large />
+            <div>
+              <h2 id={`${m.id}-h`} class="px px-24 shadow cat__title">{lang === "zh" ? m.name_zh : m.name_en}</h2>
+              <p class="cat__alt">{lang === "zh" ? m.name_en : m.name_zh} · <span class="num">{tf(lang, "methods.count", { n: m.count })}</span></p>
+            </div>
+          </header>
+          <div class="cat__body">
+            <div>
+              <p class="cat__summary">{lang === "zh" ? m.summary_zh : m.summary_en}</p>
+              <p class="cat__label">{t(lang, "methods.by_mod")}</p>
+              <ul class="dist">
+                {dist.map(({ mod, count }) => (
+                  <li>
+                    <a href={href(lang, `/cases/${mod.id}`)}>{modName(mod, lang)}</a>
+                    <span class="meter"><span style={`--v:${count / dist[0].count}`}></span></span>
+                    <span class="num">{count}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="cat__examples">
+              {examples.map((b) => <EntryQuote mod={byId(b.mod_id)} bug={b} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      );
+    })}
+  </div>
+</BaseLayout>
+
+<style>
+  .note { margin: 8px 0 0; font-size: 14px; color: var(--text-3); }
+  .jump { list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .jump a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: 14px;
+    color: var(--text-2);
+    text-decoration: none;
+    box-shadow: inset 0 0 0 var(--u) rgba(255, 255, 255, 0.12);
+  }
+  .jump a:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+
+  .cat { padding: 48px 0; box-shadow: inset 0 calc(var(--u) * -1) 0 var(--line); scroll-margin-top: 16px; }
+  .cat:first-child { padding-top: 16px; }
+  .cat__head { display: flex; gap: 18px; align-items: center; margin-bottom: 20px; }
+  .cat__title { margin: 0; color: var(--text); }
+  .cat__alt { margin: 0; color: var(--text-3); font-size: 14px; }
+  .cat__body { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 40px; }
+  .cat__summary { margin: 0 0 20px; color: var(--text-2); }
+  .cat__label { margin: 0 0 8px; font-size: 13px; color: var(--text-3); }
+  .dist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .dist li { display: grid; grid-template-columns: minmax(8em, 12em) 1fr 32px; gap: 12px; align-items: center; font-size: 14px; }
+  .dist a { color: var(--text); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dist a:hover { color: var(--gold); }
+  .dist .num { text-align: right; color: var(--text-2); }
+  .cat__examples { display: grid; gap: 12px; align-content: start; }
+  @media (max-width: 900px) {
+    .cat__body { grid-template-columns: 1fr; gap: 24px; }
+  }
+</style>

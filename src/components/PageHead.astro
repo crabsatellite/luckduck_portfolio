@@ -1,199 +1,43 @@
 ---
-// Section head for every non-home page. Small kicker + a big italic
-// section numeral in the rail, italic-serif title and optional deck
-// in the body. Closed by a thin diamond-bookended rule. Just a page
-// header — no publication / issue framing.
-import { t, type Lang } from "~/i18n/strings";
-import MascotDuck from "~/components/MascotDuck.astro";
+// Inner-page header: the night sky with the title, ending on a strip of
+// moonlit ground that tiles across the full width.
+import SiteHeader from "~/components/SiteHeader.astro";
+import type { Lang } from "~/i18n/strings";
 
 interface Props {
   lang: Lang;
-  /** Two-character marker, e.g. "02", "№4". */
-  mark: string;
-  /** Small label next to the marker, e.g. "cases · tester logs". */
-  kicker: string;
   title: string;
-  sub?: string;
-  /** When true, render the mascot in the rail (used on the about page). */
-  showMascot?: boolean;
-  /** Optional italic 'deck' / standfirst paragraph between sub and slot. */
-  deck?: string;
+  lead?: string;
 }
-const {
-  lang, mark, kicker, title, sub,
-  showMascot = false, deck,
-} = Astro.props;
+const { lang, title, lead } = Astro.props;
 ---
 
-<header class="ph" lang={lang} data-reveal>
-  <div class="ph__grid">
-    <div class="ph__rail" aria-hidden="true">
-      <span class="ph__kicker">{kicker}</span>
-      <span class="ph__mark fancy-num fancy-num--accent">{mark}</span>
-      {showMascot && (
-        <span class="ph__mascot">
-          <MascotDuck size={68} blink={true} alt="" />
-        </span>
-      )}
-    </div>
-    <div class="ph__body">
-      <h1 class="ph__title">{title}</h1>
-      {sub && <p class="ph__sub">{sub}</p>}
-      {deck && <p class="ph__deck">{deck}</p>}
-      <slot />
-    </div>
+<section class="ph sky">
+  <SiteHeader lang={lang} />
+  <div class="wrap ph__body">
+    <slot name="before" />
+    <h1 class="px px-48 shadow ph__title">{title}</h1>
+    {lead && <p class="ph__lead">{lead}</p>}
+    <slot />
   </div>
-
-  <div class="ph__rule" aria-hidden="true">
-    <span class="ph__rule-bullet">◆</span>
-    <span class="ph__rule-line"></span>
-    <span class="ph__rule-bullet">◆</span>
-  </div>
-</header>
+  <div class="ph__edge pixelated" aria-hidden="true"></div>
+</section>
 
 <style>
-  .ph {
-    padding: clamp(1.4rem, 3.6vw, 2.4rem) 0 clamp(1rem, 2vw, 1.6rem) 0;
-    margin-bottom: clamp(1.4rem, 3.5vw, 2.4rem);
-    position: relative;
+  .ph__body { padding-top: 40px; padding-bottom: 8px; }
+  .ph__title { margin: 0; color: #fff; }
+  .ph__lead { margin: 16px 0 0; max-width: 46em; font-size: 17px; color: var(--text-2); }
+  /* edge.png: 192 x 64 source pixels, repeated at 2x */
+  .ph__edge {
+    height: 128px;
+    margin-top: 8px;
+    /* below the plant row the strip fades into the page, not the sky */
+    background:
+      var(--img-edge) 50% 0 / 384px 128px repeat-x,
+      linear-gradient(to bottom, transparent 0 40px, var(--bg) 40px);
   }
-
-  /* ---- main grid: rail | body --------------------------- */
-  .ph__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 0.34fr) minmax(0, 1fr);
-    gap: clamp(1.2rem, 3.4vw, 2.6rem);
-    align-items: start;
-    padding-top: clamp(1.4rem, 3vw, 2rem);
-    padding-bottom: clamp(1.6rem, 3.5vw, 2.2rem);
-    border-top: 3px solid var(--ink);
-  }
-
-  /* ---- rail: dept kicker + huge italic numeral -------- */
-  .ph__rail {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding-right: clamp(0.6rem, 2vw, 1.4rem);
-    border-right: 1px dotted var(--rule);
-  }
-  .ph__kicker {
-    font-family: var(--font-stamp);
-    font-size: 0.95rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-    line-height: 1;
-  }
-  :lang(zh) .ph__kicker {
-    font-family: var(--font-stamp), var(--font-cjk);
-    letter-spacing: 0.08em;
-    text-transform: none;
-    font-size: 0.92rem;
-  }
-  .ph__mark {
-    font-size: clamp(3.6rem, 7.5vw, 5.4rem);
-    line-height: 0.8;
-  }
-  .ph__mascot {
-    margin-top: 0.6rem;
-    padding: 6px;
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
-    background: color-mix(in oklch, var(--accent) 12%, var(--bg-soft));
-    line-height: 0;
-    align-self: flex-start;
-  }
-
-  /* ---- body: title + sub + slot --------------------- */
-  .ph__body {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.95rem;
-  }
-  .ph__title {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 700;
-    font-size: clamp(2rem, 4.6vw, 3.4rem);
-    line-height: 1.04;
-    letter-spacing: -0.018em;
-    color: var(--ink);
-    max-width: 22ch;
-  }
-  :lang(zh) .ph__title {
-    font-family: var(--font-cjk);
-    font-style: normal;
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 1.22;
-    max-width: 18ch;
-  }
-  .ph__sub {
-    margin: 0;
-    font-family: var(--font-sans);
-    color: var(--ink-soft);
-    font-size: 1.05rem;
-    line-height: 1.7;
-    max-width: 60ch;
-  }
-  :lang(zh) .ph__sub { font-family: var(--font-cjk); line-height: 1.9; }
-
-  /* ---- editorial deck: italic serif standfirst -------- */
-  .ph__deck {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-style: italic;
-    color: var(--ink);
-    font-size: 1.08rem;
-    line-height: 1.55;
-    max-width: 56ch;
-    padding-left: 0.9rem;
-    border-left: 3px solid var(--accent);
-  }
-  :lang(zh) .ph__deck {
-    font-family: var(--font-cjk);
-    font-style: normal;
-    line-height: 1.85;
-  }
-
-  /* ---- closing rule: a thin diamond-bookended line ---- */
-  .ph__rule {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    padding-top: clamp(0.9rem, 2vw, 1.2rem);
-  }
-  .ph__rule-bullet {
-    color: var(--accent);
-    font-size: 0.7rem;
-    line-height: 1;
-  }
-  .ph__rule-line {
-    flex: 1;
-    height: 0;
-    border-top: 1px solid var(--rule);
-  }
-
-  /* ---- responsive ----------------------------------- */
-  @media (max-width: 760px) {
-    .ph__grid {
-      grid-template-columns: 1fr;
-      gap: 0.8rem;
-    }
-    .ph__rail {
-      flex-direction: row;
-      align-items: baseline;
-      gap: 0.9rem;
-      border-right: none;
-      border-bottom: 1px dotted var(--rule);
-      padding-right: 0;
-      padding-bottom: 0.7rem;
-    }
-    .ph__kicker { order: 1; }
-    .ph__mark { order: 2; font-size: 3.2rem; }
-    .ph__mascot { order: 3; margin-top: 0; }
+  @media (max-width: 640px) {
+    .ph__title { font-size: 36px; line-height: 48px; text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.55); }
+    .ph__edge { height: 96px; }
   }
 </style>

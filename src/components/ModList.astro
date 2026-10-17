@@ -1,0 +1,109 @@
+---
+import ModSlot from "~/components/ModSlot.astro";
+import { t, tf, type Lang } from "~/i18n/strings";
+import { creditFor, hasRegression, modAltName, modName, sortedMods } from "~/lib/data";
+import { href } from "~/lib/paths";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const list = sortedMods();
+const max = Math.max(...list.map((m) => m.total_bugs));
+---
+
+<div class="mods slab">
+  <div class="mods__head" aria-hidden="true">
+    <span></span>
+    <span>{t(lang, "mods.col_mod")}</span>
+    <span>{t(lang, "mods.col_versions")}</span>
+    <span>{t(lang, "mods.col_rounds")}</span>
+    <span>{t(lang, "mods.col_entries")}</span>
+  </div>
+  <ol class="mods__list">
+    {list.map((m) => {
+      const retests = m.rounds.filter((r) => r.label === "regression").length;
+      const credited = creditFor(m) !== null;
+      const alt = modAltName(m, lang);
+      return (
+        <li
+          class="mods__item"
+          data-mod
+          data-credited={credited ? "1" : "0"}
+          data-retest={hasRegression(m) ? "1" : "0"}
+        >
+          <a class="mods__row" href={href(lang, `/cases/${m.id}`)}>
+            <ModSlot mod={m} dark />
+            <span class="mods__name">
+              <span class="ui mods__title">{modName(m, lang)}</span>
+              <span class="mods__alt">
+                {alt}
+                {credited && <span class="mods__credit">{alt ? " · " : ""}{t(lang, "mods.credited")}</span>}
+              </span>
+            </span>
+            <span class="mods__ver num">{m.versions.join(" · ")}</span>
+            <span class="mods__rounds">
+              {tf(lang, "mods.rounds", { n: m.rounds.length })}
+              {retests > 0 && <span class="mods__retests">{tf(lang, "mods.retests", { n: retests })}</span>}
+            </span>
+            <span class="mods__entries">
+              {m.total_bugs > 0 ? (
+                <>
+                  <span class="meter"><span style={`--v:${m.total_bugs / max}`}></span></span>
+                  <span class="digits mods__n">{m.total_bugs}</span>
+                </>
+              ) : (
+                <span class="mods__clean">{t(lang, "mods.clean")}</span>
+              )}
+            </span>
+          </a>
+        </li>
+      );
+    })}
+  </ol>
+</div>
+
+<style>
+  .mods { padding: 8px 0; }
+  .mods__head,
+  .mods__row {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) 150px 120px minmax(160px, 240px);
+    gap: 20px;
+    align-items: center;
+    padding: 0 22px;
+  }
+  .mods__head { padding-top: 10px; padding-bottom: 10px; font-size: 13px; color: var(--text-3); }
+  .mods__list { list-style: none; margin: 0; padding: 0; }
+  .mods__item + .mods__item .mods__row { box-shadow: inset 0 var(--u) 0 var(--line); }
+  .mods__row { min-height: 68px; padding-top: 10px; padding-bottom: 10px; color: var(--text); text-decoration: none; }
+  .mods__row:hover { background: rgba(243, 195, 90, 0.06); }
+  .mods__row:hover .mods__title { color: var(--gold); }
+  .mods__name { display: grid; min-width: 0; }
+  .mods__title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mods__alt { font-size: 13px; color: var(--text-3); }
+  .mods__credit { color: var(--gold); }
+  .mods__ver { font-size: 14px; color: var(--text-2); }
+  .mods__rounds { display: grid; font-size: 14px; color: var(--text-2); }
+  .mods__retests { font-size: 13px; color: var(--text-3); }
+  .mods__entries { display: grid; grid-template-columns: 1fr 48px; gap: 12px; align-items: center; }
+  .mods__n { text-align: right; color: var(--text); }
+  .mods__clean { grid-column: 1 / -1; font-size: 14px; color: var(--ok); }
+
+  @media (max-width: 860px) {
+    .mods__head { display: none; }
+    .mods__row {
+      grid-template-columns: 36px minmax(0, 1fr) auto;
+      grid-template-areas: "slot name n" "slot ver rounds";
+      gap: 4px 16px;
+      padding: 12px 16px;
+    }
+    .mods__row > :global(.slot) { grid-area: slot; align-self: start; }
+    .mods__name { grid-area: name; }
+    .mods__entries { grid-area: n; display: block; text-align: right; }
+    .mods__entries .meter { display: none; }
+    .mods__ver { grid-area: ver; font-size: 13px; }
+    .mods__rounds { grid-area: rounds; font-size: 13px; text-align: right; display: block; }
+    .mods__retests { display: none; }
+  }
+</style>

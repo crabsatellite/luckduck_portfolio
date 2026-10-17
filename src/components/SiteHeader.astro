@@ -1,0 +1,86 @@
+---
+import { t, pathForLang, type Lang } from "~/i18n/strings";
+import { asset, base, href } from "~/lib/paths";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const here = Astro.url.pathname.replace(base, "").replace(/^\/en(?=\/|$)/, "").replace(/\/$/, "") || "/";
+const items = [
+  { path: "/cases", key: "nav.cases" as const },
+  { path: "/methodology", key: "nav.methods" as const },
+  { path: "/about", key: "nav.about" as const },
+];
+const other: Lang = lang === "en" ? "zh" : "en";
+// the 404 page exists once, so its language toggle goes to the other home page
+const otherHref = here === "/404" ? href(other, "/") : pathForLang(Astro.url.pathname, other, base);
+---
+
+<header class="top">
+  <div class="wrap top__row">
+    <a class="top__home" href={href(lang, "/")} aria-label={t(lang, "nav.home_aria")}>
+      <img class="pixelated" src={asset("art/duck.png")} width="32" height="32" alt="" />
+      <span class="ui shadow">LUCK666DUCK</span>
+    </a>
+    <nav class="top__nav" aria-label="Primary">
+      {items.map((it) => {
+        const active = here === it.path || here.startsWith(it.path + "/");
+        return (
+          <a class:list={["ui", "top__link", { "is-active": active }]} href={href(lang, it.path)} aria-current={active ? "page" : undefined}>
+            {t(lang, it.key)}
+          </a>
+        );
+      })}
+      <a
+        class="ui top__link top__lang"
+        href={otherHref}
+        hreflang={other === "en" ? "en" : "zh-Hans"}
+        lang={other === "en" ? "en" : "zh-Hans"}
+        aria-label={t(lang, "nav.lang_aria")}
+        data-lang-toggle={other}
+      >
+        {t(lang, "nav.lang")}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .top { position: relative; z-index: 2; }
+  .top__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 76px;
+  }
+  .top__home {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .top__home img { display: block; }
+  .top__nav { display: flex; align-items: center; gap: 4px; }
+  .top__link {
+    padding: 6px 12px;
+    color: var(--text-2);
+    text-decoration: none;
+  }
+  .top__link:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+  .top__link.is-active { color: var(--gold); }
+  .top__lang {
+    margin-left: 8px;
+    color: var(--text);
+    box-shadow: inset 0 0 0 var(--u) rgba(255, 255, 255, 0.18);
+  }
+
+  @media (max-width: 680px) {
+    .top__row { flex-wrap: wrap; padding-top: 12px; row-gap: 4px; }
+    .top__nav { order: 3; width: 100%; margin: 0 -12px; }
+    .top__lang { position: absolute; right: var(--gutter); top: 18px; margin: 0; }
+  }
+</style>

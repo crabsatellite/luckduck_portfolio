@@ -1,0 +1,99 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Hero from "~/components/Hero.astro";
+import Thread from "~/components/Thread.astro";
+import EntryQuote from "~/components/EntryQuote.astro";
+import Credits from "~/components/Credits.astro";
+import ModList from "~/components/ModList.astro";
+import CategoryBars from "~/components/CategoryBars.astro";
+import Contact from "~/components/Contact.astro";
+import { t, tf, type Lang } from "~/i18n/strings";
+import { HIGHLIGHTS } from "~/i18n/highlights";
+import { findEntry, mods, totalBugs } from "~/lib/data";
+import { href } from "~/lib/paths";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const quotes = HIGHLIGHTS.map((h) => ({ ...findEntry(h.ref), en: h.en, also: h.also ? findEntry(h.also) : null }));
+---
+
+<BaseLayout lang={lang}>
+  <Hero slot="head" lang={lang} />
+
+  <section class="section" aria-labelledby="logs-title">
+    <div class="wrap">
+      <header class="head">
+        <h2 id="logs-title" class="px px-36 shadow head__title">{t(lang, "logs.h")}</h2>
+        <p class="head__sub">{t(lang, "logs.sub")}</p>
+      </header>
+      <Thread lang={lang} />
+      <div class="quotes">
+        {quotes.map((q) => (
+          <EntryQuote
+            mod={q.mod}
+            bug={q.bug}
+            lang={lang}
+            en={q.en}
+            note={q.also ? t(lang, "logs.also") : undefined}
+          />
+        ))}
+      </div>
+      <a class="ui head__more quotes__more" href={href(lang, "/cases")}>{tf(lang, "logs.all", { n: totalBugs() })}</a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="credits-title">
+    <div class="wrap">
+      <header class="head">
+        <h2 id="credits-title" class="px px-36 shadow head__title">{t(lang, "credits.h")}</h2>
+        <p class="head__sub">{t(lang, "credits.sub")}</p>
+      </header>
+      <Credits lang={lang} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="mods-title">
+    <div class="wrap">
+      <header class="head">
+        <h2 id="mods-title" class="px px-36 shadow head__title">{t(lang, "mods.h")}</h2>
+        <p class="head__sub">{tf(lang, "mods.sub", { n: mods.length })}</p>
+      </header>
+      <ModList lang={lang} />
+      <a class="ui head__more quotes__more" href={href(lang, "/cases")}>{t(lang, "mods.all")}</a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cats-title">
+    <div class="wrap">
+      <header class="head">
+        <h2 id="cats-title" class="px px-36 shadow head__title">{t(lang, "cats.h")}</h2>
+        <p class="head__sub">{tf(lang, "cats.sub", { n: totalBugs() })}</p>
+      </header>
+      <CategoryBars lang={lang} />
+      <a class="ui head__more quotes__more" href={href(lang, "/methodology")}>{t(lang, "cats.all")}</a>
+    </div>
+  </section>
+
+  <section id="contact" class="section" aria-labelledby="contact-title">
+    <div class="wrap">
+      <Contact lang={lang} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .quotes__more { display: inline-block; margin-top: 24px; }
+  @media (max-width: 1000px) {
+    .quotes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .quotes { grid-template-columns: 1fr; }
+  }
+</style>

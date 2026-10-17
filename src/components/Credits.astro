@@ -1,0 +1,93 @@
+---
+import ModSlot from "~/components/ModSlot.astro";
+import { t, tf, type Lang } from "~/i18n/strings";
+import { creditDownloads, creditFor, isoDay, modName, mods, sortedMods } from "~/lib/data";
+import { href } from "~/lib/paths";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const fmt = (n: number) => n.toLocaleString("en-US");
+const credited = sortedMods()
+  .map((mod) => ({ mod, credit: creditFor(mod) }))
+  .filter((x): x is { mod: typeof x.mod; credit: NonNullable<typeof x.credit> } => x.credit !== null);
+---
+
+<div class="credits">
+  {credited.map(({ mod, credit }) => (
+    <article class="credit slab">
+      <a class="credit__slot" href={href(lang, `/cases/${mod.id}`)} aria-label={modName(mod, lang)}>
+        <ModSlot mod={mod} size="lg" dark />
+      </a>
+      <div class="credit__body">
+        <p class="credit__kind">{credit.kind === "curseforge" ? t(lang, "credits.cf_kind") : t(lang, "credits.pr_kind")}</p>
+        <h3 class="ui credit__mod"><a href={href(lang, `/cases/${mod.id}`)}>{modName(mod, lang)}</a></h3>
+        {credit.kind === "curseforge" ? (
+          <>
+            <p class="credit__line">
+              {tf(lang, "credits.role", { role: credit.credit.role })}
+              <span class="muted"> · {credit.credit.owner}</span>
+            </p>
+            {(() => {
+              const d = creditDownloads(credit.credit);
+              return (
+                <p class="credit__line num">
+                  {tf(lang, "credits.downloads", { n: fmt(d.value) })}
+                  {d.day && <span class="muted"> · {tf(lang, "credits.downloads_day", { day: d.day })}</span>}
+                </p>
+              );
+            })()}
+            <p class="credit__links">
+              <a href={credit.credit.mod_url} rel="noopener">CurseForge ↗</a>
+              {credit.live?.snapshot_url && credit.live.verified && (
+                <a href={credit.live.snapshot_url} rel="noopener">
+                  {tf(lang, "credits.snapshot", { day: isoDay(credit.live.snapshot_at) ?? "" })} ↗
+                </a>
+              )}
+            </p>
+          </>
+        ) : (
+          <>
+            <ul class="credit__prs">
+              {credit.credit.prs.map((pr) => (
+                <li>
+                  <a href={pr.url} rel="noopener">{credit.credit.repo.split("/")[1]} #{pr.number}</a>
+                  <span class="credit__pr-title">{pr.title}</span>
+                  {pr.merged && <span class="muted num"> · {tf(lang, "credits.merged", { day: isoDay(pr.merged_at) ?? "" })}</span>}
+                </li>
+              ))}
+            </ul>
+            <p class="credit__line muted">{tf(lang, "credits.pr_by", { author: credit.credit.prs[0]?.author ?? "" })}</p>
+          </>
+        )}
+      </div>
+    </article>
+  ))}
+</div>
+<p class="credits__note">{tf(lang, "credits.none_note", { n: mods.length - credited.length })}</p>
+
+<style>
+  .credits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .credit { display: flex; gap: 20px; padding: 22px; align-items: flex-start; }
+  .credit__slot { flex: none; }
+  .credit__body { min-width: 0; display: grid; gap: 4px; }
+  .credit__kind { margin: 0; font-size: 13px; color: var(--gold); }
+  .credit__mod { margin: 0 0 4px; }
+  .credit__mod a { color: var(--text); text-decoration: none; }
+  .credit__mod a:hover { color: var(--gold); }
+  .credit__line { margin: 0; font-size: 14px; color: var(--text-2); }
+  .credit__links { margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; }
+  .credit__links a, .credit__prs a { color: var(--text); text-underline-offset: 4px; }
+  .credit__links a:hover, .credit__prs a:hover { color: var(--gold); }
+  .credit__prs { list-style: none; margin: 0 0 4px; padding: 0; display: grid; gap: 4px; font-size: 14px; color: var(--text-2); }
+  .credit__pr-title { margin-left: 8px; }
+  .credits__note { margin: 16px 0 0; font-size: 14px; color: var(--text-3); }
+  @media (max-width: 860px) {
+    .credits { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .credit { padding: 18px; gap: 14px; }
+    .credit__pr-title { display: block; margin-left: 0; }
+  }
+</style>
